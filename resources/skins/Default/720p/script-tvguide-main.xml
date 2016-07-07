@@ -25,6 +25,16 @@
         </control>
 
         <!-- Background -->
+        <control type="videowindow">
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <!--<animation type="Conditional" condition="!Control.IsVisible(5000)">
+                <effect type="zoom" end="25" center="1250,690" time="500" />
+            </animation>-->
+        </control>        
+        
         <control type="image" id="4600">
             <posx>180</posx>
             <posy>40</posy>
@@ -38,7 +48,7 @@
             <animation type="Conditional" condition="Control.IsVisible(5000)">
                 <effect type="fade" start="100" end="0" time="500" />
             </animation>
-            
+            <visible>!Player.HasMedia</visible>
         </control>
         <control type="image">
             <posx>0</posx>
@@ -893,15 +903,7 @@
         </control>
         <!-- id="5000" -->
 
-        <control type="videowindow">
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1280</width>
-            <height>720</height>
-            <animation type="Conditional" condition="!Control.IsVisible(5000)">
-                <effect type="zoom" end="25" center="1250,690" time="500" />
-            </animation>
-        </control>
+
 
         <control type="label" id="6000">
             <description>visibility marker for OSD Info bar</description>
