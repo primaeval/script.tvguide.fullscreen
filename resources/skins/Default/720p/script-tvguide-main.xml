@@ -664,11 +664,11 @@
             </control>
             <control type="label" id="7022">
                 <description>Program description</description>
-                <posx>180</posx>
+                <posx>190</posx>
                 <posy>80r</posy>
                 <width>1100</width>
                 <height>80</height>
-                <textcolor>ffffffff</textcolor>
+                <textcolor>orange</textcolor>
                 <font>font13</font>
                 <align>left</align>
                 <wrapmultiline>false</wrapmultiline>
