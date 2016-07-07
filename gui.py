@@ -586,6 +586,8 @@ class TVGuide(xbmcgui.WindowXML):
         self.currentChannel = channel
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
+        #xbmc.log(repr(channel))
+        #xbmc.log(url)
         if url:
             if str.startswith(url,"plugin://plugin.video.meta") and program is not None:
                 import urllib
@@ -593,12 +595,16 @@ class TVGuide(xbmcgui.WindowXML):
                 url += "/%s/%s" % (title, program.language)
             if url[0:9] == 'plugin://':
                 if self.alternativePlayback:
+                    #xbmc.log("alt playback")
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
                 elif self.osdEnabled:
+                    #xbmc.log("osd playback")
                     xbmc.executebuiltin('PlayMedia(%s,1)' % url)
                 else:
+                    #xbmc.log("normal playback")
                     xbmc.executebuiltin('PlayMedia(%s)' % url)
             else:
+                #xbmc.log("play playback")
                 self.player.play(item=url, windowed=self.osdEnabled)
 
             if not wasPlaying:
@@ -694,7 +700,7 @@ class TVGuide(xbmcgui.WindowXML):
         # set channel logo or text
         showLogo = ADDON.getSetting('logos.enabled') == 'true'
         for idx in range(0, CHANNELS_PER_PAGE):
-            xbmc.log(repr(idx))
+            #xbmc.log(repr(idx))
             if idx >= len(channels):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
@@ -962,7 +968,7 @@ class TVGuide(xbmcgui.WindowXML):
             return ''
 
     def setControlImage(self, controlId, image):
-        xbmc.log(repr(controlId))
+        #xbmc.log(repr(controlId))
         control = self.getControl(controlId)
         if control:
             control.setImage(image.encode('utf-8'))
@@ -1389,7 +1395,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             if item.getProperty('addon_id') == "plugin.video.meta":
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
-            xbmc.log(repr(stream))
+            #xbmc.log(repr(stream))
             item = xbmcgui.ListItem(label)
             item.setProperty('stream', stream)
             items.append(item)
