@@ -1,7 +1,12 @@
 --------------------------
+FTV Guide - 2.0.22
+--------------------------
++ Merged Pull Request #5: further meta integration  (Thanks midraal)
+
+--------------------------
 FTV Guide - 2.0.21
 --------------------------
-+ Merged Pull Request: add support for meta live players (Thanks midraal)
++ Merged Pull Request #4: add support for meta live players (Thanks midraal)
 
 --------------------------
 FTV Guide - 2.0.20

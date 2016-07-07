@@ -85,7 +85,7 @@ For any more help please visit TVAddons.ag</label>
             <height>50</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>80002</onup>
+            <onup>4005</onup>
             <ondown>4001</ondown>
             <align>center</align>
             <aligny>center</aligny>
@@ -159,6 +159,22 @@ For any more help please visit TVAddons.ag</label>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.ftvguide 30307]</label>
+        </control>
+
+        <control type="button" id="4005"><!-- watch from beginning -->
+            <posx>160</posx>
+            <posy>178</posy>
+            <width>240</width>
+            <height>50</height>
+            <texturefocus>menu-grey-focus.png</texturefocus>
+            <texturenofocus>menu-grey.png</texturenofocus>
+            <onup>8002</onup>
+            <ondown>4000</ondown>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+            <label>Watch from beginning</label>
         </control>
 		
         <control type="button" id="80000"><!-- MY MOVIES -->

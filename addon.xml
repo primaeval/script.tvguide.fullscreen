@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.ftvguide" name="FTV Guide" version="2.0.21" provider-name="rayw1986, bluezed">
+<addon id="script.ftvguide" name="FTV Guide" version="2.0.22" provider-name="rayw1986, bluezed">
 	<requires>
 		<import addon="xbmc.python" version="2.19.0"/>
 		<import addon="script.module.simplejson" version="3.3.0"/>
