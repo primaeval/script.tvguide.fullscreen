@@ -85,10 +85,10 @@
             <control type="image" id="4100">
                 <posx>180</posx>
                 <posy>0</posy>
-                <width>-1000%</width>
+                <width>-10</width>
                 <height>640</height>
                 <visible>true</visible>
-                <texture>tvguide-timebar.png</texture>
+                <texture>tvguide-program-grey-focus.png</texture>
             </control>
 
             <control type="image">

@@ -5,7 +5,7 @@
 		<import addon="script.module.simplejson" version="3.3.0"/>
 	</requires>
 	<extension point="xbmc.python.script" library="addon.py">
-            <provides>executable</provides>
+            <provides>video executable</provides>
     </extension>
     <extension point="xbmc.service" library="service.py" start="login"/>
 	<extension point="xbmc.addon.metadata">

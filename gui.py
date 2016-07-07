@@ -509,7 +509,7 @@ class TVGuide(xbmcgui.WindowXML):
             xbmc.log(program.imageSmall)
             self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
         else:
-            self.setControlImage(self.C_MAIN_BACKGROUND, "")
+            self.setControlImage(self.C_MAIN_BACKGROUND, "tvguide-program-grey.png")
 
         if not self.osdEnabled and self.player.isPlaying():
             self.player.stop()
