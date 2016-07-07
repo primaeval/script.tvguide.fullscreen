@@ -55,7 +55,7 @@
         <control type="group">
             <description>TV Guide group</description>
             <posx>0</posx>
-            <posy>80</posy>
+            <posy>40</posy>
             <width>1280</width>
             <height>720</height>
             <visible>!Control.IsVisible(5000)</visible>
@@ -63,7 +63,7 @@
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
-                <posy>80</posy>
+                <posy>40</posy>
                 <width>1100</width>
                 <height>640</height>
                 <visible>false</visible>
@@ -711,18 +711,17 @@
                 <description>visibility marker for mouse control group</description>
                 <posx>0</posx>
                 <posy>0</posy>
-                <width>50</width>
-                <height>50</height>
+                <width>40</width>
+                <height>40</height>
             </control>
             <control type="group">
-            <visible>false</visible>
+            <visible>true</visible>
                 <posx>0</posx>
-                <posy>720</posy>
+                <posy>-40</posy>
                 <width>1280</width>
-                <height>70</height>
+                <height>720</height>
                 <visible>!Control.IsVisible(4300)</visible>
-                <animation effect="slide" start="0,0" end="0,-70" time="500">Visible</animation>
-                <animation effect="slide" start="0,-70" end="0,0" time="500">Hidden</animation>
+
 
                 <control type="image">
                     <posx>0</posx>
@@ -730,6 +729,7 @@
                     <width>1280</width>
                     <height>70</height>
                     <texture>tvguide-glasspane.png</texture>
+                    <visible>false</visible>
                 </control>
                 <control type="image">
                     <posx>0</posx>
@@ -737,6 +737,7 @@
                     <width>1280</width>
                     <height>70</height>
                     <texture>tvguide-glasspane.png</texture>
+                    <visible>false</visible>
                 </control>
                 <control type="label">
                     <posx>20</posx>
@@ -747,6 +748,7 @@
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
+                    <visible>false</visible>
                 </control>
                 <control type="label">
                     <posx>800</posx>
@@ -757,14 +759,15 @@
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4301">
                     <description>navigate to now</description>
-                    <posx>200</posx>
-                    <posy>10</posy>
-                    <width>100</width>
-                    <height>50</height>
+                    <posx>540</posx>
+                    <posy>0</posy>
+                    <width>180</width>
+                    <height>40</height>
                     <label>$ADDON[script.ftvguide 30006]</label>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
@@ -776,10 +779,10 @@
 
                 <control type="button" id="4302">
                     <description>navigate left</description>
-                    <posx>340</posx>
-                    <posy>10</posy>
-                    <width>100</width>
-                    <height>50</height>
+                    <posx>240</posx>
+                    <posy>0</posy>
+                    <width>180</width>
+                    <height>40</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
                     <label>&lt;</label>
@@ -790,10 +793,10 @@
                 </control>
                 <control type="button" id="4303">
                     <description>navigate up</description>
-                    <posx>450</posx>
-                    <posy>10</posy>
-                    <width>100</width>
-                    <height>50</height>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>180</width>
+                    <height>40</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
                     <label>^</label>
@@ -804,10 +807,10 @@
                 </control>
                 <control type="button" id="4304">
                     <description>navigate down</description>
-                    <posx>560</posx>
-                    <posy>10</posy>
-                    <width>100</width>
-                    <height>50</height>
+                    <posx>0</posx>
+                    <posy>40r</posy>
+                    <width>180</width>
+                    <height>40</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
                     <label>v</label>
@@ -818,10 +821,10 @@
                 </control>
                 <control type="button" id="4305">
                     <description>navigate right</description>
-                    <posx>670</posx>
-                    <posy>10</posy>
-                    <width>100</width>
-                    <height>50</height>
+                    <posx>180r</posx>
+                    <posy>0</posy>
+                    <width>180</width>
+                    <height>40</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
                     <label>&gt;</label>
@@ -844,6 +847,7 @@
                     <align>center</align>
                     <texturefocus>tvguide-program-grey-focus.png</texturefocus>
                     <texturenofocus>tvguide-program-grey.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
             </control>
