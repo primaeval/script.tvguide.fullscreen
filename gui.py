@@ -97,7 +97,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_TIME = 7021
     C_MAIN_DESCRIPTION = 7022
     C_MAIN_IMAGE = 7023
-    C_MAIN_LOGO = 4024
+    C_MAIN_LOGO = 7024
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -962,6 +962,7 @@ class TVGuide(xbmcgui.WindowXML):
             return ''
 
     def setControlImage(self, controlId, image):
+        xbmc.log(repr(controlId))
         control = self.getControl(controlId)
         if control:
             control.setImage(image.encode('utf-8'))

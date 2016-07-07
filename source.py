@@ -27,6 +27,7 @@ import threading
 import datetime
 import time
 from xml.etree import ElementTree
+import re
 
 from strings import *
 from guideTypes import *
@@ -35,6 +36,7 @@ from fileFetcher import *
 import xbmc
 import xbmcgui
 import xbmcvfs
+import xbmcaddon
 import sqlite3
 
 SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder']
@@ -62,7 +64,7 @@ class Channel(object):
 
 class Program(object):
     def __init__(self, channel, title, startDate, endDate, description, imageLarge=None, imageSmall=None,
-                 notificationScheduled=None):
+                 notificationScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
         """
 
         @param channel:
@@ -82,11 +84,17 @@ class Program(object):
         self.imageLarge = imageLarge
         self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
+        self.season = season
+        self.episode = episode
+        self.is_movie = is_movie
+        self.language = language
 
     def __repr__(self):
-        return 'Program(channel=%s, title=%s, startDate=%s, endDate=%s, description=%s, imageLarge=%s, imageSmall=%s)' % \
-               (self.channel, self.title, self.startDate, self.endDate, self.description, self.imageLarge,
-                self.imageSmall)
+        return 'Program(channel=%s, title=%s, startDate=%s, endDate=%s, description=%s, imageLarge=%s, ' \
+               'imageSmall=%s, episode=%s, season=%s, is_movie=%s)' % (self.channel, self.title, self.startDate,
+                                                                       self.endDate, self.description, self.imageLarge,
+                                                                       self.imageSmall, self.season, self.episode,
+                                                                       self.is_movie)
 
 
 class SourceException(Exception):
@@ -383,9 +391,10 @@ class Database(object):
                         channel = program.channel
 
                     c.execute(
-                        'INSERT INTO programs(channel, title, start_date, end_date, description, image_large, image_small, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        'INSERT INTO programs(channel, title, start_date, end_date, description, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         [channel, program.title, program.startDate, program.endDate, program.description,
-                         program.imageLarge, program.imageSmall, self.source.KEY, updatesId])
+                         program.imageLarge, program.imageSmall, program.season, program.episode, program.is_movie,
+                         program.language, self.source.KEY, updatesId])
 
             # channels updated
             c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
@@ -529,7 +538,8 @@ class Database(object):
         row = c.fetchone()
         if row:
             program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'])
+                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                              row['is_movie'], row['language'])
         c.close()
 
         return program
@@ -546,7 +556,8 @@ class Database(object):
         row = c.fetchone()
         if row:
             nextProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                                  row['image_large'], row['image_small'])
+                                  row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                                  row['is_movie'], row['language'])
         c.close()
 
         return nextProgram
@@ -563,7 +574,8 @@ class Database(object):
         row = c.fetchone()
         if row:
             previousProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'],
-                                      row['description'], row['image_large'], row['image_small'])
+                                      row['description'], row['image_large'], row['image_small'], None, row['season'],
+                                      row['episode'], row['is_movie'], row['language'])
         c.close()
 
         return previousProgram
@@ -595,7 +607,8 @@ class Database(object):
             [self.source.KEY, startTime, endTime])
         for row in c:
             program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'])
+                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'],
+                              row['season'], row['episode'], row['is_movie'], row['language'])
             programList.append(program)
 
         return programList
@@ -688,7 +701,6 @@ class Database(object):
                 c.execute('CREATE TABLE IF NOT EXISTS custom_stream_url(channel TEXT, stream_url TEXT)')
                 c.execute('CREATE TABLE version (major INTEGER, minor INTEGER, patch INTEGER)')
                 c.execute('INSERT INTO version(major, minor, patch) VALUES(1, 3, 0)')
-
                 # For caching data
                 c.execute('CREATE TABLE sources(id TEXT PRIMARY KEY, channels_updated TIMESTAMP)')
                 c.execute(
@@ -700,14 +712,11 @@ class Database(object):
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
-
                 # For active setting
                 c.execute('CREATE TABLE settings(key TEXT PRIMARY KEY, value TEXT)')
-
                 # For notifications
                 c.execute(
                     "CREATE TABLE notifications(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
-
             if version < [1, 3, 1]:
                 # Recreate tables with FOREIGN KEYS as DEFERRABLE INITIALLY DEFERRED
                 c.execute('UPDATE version SET major=1, minor=3, patch=1')
@@ -717,6 +726,16 @@ class Database(object):
                     'CREATE TABLE channels(id TEXT, title TEXT, logo TEXT, stream_url TEXT, source TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
                 c.execute(
                     'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, source TEXT, updates_id INTEGER, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+                c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
+                c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
+                c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
+
+            if version < [1, 3, 2]:
+                # Recreate tables with seasons, episodes and is_movie
+                c.execute('UPDATE version SET major=1, minor=3, patch=2')
+                c.execute('DROP TABLE programs')
+                c.execute(
+                    'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
@@ -954,6 +973,13 @@ class XMLTVSource(Source):
     def parseXMLTV(self, context, f, size, logoFolder, progress_callback):
         event, root = context.next()
         elements_parsed = 0
+        meta_installed = False
+
+        try:
+            xbmcaddon.Addon("plugin.video.meta")
+            meta_installed = True
+        except Exception:
+            pass  # ignore addons that are not installed
 
         for event, elem in context:
             if event == "end":
@@ -967,8 +993,40 @@ class XMLTVSource(Source):
                         icon = iconElement.get("src")
                     if not description:
                         description = strings(NO_DESCRIPTION)
+
+                    season = None
+                    episode = None
+                    is_movie = None
+                    language = elem.find("title").get("lang")
+                    if meta_installed == True:
+                        episode_num = elem.findtext("episode-num")
+                        categories = elem.findall("category")
+                        for category in categories:
+                            if "movie" in category.text.lower() or channel.lower().find("sky movies") != -1 \
+                                    or "film" in category.text.lower():
+                                is_movie = "Movie"
+                                break
+
+                        if episode_num is not None:
+                            episode_num = unicode.encode(unicode(episode_num), 'ascii','ignore')
+                            if str.find(episode_num, ".") != -1:
+                                splitted = str.split(episode_num, ".")
+                                if splitted[0] != "":
+                                    season = int(splitted[0]) + 1
+                                    is_movie = None # fix for misclassification
+                                    if str.find(splitted[1], "/") != -1:
+                                        episode = int(splitted[1].split("/")[0]) + 1
+                                    elif splitted[1] != "":
+                                        episode = int(splitted[1]) + 1
+
+                            elif str.find(episode_num.lower(), "season") != -1 and episode_num != "Season ,Episode ":
+                                pattern = re.compile(r"Season\s(\d+).*?Episode\s+(\d+).*",re.I|re.U)
+                                season = int(re.sub(pattern, r"\1", episode_num))
+                                episode = (re.sub(pattern, r"\2", episode_num))
+
                     result = Program(channel, elem.findtext('title'), self.parseXMLTVDate(elem.get('start')),
-                                     self.parseXMLTVDate(elem.get('stop')), description, imageSmall=icon)
+                                     self.parseXMLTVDate(elem.get('stop')), description, imageSmall=icon,
+                                     season = season, episode = episode, is_movie = is_movie, language= language)
 
                 elif elem.tag == "channel":
                     cid = elem.get("id").replace("'", "")  # Make ID safe to use as ' can cause crashes!
