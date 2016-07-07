@@ -37,7 +37,17 @@
             <aligny>top</aligny>
 			<label></label>
         </control>
-		
+		<control type="image" id="7002">
+            <description>Help and Tips</description>
+            <posx>423</posx>
+            <posy>150</posy>
+            <width>700</width>
+            <height>510</height>
+			<align>center</align>
+            <aligny>bottom</aligny>
+            <aspectratio>keep</aspectratio>
+            <texture>-</texture>
+        </control>
 		<control type="label" id="7000">
             <description>Help and Tips</description>
             <posx>423</posx>
@@ -45,12 +55,14 @@
             <width>710</width>
             <height>400</height>
             <textcolor>ffffffff</textcolor>
+            <shadowcolor>ff000000</shadowcolor>
             <font>font13</font>
 			<align>left</align>
             <aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
 			<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
 			<label></label>
+            
         </control>
 			
         <control type="image" id="4100">

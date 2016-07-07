@@ -1006,6 +1006,7 @@ class TVGuide(xbmcgui.WindowXML):
 class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_LABEL = 7000
     C_POPUP_PROGRAM_LABEL = 7001
+    C_POPUP_PROGRAM_IMAGE = 7002
     C_POPUP_PLAY = 4000
     C_POPUP_CHOOSE_STREAM = 4001
     C_POPUP_REMIND = 4002
@@ -1040,6 +1041,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     def onInit(self):
         labelControl = self.getControl(self.C_POPUP_LABEL)
         programLabelControl = self.getControl(self.C_POPUP_PROGRAM_LABEL)
+        programImageControl = self.getControl(self.C_POPUP_PROGRAM_IMAGE)
         playControl = self.getControl(self.C_POPUP_PLAY)
         remindControl = self.getControl(self.C_POPUP_REMIND)
         channelLogoControl = self.getControl(self.C_POPUP_CHANNEL_LOGO)
@@ -1063,7 +1065,17 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             channelLogoControl.setVisible(False)
 
         programTitleControl.setLabel(self.program.title)
-        programLabelControl.setLabel(self.program.title)
+        label = ""
+        try:
+            season = self.program.season
+            episode = self.program.episode
+            if season and episode:
+                label = " - S%sE%s" % (season,episode)
+        except:
+            pass
+        programLabelControl.setLabel(self.program.title+label)
+        #xbmc.log(self.program.imageSmall)
+        programImageControl.setImage(self.program.imageSmall)
         labelControl.setLabel(self.program.description)
 
         if self.program.startDate:
