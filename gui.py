@@ -508,6 +508,8 @@ class TVGuide(xbmcgui.WindowXML):
         if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
             xbmc.log(program.imageSmall)
             self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
+        else:
+            self.setControlImage(self.C_MAIN_BACKGROUND, "")
 
         if not self.osdEnabled and self.player.isPlaying():
             self.player.stop()
@@ -981,7 +983,7 @@ class TVGuide(xbmcgui.WindowXML):
     def setControlText(self, controlId, text):
         control = self.getControl(controlId)
         if control:
-            control.setText(text)
+            control.setLabel(text)
 
     def updateTimebar(self, scheduleTimer=True):
         # move timebar to current time
