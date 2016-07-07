@@ -35,7 +35,7 @@
             <animation type="Conditional" condition="Control.IsVisible(5000)">
                 <effect type="fade" start="100" end="0" time="500" />
             </animation>
-            <visible>false</visible>
+            <visible>true</visible>
         </control>
         <control type="image">
             <posx>0</posx>

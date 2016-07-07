@@ -505,8 +505,9 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             self.setControlImage(self.C_MAIN_IMAGE, 'tvguide-logo-epg.png')
 
-        if ADDON.getSetting('program.background.enabled') == 'true' and program.imageLarge is not None:
-            self.setControlImage(self.C_MAIN_BACKGROUND, program.imageLarge)
+        if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
+            xbmc.log(program.imageSmall)
+            self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
 
         if not self.osdEnabled and self.player.isPlaying():
             self.player.stop()

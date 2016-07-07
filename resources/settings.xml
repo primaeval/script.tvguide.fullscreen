@@ -13,7 +13,7 @@
 	
 	<category label="30148">
 		<setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="Default" />
-		
+		<setting id="program.background.enabled" label="Background Program Image" type="bool" default="true" />
 		<setting id="logos.enabled" label="30117" type="bool" default="true" />
         <setting id="logos.source" label="30146" type="enum" default="0" lvalues="30143|30147" visible="eq(-1,true)" />
         <setting id="logos.folder" label="30116" type="folder" visible="eq(-2,true) + eq(-1,1)" />
