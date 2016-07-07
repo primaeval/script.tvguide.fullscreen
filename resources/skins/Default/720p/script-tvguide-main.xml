@@ -38,7 +38,7 @@
             <animation type="Conditional" condition="Control.IsVisible(5000)">
                 <effect type="fade" start="100" end="0" time="500" />
             </animation>
-            <visible>true</visible>
+            
         </control>
         <control type="image">
             <posx>0</posx>
@@ -77,7 +77,7 @@
                 <posy>0</posy>
                 <width>-1000%</width>
                 <height>640</height>
-                <visible>false</visible>
+                <visible>true</visible>
                 <texture>tvguide-timebar.png</texture>
             </control>
 
