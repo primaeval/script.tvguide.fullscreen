@@ -25,20 +25,20 @@
             <texture>menu.png</texture>
         </control>
 		
-		<control type="label">
+		<control type="label" id="7001">
             <description>Help and Tips</description>
             <posx>423</posx>
             <posy>120</posy>
-            <width>180</width>
+            <width>710</width>
             <height>50</height>
             <textcolor>ffffffff</textcolor>
             <font>font13</font>
 			<align>left</align>
             <aligny>top</aligny>
-			<label>HELP &amp; TIPS</label>
+			<label></label>
         </control>
 		
-		<control type="label">
+		<control type="label" id="7000">
             <description>Help and Tips</description>
             <posx>423</posx>
             <posy>150</posy>
@@ -46,17 +46,11 @@
             <height>400</height>
             <textcolor>ffffffff</textcolor>
             <font>font13</font>
-			<align>justify</align>
+			<align>left</align>
             <aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
 			<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
-			<label>Supported Plugins
-The following Kodi plugins are currently supported by FTV Guide: F.T.V., TVCatchup, USTVNow (Lunatixz 9.9.9), Irish TV, SkyGo Launcher (V2), MX NCAA, MX BBC Player, MX RTE Player.
-
-Channel Hiding &amp; Moving
-While in this menu, if you choose 'Channels' to the left, you will be presented with a list of all the channels in your source XMLTV. Clicking on one with toggle it on or off. Pressing left, however, will slot the channel out of its place and you can then move it up or down your list. This is an easy way to get your guide just how you want it. Be warned, though, changing to another source in the main settings will force you to lose any channel settings you may have made.
-
-For any more help please visit TVAddons.ag</label>
+			<label></label>
         </control>
 			
         <control type="image" id="4100">
