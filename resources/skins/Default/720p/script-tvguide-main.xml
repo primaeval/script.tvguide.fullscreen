@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
-	<allowoverlay>no</allowoverlay>
-	<coordinates>
-		<system>1</system>
-		<posx>0</posx>
-		<posy>0</posy>
-	</coordinates>
-	<controls>
+    <allowoverlay>no</allowoverlay>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+    <controls>
         <control type="image">
             <description>workaround for texture not being loaded</description>
             <posx>-10000</posx>
@@ -25,18 +25,18 @@
         </control>
 
         <!-- Background -->
-		<control type="image" id="4600">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
+        <control type="image" id="4600">
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
             <texture>tvguide-background-default.jpg</texture>
             <fadetime>500</fadetime>
             <animation type="Conditional" condition="Control.IsVisible(5000)">
                 <effect type="fade" start="100" end="0" time="500" />
             </animation>
             <visible>false</visible>
-		</control>
+        </control>
         <control type="image">
             <posx>0</posx>
             <posy>0</posy>
@@ -68,8 +68,8 @@
                 <height>640</height>
                 <visible>false</visible>
             </control>
-			
-			<control type="image" id="4100">
+
+            <control type="image" id="4100">
                 <posx>180</posx>
                 <posy>0</posy>
                 <width>-1000%</width>
@@ -77,46 +77,46 @@
                 <texture>background-cover.png</texture>
             </control>
 
-			<control type="image">
-				<description>workaround for texture not being loaded</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>180</width>
-				<height>640</height>
-				<visible>true</visible>
-				<texture>background-cover2.png</texture>
-			</control>
-			
-			<control type="image">
-				<description>workaround for texture not being loaded</description>
-				<posx>177</posx>
-				<posy>60</posy>
-				<width>3</width>
-				<height>400</height>
-				<visible>false</visible>
-				<texture>background-cover2.png</texture>
-			</control>
-			
-			<control type="image">
-				<description>workaround for texture not being loaded</description>
-				<posx>0</posx>
-				<posy>60</posy>
-				<width>5</width>
-				<height>400</height>
-				<visible>false</visible>
-				<texture>background-cover2.png</texture>
-			</control>
-			
-			<control type="image">
-				<description>workaround for texture not being loaded</description>
-				<posx>1280</posx>
-				<posy>60</posy>
-				<width>-23</width>
-				<height>450</height>
-				<visible>false</visible>
-				<texture>tvguide-background-right.png</texture>
-			</control>
-			
+            <control type="image">
+                <description>workaround for texture not being loaded</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>180</width>
+                <height>640</height>
+                <visible>true</visible>
+                <texture>background-cover2.png</texture>
+            </control>
+
+            <control type="image">
+                <description>workaround for texture not being loaded</description>
+                <posx>177</posx>
+                <posy>60</posy>
+                <width>3</width>
+                <height>400</height>
+                <visible>false</visible>
+                <texture>background-cover2.png</texture>
+            </control>
+
+            <control type="image">
+                <description>workaround for texture not being loaded</description>
+                <posx>0</posx>
+                <posy>60</posy>
+                <width>5</width>
+                <height>400</height>
+                <visible>false</visible>
+                <texture>background-cover2.png</texture>
+            </control>
+
+            <control type="image">
+                <description>workaround for texture not being loaded</description>
+                <posx>1280</posx>
+                <posy>60</posy>
+                <width>-23</width>
+                <height>450</height>
+                <visible>false</visible>
+                <texture>tvguide-background-right.png</texture>
+            </control>
+
 
 
             <!-- Date and time row -->
@@ -127,7 +127,7 @@
                 <height>40</height>
                 <visible>true</visible>
 
-                 <control type="image">
+                <control type="image">
                     <description>workaround for texture not being loaded</description>
                     <posx>0</posx>
                     <posy>0</posy>
@@ -136,7 +136,7 @@
                     <texture>tvguide-program-red.png</texture>
                     <visible>false</visible>
                 </control>
-			
+
 
                 <control type="label" id="4000">
                     <description>Displays todays date</description>
@@ -146,12 +146,12 @@
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
-					<align>right</align>
+                    <align>right</align>
 
-					<visible>false</visible>
+                    <visible>false</visible>
                 </control>
-				
-				<control type="label" id="3999">
+
+                <control type="label" id="3999">
                     <description>Displays todays date</description>
                     <posx>0r</posx>
                     <posy>-40</posy>
@@ -159,11 +159,11 @@
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
-					<align>right</align>
-                    
+                    <align>right</align>
+
                 </control>
-				
-				<control type="label">
+
+                <control type="label">
                     <description>Displays todays date</description>
                     <posx>0</posx>
                     <posy>0</posy>
@@ -171,12 +171,12 @@
                     <height>100</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
-					<align>right</align>
+                    <align>right</align>
                     <aligny>center</aligny>
-					<label>$INFO[System.Time(hh:mm:xx)]</label>
+                    <label>$INFO[System.Time(hh:mm:xx)]</label>
                 </control>
-				
-				<control type="label">
+
+                <control type="label">
                     <description>Displays todays date</description>
                     <posx>0</posx>
                     <posy>35</posy>
@@ -184,12 +184,12 @@
                     <height>100</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
-					<align>center</align>
+                    <align>center</align>
                     <aligny>center</aligny>
-					<label>CHANNELS</label>
+                    <label>CHANNELS</label>
                     <visible>false</visible>
                 </control>
-				
+
                 <control type="label" id="4001">
                     <description>1st half hour column</description>
                     <posx>180</posx>
@@ -252,7 +252,7 @@
                     <align>left</align>
                     <aligny>center</aligny>
                     <visible>StringCompare(Control.GetLabel(4110),)</visible>
-					<texturenofocus>tvguide-program-grey.png</texturenofocus>
+                    <texturenofocus>tvguide-program-grey.png</texturenofocus>
                 </control>
                 <control type="label" id="4011">
                     <description>2nd channel</description>
@@ -361,7 +361,7 @@
                     <align>left</align>
                     <aligny>center</aligny>
                     <visible>StringCompare(Control.GetLabel(4119),)</visible>
-					<texturenofocus>tvguide-program-grey.png</texturenofocus>
+                    <texturenofocus>tvguide-program-grey.png</texturenofocus>
                 </control>                
                 <control type="label" id="4020">
                     <description>11 channel</description>
@@ -374,7 +374,7 @@
                     <align>left</align>
                     <aligny>center</aligny>
                     <visible>StringCompare(Control.GetLabel(4120),)</visible>
-					<texturenofocus>tvguide-program-grey.png</texturenofocus>
+                    <texturenofocus>tvguide-program-grey.png</texturenofocus>
                 </control>
                 <control type="label" id="4021">
                     <description>12 channel</description>
@@ -582,7 +582,7 @@
                     <aspectratio>keep</aspectratio>
                     <visible>!StringCompare(Control.GetLabel(4125),)</visible>
                 </control>
-            
+
             </control>
 
             <control type="label" id="7020">
@@ -603,7 +603,8 @@
                 <height>40</height>
                 <aspectratio>keep</aspectratio>
                 <fadetime>500</fadetime>
-                <visible>false</visible><!-- unused in default skin -->
+                <visible>false</visible>
+                <!-- unused in default skin -->
             </control>
             <control type="label" id="7021">
                 <description>Program time</description>
@@ -624,7 +625,7 @@
                 <height>125</height>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
-				<align>justify</align>
+                <align>justify</align>
                 <wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
@@ -639,8 +640,8 @@
                 <texture>tvguide-logo-epg.png</texture>
             </control>
 
-            
-			
+
+
             <control type="label" id="4200">
                 <description>visibility marker for loading group</description>
             </control>
@@ -715,7 +716,7 @@
                 <height>40</height>
             </control>
             <control type="group">
-            <visible>true</visible>
+                <visible>true</visible>
                 <posx>0</posx>
                 <posy>-40</posy>
                 <width>1280</width>
@@ -852,7 +853,8 @@
 
             </control>
 
-        </control><!-- id="5000" -->
+        </control>
+        <!-- id="5000" -->
 
         <control type="videowindow">
             <posx>0</posx>
@@ -943,5 +945,5 @@
 
         </control>
 
-	</controls>
+    </controls>
 </window>
