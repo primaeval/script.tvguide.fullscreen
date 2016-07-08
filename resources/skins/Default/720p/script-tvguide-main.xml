@@ -33,6 +33,7 @@
             <!--<animation type="Conditional" condition="!Control.IsVisible(5000)">
                 <effect type="zoom" end="25" center="1250,690" time="500" />
             </animation>-->
+            <visible>true</visible>
         </control>        
         
         <control type="image" id="4600">
