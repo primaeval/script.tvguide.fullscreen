@@ -130,12 +130,6 @@
             <ondown>4001</ondown>
         </control>        
 
-        <control type="videowindow">
-            <posx>200</posx>
-            <posy>360</posy>
-            <width>300</width>
-            <height>165</height>
-        </control>
 
         <control type="group" id="1000">
             <posx>40</posx>
@@ -744,19 +738,19 @@
             </control>
 
             <control type="label" id="4003">
-                <posx>140</posx>
+                <posx>150</posx>
                 <posy>280</posy>
                 <width>230</width>
                 <height>40</height>
-                <label>[B]plugin.video.xxx[/B]</label>
+                <label>[B][/B]</label>
             </control>
             <control type="textbox" id="4004">
-                <posx>140</posx>
+                <posx>150</posx>
                 <posy>320</posy>
-                <width>230</width>
+                <width>212</width>
                 <height>120</height>
                 <label>description...</label>
-				<align>justify</align>
+				<align>left</align>
                 <wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
@@ -878,5 +872,12 @@
 
         </control>
 
+        <control type="videowindow">
+            <posx>180</posx>
+            <posy>350</posy>
+            <width>360</width>
+            <height>180</height>
+        </control>
+        
     </controls>
 </window>

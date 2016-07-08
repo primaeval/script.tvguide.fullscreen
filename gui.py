@@ -1411,10 +1411,11 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:
             self.close()
 
-        elif controlId in [self.C_STREAM_ADDONS_PREVIEW, self.C_STREAM_FAVOURITES_PREVIEW, self.C_STREAM_STRM_PREVIEW]:
+        elif controlId in [self.C_STREAM_ADDONS_PREVIEW, self.C_STREAM_BROWSE_PREVIEW, self.C_STREAM_FAVOURITES_PREVIEW, self.C_STREAM_STRM_PREVIEW]:
             if self.player.isPlaying():
                 self.player.stop()
                 self.getControl(self.C_STREAM_ADDONS_PREVIEW).setLabel(strings(PREVIEW_STREAM))
+                self.getControl(self.C_STREAM_BROWSE_PREVIEW).setLabel(strings(PREVIEW_STREAM))
                 self.getControl(self.C_STREAM_FAVOURITES_PREVIEW).setLabel(strings(PREVIEW_STREAM))
                 self.getControl(self.C_STREAM_STRM_PREVIEW).setLabel(strings(PREVIEW_STREAM))
                 return
@@ -1423,6 +1424,11 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             visible = self.getControl(self.C_STREAM_VISIBILITY_MARKER).getLabel()
             if visible == self.VISIBLE_ADDONS:
                 listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
+                item = listControl.getSelectedItem()
+                if item:
+                    stream = item.getProperty('stream')
+            elif visible == self.VISIBLE_BROWSE:
+                listControl = self.getControl(self.C_STREAM_BROWSE_STREAMS)
                 item = listControl.getSelectedItem()
                 if item:
                     stream = item.getProperty('stream')
@@ -1438,6 +1444,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 self.player.play(item=stream, windowed=True)
                 if self.player.isPlaying():
                     self.getControl(self.C_STREAM_ADDONS_PREVIEW).setLabel(strings(STOP_PREVIEW))
+                    self.getControl(self.C_STREAM_BROWSE_PREVIEW).setLabel(strings(STOP_PREVIEW))
                     self.getControl(self.C_STREAM_FAVOURITES_PREVIEW).setLabel(strings(STOP_PREVIEW))
                     self.getControl(self.C_STREAM_STRM_PREVIEW).setLabel(strings(STOP_PREVIEW))
 
