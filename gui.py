@@ -1357,14 +1357,14 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 self.getControl(self.C_STREAM_STRM_FILE_LABEL).setText(stream)
                 self.strmFile = stream
 
-        elif controlId == self.C_STREAM_ADDONS_OK or controlId == self.C_STREAM_ADDONS_STREAMS:
+        elif controlId == self.C_STREAM_ADDONS_OK:
             listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
             item = listControl.getSelectedItem()
             if item:
                 stream = item.getProperty('stream')
                 self.database.setCustomStreamUrl(self.channel, stream)
             self.close()
-        elif controlId == self.C_STREAM_BROWSE_OK or controlId == self.C_STREAM_BROWSE_STREAMS:
+        elif controlId == self.C_STREAM_BROWSE_OK:
             listControl = self.getControl(self.C_STREAM_BROWSE_STREAMS)
             item = listControl.getSelectedItem()
             if item:
