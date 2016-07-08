@@ -33,7 +33,7 @@
             <textcolor>ffffffff</textcolor>
             <font>font13</font>
             <align>center</align>
-            <label>[B]$ADDON[script.ftvguide 30700][/B]</label>
+            <label>[B]$ADDON[script.tvguide.fullscreen 30700][/B]</label>
             <wrapmultiline>true</wrapmultiline>
         </control>
 

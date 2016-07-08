@@ -31,15 +31,15 @@ import xbmcaddon
 class StreamsService(object):
     def __init__(self, addon):
         if int(addon.getSetting('addons.ini.type')) == 0:
-            path = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.ftvguide', 'addons.ini'))
-            xbmc.log('[script.ftvguide] FTV addons.ini is used', xbmc.LOGDEBUG)
+            path = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen', 'addons.ini'))
+            xbmc.log('[script.tvguide.fullscreen] FTV addons.ini is used', xbmc.LOGDEBUG)
         else:
             customFile = str(addon.getSetting('addons.ini.file'))
             if os.path.exists(customFile):
                 path = customFile
             else:
-                path = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.ftvguide', customFile.split('/')[-1]))
-            xbmc.log('[script.ftvguide] Custom addons.ini is used: %s' % path, xbmc.LOGDEBUG)
+                path = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen', customFile.split('/')[-1]))
+            xbmc.log('[script.tvguide.fullscreen] Custom addons.ini is used: %s' % path, xbmc.LOGDEBUG)
 
         self.addonsParser = ConfigParser.ConfigParser(dict_type=OrderedDict)
         self.addonsParser.optionxform = lambda option: option

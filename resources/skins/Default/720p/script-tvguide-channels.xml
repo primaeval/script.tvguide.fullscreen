@@ -89,7 +89,7 @@
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
 				<visible>false</visible>
-                <label>$ADDON[script.ftvguide 30501]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30501]</label>
             </control>
         </control>
 
@@ -102,7 +102,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30500]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30500]</label>
         </control>
 		<control type="label">
             <description>Help and Tips</description>
@@ -116,7 +116,7 @@
             <aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
 			<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
-			<label>$ADDON[script.ftvguide 30501]</label>
+			<label>$ADDON[script.tvguide.fullscreen 30501]</label>
         </control>
         <control type="fixedlist" id="6000">
             <posx>600</posx>
@@ -198,7 +198,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30502]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30502]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onleft>6000</onleft>
@@ -214,7 +214,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30503]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30503]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onleft>6003</onleft>

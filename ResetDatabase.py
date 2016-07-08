@@ -28,8 +28,8 @@ import xbmcaddon
 
 def deleteDB():
     try:
-        xbmc.log("[script.ftvguide] Deleting database...", xbmc.LOGDEBUG)
-        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.ftvguide').getAddonInfo('profile'))
+        xbmc.log("[script.tvguide.fullscreen] Deleting database...", xbmc.LOGDEBUG)
+        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getAddonInfo('profile'))
         dbPath = os.path.join(dbPath, 'source.db')
 
         delete_file(dbPath)
@@ -37,14 +37,14 @@ def deleteDB():
         passed = not os.path.exists(dbPath)
 
         if passed:
-            xbmc.log("[script.ftvguide] Deleting database...PASSED", xbmc.LOGDEBUG)
+            xbmc.log("[script.tvguide.fullscreen] Deleting database...PASSED", xbmc.LOGDEBUG)
         else:
-            xbmc.log("[script.ftvguide] Deleting database...FAILED", xbmc.LOGDEBUG)
+            xbmc.log("[script.tvguide.fullscreen] Deleting database...FAILED", xbmc.LOGDEBUG)
 
         return passed
 
     except Exception, e:
-        xbmc.log('[script.ftvguide] Deleting database...EXCEPTION', xbmc.LOGDEBUG)
+        xbmc.log('[script.tvguide.fullscreen] Deleting database...EXCEPTION', xbmc.LOGDEBUG)
         return False
 
 def delete_file(filename):

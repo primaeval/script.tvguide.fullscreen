@@ -112,7 +112,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30304]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30304]</label>
         </control>
         <control type="label"><!-- Choose Stream Text -->
             <posx>20</posx>
@@ -121,7 +121,7 @@
             <height>200</height>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30305]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30305]</label>
             <wrapmultiline>true</wrapmultiline>
 			<visible>false</visible>
         </control>
@@ -164,7 +164,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30307]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
 
         <control type="button" id="4005"><!-- watch from beginning -->
@@ -196,7 +196,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-			<label>$ADDON[script.ftvguide 80000]</label>
+			<label>$ADDON[script.tvguide.fullscreen 80000]</label>
         </control>
 
         <control type="button" id="80001"><!-- MY TV SHOWS -->
@@ -212,7 +212,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-			<label>$ADDON[script.ftvguide 80001]</label>
+			<label>$ADDON[script.tvguide.fullscreen 80001]</label>
         </control>
 		
 		<control type="button" id="80002"><!-- VIDEO ADDONS -->
@@ -228,7 +228,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-			<label>$ADDON[script.ftvguide 80002]</label>
+			<label>$ADDON[script.tvguide.fullscreen 80002]</label>
         </control>
 
         <control type="button" id="4004"><!-- QUIT -->
@@ -244,7 +244,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30308]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30308]</label>
 			<visible>false</visible>
         </control>
 		

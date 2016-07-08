@@ -60,7 +60,7 @@
             <posy>105</posy>
             <width>174</width>
             <height>40</height>
-            <label>$ADDON[script.ftvguide 30600]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30600]</label>
             <align>center</align>
         </control>
 
@@ -73,7 +73,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30601]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30601]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onleft>103</onleft>
@@ -89,7 +89,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30602]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30602]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onleft>101</onleft>
@@ -105,7 +105,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.ftvguide 30603]</label>
+            <label>$ADDON[script.tvguide.fullscreen 30603]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onleft>102</onleft>
@@ -133,7 +133,7 @@
                 <width>560</width>
                 <height>80</height>
 				<align>justify</align>
-                <label>$ADDON[script.ftvguide 30611]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30611]</label>
                 <wrapmultiline>true</wrapmultiline>
             </control>
 
@@ -142,7 +142,7 @@
                 <posy>160</posy>
                 <width>173</width>
                 <height>40</height>
-                <label>$ADDON[script.ftvguide 30610]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30610]</label>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
@@ -172,7 +172,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30604]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
@@ -188,7 +188,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30605]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
@@ -204,7 +204,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30606]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
@@ -226,7 +226,7 @@
                 <width>350</width>
                 <height>80</height>
 				<align>justify</align>
-                <label>$ADDON[script.ftvguide 30620]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30620]</label>
                 <wrapmultiline>true</wrapmultiline>
             </control>
 
@@ -306,7 +306,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30604]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>102</onup>
@@ -322,7 +322,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30605]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>102</onup>
@@ -338,7 +338,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30606]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>102</onup>
@@ -520,7 +520,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30604]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>103</onup>
@@ -536,7 +536,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30605]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>103</onup>
@@ -552,7 +552,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>ffffffff</textcolor>
-                <label>$ADDON[script.ftvguide 30606]</label>
+                <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>103</onup>

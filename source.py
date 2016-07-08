@@ -213,15 +213,15 @@ class Database(object):
 
             except sqlite3.OperationalError:
                 if cancel_requested_callback is None:
-                    xbmc.log('[script.ftvguide] Database is locked, bailing out...', xbmc.LOGDEBUG)
+                    xbmc.log('[script.tvguide.fullscreen] Database is locked, bailing out...', xbmc.LOGDEBUG)
                     break
                 else:  # ignore 'database is locked'
-                    xbmc.log('[script.ftvguide] Database is locked, retrying...', xbmc.LOGDEBUG)
+                    xbmc.log('[script.tvguide.fullscreen] Database is locked, retrying...', xbmc.LOGDEBUG)
 
             except sqlite3.DatabaseError:
                 self.conn = None
                 if self.alreadyTriedUnlinking:
-                    xbmc.log('[script.ftvguide] Database is broken and unlink() failed', xbmc.LOGDEBUG)
+                    xbmc.log('[script.tvguide.fullscreen] Database is broken and unlink() failed', xbmc.LOGDEBUG)
                     break
                 else:
                     try:
@@ -340,7 +340,7 @@ class Database(object):
         dateStr = date.strftime('%Y-%m-%d')
         c = self.conn.cursor()
         try:
-            xbmc.log('[script.ftvguide] Updating caches...', xbmc.LOGDEBUG)
+            xbmc.log('[script.tvguide.fullscreen] Updating caches...', xbmc.LOGDEBUG)
             if progress_callback:
                 progress_callback(0)
 
@@ -841,7 +841,7 @@ class Source(object):
 
 
 class XMLTVSource(Source):
-    PLUGIN_DATA = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.ftvguide'))
+    PLUGIN_DATA = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen'))
     KEY = 'xmltv'
     INI_TYPE_FTV = 0
     INI_TYPE_CUSTOM = 1
@@ -872,11 +872,11 @@ class XMLTVSource(Source):
             customFile = str(addon.getSetting('xmltv.file'))
             if os.path.exists(customFile):
                 # uses local file provided by user!
-                xbmc.log('[script.ftvguide] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
                 self.xmltvFile = customFile
             else:
                 # Probably a remote file
-                xbmc.log('[script.ftvguide] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
                 self.updateLocalFile(customFile, addon)
                 self.xmltvFile = os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
         else:
@@ -889,10 +889,10 @@ class XMLTVSource(Source):
             customFile = str(addon.getSetting('addons.ini.file'))
             if os.path.exists(customFile):
                 # uses local file provided by user!
-                xbmc.log('[script.ftvguide] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
             else:
                 # Probably a remote file
-                xbmc.log('[script.ftvguide] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
                 self.updateLocalFile(customFile, addon, True)
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
@@ -949,7 +949,7 @@ class XMLTVSource(Source):
             try:
                 t_tmp = datetime.datetime.strptime(dateString, '%Y%m%d%H%M%S')
             except TypeError:
-                xbmc.log('[script.ftvguide] strptime error with this date: %s' % dateString, xbmc.LOGDEBUG)
+                xbmc.log('[script.tvguide.fullscreen] strptime error with this date: %s' % dateString, xbmc.LOGDEBUG)
                 t_tmp = datetime.datetime.fromtimestamp(time.mktime(time.strptime(dateString, '%Y%m%d%H%M%S')))
             if offSign == '+':
                 t = t_tmp - td

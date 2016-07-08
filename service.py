@@ -49,13 +49,13 @@ class Service(object):
 
 if __name__ == '__main__':
     try:
-        ADDON = xbmcaddon.Addon('script.ftvguide')
+        ADDON = xbmcaddon.Addon('script.tvguide.fullscreen')
         if ADDON.getSetting('autostart') == "true":
-            xbmc.executebuiltin("RunAddon(script.ftvguide)")
+            xbmc.executebuiltin("RunAddon(script.tvguide.fullscreen)")
         
         if ADDON.getSetting('background.service') == 'true':
             monitor = xbmc.Monitor()
-            xbmc.log("[script.ftvguide] Background service started...", xbmc.LOGDEBUG)
+            xbmc.log("[script.tvguide.fullscreen] Background service started...", xbmc.LOGDEBUG)
             Service()
             interval = int(ADDON.getSetting('service.interval'))
             waitTime = 21600  # Default 6hrs
@@ -69,14 +69,14 @@ if __name__ == '__main__':
                 waitTime = 86400  # 24hrs
             while not monitor.abortRequested():
                 # Sleep/wait for specified time
-                xbmc.log("[script.ftvguide] Service waiting for interval %s" % waitTime, xbmc.LOGDEBUG)
+                xbmc.log("[script.tvguide.fullscreen] Service waiting for interval %s" % waitTime, xbmc.LOGDEBUG)
                 if monitor.waitForAbort(waitTime):
                     # Abort was requested while waiting. We should exit
                     break
-                xbmc.log("[script.ftvguide] Service now triggered...", xbmc.LOGDEBUG)
+                xbmc.log("[script.tvguide.fullscreen] Service now triggered...", xbmc.LOGDEBUG)
                 Service()
                 
     except source.SourceNotConfiguredException:
         pass  # ignore
     except Exception, ex:
-        xbmc.log('[script.ftvguide] Uncaught exception in service.py: %s' % str(ex), xbmc.LOGDEBUG)
+        xbmc.log('[script.tvguide.fullscreen] Uncaught exception in service.py: %s' % str(ex), xbmc.LOGDEBUG)

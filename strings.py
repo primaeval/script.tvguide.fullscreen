@@ -23,7 +23,7 @@
 #
 import xbmcaddon
 
-ADDON = xbmcaddon.Addon(id = 'script.ftvguide')
+ADDON = xbmcaddon.Addon(id = 'script.tvguide.fullscreen')
 
 NO_DESCRIPTION = 30000
 CALCULATING_REMAINING_TIME = 30002
