@@ -595,7 +595,7 @@
 			
 			<control type="image">
                 <posx>190</posx>
-                <posy>230</posy>
+                <posy>280</posy>
                 <width>40</width>
                 <height>-12</height>
                 <texture>tvguide-channel-arrow.png</texture>
@@ -604,8 +604,8 @@
             <control type="list" id="4001">
                 <posx>140</posx>
                 <posy>65</posy>
-                <width>150</width>
-                <height>150</height>
+                <width>212</width>
+                <height>212</height>
 				<aspectratio>keep</aspectratio>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
@@ -628,8 +628,18 @@
                         <height>130</height>
                         <info>ListItem.Icon</info>
                     </control>
+                    <control type="label">
+                        <posx>10</posx>
+                        <posy>150</posy>
+                        <width>212</width>
+                        <height>40</height>
+                        <aligny>center</aligny>
+                        <font>font13</font>
+                        <textcolor>ffffffff</textcolor>
+                        <info>ListItem.Label</info>
+                    </control>                    
                 </itemlayout>
-                <focusedlayout width="150" height="150">
+                <focusedlayout width="212" height="212">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
@@ -653,11 +663,21 @@
                         <height>130</height>
                         <info>ListItem.Icon</info>
                     </control>
+                    <control type="label">
+                        <posx>10</posx>
+                        <posy>150</posy>
+                        <width>212</width>
+                        <height>40</height>
+                        <aligny>center</aligny>
+                        <font>font13</font>
+                        <textcolor>ffffffff</textcolor>
+                        <info>ListItem.Label</info>
+                    </control>                    
                 </focusedlayout>
             </control>
             
             <control type="list" id="4008">
-                <posx>350</posx>
+                <posx>400</posx>
                 <posy>50</posy>
                 <width>300</width>
                 <height>354</height>
@@ -742,9 +762,9 @@
             </control>
 
             <control type="list" id="4002">
-                <posx>550</posx>
+                <posx>750</posx>
                 <posy>50</posy>
-                <width>500</width>
+                <width>300</width>
                 <height>354</height>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
@@ -752,18 +772,18 @@
                 <onleft>3001</onleft>
                 <onright>3005</onright>
 
-                <itemlayout width="560" height="40">
+                <itemlayout width="300" height="40">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
-                        <width>560</width>
+                        <width>300</width>
                         <height>38</height>
                         <texture>menu-grey.png</texture>
                     </control>
                     <control type="label">
                         <posx>16</posx>
                         <posy>0</posy>
-                        <width>560</width>
+                        <width>300</width>
                         <height>38</height>
                         <aligny>center</aligny>
                         <font>font13</font>
@@ -771,11 +791,11 @@
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="560" height="40">
+                <focusedlayout width="300" height="40">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
-                        <width>560</width>
+                        <width>300</width>
                         <height>38</height>
                         <texture>menu-grey.png</texture>
                         <visible>!Control.HasFocus(3002)</visible>
@@ -783,7 +803,7 @@
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
-                        <width>560</width>
+                        <width>300</width>
                         <height>38</height>
                         <texture>menu-grey-focus.png</texture>
                         <visible>Control.HasFocus(3002)</visible>
@@ -791,7 +811,7 @@
                     <control type="label">
                         <posx>16</posx>
                         <posy>0</posy>
-                        <width>560</width>
+                        <width>300</width>
                         <height>38</height>
                         <aligny>center</aligny>
                         <font>font13</font>
@@ -799,7 +819,7 @@
                         <info>ListItem.Label</info>
                     </control>
                     <control type="image">
-                        <posx>465</posx>
+                        <posx>20r</posx>
                         <posy>9</posy>
                         <width>20</width>
                         <height>20</height>
