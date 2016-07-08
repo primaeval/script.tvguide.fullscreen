@@ -1335,6 +1335,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         response = RPC.addons.get_addons(type="xbmc.addon.video",properties=["name", "thumbnail"])
         addons = response["addons"]
         items = list()
+        addons = sorted(addons, key=lambda addon: addon['name'])
         for addon in addons:
             try:
                 #addon = xbmcaddon.Addon(id) # raises Exception if addon is not installed
@@ -1343,14 +1344,15 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 items.append(item)
             except Exception:
                 pass
+        #sorted_items = sorted(items, key=lambda item: item['label'])
         listControl = self.getControl(StreamSetupDialog.C_STREAM_BROWSE_ADDONS)
         listControl.addItems(items)
-        self.updateDirsInfo()
+        #self.updateDirsInfo()
 
 
 
     def onAction(self, action):
-        xbmc.log("onAction %s" % action.getId())
+        #xbmc.log("onAction %s" % action.getId())
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU]:
             self.close()
             return
@@ -1364,7 +1366,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         #    self.updateBrowseInfo()
 
     def onClick(self, controlId):
-        xbmc.log("onClick %s" % controlId)
+        #xbmc.log("onClick %s" % controlId)
         if controlId == self.C_STREAM_BROWSE_ADDONS:
             self.updateDirsInfo()
         elif controlId == self.C_STREAM_BROWSE_DIRS:
@@ -1440,7 +1442,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     self.getControl(self.C_STREAM_STRM_PREVIEW).setLabel(strings(STOP_PREVIEW))
 
     def onFocus(self, controlId):
-        xbmc.log("onFocus %s" % controlId)
+        #xbmc.log("onFocus %s" % controlId)
         if controlId == self.C_STREAM_STRM_TAB:
             self.getControl(self.C_STREAM_VISIBILITY_MARKER).setLabel(self.VISIBLE_STRM)
         elif controlId == self.C_STREAM_FAVOURITES_TAB:
@@ -1501,7 +1503,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             return
         path = "plugin://%s" % id
         self.previousDirsId = path
-        xbmc.log(path)
+        #xbmc.log(path)
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
         dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
@@ -1512,7 +1514,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         item = xbmcgui.ListItem('[B]%s[/B]' % addon.getAddonInfo('name'))
         item.setProperty('stream', path)
         items.append(item)
-        for label in dirs:
+        for label in sorted(dirs):
             stream = dirs[label]
             if item.getProperty('addon_id') == "plugin.video.meta":
                 label = self.channel.title
@@ -1535,7 +1537,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
 
     def updateBrowseInfo(self):
-        xbmc.log("XXX")
+        #xbmc.log("XXX")
         listControl = self.getControl(self.C_STREAM_BROWSE_DIRS)
         item = listControl.getSelectedItem()
         if item is None:
@@ -1546,7 +1548,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         #if item.getProperty('stream') == self.previousDirsId:
         #    return
         previousDirsId = self.previousDirsId
-        xbmc.log("prev %s" % previousDirsId)
+        #xbmc.log("prev %s" % previousDirsId)
         self.previousDirsId = item.getProperty('stream')
         #xbmc.log('ZZZ')
         #try:
@@ -1561,7 +1563,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         #    return
         #path = "plugin://%s" % id
         path = self.previousDirsId
-        xbmc.log(path)
+        #xbmc.log(path)
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
         dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
@@ -1573,7 +1575,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         item.setProperty('stream', previousDirsId)
         items.append(item)
 
-        for label in dirs:
+        for label in sorted(dirs):
             stream = dirs[label]
             #if item.getProperty('addon_id') == "plugin.video.meta":
             #    label = self.channel.title
@@ -1588,7 +1590,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
         items = list()
 
-        for label in links:
+        for label in sorted(links):
             stream = links[label]
             #if item.getProperty('addon_id') == "plugin.video.meta":
             #    label = self.channel.title
