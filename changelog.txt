@@ -1,2 +1,5 @@
+version 0.0.2
+- addon browser (click to load)
+
 version 0.0.1
 - let's go
