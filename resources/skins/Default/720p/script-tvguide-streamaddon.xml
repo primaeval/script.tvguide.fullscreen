@@ -38,9 +38,9 @@
         </control>
 
         <control type="fixedlist" id="1000">
-            <posx>330</posx>
+            <posx>250</posx>
             <posy>200</posy>
-            <width>600</width>
+            <width>800</width>
             <height>180</height>
             <viewtype label="list">list</viewtype>
             <orientation>horizontal</orientation>
@@ -62,8 +62,8 @@
                     <info>ListItem.Icon</info>
                 </control>
                 <control type="label">
-                    <posx>100</posx>
-                    <posy>140</posy>
+                    <posx>0</posx>
+                    <posy>150</posy>
                     <width>200</width>
                     <height>40</height>
                     <align>center</align>
@@ -89,8 +89,8 @@
                     <info>ListItem.Icon</info>
                 </control>
                 <control type="label">
-                    <posx>100</posx>
-                    <posy>140</posy>
+                    <posx>0</posx>
+                    <posy>150</posy>
                     <width>180</width>
                     <height>40</height>
                     <align>center</align>
