@@ -1046,7 +1046,8 @@ class XMLTVSource(Source):
                             for l in sorted(logos):
                                 logox = re.sub(r' ','',l.lower())
                                 t = re.sub(r' ','',title.lower())
-                                titleRe = r"^%s" % t
+                                t = re.sub(r'\+','\\+',t)
+                                titleRe = "^%s" % t
                                 if re.match(titleRe,logox):
                                     logo = os.path.join(logoFolder, l + '.png')
                                     break
