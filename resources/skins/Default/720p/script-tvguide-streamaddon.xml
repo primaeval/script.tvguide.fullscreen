@@ -38,13 +38,13 @@
         </control>
 
         <control type="fixedlist" id="1000">
-            <posx>250</posx>
+            <posx>175</posx>
             <posy>200</posy>
-            <width>800</width>
+            <width>950</width>
             <height>180</height>
             <viewtype label="list">list</viewtype>
             <orientation>horizontal</orientation>
-            <focusposition>1</focusposition>
+            <focusposition>2</focusposition>
 
             <itemlayout width="200" height="200">
                 <control type="image">
@@ -53,6 +53,7 @@
                     <width>200</width>
                     <height>20180</height>
                     <texture>tvguide-program-grey.png</texture>
+                    <visible>false</visible>
                 </control>
                 <control type="image">
                     <posx>31</posx>
