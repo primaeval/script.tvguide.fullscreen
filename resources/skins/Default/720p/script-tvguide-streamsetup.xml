@@ -746,9 +746,9 @@
             </control>
             <control type="textbox" id="4004">
                 <posx>150</posx>
-                <posy>320</posy>
-                <width>212</width>
-                <height>120</height>
+                <posy>310</posy>
+                <width>250</width>
+                <height>100</height>
                 <label>description...</label>
 				<align>left</align>
                 <wrapmultiline>true</wrapmultiline>
