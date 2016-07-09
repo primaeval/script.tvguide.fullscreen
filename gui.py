@@ -1599,6 +1599,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         for i in range(0,listControl.size()):
             listItem = listControl.getListItem(i)
             name = listItem.getLabel()
+            name = re.sub(r'\[.*?\]','',name)
             stream = listItem.getProperty('stream')
             if stream:
                 streams[addonId][name] = stream
