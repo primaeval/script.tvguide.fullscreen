@@ -2,13 +2,13 @@
 <settings>
 	<category label="30101">
 		<setting id="xmltv.type_select" label="30123" type="action" action="RunScript($CWD/guideTypes.py)"/>
-        <setting id="xmltv.type" type="number" enable="false" visible="false"/>
+        <setting id="xmltv.type" type="number" enable="false" visible="false" default="6" />
         <setting id="xmltv.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
         <setting id="xmltv.file" label="30103" type="file" visible="eq(-2,6)" />
         <setting id="xmltv.refresh" label="30149" type="bool" default="false" visible="eq(-3,6)"/>
 
-        <setting id="addons.ini.type" label="30144" type="enum" default="0" lvalues="30143|30142"/>
-        <setting id="addons.ini.file" label="30145" type="file" visible="eq(-1,1)" />
+        <setting id="addons.ini.type" label="30144" type="enum" default="1" lvalues="30143|30142"/>
+        <setting id="addons.ini.file" label="30145" type="file" visible="eq(-1,1)" default='special://profile/addon_data/script.tvguide.fullscreen/addons.ini'/>
 	</category>
 	
 	<category label="30148">

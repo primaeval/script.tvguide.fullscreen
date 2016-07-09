@@ -23,9 +23,12 @@
 import datetime
 import threading
 import time
+import re
+import os
 
 import xbmc
 import xbmcgui
+import xbmcvfs
 
 import source as src
 from notification import Notification
@@ -1264,6 +1267,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_BROWSE_OK = 4006
     C_STREAM_BROWSE_CANCEL = 4007
     C_STREAM_BROWSE_DIRS = 4008
+    C_STREAM_BROWSE_FOLDER = 4009
 
     C_STREAM_VISIBILITY_MARKER = 100
 
@@ -1349,6 +1353,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             self.updateDirsInfo()
         elif controlId == self.C_STREAM_BROWSE_DIRS:
             self.updateBrowseInfo()
+        elif controlId == self.C_STREAM_BROWSE_FOLDER:
+            self.addBrowseFolder()            
 
         elif controlId == self.C_STREAM_STRM_BROWSE:
             stream = xbmcgui.Dialog().browse(1, ADDON.getLocalizedString(30304), 'video', '.strm')
@@ -1554,6 +1560,70 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl.reset()
         listControl.addItems(items)
 
+     
+    def addBrowseFolder(self):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
+        if int(ADDON.getSetting('addons.ini.type')) == 1:
+            customFile = str(ADDON.getSetting('addons.ini.file'))
+            if os.path.exists(customFile) and os.access(customFile,os.W_OK):
+                file_name = customFile
+        xbmc.log('[script.tvguide.fullscreen] exporting channels to' + customFile, xbmc.LOGDEBUG)
+    
+        f = xbmcvfs.File(file_name)
+        items = f.read().splitlines()
+        f.close()
+        streams = {}
+        addonId = 'nothing'
+        for item in items:
+            xbmc.log(item)
+            if item.startswith('['):
+                addonId = item.strip('[] \t')
+                streams[addonId] = {}
+            elif item.startswith('#'):
+                pass
+            else:
+                name_url = item.split('=',1)
+                if len(name_url) == 2:
+                    name = name_url[0]
+                    url = name_url[1]
+                    if url:
+                        streams[addonId][name] = url
+
+        listControl = self.getControl(self.C_STREAM_BROWSE_ADDONS)
+        listItem = listControl.getSelectedItem()
+        addonId=listItem.getProperty('addon_id')
+        if addonId not in streams:
+            streams[addonId] = {}
+   
+        listControl = self.getControl(StreamSetupDialog.C_STREAM_BROWSE_STREAMS)
+        for i in range(0,listControl.size()):
+            listItem = listControl.getListItem(i)
+            name = listItem.getLabel()
+            stream = listItem.getProperty('stream')
+            if stream:
+                streams[addonId][name] = stream
+
+        f = xbmcvfs.File(file_name,'w')
+        write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"
+        f.write(write_str.encode("utf8"))
+        for addonId in sorted(streams):
+            write_str = "[%s]\n" % (addonId)
+            f.write(write_str)
+            addonStreams = streams[addonId]
+            for name in sorted(addonStreams):
+                stream = addonStreams[name]
+                if name.startswith(' '):
+                    continue
+                name = re.sub(r'[:=]',' ',name)
+                if not stream:
+                    stream = 'nothing'
+                write_str = "%s=%s\n" % (name,stream)
+                f.write(write_str)
+        f.close()
+        xbmc.log('[script.tvguide.fullscreen] export succeeded', xbmc.LOGDEBUG)
+
+    
+        
 
 class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
     C_SELECTION_LIST = 1000

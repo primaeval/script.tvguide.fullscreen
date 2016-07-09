@@ -764,7 +764,7 @@
                 <orientation>vertical</orientation>
                 <focusposition>7</focusposition>
                 <onleft>4008</onleft>
-                <onright>4005</onright>
+                <onright>4009</onright>
 
                 <itemlayout width="300" height="40">
                     <control type="image">
@@ -822,10 +822,26 @@
                 </focusedlayout>
             </control>
 
-            <control type="button" id="4005">
-                <posx>518</posx>
+            <control type="button" id="4009">
+                <posx>390</posx>
                 <posy>430</posy>
-                <width>240</width>
+                <width>170</width>
+                <height>40</height>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>ffffffff</textcolor>
+                <label>Add Folder</label>
+                <texturefocus>menu-grey-focus.png</texturefocus>
+                <texturenofocus>menu-grey.png</texturenofocus>
+                <onup>104</onup>
+                <onleft>4002</onleft>
+                <onright>4005</onright>
+            </control>            
+            <control type="button" id="4005">
+                <posx>570</posx>
+                <posy>430</posy>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -835,11 +851,11 @@
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>104</onup>
-                <onleft>4002</onleft>
+                <onleft>4009</onleft>
                 <onright>4006</onright>
             </control>
             <control type="button" id="4006">
-                <posx>759</posx>
+                <posx>750</posx>
                 <posy>430</posy>
                 <width>170</width>
                 <height>40</height>
