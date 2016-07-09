@@ -20,6 +20,7 @@
             <width>-346</width>
             <height>-203</height>
             <texture>video-mask.png</texture>
+            <visible>false</visible>
         </control>
 		<control type="image">
             <posx>1280</posx>
@@ -27,6 +28,7 @@
             <width>-346</width>
             <height>-203</height>
             <texture>video-mask.png</texture>
+            <visible>false</visible>
         </control>
 		
 		<control type="image" id="4023">
@@ -38,6 +40,7 @@
             <aspectratio>keep</aspectratio>
             <fadetime>500</fadetime>
             <texture>tvguide-logo-epg.png</texture>
+            <visible>false</visible>
         </control>
 
         <control type="image">
@@ -46,13 +49,7 @@
             <width>1010</width>
             <height>510</height>
             <texture>menu-stream.png</texture>
-        </control>
-        <control type="image">
-            <posx>150</posx>
-            <posy>100</posy>
-            <width>1010</width>
-            <height>510</height>
-            <texture>menu-stream.png</texture>
+            <visible>true</visible>
         </control>
 
         <control type="label"><!-- Set Up Stream Text -->
