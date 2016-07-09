@@ -1,3 +1,6 @@
+version 0.0.5
+- fuzzy channel matching
+
 version 0.0.4
 - add addon folders to ini file 
 - (back out of dialog/app to reload)
