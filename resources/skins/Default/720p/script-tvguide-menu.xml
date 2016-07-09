@@ -25,18 +25,7 @@
             <texture>menu.png</texture>
         </control>
 		
-		<control type="label" id="7001">
-            <description>Help and Tips</description>
-            <posx>423</posx>
-            <posy>120</posy>
-            <width>710</width>
-            <height>50</height>
-            <textcolor>ffffffff</textcolor>
-            <font>font13</font>
-			<align>left</align>
-            <aligny>top</aligny>
-			<label></label>
-        </control>
+
 		<control type="image" id="7002">
             <description>Help and Tips</description>
             <posx>423</posx>
@@ -48,19 +37,31 @@
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
         </control>
+
+		<control type="label" id="7001">
+            <description>Help and Tips</description>
+            <posx>423</posx>
+            <posy>120</posy>
+            <width>710</width>
+            <height>50</height>
+            <textcolor>ffffffff</textcolor>
+            <font>font13</font>
+			<align>left</align>
+            <aligny>top</aligny>
+			<label></label>
+        </control>        
 		<control type="label" id="7000">
             <description>Help and Tips</description>
             <posx>423</posx>
             <posy>150</posy>
             <width>710</width>
-            <height>400</height>
+            <height>300</height>
             <textcolor>ffffffff</textcolor>
-            <shadowcolor>ff000000</shadowcolor>
+            <shadowcolor>black</shadowcolor>
             <font>font13</font>
 			<align>left</align>
             <aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
-			<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
 			<label></label>
             
         </control>
