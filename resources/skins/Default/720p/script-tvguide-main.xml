@@ -98,8 +98,8 @@
                 <posy>0</posy>
                 <width>180</width>
                 <height>640</height>
-                <visible>false</visible>
-                <texture>background-cover.png</texture>
+                <visible>true</visible>
+                <texture>tvguide-program-grey.png</texture>
             </control>
 
             <control type="image">

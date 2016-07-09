@@ -981,6 +981,10 @@ class XMLTVSource(Source):
         except Exception:
             pass  # ignore addons that are not installed
 
+        if self.logoSource != XMLTVSource.LOGO_SOURCE_FTV:
+            paths = os.listdir(xbmc.translatePath(logoFolder))
+            logos = [path[:-4] for path in paths if path.endswith(".png")]
+
         for event, elem in context:
             if event == "end":
                 result = None
@@ -1038,6 +1042,15 @@ class XMLTVSource(Source):
                             logo = logoFile.replace(' ', '%20')  # needed due to fetching from a server!
                         elif xbmcvfs.exists(logoFile):
                             logo = logoFile  # local file instead of remote!
+                        else:
+                            for l in sorted(logos):
+                                logox = re.sub(r' ','',l.lower())
+                                t = re.sub(r' ','',title.lower())
+                                titleRe = r"^%s" % t
+                                if re.match(titleRe,logox):
+                                    logo = os.path.join(logoFolder, l + '.png')
+                                    break
+
                     streamElement = elem.find("stream")
                     streamUrl = None
                     if streamElement is not None:
