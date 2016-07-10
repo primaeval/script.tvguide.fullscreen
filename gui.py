@@ -454,6 +454,12 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/tv/play_by_name_only/%s/%s)" % (
                         title, program.language))
+        elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
+            title = program.title.replace(" ", "%20").replace(",", "").replace(u"\u2013", "-")
+            title = unicode.encode(title, "ascii", "ignore")
+            str = "RunAddon(plugin.program.super.favourites,?mode=0&keyword=%s)"  % title
+            xbmc.executebuiltin(str)
+
 
     def setFocusId(self, controlId):
         control = self.getControl(controlId)
@@ -1008,6 +1014,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CHANNELS = 4003
     C_POPUP_QUIT = 4004
     C_POPUP_PLAY_BEGINNING = 4005
+    C_POPUP_SUPER_FAVOURITES = 4006
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
@@ -1043,6 +1050,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         channelTitleControl = self.getControl(self.C_POPUP_CHANNEL_TITLE)
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
+        programSuperFavourites = self.getControl(self.C_POPUP_SUPER_FAVOURITES)
 
         playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
         if not self.program.channel.isPlayable():

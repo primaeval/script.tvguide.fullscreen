@@ -24,7 +24,7 @@
             <height>510</height>
             <texture>menu.png</texture>
         </control>
-		
+
 
 		<control type="image" id="7002">
             <description>Help and Tips</description>
@@ -49,7 +49,7 @@
 			<align>left</align>
             <aligny>top</aligny>
 			<label></label>
-        </control>        
+        </control>
 		<control type="label" id="7000">
             <description>Help and Tips</description>
             <posx>423</posx>
@@ -63,12 +63,12 @@
             <aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
 			<label></label>
-            
+
         </control>
-			
+
         <control type="image" id="4100">
-            <posx>160</posx>
-            <posy>100</posy>
+            <posx>900</posx>
+            <posy>480</posy>
             <width>240</width>
             <height>80</height>
             <aspectratio>keep</aspectratio>
@@ -170,7 +170,7 @@
 
         <control type="button" id="4005"><!-- watch from beginning -->
             <posx>160</posx>
-            <posy>178</posy>
+            <posy>176</posy>
             <width>240</width>
             <height>50</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
@@ -181,9 +181,25 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>Watch from beginning</label>
+            <label>Meta Search</label>
         </control>
-		
+
+        <control type="button" id="4006"><!-- super favourites -->
+            <posx>160</posx>
+            <posy>124</posy>
+            <width>240</width>
+            <height>50</height>
+            <texturefocus>menu-grey-focus.png</texturefocus>
+            <texturenofocus>menu-grey.png</texturenofocus>
+            <onup>8002</onup>
+            <ondown>4000</ondown>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+            <label>Super Favourites</label>
+        </control>
+
         <control type="button" id="80000"><!-- MY MOVIES -->
             <posx>160</posx>
             <posy>436</posy>
@@ -215,7 +231,7 @@
             <textcolor>ffffffff</textcolor>
 			<label>$ADDON[script.tvguide.fullscreen 80001]</label>
         </control>
-		
+
 		<control type="button" id="80002"><!-- VIDEO ADDONS -->
             <posx>160</posx>
             <posy>540</posy>
@@ -248,8 +264,8 @@
             <label>$ADDON[script.tvguide.fullscreen 30308]</label>
 			<visible>false</visible>
         </control>
-		
-		
+
+
 
     </controls>
 </window>
