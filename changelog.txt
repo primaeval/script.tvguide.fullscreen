@@ -1,3 +1,7 @@
+version 0.0.7
+- Super Favourites
+- addon folders batch reload 
+
 version 0.0.6
 - fuzzy logo matching
 
