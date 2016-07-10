@@ -1,5 +1,8 @@
+version 0.0.8
+- hide background video 
+
 version 0.0.7
-- Super Favourites
+- Super Favourites (use Spoyser's repo)
 - addon folders batch reload 
 
 version 0.0.6
