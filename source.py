@@ -982,8 +982,8 @@ class XMLTVSource(Source):
             pass  # ignore addons that are not installed
 
         if self.logoSource != XMLTVSource.LOGO_SOURCE_FTV:
-            paths = os.listdir(xbmc.translatePath(logoFolder))
-            logos = [path[:-4] for path in paths if path.endswith(".png")]
+            dirs, files = xbmcvfs.listdir(logoFolder)
+            logos = [file[:-4] for file in files if file.endswith(".png")]
 
         for event, elem in context:
             if event == "end":
