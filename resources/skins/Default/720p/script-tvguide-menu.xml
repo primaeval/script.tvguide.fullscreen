@@ -69,10 +69,12 @@
 
         <control type="image" id="4100">
             <description>channel logo</description>
-            <posx>900</posx>
+            <posx>880</posx>
             <posy>480</posy>
             <width>240</width>
             <height>80</height>
+            <align>right</align>
+            <aligny>bottom</aligny>
             <aspectratio>keep</aspectratio>
 			<visible>true</visible>
         </control>

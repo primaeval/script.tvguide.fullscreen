@@ -22,20 +22,27 @@ if int(ADDON.getSetting('addons.ini.type')) == 1:
 
 plugins = {}
 for path in unique:
-    response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
+    try:
+        response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
+    except:
+        continue
     files = response["files"]
     dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
     links = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "file"])
-    
-    plugin = re.match(r"plugin://(.*?)/",path).group(1)
+
+    match = re.match(r"plugin://(.*?)/",path)
+    if match:
+        plugin = match.group(1)
+    else:
+        continue
     if plugin not in plugins:
         plugins[plugin] = {}
-        
+
     streams = plugins[plugin]
     for label in links:
         file = links[label]
         streams[label] = file
-        
+
 
 f = xbmcvfs.File(file_name,'wb')
 write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"
@@ -50,8 +57,16 @@ for addonId in sorted(plugins):
         if name.startswith(' '):
             continue
         name = re.sub(r'[:=]',' ',name)
+        name = re.sub(r'\[.*?\]','',name)
+        if not name: #TODO names in brackets
+            continue
+        if name.startswith(' '):
+            continue
         if not stream:
             stream = 'nothing'
         write_str = "%s=%s\n" % (name,stream)
         f.write(write_str.encode("utf8"))
 f.close()
+
+dialog = xbmcgui.Dialog()
+dialog.notification("TV Guide Fullscreen","Done: Reload Addon Folders")
