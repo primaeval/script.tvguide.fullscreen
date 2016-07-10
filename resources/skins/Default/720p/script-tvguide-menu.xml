@@ -29,11 +29,11 @@
 		<control type="image" id="7002">
             <description>program image</description>
             <posx>423</posx>
-            <posy>150</posy>
+            <posy>300</posy>
             <width>700</width>
-            <height>510</height>
+            <height>260</height>
 			<align>center</align>
-            <aligny>bottom</aligny>
+            <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
             <colordiffuse>darkgray</colordiffuse>
