@@ -41,14 +41,11 @@
             <posy>40</posy>
             <width>1100</width>
             <height>640</height>
-            <texture>-</texture>
-            <aspectratio>scale</aspectratio>
+            <texture>tvguide-program-grey.png</texture>
+            <aspectratio>-</aspectratio>
             <align>center</align>
             <aligny>center</aligny>
-            <fadetime>500</fadetime>
-            <animation type="Conditional" condition="Control.IsVisible(5000)">
-                <effect type="fade" start="100" end="0" time="500" />
-            </animation>
+            <fadetime>200</fadetime>
             <visible>!Player.HasMedia</visible>
         </control>
         <control type="image">
