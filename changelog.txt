@@ -1,3 +1,12 @@
+USAGE NOTES:
+- use Spoyser's repo for Super Favourites
+- click to load in addon browse dialog
+- back out of app to reload added folders
+- reload all folders in settings (last page)
+
+version 0.0.9
+- tweaks
+
 version 0.0.8
 - hide background video 
 
