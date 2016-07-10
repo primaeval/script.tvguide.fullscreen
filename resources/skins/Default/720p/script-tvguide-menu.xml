@@ -84,7 +84,38 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
         </control>
-
+        
+        <control type="button" id="4006"><!-- super favourites -->
+            <posx>160</posx>
+            <posy>124</posy>
+            <width>240</width>
+            <height>50</height>
+            <texturefocus>menu-grey-focus.png</texturefocus>
+            <texturenofocus>menu-grey.png</texturenofocus>
+            <onup>80002</onup>
+            <ondown>4005</ondown>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+            <label>Super Favourites</label>
+        </control>
+        
+        <control type="button" id="4005"><!-- watch from beginning -->
+            <posx>160</posx>
+            <posy>176</posy>
+            <width>240</width>
+            <height>50</height>
+            <texturefocus>menu-grey-focus.png</texturefocus>
+            <texturenofocus>menu-grey.png</texturenofocus>
+            <onup>4006</onup>
+            <ondown>4000</ondown>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+            <label>Meta Search</label>
+        </control>
         <control type="button" id="4000"><!-- Watch Stream -->
             <posx>160</posx>
             <posy>228</posy>
@@ -168,37 +199,7 @@
             <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
 
-        <control type="button" id="4006"><!-- super favourites -->
-            <posx>160</posx>
-            <posy>124</posy>
-            <width>240</width>
-            <height>50</height>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>8002</onup>
-            <ondown>4005</ondown>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <label>Super Favourites</label>
-        </control>
-        
-        <control type="button" id="4005"><!-- watch from beginning -->
-            <posx>160</posx>
-            <posy>176</posy>
-            <width>240</width>
-            <height>50</height>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>4006</onup>
-            <ondown>4000</ondown>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <label>Meta Search</label>
-        </control>
+
 
 
         <control type="button" id="80000"><!-- MY MOVIES -->
