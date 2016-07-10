@@ -255,7 +255,7 @@
                 <!-- text labels -->
                 <control type="label" id="4010">
                     <description>1st channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>0</posy>
                     <width>160</width>
                     <height>40</height>
@@ -268,7 +268,7 @@
                 </control>
                 <control type="label" id="4011">
                     <description>2nd channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>40</posy>
                     <width>160</width>
                     <height>40</height>
@@ -281,7 +281,7 @@
                 </control>
                 <control type="label" id="4012">
                     <description>3rd channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>80</posy>
                     <width>160</width>
                     <height>40</height>
@@ -294,7 +294,7 @@
                 </control>
                 <control type="label" id="4013">
                     <description>4th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>120</posy>
                     <width>160</width>
                     <height>40</height>
@@ -307,7 +307,7 @@
                 </control>
                 <control type="label" id="4014">
                     <description>5th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>160</posy>
                     <width>160</width>
                     <height>40</height>
@@ -320,7 +320,7 @@
                 </control>
                 <control type="label" id="4015">
                     <description>6th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>200</posy>
                     <width>160</width>
                     <height>40</height>
@@ -333,7 +333,7 @@
                 </control>
                 <control type="label" id="4016">
                     <description>7th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>240</posy>
                     <width>160</width>
                     <height>40</height>
@@ -346,7 +346,7 @@
                 </control>
                 <control type="label" id="4017">
                     <description>8th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>280</posy>
                     <width>160</width>
                     <height>40</height>
@@ -359,7 +359,7 @@
                 </control>
                 <control type="label" id="4018">
                     <description>9th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>320</posy>
                     <width>160</width>
                     <height>40</height>
@@ -372,7 +372,7 @@
                 </control>
                 <control type="label" id="4019">
                     <description>10 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>360</posy>
                     <width>160</width>
                     <height>40</height>
@@ -386,7 +386,7 @@
                 </control>
                 <control type="label" id="4020">
                     <description>11 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>400</posy>
                     <width>160</width>
                     <height>40</height>
@@ -400,7 +400,7 @@
                 </control>
                 <control type="label" id="4021">
                     <description>12 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>440</posy>
                     <width>160</width>
                     <height>40</height>
@@ -413,7 +413,7 @@
                 </control>
                 <control type="label" id="4022">
                     <description>13 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>480</posy>
                     <width>160</width>
                     <height>40</height>
@@ -426,7 +426,7 @@
                 </control>
                 <control type="label" id="4023">
                     <description>14 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>520</posy>
                     <width>160</width>
                     <height>40</height>
@@ -439,7 +439,7 @@
                 </control>
                 <control type="label" id="4024">
                     <description>15 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>560</posy>
                     <width>160</width>
                     <height>40</height>
@@ -452,7 +452,7 @@
                 </control>
                 <control type="label" id="4025">
                     <description>16 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>600</posy>
                     <width>160</width>
                     <height>40</height>
@@ -467,7 +467,7 @@
                 <!-- logo images -->
                 <control type="image" id="4110">
                     <description>1st channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>0</posy>
                     <width>160</width>
                     <height>40</height>
@@ -478,7 +478,7 @@
                 </control>
                 <control type="image" id="4111">
                     <description>2nd channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>40</posy>
                     <width>160</width>
                     <height>40</height>
@@ -489,7 +489,7 @@
                 </control>
                 <control type="image" id="4112">
                     <description>3rd channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>80</posy>
                     <width>160</width>
                     <height>40</height>
@@ -500,7 +500,7 @@
                 </control>
                 <control type="image" id="4113">
                     <description>4th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>120</posy>
                     <width>160</width>
                     <height>40</height>
@@ -511,7 +511,7 @@
                 </control>
                 <control type="image" id="4114">
                     <description>5th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>160</posy>
                     <width>160</width>
                     <height>40</height>
@@ -522,7 +522,7 @@
                 </control>
                 <control type="image" id="4115">
                     <description>6th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>200</posy>
                     <width>160</width>
                     <height>40</height>
@@ -531,7 +531,7 @@
                 </control>
                 <control type="image" id="4116">
                     <description>7th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>240</posy>
                     <width>160</width>
                     <height>40</height>
@@ -542,7 +542,7 @@
                 </control>
                 <control type="image" id="4117">
                     <description>8th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>280</posy>
                     <width>160</width>
                     <height>40</height>
@@ -553,7 +553,7 @@
                 </control>
                 <control type="image" id="4118">
                     <description>9th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>320</posy>
                     <width>160</width>
                     <height>40</height>
@@ -564,7 +564,7 @@
                 </control>
                 <control type="image" id="4119">
                     <description>10 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>360</posy>
                     <width>160</width>
                     <height>40</height>
@@ -575,7 +575,7 @@
                 </control>
                 <control type="image" id="4120">
                     <description>11 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>400</posy>
                     <width>160</width>
                     <height>40</height>
@@ -586,7 +586,7 @@
                 </control>
                 <control type="image" id="4121">
                     <description>12 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>440</posy>
                     <width>160</width>
                     <height>40</height>
@@ -597,7 +597,7 @@
                 </control>
                 <control type="image" id="4122">
                     <description>13 channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>480</posy>
                     <width>160</width>
                     <height>40</height>
@@ -608,7 +608,7 @@
                 </control>
                 <control type="image" id="4123">
                     <description>14th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>520</posy>
                     <width>160</width>
                     <height>40</height>
@@ -619,7 +619,7 @@
                 </control>
                 <control type="image" id="4124">
                     <description>15th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>560</posy>
                     <width>160</width>
                     <height>40</height>
@@ -630,7 +630,7 @@
                 </control>
                 <control type="image" id="4125">
                     <description>16th channel</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>600</posy>
                     <width>160</width>
                     <height>40</height>
