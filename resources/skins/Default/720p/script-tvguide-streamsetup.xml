@@ -753,7 +753,7 @@
                 <posy>310</posy>
                 <width>250</width>
                 <height>100</height>
-                <label>description...</label>
+                <label></label>
 				<align>left</align>
                 <wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>

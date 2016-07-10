@@ -41,7 +41,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture>tvguide-program-grey.png</texture>
+            <texture>black.png</texture>
             <aspectratio>-</aspectratio>
             <align>center</align>
             <aligny>center</aligny>
@@ -96,7 +96,7 @@
                 <width>180</width>
                 <height>640</height>
                 <visible>true</visible>
-                <texture>tvguide-program-grey.png</texture>
+                <texture>tvguide-program-grey2.png</texture>
             </control>
 
             <control type="image">

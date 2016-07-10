@@ -27,7 +27,7 @@
 
 
 		<control type="image" id="7002">
-            <description>Help and Tips</description>
+            <description>program image</description>
             <posx>423</posx>
             <posy>150</posy>
             <width>700</width>
@@ -36,6 +36,7 @@
             <aligny>bottom</aligny>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
+            <colordiffuse>darkgray</colordiffuse>
         </control>
 
 		<control type="label" id="7001">
@@ -67,6 +68,7 @@
         </control>
 
         <control type="image" id="4100">
+            <description>channel logo</description>
             <posx>900</posx>
             <posy>480</posy>
             <width>240</width>
