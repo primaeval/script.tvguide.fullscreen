@@ -1354,7 +1354,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         elif controlId == self.C_STREAM_BROWSE_DIRS:
             self.updateBrowseInfo()
         elif controlId == self.C_STREAM_BROWSE_FOLDER:
-            self.addBrowseFolder()            
+            self.addBrowseFolder()
 
         elif controlId == self.C_STREAM_STRM_BROWSE:
             stream = xbmcgui.Dialog().browse(1, ADDON.getLocalizedString(30304), 'video', '.strm')
@@ -1560,22 +1560,34 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl.reset()
         listControl.addItems(items)
 
-     
+
     def addBrowseFolder(self):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/folders.list'
+        f = xbmcvfs.File(file_name)
+        items = f.read().splitlines()
+        f.close()
+        items.append(self.previousDirsId)
+        unique = set(items)
+        f = xbmcvfs.File(file_name,"w")
+        lines = "\n".join(unique)
+        f.write(lines)
+        f.close()
+
+        self.previousDirsId
+
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
         if int(ADDON.getSetting('addons.ini.type')) == 1:
             customFile = str(ADDON.getSetting('addons.ini.file'))
             if os.path.exists(customFile) and os.access(customFile,os.W_OK):
                 file_name = customFile
         xbmc.log('[script.tvguide.fullscreen] exporting channels to' + customFile, xbmc.LOGDEBUG)
-    
+
         f = xbmcvfs.File(file_name)
         items = f.read().splitlines()
         f.close()
         streams = {}
         addonId = 'nothing'
         for item in items:
-            xbmc.log(item)
             if item.startswith('['):
                 addonId = item.strip('[] \t')
                 streams[addonId] = {}
@@ -1594,7 +1606,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         addonId=listItem.getProperty('addon_id')
         if addonId not in streams:
             streams[addonId] = {}
-   
+
         listControl = self.getControl(StreamSetupDialog.C_STREAM_BROWSE_STREAMS)
         for i in range(0,listControl.size()):
             listItem = listControl.getListItem(i)
@@ -1623,8 +1635,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         f.close()
         xbmc.log('[script.tvguide.fullscreen] export succeeded', xbmc.LOGDEBUG)
 
-    
-        
+
+
 
 class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
     C_SELECTION_LIST = 1000

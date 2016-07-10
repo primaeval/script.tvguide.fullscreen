@@ -38,5 +38,7 @@
 		<setting type="lsep" label="30137"/>
 		<setting type="lsep" label="30138"/>
         <setting label="30139" type="action" action="RunScript($CWD/ResetDatabase.py)" />
+        <setting type="sep"/>
+        <setting label="Reload Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />
     </category>
 </settings>
