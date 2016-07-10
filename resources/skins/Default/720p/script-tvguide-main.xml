@@ -829,7 +829,7 @@
 
                 <control type="button" id="4301">
                     <description>navigate to now</description>
-                    <posx>540</posx>
+                    <posx>545</posx>
                     <posy>0</posy>
                     <width>180</width>
                     <height>40</height>
@@ -844,7 +844,7 @@
 
                 <control type="button" id="4302">
                     <description>navigate left</description>
-                    <posx>240</posx>
+                    <posx>270</posx>
                     <posy>0</posy>
                     <width>180</width>
                     <height>40</height>
