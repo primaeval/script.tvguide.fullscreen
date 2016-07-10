@@ -37,10 +37,10 @@
         </control>        
         
         <control type="image" id="4600">
-            <posx>180</posx>
-            <posy>40</posy>
-            <width>1100</width>
-            <height>640</height>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
             <texture>tvguide-program-grey.png</texture>
             <aspectratio>-</aspectratio>
             <align>center</align>
