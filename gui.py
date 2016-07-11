@@ -773,6 +773,18 @@ class TVGuide(xbmcgui.WindowXML):
             program = src.Program(channel, strings(NO_PROGRAM_AVAILABLE), None, None, None)
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
+        last = len(channels)
+        if last < CHANNELS_PER_PAGE:
+            control = xbmcgui.ControlImage(
+                self.epgView.left,
+                self.epgView.top + self.epgView.cellHeight * last,
+                (self.epgView.right - self.epgView.left) - 2,
+                (self.epgView.cellHeight * (CHANNELS_PER_PAGE - last))  - 2,
+                'black-back.png',
+            )
+            program = src.Program(channel, strings(NO_PROGRAM_AVAILABLE), None, None, None)
+            self.controlAndProgramList.append(ControlAndProgram(control, program))
+
         # add program controls
         if focusFunction is None:
             focusFunction = self._findControlAt
@@ -787,6 +799,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         if focusControl is None and len(self.controlAndProgramList) > 0:
             self.setFocus(self.controlAndProgramList[0].control)
+
+
 
         self._hideControl(self.C_MAIN_LOADING)
         self.redrawingEPG = False
