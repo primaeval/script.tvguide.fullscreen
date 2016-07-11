@@ -4,6 +4,9 @@ USAGE NOTES:
 - back out of app to reload added folders
 - reload all folders in settings (last page)
 
+version 0.0.11
+- removed osd until fixed
+
 version 0.0.10
 - bigger program description
 - only 14 channels
