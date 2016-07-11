@@ -25,6 +25,7 @@ import threading
 import time
 import re
 import os
+import urllib
 
 import xbmc
 import xbmcgui
@@ -455,10 +456,8 @@ class TVGuide(xbmcgui.WindowXML):
                     xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/tv/play_by_name_only/%s/%s)" % (
                         title, program.language))
         elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
-            title = program.title.replace(" ", "%20").replace(",", "").replace(u"\u2013", "-")
-            title = unicode.encode(title, "ascii", "ignore")
-            str = "RunAddon(plugin.program.super.favourites,?mode=0&keyword=%s)"  % title
-            xbmc.executebuiltin(str)
+            xbmc.executebuiltin('ActivateWindow(10025,"plugin://plugin.program.super.favourites/?mode=0&keyword=%s")' % urllib.quote_plus(program.title))
+
 
 
     def setFocusId(self, controlId):
