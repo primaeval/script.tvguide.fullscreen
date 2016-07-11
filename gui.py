@@ -310,7 +310,6 @@ class TVGuide(xbmcgui.WindowXML):
             if control is not None:
                 self.setFocus(control)
                 return
-
         if action.getId() == ACTION_LEFT:
             self._left(currentFocus)
         elif action.getId() == ACTION_RIGHT:
@@ -484,7 +483,6 @@ class TVGuide(xbmcgui.WindowXML):
             controlInFocus = self.getControl(controlId)
         except Exception:
             return
-
         program = self._getProgramFromControl(controlInFocus)
         if program is None:
             return
@@ -514,15 +512,15 @@ class TVGuide(xbmcgui.WindowXML):
         if program.imageSmall is not None:
             self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
         else:
-            self.setControlImage(self.C_MAIN_IMAGE, 'tvguide-logo-epg.png')
+            self.setControlImage(self.C_MAIN_IMAGE, '')
 
         if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
             self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
         else:
-            self.setControlImage(self.C_MAIN_BACKGROUND, "black.png")
+            self.setControlImage(self.C_MAIN_BACKGROUND, "grey.png")
 
-        if not self.osdEnabled and self.player.isPlaying():
-            self.player.stop()
+        #if not self.osdEnabled and self.player.isPlaying():
+        #    self.player.stop()
 
     def _left(self, currentFocus):
         control = self._findControlOnLeft(currentFocus)
@@ -737,8 +735,8 @@ class TVGuide(xbmcgui.WindowXML):
                     noFocusTexture = 'tvguide-program-red.png'
                     focusTexture = 'tvguide-program-red-focus.png'
                 else:
-                    noFocusTexture = 'tvguide-program-grey.png'
-                    focusTexture = 'tvguide-program-grey-focus.png'
+                    noFocusTexture = 'black-back.png'
+                    focusTexture = 'black-back.png'
 
                 if cellWidth < 25:
                     title = ''  # Text will overflow outside the button if it is too narrow
@@ -751,6 +749,7 @@ class TVGuide(xbmcgui.WindowXML):
                     cellWidth - 2,
                     self.epgView.cellHeight - 2,
                     title,
+                    focusedColor="0xFF00FFFF",
                     noFocusTexture=noFocusTexture,
                     focusTexture=focusTexture
                 )
@@ -766,6 +765,7 @@ class TVGuide(xbmcgui.WindowXML):
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
                 strings(NO_PROGRAM_AVAILABLE),
+                focusedColor="0xFF00FFFF",
                 noFocusTexture='tvguide-program-grey.png',
                 focusTexture='tvguide-program-grey-focus.png'
             )

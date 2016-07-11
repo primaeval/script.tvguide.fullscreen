@@ -26,6 +26,7 @@
 
         <!-- Background -->
         <control type="videowindow">
+            <description>video window</description>
             <posx>0</posx>
             <posy>0</posy>
             <width>1280</width>
@@ -37,17 +38,45 @@
         </control>        
         
         <control type="image" id="4600">
+            <description>background</description>
             <posx>0</posx>
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture>black.png</texture>
+            <texture>grey.png</texture>
             <aspectratio>-</aspectratio>
             <align>center</align>
             <aligny>center</aligny>
             <fadetime>200</fadetime>
             <visible>!Player.HasMedia</visible>
         </control>
+        <control type="image">
+            <description>header</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>38</height>
+            <texture>black-back.png</texture>
+            <aspectratio>-</aspectratio>
+            <align>center</align>
+            <aligny>center</aligny>
+            <fadetime>200</fadetime>
+            <visible>!Player.HasMedia</visible>
+        </control>          
+        <control type="image">
+            <description>footer</description>
+            <posx>0</posx>
+            <posy>600</posy>
+            <width>1280</width>
+            <height>120</height>
+            <texture>black-back.png</texture>
+            <aspectratio>-</aspectratio>
+            <align>center</align>
+            <aligny>center</aligny>
+            <fadetime>200</fadetime>
+            <visible>!Player.HasMedia</visible>
+        </control>        
+        
         <control type="image">
             <posx>0</posx>
             <posy>0</posy>
@@ -87,15 +116,15 @@
                 <width>-10</width>
                 <height>560</height>
                 <visible>true</visible>
-                <texture>tvguide-program-grey-focus.png</texture>
+                <texture>cyan.png</texture>
             </control>
 
             <control type="image">
                 <description>channels background</description>
-                <posx>0</posx>
+                <posx>2</posx>
                 <posy>0</posy>
-                <width>180</width>
-                <height>560</height>
+                <width>176</width>
+                <height>558</height>
                 <visible>true</visible>
                 <texture>tvguide-program-grey2.png</texture>
             </control>
@@ -695,14 +724,14 @@
             </control>
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
-                <posx>930</posx>
-                <posy>515</posy>
-                <width>320</width>
-                <height>160</height>
-                <aspectratio>keep</aspectratio>
+                <posx>2</posx>
+                <posy>560</posy>
+                <width>176</width>
+                <height>116</height>
+                <aspectratio>stretch</aspectratio>
                 <fadetime>500</fadetime>
-                <texture>tvguide-logo-epg.png</texture>
-                <visible>false</visible>
+                <texture>-</texture>
+                <visible>true</visible>
             </control>
 
 
