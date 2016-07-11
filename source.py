@@ -115,7 +115,7 @@ class DatabaseSchemaException(sqlite3.DatabaseError):
 
 class Database(object):
     SOURCE_DB = 'source.db'
-    CHANNELS_PER_PAGE = 16
+    CHANNELS_PER_PAGE = 14
 
     def __init__(self):
         self.conn = None
