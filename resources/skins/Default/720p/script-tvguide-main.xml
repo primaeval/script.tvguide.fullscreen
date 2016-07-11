@@ -24,6 +24,16 @@
             <texture>tvguide-program-red-focus.png</texture>
         </control>
 
+        <control type="image">
+            <description>background</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>black.png</texture>
+            <visible>true</visible>
+        </control>
+
         <!-- Background -->
         <control type="videowindow">
             <description>video window</description>
@@ -37,19 +47,7 @@
             <visible>true</visible>
         </control>
 
-        <control type="image" id="4600">
-            <description>background</description>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1280</width>
-            <height>720</height>
-            <texture>grey.png</texture>
-            <aspectratio>-</aspectratio>
-            <align>center</align>
-            <aligny>center</aligny>
-            <fadetime>200</fadetime>
-            <visible>!Player.HasMedia</visible>
-        </control>
+
 
 
         <control type="image">
@@ -84,6 +82,20 @@
                 <visible>false</visible>
             </control>
 
+            <control type="image" id="4600">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>720</height>
+                <texture>grey.png</texture>
+                <aspectratio>-</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <fadetime>200</fadetime>
+                <visible>!Player.HasMedia</visible>
+            </control>
+
             <control type="image">
                 <description>header</description>
                 <posx>0</posx>
@@ -95,7 +107,7 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
-                <visible>!Player.HasMedia</visible>
+
             </control>
             <control type="image">
                 <description>footer</description>
@@ -108,7 +120,7 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
-                <visible>!Player.HasMedia</visible>
+
             </control>
 
             <control type="image" id="4100">
@@ -726,10 +738,10 @@
             </control>
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
-                <posx>2</posx>
+                <posx>0</posx>
                 <posy>560</posy>
-                <width>176</width>
-                <height>116</height>
+                <width>180</width>
+                <height>120</height>
                 <aspectratio>stretch</aspectratio>
 
                 <fadetime>500</fadetime>
