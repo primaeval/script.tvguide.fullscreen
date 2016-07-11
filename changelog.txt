@@ -4,6 +4,9 @@ USAGE NOTES:
 - back out of app to reload added folders
 - reload all folders in settings (last page)
 
+version 0.0.14
+- fix
+
 version 0.0.13
 - tweaks
 
