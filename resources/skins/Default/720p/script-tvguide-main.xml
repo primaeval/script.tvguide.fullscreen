@@ -35,8 +35,8 @@
                 <effect type="zoom" end="25" center="1250,690" time="500" />
             </animation>-->
             <visible>true</visible>
-        </control>        
-        
+        </control>
+
         <control type="image" id="4600">
             <description>background</description>
             <posx>0</posx>
@@ -50,33 +50,8 @@
             <fadetime>200</fadetime>
             <visible>!Player.HasMedia</visible>
         </control>
-        <control type="image">
-            <description>header</description>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1280</width>
-            <height>38</height>
-            <texture>black-back.png</texture>
-            <aspectratio>-</aspectratio>
-            <align>center</align>
-            <aligny>center</aligny>
-            <fadetime>200</fadetime>
-            <visible>!Player.HasMedia</visible>
-        </control>          
-        <control type="image">
-            <description>footer</description>
-            <posx>0</posx>
-            <posy>600</posy>
-            <width>1280</width>
-            <height>120</height>
-            <texture>black-back.png</texture>
-            <aspectratio>-</aspectratio>
-            <align>center</align>
-            <aligny>center</aligny>
-            <fadetime>200</fadetime>
-            <visible>!Player.HasMedia</visible>
-        </control>        
-        
+
+
         <control type="image">
             <posx>0</posx>
             <posy>0</posy>
@@ -107,6 +82,33 @@
                 <width>1100</width>
                 <height>560</height>
                 <visible>false</visible>
+            </control>
+
+            <control type="image">
+                <description>header</description>
+                <posx>0</posx>
+                <posy>-40</posy>
+                <width>1280</width>
+                <height>38</height>
+                <texture>black-back.png</texture>
+                <aspectratio>-</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <fadetime>200</fadetime>
+                <visible>!Player.HasMedia</visible>
+            </control>
+            <control type="image">
+                <description>footer</description>
+                <posx>0</posx>
+                <posy>560</posy>
+                <width>1280</width>
+                <height>120</height>
+                <texture>black-back.png</texture>
+                <aspectratio>-</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <fadetime>200</fadetime>
+                <visible>!Player.HasMedia</visible>
             </control>
 
             <control type="image" id="4100">
@@ -208,7 +210,7 @@
 
                 <control type="label">
                     <description>time label</description>
-                    <right>0</right>
+                    <right>20</right>
                     <top>5</top>
                     <width>200</width>
                     <height>30</height>
@@ -219,7 +221,7 @@
                     <shadowcolor>black</shadowcolor>
                     <label>$INFO[System.Time]</label>
                     <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
-                </control>                
+                </control>
 
                 <control type="label">
                     <description>Displays todays date</description>
@@ -706,7 +708,7 @@
                 <textcolor>orange</textcolor>
                 <font>font13</font>
                 <align>right</align>
-                
+
                 <visible>true</visible>
             </control>
             <control type="label" id="7022">
@@ -720,7 +722,7 @@
                 <align>justify</align>
                 <wrapmultiline>true</wrapmultiline>
                 <scroll>true</scroll>
-                
+
             </control>
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
@@ -729,6 +731,7 @@
                 <width>176</width>
                 <height>116</height>
                 <aspectratio>stretch</aspectratio>
+
                 <fadetime>500</fadetime>
                 <texture>-</texture>
                 <visible>true</visible>
@@ -746,6 +749,15 @@
                 <height>55</height>
                 <visible>!Control.IsVisible(4200)</visible>
                 <animation effect="fade" start="0" end="100" time="250" delay="1500">Visible</animation>
+
+                <control type="image">
+                    <description>loading background</description>
+                    <posx>-340</posx>
+                    <posy>-290</posy>
+                    <width>1280</width>
+                    <height>720</height>
+                    <texture>black.png</texture>
+                </control>
 
                 <control type="image">
                     <description>loading splash</description>
@@ -845,7 +857,7 @@
                     <aligny>center</aligny>
                     <visible>false</visible>
                 </control>
-                
+
                 <control type="label">
                     <posx>800</posx>
                     <posy>10</posy>
