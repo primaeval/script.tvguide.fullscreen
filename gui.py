@@ -501,7 +501,7 @@ class TVGuide(xbmcgui.WindowXML):
         if program.description:
             description = program.description
         else:
-            description = strings(NO_DESCRIPTION)
+            description = ""
         self.setControlText(self.C_MAIN_DESCRIPTION, description)
 
         if program.channel.logo is not None:
@@ -764,13 +764,13 @@ class TVGuide(xbmcgui.WindowXML):
                 self.epgView.top + self.epgView.cellHeight * idx,
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
-                strings(NO_PROGRAM_AVAILABLE),
+                "",
                 focusedColor="0xFF00FFFF",
-                noFocusTexture='tvguide-program-grey.png',
-                focusTexture='tvguide-program-grey-focus.png'
+                noFocusTexture='black-back.png',
+                focusTexture='black-back.png'
             )
 
-            program = src.Program(channel, strings(NO_PROGRAM_AVAILABLE), None, None, None)
+            program = src.Program(channel, "", None, None, None)
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
         last = len(channels)
@@ -782,7 +782,7 @@ class TVGuide(xbmcgui.WindowXML):
                 (self.epgView.cellHeight * (CHANNELS_PER_PAGE - last))  - 2,
                 'black-back.png',
             )
-            program = src.Program(channel, strings(NO_PROGRAM_AVAILABLE), None, None, None)
+            program = src.Program(channel, "", None, None, None)
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
         # add program controls
