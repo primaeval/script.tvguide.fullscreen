@@ -65,7 +65,7 @@ KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
 KEY_ESC = 61467
 
-CHANNELS_PER_PAGE = 16
+CHANNELS_PER_PAGE = 14
 
 HALF_HOUR = datetime.timedelta(minutes=30)
 
@@ -145,8 +145,9 @@ class TVGuide(xbmcgui.WindowXML):
         self.mode = MODE_EPG
         self.currentChannel = None
 
-        self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
-            'alternative.playback') != 'true'
+        self.osdEnabled = False
+        #self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
+        #    'alternative.playback') != 'true'
         self.alternativePlayback = ADDON.getSetting('alternative.playback') == 'true'
         self.osdChannel = None
         self.osdProgram = None
