@@ -165,8 +165,8 @@ class Database(object):
                     del self.eventQueue[:]
                     break
 
-            except Exception:
-                print 'Database.eventLoop() >>>>>>>>>> exception!'
+            except Exception as detail:
+                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s' % detail)
 
         print 'Database.eventLoop() >>>>>>>>>> exiting...'
 
@@ -249,11 +249,11 @@ class Database(object):
             self.conn.close()
 
     def _wasSettingsChanged(self, addon):
-        gType = GuideTypes()
-        if int(addon.getSetting('xmltv.type')) == gType.CUSTOM_FILE_ID:
-            settingsChanged = addon.getSetting('xmltv.refresh') == 'true'
-        else:
-            settingsChanged = False
+        #gType = GuideTypes()
+        #if int(addon.getSetting('xmltv.type')) == gType.CUSTOM_FILE_ID:
+        #    settingsChanged = addon.getSetting('xmltv.refresh') == 'true'
+        #else:
+        settingsChanged = False
         noRows = True
         count = 0
 
@@ -318,6 +318,7 @@ class Database(object):
         self.event.set()
 
     def _updateChannelAndProgramListCaches(self, date, progress_callback, clearExistingProgramList):
+        xbmc.log("ZZZZZZ")
         # todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
@@ -885,20 +886,31 @@ class XMLTVSource(Source):
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
 
         # make sure the ini file is fetched as well if necessary
+        
         if self.addonsType == XMLTVSource.INI_TYPE_FTV:
-            self.updateLocalFile(XMLTVSource.INI_FILE, addon, True)
+            customFile = str(addon.getSetting('addons.ini.file'))
         else:
-            customFile = xbmc.translatePath(str(addon.getSetting('addons.ini.file')))
-            if os.path.exists(customFile):
-                # uses local file provided by user!
-                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
-            else:
-                # Probably a remote file
-                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-                #self.updateLocalFile(customFile, addon, True)
+            customFile = str(addon.getSetting('addons.ini.url'))
+        if customFile:
+            self.updateLocalFile(customFile, addon, True)
+        else:
+            path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+            if not xbmcvfs.exists(path):
+                f = xbmcvfs.File(path,"w")
+                f.close()
+        #else:
+        #    customFile = xbmc.translatePath(str(addon.getSetting('addons.ini.file')))
+        #    if os.path.exists(customFile):
+        #        # uses local file provided by user!
+        #        xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+        #    else:
+        #        # Probably a remote file
+        #        xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+        #        #self.updateLocalFile(customFile, addon, True)
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
+        xbmc.log("XXX")
 
     def updateLocalFile(self, name, addon, isIni=False):
         fileName = os.path.basename(name)
@@ -913,7 +925,7 @@ class XMLTVSource(Source):
         return path
 
     def getDataFromExternal(self, date, progress_callback=None):
-
+        xbmc.log("getDataFromExternal %s" % self.xmltvFile)
         f = FileWrapper(self.xmltvFile)
         context = ElementTree.iterparse(f, events=("start", "end"))
         size = f.size
@@ -984,7 +996,7 @@ class XMLTVSource(Source):
         except Exception:
             pass  # ignore addons that are not installed
 
-        if self.logoSource != XMLTVSource.LOGO_SOURCE_FTV:
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
 
