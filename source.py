@@ -318,7 +318,6 @@ class Database(object):
         self.event.set()
 
     def _updateChannelAndProgramListCaches(self, date, progress_callback, clearExistingProgramList):
-        xbmc.log("ZZZZZZ")
         # todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
@@ -910,7 +909,7 @@ class XMLTVSource(Source):
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
-        xbmc.log("XXX")
+
 
     def updateLocalFile(self, name, addon, isIni=False):
         fileName = os.path.basename(name)
@@ -925,7 +924,6 @@ class XMLTVSource(Source):
         return path
 
     def getDataFromExternal(self, date, progress_callback=None):
-        xbmc.log("getDataFromExternal %s" % self.xmltvFile)
         f = FileWrapper(self.xmltvFile)
         context = ElementTree.iterparse(f, events=("start", "end"))
         size = f.size
