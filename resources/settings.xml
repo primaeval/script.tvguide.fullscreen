@@ -8,9 +8,10 @@
         <setting id="xmltv.refresh" label="30149" type="bool" default="false" />
         <setting id="xmltv.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
         <setting type="lsep" label="addons.ini is optional"/>
-        <setting id="addons.ini.type" label="addons.ini Source" type="enum" default="0" values="File|Url"/>
-        <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-1,0)" default=''/>
-        <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-2,1)" default=''/>
+        <setting id="addons.ini.enabled" label="Import addons.ini" type="bool" default="false" />
+        <setting id="addons.ini.type" label="addons.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
+        <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" default=''/>
+        <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
 	</category>
 	
 	<category label="30148">

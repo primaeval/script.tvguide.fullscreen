@@ -849,7 +849,7 @@ class XMLTVSource(Source):
     LOGO_SOURCE_FOLDER = 0
     LOGO_SOURCE_URL = 1
     XMLTV_SOURCE_FILE = 0
-    XMLTV_SOURCE_URL = 1    
+    XMLTV_SOURCE_URL = 1
 
     def __init__(self, addon):
         #gType = GuideTypes()
@@ -885,27 +885,19 @@ class XMLTVSource(Source):
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
 
         # make sure the ini file is fetched as well if necessary
-        
-        if self.addonsType == XMLTVSource.INI_TYPE_FTV:
-            customFile = str(addon.getSetting('addons.ini.file'))
-        else:
-            customFile = str(addon.getSetting('addons.ini.url'))
-        if customFile:
-            self.updateLocalFile(customFile, addon, True)
-        else:
-            path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
-            if not xbmcvfs.exists(path):
-                f = xbmcvfs.File(path,"w")
-                f.close()
-        #else:
-        #    customFile = xbmc.translatePath(str(addon.getSetting('addons.ini.file')))
-        #    if os.path.exists(customFile):
-        #        # uses local file provided by user!
-        #        xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
-        #    else:
-        #        # Probably a remote file
-        #        xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-        #        #self.updateLocalFile(customFile, addon, True)
+
+        if addon.getSetting('addons.ini.enabled') == 'true':
+            if self.addonsType == XMLTVSource.INI_TYPE_FTV:
+                customFile = str(addon.getSetting('addons.ini.file'))
+            else:
+                customFile = str(addon.getSetting('addons.ini.url'))
+            if customFile:
+                self.updateLocalFile(customFile, addon, True)
+
+        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+        if not xbmcvfs.exists(path):
+            f = xbmcvfs.File(path,"w")
+            f.close()
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
