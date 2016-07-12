@@ -30,7 +30,7 @@ from xml.etree import ElementTree
 import re
 
 from strings import *
-from guideTypes import *
+#from guideTypes import *
 from fileFetcher import *
 
 import xbmc
@@ -843,14 +843,16 @@ class Source(object):
 class XMLTVSource(Source):
     PLUGIN_DATA = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen'))
     KEY = 'xmltv'
-    INI_TYPE_FTV = 0
-    INI_TYPE_CUSTOM = 1
+    INI_TYPE_FILE = 0
+    INI_TYPE_URL = 1
     INI_FILE = 'addons.ini'
-    LOGO_SOURCE_FTV = 0
-    LOGO_SOURCE_CUSTOM = 1
+    LOGO_SOURCE_FOLDER = 0
+    LOGO_SOURCE_URL = 1
+    XMLTV_TYPE_FILE = 0
+    XMLTV_TYPE_URL = 1
 
     def __init__(self, addon):
-        gType = GuideTypes()
+        #gType = GuideTypes()
 
         self.needReset = False
         self.fetchError = False
@@ -863,43 +865,58 @@ class XMLTVSource(Source):
         if not os.path.exists(XMLTVSource.PLUGIN_DATA):
             os.makedirs(XMLTVSource.PLUGIN_DATA)
 
-        if self.logoSource == XMLTVSource.LOGO_SOURCE_FTV:
-            self.logoFolder = MAIN_URL + 'logos/'
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
+            self.logoFolder = addon.getSetting('logos.folder')
         else:
-            self.logoFolder = str(addon.getSetting('logos.folder'))
+            self.logoFolder = addon.getSetting('logos.url')
 
-        if self.xmltvType == gType.CUSTOM_FILE_ID:
+        if self.xmltvType == XMLTVSource.XMLTV_TYPE_FILE:
             customFile = str(addon.getSetting('xmltv.file'))
-            if os.path.exists(customFile):
-                # uses local file provided by user!
-                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
-                self.xmltvFile = customFile
-            else:
-                # Probably a remote file
-                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-                self.updateLocalFile(customFile, addon)
-                self.xmltvFile = os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.file'), addon)
+            #if os.path.exists(customFile):
+            #    # uses local file provided by user!
+            #    xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+            #    self.xmltvFile = customFile
+            #else:
+            #    # Probably a remote file
+            #    xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+            #    self.updateLocalFile(customFile, addon)
+            #    self.xmltvFile = os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
         else:
-            self.xmltvFile = self.updateLocalFile(gType.getGuideDataItem(self.xmltvType, gType.GUIDE_FILE), addon)
+            #self.xmltvFile = self.updateLocalFile(gType.getGuideDataItem(self.xmltvType, gType.GUIDE_FILE), addon)
+            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
 
         # make sure the ini file is fetched as well if necessary
-        if self.addonsType == XMLTVSource.INI_TYPE_FTV:
-            self.updateLocalFile(XMLTVSource.INI_FILE, addon, True)
+        if self.addonsType == XMLTVSource.INI_TYPE_URL:
+            retVal = self.updateLocalFile(addon.getSetting('addons.ini.url'), addon, True)
         else:
             customFile = xbmc.translatePath(str(addon.getSetting('addons.ini.file')))
-            if os.path.exists(customFile):
-                # uses local file provided by user!
-                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
-            else:
-                # Probably a remote file
-                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-                #self.updateLocalFile(customFile, addon, True)
+            if not os.path.exists(customFile):
+                retVal = self.updateLocalFile(customFile, addon, True)
+            #if os.path.exists(customFile):
+            #    # uses local file provided by user!
+            #    xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+            #else:
+            #    # Probably a remote file
+            #    xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+            #    self.updateLocalFile(customFile, addon, True)
 
+        path = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
+        if not xbmcvfs.exists(path):
+            f = xbmcvfs.File(path,"w")
+            f.close()
+            xbmc.log("addons.ini created")
+                
+        xbmc.log(self.xmltvFile)
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
 
     def updateLocalFile(self, name, addon, isIni=False):
-        path = os.path.join(XMLTVSource.PLUGIN_DATA, name)
+        if not name:
+            return ''
+        fileName = os.path.basename(name)
+        xbmc.log(repr((fileName,name)))
+        path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
         fetcher = FileFetcher(name, addon)
         retVal = fetcher.fetchFile()
         if retVal == fetcher.FETCH_OK and not isIni:
@@ -910,7 +927,7 @@ class XMLTVSource(Source):
         return path
 
     def getDataFromExternal(self, date, progress_callback=None):
-
+        xbmc.log("getDataFromExternal %s" % self.xmltvFile)
         f = FileWrapper(self.xmltvFile)
         context = ElementTree.iterparse(f, events=("start", "end"))
         size = f.size
@@ -981,7 +998,7 @@ class XMLTVSource(Source):
         except Exception:
             pass  # ignore addons that are not installed
 
-        if self.logoSource != XMLTVSource.LOGO_SOURCE_FTV:
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
 
@@ -1038,7 +1055,7 @@ class XMLTVSource(Source):
                     logo = None
                     if logoFolder:
                         logoFile = os.path.join(logoFolder, title + '.png')
-                        if self.logoSource == XMLTVSource.LOGO_SOURCE_FTV:
+                        if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
                             logo = logoFile.replace(' ', '%20')  # needed due to fetching from a server!
                         elif xbmcvfs.exists(logoFile):
                             logo = logoFile  # local file instead of remote!

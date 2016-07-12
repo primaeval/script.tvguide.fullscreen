@@ -26,7 +26,7 @@ import urllib2
 import datetime
 import zlib
 
-MAIN_URL = 'http://thaisatellite.tv/ftv/'
+#MAIN_URL = 'http://thaisatellite.tv/ftv/'
 
 
 class FileFetcher(object):
@@ -39,28 +39,29 @@ class FileFetcher(object):
     FETCH_NOT_NEEDED = 0
     FETCH_OK = 1
 
-    TYPE_DEFAULT = 1
+    TYPE_LOCAL = 1
     TYPE_REMOTE = 2
 
     basePath = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen'))
     filePath = ''
     fileUrl = ''
     addon = None
-    fileType = TYPE_DEFAULT
+    fileType = TYPE_LOCAL
 
     def __init__(self, fileName, addon):
         self.addon = addon
 
         if fileName.startswith("http://") or fileName.startswith("sftp://") or fileName.startswith("ftp://") or \
-                fileName.startswith("https://") or fileName.startswith("ftps://") or fileName.startswith("smb://") or \
-                fileName.startswith("nfs://"):
+                fileName.startswith("https://") or fileName.startswith("ftps://") or fileName.startswith("smb://") :
             self.fileType = self.TYPE_REMOTE
             self.fileUrl = fileName
             self.filePath = os.path.join(self.basePath, fileName.split('/')[-1])
         else:
-            self.fileType = self.TYPE_DEFAULT
-            self.fileUrl = MAIN_URL + fileName
-            self.filePath = os.path.join(self.basePath, fileName)
+            #xbmc.log("USE FULL PATH")
+            #return
+            self.fileType = self.TYPE_LOCAL
+            self.fileUrl = fileName
+            self.filePath = os.path.join(self.basePath, os.path.basename(fileName))
 
         # make sure the folder is actually there already!
         if not os.path.exists(self.basePath):
@@ -69,6 +70,10 @@ class FileFetcher(object):
     def fetchFile(self):
         retVal = self.FETCH_NOT_NEEDED
         fetch = False
+        if not self.filePath:
+            return retVal
+        if not self.fileUrl:
+            return retVal
         if not os.path.exists(self.filePath):  # always fetch if file doesn't exist!
             fetch = True
         else:
@@ -87,10 +92,11 @@ class FileFetcher(object):
 
         if fetch:
             tmpFile = os.path.join(self.basePath, 'tmp')
-            if self.fileType == self.TYPE_REMOTE:
-                xbmc.log('[script.tvguide.fullscreen] file is in remote location: %s' % self.fileUrl, xbmc.LOGDEBUG)
+            if self.fileType == self.TYPE_LOCAL:
+                xbmc.log('[script.tvguide.fullscreen] local file: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 if not xbmcvfs.copy(self.fileUrl, tmpFile):
                     xbmc.log('[script.tvguide.fullscreen] Remote file couldn\'t be copied: %s' % self.fileUrl, xbmc.LOGERROR)
+                    return self.FETCH_ERROR
             else:
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
@@ -100,12 +106,15 @@ class FileFetcher(object):
                     data = zlib.decompress(data, zlib.MAX_WBITS + 16)
                 f.write(data)
                 f.close()
-            if os.path.getsize(tmpFile) > 256:
-                if os.path.exists(self.filePath):
-                    os.remove(self.filePath)
-                os.rename(tmpFile, self.filePath)
-                retVal = self.FETCH_OK
-                xbmc.log('[script.tvguide.fullscreen] file %s was downloaded' % self.filePath, xbmc.LOGDEBUG)
-            else:
-                retVal = self.FETCH_ERROR
+            if os.path.exists(self.filePath):
+                os.remove(self.filePath)
+            os.rename(tmpFile, self.filePath)                
+            #if os.path.getsize(tmpFile) > 256:
+            #    if os.path.exists(self.filePath):
+            #        os.remove(self.filePath)
+            #    os.rename(tmpFile, self.filePath)
+            #    retVal = self.FETCH_OK
+            #    xbmc.log('[script.tvguide.fullscreen] file %s was downloaded' % self.filePath, xbmc.LOGDEBUG)
+            #else:
+            #    retVal = self.FETCH_ERROR
         return retVal
