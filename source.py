@@ -165,8 +165,8 @@ class Database(object):
                     del self.eventQueue[:]
                     break
 
-            except Exception:
-                print 'Database.eventLoop() >>>>>>>>>> exception!'
+            except Exception as detail:
+                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s' % detail)
 
         print 'Database.eventLoop() >>>>>>>>>> exiting...'
 
@@ -249,11 +249,11 @@ class Database(object):
             self.conn.close()
 
     def _wasSettingsChanged(self, addon):
-        gType = GuideTypes()
-        if int(addon.getSetting('xmltv.type')) == gType.CUSTOM_FILE_ID:
-            settingsChanged = addon.getSetting('xmltv.refresh') == 'true'
-        else:
-            settingsChanged = False
+        #gType = GuideTypes()
+        #if int(addon.getSetting('xmltv.type')) == gType.CUSTOM_FILE_ID:
+        #    settingsChanged = addon.getSetting('xmltv.refresh') == 'true'
+        #else:
+        settingsChanged = False
         noRows = True
         count = 0
 
@@ -843,13 +843,13 @@ class Source(object):
 class XMLTVSource(Source):
     PLUGIN_DATA = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen'))
     KEY = 'xmltv'
-    INI_TYPE_FILE = 0
-    INI_TYPE_URL = 1
+    INI_TYPE_FTV = 0
+    INI_TYPE_CUSTOM = 1
     INI_FILE = 'addons.ini'
     LOGO_SOURCE_FOLDER = 0
     LOGO_SOURCE_URL = 1
-    XMLTV_TYPE_FILE = 0
-    XMLTV_TYPE_URL = 1
+    XMLTV_SOURCE_FILE = 0
+    XMLTV_SOURCE_URL = 1
 
     def __init__(self, addon):
         #gType = GuideTypes()
@@ -870,52 +870,41 @@ class XMLTVSource(Source):
         else:
             self.logoFolder = addon.getSetting('logos.url')
 
-        if self.xmltvType == XMLTVSource.XMLTV_TYPE_FILE:
+        if self.xmltvType == XMLTVSource.XMLTV_SOURCE_FILE:
             customFile = str(addon.getSetting('xmltv.file'))
-            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.file'), addon)
-            #if os.path.exists(customFile):
-            #    # uses local file provided by user!
-            #    xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
-            #    self.xmltvFile = customFile
-            #else:
-            #    # Probably a remote file
-            #    xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-            #    self.updateLocalFile(customFile, addon)
-            #    self.xmltvFile = os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+            if os.path.exists(customFile):
+                # uses local file provided by user!
+                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+                self.xmltvFile = customFile
+            else:
+                # Probably a remote file
+                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+                self.updateLocalFile(customFile, addon)
+                self.xmltvFile = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
         else:
-            #self.xmltvFile = self.updateLocalFile(gType.getGuideDataItem(self.xmltvType, gType.GUIDE_FILE), addon)
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
 
         # make sure the ini file is fetched as well if necessary
-        if self.addonsType == XMLTVSource.INI_TYPE_URL:
-            retVal = self.updateLocalFile(addon.getSetting('addons.ini.url'), addon, True)
-        else:
-            customFile = xbmc.translatePath(str(addon.getSetting('addons.ini.file')))
-            if not os.path.exists(customFile):
-                retVal = self.updateLocalFile(customFile, addon, True)
-            #if os.path.exists(customFile):
-            #    # uses local file provided by user!
-            #    xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
-            #else:
-            #    # Probably a remote file
-            #    xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-            #    self.updateLocalFile(customFile, addon, True)
 
-        path = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
+        if addon.getSetting('addons.ini.enabled') == 'true':
+            if self.addonsType == XMLTVSource.INI_TYPE_FTV:
+                customFile = str(addon.getSetting('addons.ini.file'))
+            else:
+                customFile = str(addon.getSetting('addons.ini.url'))
+            if customFile:
+                self.updateLocalFile(customFile, addon, True)
+
+        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
         if not xbmcvfs.exists(path):
             f = xbmcvfs.File(path,"w")
             f.close()
-            xbmc.log("addons.ini created")
-                
-        xbmc.log(self.xmltvFile)
+
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
 
+
     def updateLocalFile(self, name, addon, isIni=False):
-        if not name:
-            return ''
         fileName = os.path.basename(name)
-        xbmc.log(repr((fileName,name)))
         path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
         fetcher = FileFetcher(name, addon)
         retVal = fetcher.fetchFile()
@@ -927,7 +916,6 @@ class XMLTVSource(Source):
         return path
 
     def getDataFromExternal(self, date, progress_callback=None):
-        xbmc.log("getDataFromExternal %s" % self.xmltvFile)
         f = FileWrapper(self.xmltvFile)
         context = ElementTree.iterparse(f, events=("start", "end"))
         size = f.size
