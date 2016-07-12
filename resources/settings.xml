@@ -7,11 +7,13 @@
         <setting id="xmltv.url" label="XMLTV Url" type="text" visible="eq(-2,1)" />
         <setting id="xmltv.refresh" label="30149" type="bool" default="false" />
         <setting id="xmltv.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
-        <setting type="lsep" label="addons.ini is optional"/>
+        <setting type="lsep" label="Import addons.ini will overwrite added addon folders!"/>
         <setting id="addons.ini.enabled" label="Import addons.ini" type="bool" default="false" />
         <setting id="addons.ini.type" label="addons.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" default=''/>
         <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
+        <setting type="lsep" label="Refresh may take some time!"/>
+        <setting label="Refresh Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />        
 	</category>
 	
 	<category label="30148">
@@ -44,7 +46,5 @@
 		<setting type="lsep" label="30137"/>
 		<setting type="lsep" label="30138"/>
         <setting label="30139" type="action" action="RunScript($CWD/ResetDatabase.py)" />
-        <setting type="sep"/>
-        <setting label="Reload Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />
     </category>
 </settings>

@@ -47,6 +47,48 @@ def deleteDB():
         xbmc.log('[script.tvguide.fullscreen] Deleting database...EXCEPTION', xbmc.LOGDEBUG)
         return False
 
+def deleteAddons():
+    try:
+        xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...", xbmc.LOGDEBUG)
+        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getAddonInfo('profile'))
+        dbPath = os.path.join(dbPath, 'addons.ini')
+
+        delete_file(dbPath)
+
+        passed = not os.path.exists(dbPath)
+
+        if passed:
+            xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...PASSED", xbmc.LOGDEBUG)
+        else:
+            xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...FAILED", xbmc.LOGDEBUG)
+
+        return passed
+
+    except Exception, e:
+        xbmc.log('[script.tvguide.fullscreen] Deleting addons.ini...EXCEPTION', xbmc.LOGDEBUG)
+        return False
+
+def deleteFolders():
+    try:
+        xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...", xbmc.LOGDEBUG)
+        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getAddonInfo('profile'))
+        dbPath = os.path.join(dbPath, 'folders.list')
+
+        delete_file(dbPath)
+
+        passed = not os.path.exists(dbPath)
+
+        if passed:
+            xbmc.log("[script.tvguide.fullscreen] Deleting folders.list...PASSED", xbmc.LOGDEBUG)
+        else:
+            xbmc.log("[script.tvguide.fullscreen] Deleting folders.list...FAILED", xbmc.LOGDEBUG)
+
+        return passed
+
+    except Exception, e:
+        xbmc.log('[script.tvguide.fullscreen] Deleting folders.list...EXCEPTION', xbmc.LOGDEBUG)
+        return False
+
 def delete_file(filename):
     tries = 10
     while os.path.exists(filename) and tries > 0:
@@ -57,10 +99,12 @@ def delete_file(filename):
             tries -= 1
 
 if __name__ == '__main__':
+    deleteAddons()
+    deleteFolders()
     if deleteDB():
         d = xbmcgui.Dialog()
-        d.ok('FTV Guide', 'The database has been successfully deleted.', 'It will be re-created next time you start the guide')
+        d.ok('TV Guide', 'The database has been successfully deleted.', 'It will be re-created next time you start the guide')
     else:
         d = xbmcgui.Dialog()
-        d.ok('FTV Guide', 'Failed to delete database.', 'Database may be locked,', 'please restart XBMC and try again')
+        d.ok('TV Guide', 'Failed to delete database.', 'Database may be locked,', 'please restart and try again')
 
