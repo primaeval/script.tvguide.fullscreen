@@ -1601,11 +1601,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         self.previousDirsId
 
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
-        if int(ADDON.getSetting('addons.ini.type')) == 1:
-            customFile = str(ADDON.getSetting('addons.ini.file'))
-            if os.path.exists(customFile) and os.access(customFile,os.W_OK):
-                file_name = customFile
-        xbmc.log('[script.tvguide.fullscreen] exporting channels to' + customFile, xbmc.LOGDEBUG)
 
         f = xbmcvfs.File(file_name)
         items = f.read().splitlines()
@@ -1658,7 +1653,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 write_str = "%s=%s\n" % (name,stream)
                 f.write(write_str)
         f.close()
-        xbmc.log('[script.tvguide.fullscreen] export succeeded', xbmc.LOGDEBUG)
 
 
 
