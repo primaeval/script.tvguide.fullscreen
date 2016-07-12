@@ -1,8 +1,11 @@
 USAGE NOTES:
-- use Spoyser's repo for Super Favourites
+- "Import addons.ini" will overwrite addon folders on next timer
 - click to load in addon browse dialog
-- back out of app to reload added folders
-- reload all folders in settings (last page)
+- reload all folders in settings
+- use Spoyser's repo for Super Favourites
+
+version 0.0.18
+- addons will refresh without having to back out
 
 version 0.0.17
 - fix
