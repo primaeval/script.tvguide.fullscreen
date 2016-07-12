@@ -1053,7 +1053,7 @@ class XMLTVSource(Source):
                     logo = None
                     if logoFolder:
                         logoFile = os.path.join(logoFolder, title + '.png')
-                        if self.logoSource == XMLTVSource.LOGO_SOURCE_FTV:
+                        if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
                             logo = logoFile.replace(' ', '%20')  # needed due to fetching from a server!
                         elif xbmcvfs.exists(logoFile):
                             logo = logoFile  # local file instead of remote!
