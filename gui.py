@@ -139,7 +139,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.channelIdx = 0
         self.focusPoint = Point()
         self.epgView = EPGView()
-        self.streamingService = streaming.StreamsService(ADDON)
+        #self.streamingService = streaming.StreamsService(ADDON)
         self.player = xbmc.Player()
         self.database = None
 
@@ -206,6 +206,8 @@ class TVGuide(xbmcgui.WindowXML):
                 self.close()
                 return
             self.database.initialize(self.onSourceInitialized, self.isSourceInitializationCancelled)
+
+        self.streamingService = streaming.StreamsService(ADDON)
 
         self.updateTimebar()
 
@@ -413,6 +415,7 @@ class TVGuide(xbmcgui.WindowXML):
             d = StreamSetupDialog(self.database, program.channel)
             d.doModal()
             del d
+            self.streamingService = streaming.StreamsService(ADDON)
 
         elif buttonClicked == PopupMenu.C_POPUP_PLAY:
             self.playChannel(program.channel, program)
