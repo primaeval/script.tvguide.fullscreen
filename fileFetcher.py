@@ -86,7 +86,7 @@ class FileFetcher(object):
 
         if fetch:
             tmpFile = os.path.join(self.basePath, 'tmp')
-            if self.fileType == self.TYPE_REMOTE:
+            if self.fileType == self.TYPE_DEFAULT:
                 xbmc.log('[script.tvguide.fullscreen] file is in remote location: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 if not xbmcvfs.copy(self.fileUrl, tmpFile):
                     xbmc.log('[script.tvguide.fullscreen] Remote file couldn\'t be copied: %s' % self.fileUrl, xbmc.LOGERROR)
