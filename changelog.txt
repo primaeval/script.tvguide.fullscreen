@@ -4,6 +4,10 @@ USAGE NOTES:
 - back out of app to reload added folders
 - reload all folders in settings (last page)
 
+version 0.0.16
+- file/url options for all data
+- WARNING! probably needs a settings reset
+
 version 0.0.15
 - super favourites fix
 
