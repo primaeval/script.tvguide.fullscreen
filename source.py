@@ -30,7 +30,7 @@ from xml.etree import ElementTree
 import re
 
 from strings import *
-from guideTypes import *
+#from guideTypes import *
 from fileFetcher import *
 
 import xbmc
@@ -846,11 +846,13 @@ class XMLTVSource(Source):
     INI_TYPE_FTV = 0
     INI_TYPE_CUSTOM = 1
     INI_FILE = 'addons.ini'
-    LOGO_SOURCE_FTV = 0
-    LOGO_SOURCE_CUSTOM = 1
+    LOGO_SOURCE_FOLDER = 0
+    LOGO_SOURCE_URL = 1
+    XMLTV_SOURCE_FILE = 0
+    XMLTV_SOURCE_URL = 1    
 
     def __init__(self, addon):
-        gType = GuideTypes()
+        #gType = GuideTypes()
 
         self.needReset = False
         self.fetchError = False
@@ -863,12 +865,12 @@ class XMLTVSource(Source):
         if not os.path.exists(XMLTVSource.PLUGIN_DATA):
             os.makedirs(XMLTVSource.PLUGIN_DATA)
 
-        if self.logoSource == XMLTVSource.LOGO_SOURCE_FTV:
-            self.logoFolder = MAIN_URL + 'logos/'
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
+            self.logoFolder = addon.getSetting('logos.folder')
         else:
-            self.logoFolder = str(addon.getSetting('logos.folder'))
+            self.logoFolder = addon.getSetting('logos.url')
 
-        if self.xmltvType == gType.CUSTOM_FILE_ID:
+        if self.xmltvType == XMLTVSource.XMLTV_SOURCE_FILE:
             customFile = str(addon.getSetting('xmltv.file'))
             if os.path.exists(customFile):
                 # uses local file provided by user!
@@ -878,9 +880,9 @@ class XMLTVSource(Source):
                 # Probably a remote file
                 xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
                 self.updateLocalFile(customFile, addon)
-                self.xmltvFile = os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+                self.xmltvFile = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
         else:
-            self.xmltvFile = self.updateLocalFile(gType.getGuideDataItem(self.xmltvType, gType.GUIDE_FILE), addon)
+            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
 
         # make sure the ini file is fetched as well if necessary
         if self.addonsType == XMLTVSource.INI_TYPE_FTV:
@@ -899,7 +901,8 @@ class XMLTVSource(Source):
             raise SourceNotConfiguredException()
 
     def updateLocalFile(self, name, addon, isIni=False):
-        path = os.path.join(XMLTVSource.PLUGIN_DATA, name)
+        fileName = os.path.basename(name)
+        path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
         fetcher = FileFetcher(name, addon)
         retVal = fetcher.fetchFile()
         if retVal == fetcher.FETCH_OK and not isIni:

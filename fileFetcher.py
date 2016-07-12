@@ -26,7 +26,7 @@ import urllib2
 import datetime
 import zlib
 
-MAIN_URL = 'http://thaisatellite.tv/ftv/'
+#MAIN_URL = 'http://thaisatellite.tv/ftv/'
 
 
 class FileFetcher(object):
@@ -59,8 +59,8 @@ class FileFetcher(object):
             self.filePath = os.path.join(self.basePath, fileName.split('/')[-1])
         else:
             self.fileType = self.TYPE_DEFAULT
-            self.fileUrl = MAIN_URL + fileName
-            self.filePath = os.path.join(self.basePath, fileName)
+            self.fileUrl = fileName
+            self.filePath = os.path.join(self.basePath,os.path.basename(fileName))
 
         # make sure the folder is actually there already!
         if not os.path.exists(self.basePath):
