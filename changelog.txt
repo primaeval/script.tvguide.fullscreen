@@ -4,6 +4,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.23
+- cyan theme
+
 version 0.0.22
 - fix for large xmltv files
 - more space for program info
