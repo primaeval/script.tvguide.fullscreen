@@ -63,7 +63,7 @@
         <control type="group">
             <description>TV Guide group</description>
             <posx>0</posx>
-            <posy>40</posy>
+            <posy>60</posy>
             <width>1280</width>
             <height>720</height>
             <visible>!Control.IsVisible(5000)</visible>
@@ -71,7 +71,7 @@
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
-                <posy>40</posy>
+                <posy>60</posy>
                 <width>1100</width>
                 <height>450</height>
                 <visible>false</visible>
@@ -94,9 +94,9 @@
             <control type="image" id="4601">
                 <description>header</description>
                 <posx>0</posx>
-                <posy>-40</posy>
+                <posy>-60</posy>
                 <width>1280</width>
-                <height>38</height>
+                <height>58</height>
                 <texture>black-back.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
@@ -195,7 +195,8 @@
                     <posy>0</posy>
                     <width>180</width>
                     <height>50</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>cyan</textcolor>
+                    <shadowcolor>black</shadowcolor>
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -204,18 +205,34 @@
                 </control>
 
                 <control type="label" id="3999">
-                    <description>Displays todays date</description>
+                    <description>Displays date</description>
                     <posx>0r</posx>
-                    <posy>-40</posy>
+                    <posy>-20</posy>
                     <width>280</width>
-                    <height>40</height>
+                    <height>20</height>
                     <textcolor>ffffffff</textcolor>
+                    <shadowcolor>black</shadowcolor>
                     <font>font13</font>
                     <align>right</align>
-
+                    <aligny>center</aligny>
+                    <visible>false</visible>
                 </control>
-
-
+                
+                <control type="label">
+                    <description>Displays todays date</description>
+                    <posx>0r</posx>
+                    <posy>-20</posy>
+                    <width>280</width>
+                    <height>20</height>
+                    <textcolor>ffffffff</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <font>font13</font>
+                    <align>right</align>
+                    <aligny>center</aligny>
+                    <visible>true</visible>
+                    <label>$INFO[System.Date]</label>
+                </control>
+                
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
@@ -251,7 +268,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>cyan</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -261,7 +278,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>cyan</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -271,7 +288,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>cyan</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -281,7 +298,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>cyan</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
