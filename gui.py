@@ -75,6 +75,10 @@ SKIN = ADDON.getSetting('skin')
 def debug(s):
     if DEBUG: xbmc.log(str(s), xbmc.LOGDEBUG)
 
+def remove_formatting(label):
+    label = re.sub(r"\[/?[BI]\]",'',label)
+    label = re.sub(r"\[/?COLOR.*?\]",'',label)
+    return label
 
 class Point(object):
     def __init__(self):
@@ -1364,7 +1368,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         response = RPC.addons.get_addons(type="xbmc.addon.video",properties=["name", "thumbnail"])
         addons = response["addons"]
         items = list()
-        addons = sorted(addons, key=lambda addon: addon['name'])
+        addons = sorted(addons, key=lambda addon: remove_formatting(addon['name']).lower())
         for addon in addons:
             item = xbmcgui.ListItem(addon['name'], iconImage=addon['thumbnail'])
             item.setProperty('addon_id', addon['addonid'])
