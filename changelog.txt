@@ -5,6 +5,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.25
+- tweaks
+
 version 0.0.24
 - cyan theme with original 8 channel sizing
 
