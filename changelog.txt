@@ -4,6 +4,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.19
+- channels per page setting
+
 version 0.0.18
 - addons will refresh without having to back out
 
