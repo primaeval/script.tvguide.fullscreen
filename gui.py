@@ -524,6 +524,9 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
         else:
             self.setControlImage(self.C_MAIN_IMAGE, '')
+        if program.imageLarge is not None:
+            self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
+
 
         if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
             self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
