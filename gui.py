@@ -722,12 +722,15 @@ class TVGuide(xbmcgui.WindowXML):
                     self.setControlImage(4110 + idx, ' ')
             control = self.getControl(4010 + idx)
             height = self.epgView.cellHeight
+            xbmc.log(repr(height))
             top = self.epgView.cellHeight * idx -2
             if control:
                 control.setHeight(self.epgView.cellHeight)
+                control.setWidth(160)
                 control.setPosition(10,top)
             control = self.getControl(4110 + idx)
             if control:
+                control.setWidth(160)
                 control.setHeight(self.epgView.cellHeight)
                 control.setPosition(10,top)
 

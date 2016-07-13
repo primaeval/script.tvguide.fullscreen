@@ -294,6 +294,199 @@
                 <width>180</width>
                 <height>640</height>
                 <visible>true</visible>
+                
+                <!-- logo images backgrounds -->
+                <control type="image" id="4210">
+                    <description>1st channel</description>
+                    <posx>10</posx>
+                    <posy>0</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4110),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4211">
+                    <description>2nd channel</description>
+                    <posx>10</posx>
+                    <posy>40</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4111),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4212">
+                    <description>3rd channel</description>
+                    <posx>10</posx>
+                    <posy>80</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4112),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4213">
+                    <description>4th channel</description>
+                    <posx>10</posx>
+                    <posy>120</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4113),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4214">
+                    <description>5th channel</description>
+                    <posx>10</posx>
+                    <posy>160</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4114),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4215">
+                    <description>6th channel</description>
+                    <posx>10</posx>
+                    <posy>200</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4115),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>                    
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4216">
+                    <description>7th channel</description>
+                    <posx>10</posx>
+                    <posy>240</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4116),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4217">
+                    <description>8th channel</description>
+                    <posx>10</posx>
+                    <posy>280</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4117),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4218">
+                    <description>9th channel</description>
+                    <posx>10</posx>
+                    <posy>320</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4118),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                </control>
+                <control type="image" id="4219">
+                    <description>10 channel</description>
+                    <posx>10</posx>
+                    <posy>360</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4119),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4220">
+                    <description>11 channel</description>
+                    <posx>10</posx>
+                    <posy>400</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4120),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4221">
+                    <description>12 channel</description>
+                    <posx>10</posx>
+                    <posy>440</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4121),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4222">
+                    <description>13 channel</description>
+                    <posx>10</posx>
+                    <posy>480</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4122),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4223">
+                    <description>14th channel</description>
+                    <posx>10</posx>
+                    <posy>520</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4123),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4224">
+                    <description>15th channel</description>
+                    <posx>10</posx>
+                    <posy>560</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4124),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>
+                <control type="image" id="4225">
+                    <description>16th channel</description>
+                    <posx>10</posx>
+                    <posy>600</posy>
+                    <width>160</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(4125),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black.png</texture>
+                </control>                
 
                 <!-- text labels -->
                 <control type="label" id="4010">
