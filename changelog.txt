@@ -5,6 +5,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.26
+- date and channel are back
+- channels word number match
+
 version 0.0.25
 - tweaks
 
