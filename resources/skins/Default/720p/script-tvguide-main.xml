@@ -78,7 +78,7 @@
                 <posx>180</posx>
                 <posy>40</posy>
                 <width>1100</width>
-                <height>560</height>
+                <height>520</height>
                 <visible>false</visible>
             </control>
 
@@ -87,7 +87,7 @@
                 <posx>0</posx>
                 <posy>-2</posy>
                 <width>1280</width>
-                <height>562</height>
+                <height>522</height>
                 <texture>black.png</texture>
                 <visible>!Player.HasMedia</visible>
             </control>
@@ -108,7 +108,7 @@
             <control type="image">
                 <description>footer</description>
                 <posx>0</posx>
-                <posy>560</posy>
+                <posy>520</posy>
                 <width>1280</width>
                 <height>120</height>
                 <texture>black-back.png</texture>
@@ -124,7 +124,7 @@
                 <posx>180</posx>
                 <posy>0</posy>
                 <width>-10</width>
-                <height>560</height>
+                <height>516</height>
                 <visible>true</visible>
                 <texture>cyan.png</texture>
             </control>
@@ -882,7 +882,7 @@
             <control type="label" id="7020">
                 <description>Program title</description>
                 <posx>190</posx>
-                <posy>560</posy>
+                <posy>520</posy>
                 <width>630</width>
                 <height>50</height>
                 <textcolor>cyan</textcolor>
@@ -904,7 +904,7 @@
             <control type="label" id="7021">
                 <description>Program time</description>
                 <posx>1260</posx>
-                <posy>560</posy>
+                <posy>520</posy>
                 <width>1090</width>
                 <height>50</height>
                 <textcolor>cyan</textcolor>
@@ -916,7 +916,7 @@
             <control type="label" id="7022">
                 <description>Program description</description>
                 <posx>190</posx>
-                <posy>585</posy>
+                <posy>545</posy>
                 <width>1090</width>
                 <height>100</height>
                 <textcolor>cyan</textcolor>
@@ -929,7 +929,7 @@
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
                 <posx>0</posx>
-                <posy>560</posy>
+                <posy>520</posy>
                 <width>180</width>
                 <height>120</height>
                 <aspectratio>stretch</aspectratio>
