@@ -107,6 +107,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_DESCRIPTION = 7022
     C_MAIN_IMAGE = 7023
     C_MAIN_LOGO = 7024
+    C_MAIN_CHANNEL = 7025
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -512,6 +513,8 @@ class TVGuide(xbmcgui.WindowXML):
             description = ""
         self.setControlText(self.C_MAIN_DESCRIPTION, description)
 
+        self.setControlText(self.C_MAIN_CHANNEL, '[B]%s[/B]' % program.channel.title)
+        
         if program.channel.logo is not None:
             self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
         else:
