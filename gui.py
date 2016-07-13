@@ -66,7 +66,7 @@ KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
 KEY_ESC = 61467
 
-CHANNELS_PER_PAGE = 14
+CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
 HALF_HOUR = datetime.timedelta(minutes=30)
 
@@ -716,6 +716,16 @@ class TVGuide(xbmcgui.WindowXML):
                     self.setControlImage(4110 + idx, channel.logo)
                 else:
                     self.setControlImage(4110 + idx, ' ')
+            control = self.getControl(4010 + idx)
+            height = self.epgView.cellHeight
+            top = self.epgView.cellHeight * idx -2
+            if control:
+                control.setHeight(self.epgView.cellHeight)
+                control.setPosition(10,top)
+            control = self.getControl(4110 + idx)
+            if control:
+                control.setHeight(self.epgView.cellHeight)
+                control.setPosition(10,top)
 
         for program in programs:
             idx = channels.index(program.channel)
