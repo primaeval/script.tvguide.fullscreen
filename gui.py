@@ -1429,7 +1429,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             self.database.setCustomStreamUrl(self.channel, self.strmFile)
             self.close()
 
-        elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:
+        elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_BROWSE_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:
             self.close()
 
         elif controlId in [self.C_STREAM_ADDONS_PREVIEW, self.C_STREAM_BROWSE_PREVIEW, self.C_STREAM_FAVOURITES_PREVIEW, self.C_STREAM_STRM_PREVIEW]:
