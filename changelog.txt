@@ -1,8 +1,11 @@
 USAGE NOTES:
-- "Import addons.ini" will overwrite addon folders on next timer
+- "Import addons.ini" will overwrite addon folders on next update timer
 - click to load in addon browse dialog
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.20
+- sort addons properly
 
 version 0.0.19
 - channels per page setting
