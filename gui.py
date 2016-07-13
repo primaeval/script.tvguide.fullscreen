@@ -702,7 +702,8 @@ class TVGuide(xbmcgui.WindowXML):
         channelsWithoutPrograms = list(channels)
 
         # date and time row
-        self.setControlLabel(self.C_MAIN_DATE, self.formatDate(self.viewStartDate, False))
+        self.setControlLabel(self.C_MAIN_DATE, self.viewStartDate.strftime("%A"))
+        #self.setControlLabel(self.C_MAIN_DATE, self.formatDate(self.viewStartDate, False))
         self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
         for col in range(1, 5):
             self.setControlLabel(4000 + col, self.formatTime(startTime))

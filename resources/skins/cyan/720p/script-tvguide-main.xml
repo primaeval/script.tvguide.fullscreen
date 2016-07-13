@@ -191,15 +191,16 @@
 
                 <control type="label" id="4000">
                     <description>Displays todays date</description>
-                    <posx>0r</posx>
+                    <posx>0</posx>
                     <posy>0</posy>
                     <width>180</width>
-                    <height>40</height>
+                    <height>50</height>
                     <textcolor>ffffffff</textcolor>
                     <font>font13</font>
-                    <align>right</align>
+                    <align>center</align>
+                    <aligny>center</aligny>
 
-                    <visible>false</visible>
+                    <visible>true</visible>
                 </control>
 
                 <control type="label" id="3999">
