@@ -25,6 +25,8 @@ import os
 import urllib2
 import datetime
 import zlib
+import requests
+
 
 #MAIN_URL = 'http://thaisatellite.tv/ftv/'
 
@@ -93,11 +95,10 @@ class FileFetcher(object):
             else:
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
-                tmpData = urllib2.urlopen(self.fileUrl)
-                data = tmpData.read()
-                if tmpData.info().get('content-encoding') == 'gzip':
-                    data = zlib.decompress(data, zlib.MAX_WBITS + 16)
-                f.write(data)
+                r = requests.get(self.fileUrl)
+                chunk_size = 16 * 1024
+                for chunk in r.iter_content(chunk_size):
+                    f.write(chunk)
                 f.close()
             if os.path.getsize(tmpFile) > 256:
                 if os.path.exists(self.filePath):
