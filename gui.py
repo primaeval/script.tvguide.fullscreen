@@ -713,7 +713,11 @@ class TVGuide(xbmcgui.WindowXML):
             if idx >= len(channels):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
+                control = self.getControl(4210 + idx)
+                control.setVisible(False)
             else:
+                control = self.getControl(4210 + idx)
+                control.setVisible(True)
                 channel = channels[idx]
                 self.setControlLabel(4010 + idx, channel.title)
                 if (channel.logo is not None and showLogo == True):
@@ -722,17 +726,29 @@ class TVGuide(xbmcgui.WindowXML):
                     self.setControlImage(4110 + idx, ' ')
             control = self.getControl(4010 + idx)
             height = self.epgView.cellHeight
-            xbmc.log(repr(height))
-            top = self.epgView.cellHeight * idx -2
+            top = self.epgView.cellHeight * idx
+            control = self.getControl(4210 + idx)
             if control:
-                control.setHeight(self.epgView.cellHeight)
-                control.setWidth(160)
-                control.setPosition(10,top)
+                control.setHeight(self.epgView.cellHeight-2)
+                control.setWidth(176)
+                control.setPosition(2,top)
+            control = self.getControl(4010 + idx)
+            if control:
+                control.setHeight(self.epgView.cellHeight-2)
+                control.setWidth(176)
+                control.setPosition(2,top)
             control = self.getControl(4110 + idx)
             if control:
-                control.setWidth(160)
-                control.setHeight(self.epgView.cellHeight)
-                control.setPosition(10,top)
+                control.setWidth(176)
+                control.setHeight(self.epgView.cellHeight-2)
+                control.setPosition(2,top)
+        for idx in range(CHANNELS_PER_PAGE,16):
+            control = self.getControl(4010 + idx)
+            control.setVisible(False)
+            control = self.getControl(4110 + idx)
+            control.setVisible(False)
+            control = self.getControl(4210 + idx)
+            control.setVisible(False)
 
         for program in programs:
             idx = channels.index(program.channel)
@@ -795,9 +811,9 @@ class TVGuide(xbmcgui.WindowXML):
         last = len(channels)
         if last < CHANNELS_PER_PAGE:
             control = xbmcgui.ControlImage(
-                self.epgView.left,
+                2,
                 self.epgView.top + self.epgView.cellHeight * last,
-                (self.epgView.right - self.epgView.left) - 2,
+                (self.epgView.right - 2) - 2,
                 (self.epgView.cellHeight * (CHANNELS_PER_PAGE - last))  - 2,
                 'black-back.png',
             )
