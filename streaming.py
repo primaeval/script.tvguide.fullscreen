@@ -110,11 +110,13 @@ class StreamsService(object):
                     numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine" , "ten"]
                     for num in range(1,11):
                         word = numbers[num-1]
-                        labelnum = re.sub(word,str(num),labelx)
+                        labelnum = re.sub(word,str(num),label.lower())
+                        labelnum = re.sub(r' ','',labelnum)
                         if re.match(titleRe,labelnum):
+                            #xbmc.log(repr((titleRe,labelnum,id, label, stream)))
                             matches.append((id, label, stream))
-
-
+        matches = set(matches)
+        matches = sorted(matches, key=lambda match: match[1])
         if len(matches) == 1:
             return matches[0][2]
         else:
