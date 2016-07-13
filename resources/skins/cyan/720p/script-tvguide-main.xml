@@ -900,12 +900,13 @@
                 <description>Channel name</description>
                 <posx>10</posx>
                 <posy>470</posy>
-                <width>630</width>
+                <width>170</width>
                 <height>50</height>
                 <textcolor>cyan</textcolor>
                 <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
+                <scroll>true</scroll>
             </control>
             <control type="label" id="7020">
                 <description>Program title</description>
@@ -946,7 +947,7 @@
                 <posx>190</posx>
                 <posy>505</posy>
                 <width>1090</width>
-                <height>150</height>
+                <height>130</height>
                 <textcolor>cyan</textcolor>
                 <font>font13</font>
                 <align>justify</align>

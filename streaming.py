@@ -102,11 +102,18 @@ class StreamsService(object):
                 if label == channel.title:
                     matches.append((id, label, stream))
                 else:
-                    labelx = re.sub(r' ','',label.lower()) 
+                    labelx = re.sub(r' ','',label.lower())
                     title = re.sub(r' ','',channel.title.lower())
                     titleRe = r"^%s" % title
                     if re.match(titleRe,labelx):
                         matches.append((id, label, stream))
+                    numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine" , "ten"]
+                    for num in range(1,11):
+                        word = numbers[num-1]
+                        labelnum = re.sub(word,str(num),labelx)
+                        if re.match(titleRe,labelnum):
+                            matches.append((id, label, stream))
+
 
         if len(matches) == 1:
             return matches[0][2]

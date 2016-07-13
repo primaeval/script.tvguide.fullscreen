@@ -826,7 +826,7 @@ class TVGuide(xbmcgui.WindowXML):
                 (self.epgView.cellHeight * (CHANNELS_PER_PAGE - last))  - 2,
                 'black-back.png',
             )
-            program = src.Program(channel, "", None, None, None)
+            program = src.Program(None, "", None, None, None)
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
         top = self.epgView.cellHeight * CHANNELS_PER_PAGE
