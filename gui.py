@@ -120,6 +120,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_RIGHT = 4305
     C_MAIN_MOUSE_EXIT = 4306
     C_MAIN_BACKGROUND = 4600
+    C_MAIN_HEADER = 4601
+    C_MAIN_FOOTER = 4602
     C_MAIN_EPG = 5000
     C_MAIN_EPG_VIEW_MARKER = 5001
     C_MAIN_OSD = 6000
@@ -819,6 +821,17 @@ class TVGuide(xbmcgui.WindowXML):
             )
             program = src.Program(channel, "", None, None, None)
             self.controlAndProgramList.append(ControlAndProgram(control, program))
+
+        top = self.epgView.cellHeight * CHANNELS_PER_PAGE
+        height = 720 - top
+        control = self.getControl(self.C_MAIN_FOOTER)
+        if control:
+            control.setPosition(0,top)
+            control.setHeight(height)
+        control = self.getControl(self.C_MAIN_TIMEBAR)
+        if control:
+            control.setHeight(top)
+
 
         # add program controls
         if focusFunction is None:

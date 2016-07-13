@@ -92,7 +92,7 @@
                 <visible>!Player.HasMedia</visible>
             </control>
 
-            <control type="image">
+            <control type="image" id="4601">
                 <description>header</description>
                 <posx>0</posx>
                 <posy>-40</posy>
@@ -105,7 +105,7 @@
                 <fadetime>200</fadetime>
 
             </control>
-            <control type="image">
+            <control type="image" id="4602">
                 <description>footer</description>
                 <posx>0</posx>
                 <posy>450</posy>
