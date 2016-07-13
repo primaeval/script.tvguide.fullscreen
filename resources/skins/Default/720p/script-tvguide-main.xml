@@ -885,7 +885,7 @@
                 <posy>520</posy>
                 <width>630</width>
                 <height>50</height>
-                <textcolor>cyan</textcolor>
+                <textcolor>orange</textcolor>
                 <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
@@ -907,7 +907,7 @@
                 <posy>520</posy>
                 <width>1090</width>
                 <height>50</height>
-                <textcolor>cyan</textcolor>
+                <textcolor>orange</textcolor>
                 <font>font13</font>
                 <align>right</align>
 
@@ -919,7 +919,7 @@
                 <posy>545</posy>
                 <width>1090</width>
                 <height>100</height>
-                <textcolor>cyan</textcolor>
+                <textcolor>orange</textcolor>
                 <font>font13</font>
                 <align>justify</align>
                 <wrapmultiline>true</wrapmultiline>
