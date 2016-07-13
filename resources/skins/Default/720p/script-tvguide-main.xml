@@ -90,6 +90,10 @@
                 <height>522</height>
                 <texture>grey.png</texture>
                 <visible>!Player.HasMedia</visible>
+                <aspectratio>scale</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <fadetime>200</fadetime>
             </control>
 
             <control type="image" id="4601">
@@ -294,7 +298,7 @@
                 <width>180</width>
                 <height>640</height>
                 <visible>true</visible>
-                
+
                 <!-- logo images backgrounds -->
                 <control type="image" id="4210">
                     <description>1st channel</description>
@@ -365,7 +369,7 @@
                     <aspectratio>stretch</aspectratio>
                     <visible>Control.IsVisible(4015)|Control.IsVisible(4115)</visible>
                     <align>center</align>
-                    <aligny>center</aligny>                    
+                    <aligny>center</aligny>
                     <texture>black-back.png</texture>
                 </control>
                 <control type="image" id="4216">
@@ -487,7 +491,7 @@
                     <align>center</align>
                     <aligny>center</aligny>
                     <texture>black-back.png</texture>
-                </control>                
+                </control>
 
                 <!-- text labels -->
                 <control type="label" id="4010">
@@ -932,7 +936,7 @@
                 <posy>520</posy>
                 <width>180</width>
                 <height>120</height>
-                <aspectratio>stretch</aspectratio>
+                <aspectratio>keep</aspectratio>
 
                 <fadetime>500</fadetime>
                 <texture>-</texture>
