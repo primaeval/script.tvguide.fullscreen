@@ -1,8 +1,12 @@
 USAGE NOTES:
 - "Import addons.ini" will overwrite addon folders on next update timer
+- use cyan theme with 8 channels per page to match original tv guide icon layout
 - click to load in addon browse dialog
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.24
+- cyan theme with original 8 channel sizing
 
 version 0.0.23
 - cyan theme
