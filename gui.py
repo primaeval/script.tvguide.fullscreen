@@ -514,7 +514,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.setControlText(self.C_MAIN_DESCRIPTION, description)
 
         self.setControlText(self.C_MAIN_CHANNEL, '[B]%s[/B]' % program.channel.title)
-        
+
         if program.channel.logo is not None:
             self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
         else:
@@ -1674,9 +1674,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     if url:
                         streams[addonId][name] = url
 
-        listControl = self.getControl(self.C_STREAM_BROWSE_ADDONS)
-        listItem = listControl.getSelectedItem()
-        addonId=listItem.getProperty('addon_id')
+        addonId = self.previousBrowseId
         if addonId not in streams:
             streams[addonId] = {}
 
