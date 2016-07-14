@@ -104,7 +104,7 @@ class StreamsService(object):
                 else:
                     labelx = re.sub(r' ','',label.lower())
                     title = re.sub(r' ','',channel.title.lower())
-                    titleRe = r"^%s" % title
+                    titleRe = r".*%s.*" % title
                     if re.match(titleRe,labelx):
                         matches.append((id, label, stream))
                     numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine" , "ten"]
@@ -113,7 +113,6 @@ class StreamsService(object):
                         labelnum = re.sub(word,str(num),label.lower())
                         labelnum = re.sub(r' ','',labelnum)
                         if re.match(titleRe,labelnum):
-                            #xbmc.log(repr((titleRe,labelnum,id, label, stream)))
                             matches.append((id, label, stream))
         matches = set(matches)
         matches = sorted(matches, key=lambda match: match[1])
