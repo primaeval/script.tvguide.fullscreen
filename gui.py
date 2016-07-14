@@ -152,6 +152,18 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.mode = MODE_EPG
         self.currentChannel = None
+        
+        self.category = None
+        #self.categories = set()
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+        lines = f.read().splitlines()
+        f.close()
+        categories = set()
+        for line in lines:
+            name,cat = line.split('=')
+            categories.add(cat)
+        categories = sorted(categories)
+        self.categories = categories
 
         self.osdEnabled = False
         #self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
@@ -164,6 +176,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.viewStartDate = datetime.datetime.today()
         self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                  seconds=self.viewStartDate.second)
+
 
     def getControl(self, controlId):
         try:
@@ -405,10 +418,14 @@ class TVGuide(xbmcgui.WindowXML):
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
-        d = PopupMenu(self.database, program, not program.notificationScheduled)
+        d = PopupMenu(self.database, program, not program.notificationScheduled, self.categories)
         d.doModal()
         buttonClicked = d.buttonClicked
+        self.category = d.category
         del d
+        xbmc.log(repr(buttonClicked))
+        #xbmc.log(self.category)
+        
 
         if buttonClicked == PopupMenu.C_POPUP_REMIND:
             if program.notificationScheduled:
@@ -417,12 +434,38 @@ class TVGuide(xbmcgui.WindowXML):
                 self.notification.addNotification(program)
 
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            
+        elif buttonClicked == 80003:
+            dialog = xbmcgui.Dialog()
+            cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
+            if cat:
+                categories = set(self.categories)
+                categories.add(cat)
+                self.categories = categories
+                
+        elif buttonClicked == 80004:
+            dialog = xbmcgui.Dialog()
+            categories = sorted(self.categories)
+            ret = dialog.select('Remove Category', categories)
 
+            if ret:
+                xbmc.log(repr(ret))
+                xbmc.log(repr(categories))
+                categories.remove(categories[ret])
+                xbmc.log(repr(categories))
+                self.categories = categories
+                
+
+        elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
+     
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            
         elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_STREAM:
             d = StreamSetupDialog(self.database, program.channel)
             d.doModal()
             del d
             self.streamingService = streaming.StreamsService(ADDON)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_PLAY:
             self.playChannel(program.channel, program)
@@ -697,7 +740,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._clearEpg()
 
         try:
-            self.channelIdx, channels, programs = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False)
+            self.channelIdx, channels, programs = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False, category=self.category)
         except src.SourceException:
             self.onEPGLoadError()
             return
@@ -1078,6 +1121,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_LABEL = 7000
     C_POPUP_PROGRAM_LABEL = 7001
     C_POPUP_PROGRAM_IMAGE = 7002
+    C_POPUP_CATEGORY = 7004
+    C_POPUP_SET_CATEGORY = 7005
     C_POPUP_PLAY = 4000
     C_POPUP_CHOOSE_STREAM = 4001
     C_POPUP_REMIND = 4002
@@ -1093,10 +1138,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_VIDEOADDONS = 80002
 
 
-    def __new__(cls, database, program, showRemind):
+    def __new__(cls, database, program, showRemind, categories):
         return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', ADDON.getAddonInfo('path'), SKIN)
 
-    def __init__(self, database, program, showRemind):
+    def __init__(self, database, program, showRemind, categories):
         """
 
         @type database: source.Database
@@ -1109,6 +1154,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         self.program = program
         self.showRemind = showRemind
         self.buttonClicked = None
+        self.category = None
+        self.categories = categories
 
     def onInit(self):
         labelControl = self.getControl(self.C_POPUP_LABEL)
@@ -1121,6 +1168,25 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
         programSuperFavourites = self.getControl(self.C_POPUP_SUPER_FAVOURITES)
+        '''
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+        lines = f.read().splitlines()
+        xbmc.log(repr(lines))
+        f.close()
+        categories = set()
+        for line in lines:
+            name,cat = line.split('=')
+            #xbmc.log(repr((name,cat)))
+            categories.add(cat)
+        categories = sorted(categories)
+        categories = ["Any"] + categories
+        '''
+        items = list()
+        for label in self.categories:
+            item = xbmcgui.ListItem(label)
+            items.append(item)
+        listControl = self.getControl(self.C_POPUP_CATEGORY)
+        listControl.addItems(items)
 
         playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
         if not self.program.channel.isPlayable():
@@ -1165,7 +1231,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             self.close()
             return
 
-    def onClick(self, controlId):
+    def onClick(self, controlId):  
         if controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
             self.database.deleteCustomStreamUrl(self.program.channel)
             chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
@@ -1174,7 +1240,18 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if not self.program.channel.isPlayable():
                 playControl = self.getControl(self.C_POPUP_PLAY)
                 playControl.setEnabled(False)
-
+        elif controlId == self.C_POPUP_CATEGORY:
+            #xbmc.log("pop id %s" % controlId)
+            cList = self.getControl(self.C_POPUP_CATEGORY)
+            #xbmc.log(repr(cList.getId()))
+            #xbmc.log(repr(cList.size()))
+            item = cList.getSelectedItem()
+            #xbmc.log(repr(item.getLabel()))
+            if item:
+                self.category = item.getLabel()
+            xbmc.log(self.category)        
+            self.buttonClicked = controlId
+            self.close()
         else:
             self.buttonClicked = controlId
             self.close()

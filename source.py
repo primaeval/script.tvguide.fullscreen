@@ -435,27 +435,48 @@ class Database(object):
             c.close()
 
     def getEPGView(self, channelStart, date=datetime.datetime.now(), progress_callback=None,
-                   clearExistingProgramList=True):
+                   clearExistingProgramList=True,category=None):
         result = self._invokeAndBlockForResult(self._getEPGView, channelStart, date, progress_callback,
-                                               clearExistingProgramList)
+                                               clearExistingProgramList, category)
 
         if self.updateFailed:
             raise SourceException('No channels or programs imported')
 
         return result
 
-    def _getEPGView(self, channelStart, date, progress_callback, clearExistingProgramList):
+    def _getEPGView(self, channelStart, date, progress_callback, clearExistingProgramList, category):
         self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
 
         channels = self._getChannelList(onlyVisible=True)
 
-        new_channels = []
-        for channel in channels:
-            xbmc.log(repr(channel.title))
-            if channel.title in [u"RTÉ One",u"BBC One",u"BBC Two",u"BBC Four"]:
-                xbmc.log("XXX")
-                new_channels.append(channel)
-        channels = new_channels
+        xbmc.log("CATEGORY %s" % category)
+        if category and category != "Any":
+            xbmc.log("READ")
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+            lines = f.read().splitlines()
+            xbmc.log(repr(lines))
+            f.close()
+            filter = set()
+            for line in lines:
+                name,cat = line.split('=')
+                #xbmc.log(repr((name,cat)))
+                if cat == category:
+                    #xbmc.log(repr(name))
+                    filter.add(name)
+                    
+
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channels.ini','wb')
+            new_channels = []
+            for channel in channels:
+                f.write("%s=Sports\n" % channel.title.encode("utf8"))
+                #xbmc.log(repr(channel.title))
+                #if channel.title in [u"RTÉ One",u"BBC One",u"BBC Two",u"BBC Four"]:
+                xbmc.log(repr((channel.title,filter)))
+                if channel.title in filter:
+                    #xbmc.log("XXX")
+                    new_channels.append(channel)
+            channels = new_channels
+            f.close()
         #channels = [channel in channels if (channel.title in ["RTÉ One","BBC One","BBC Two","BBC Four"])]
 
         if channelStart < 0:
