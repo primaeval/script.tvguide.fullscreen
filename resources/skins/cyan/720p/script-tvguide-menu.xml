@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window type="dialog">
-	<allowoverlay>no</allowoverlay>
-	<defaultcontrol always="false">4000</defaultcontrol>
-	<coordinates>
-		<system>1</system>
-		<posx>0</posx>
-		<posy>0</posy>
-	</coordinates>
+    <allowoverlay>no</allowoverlay>
+    <defaultcontrol always="false">4000</defaultcontrol>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
 
     <controls>
 
         <control type="image">
-            <posx>150</posx>
-            <posy>100</posy>
-            <width>1010</width>
-            <height>510</height>
-            <texture>menu.png</texture>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
         </control>
         <control type="image">
             <posx>150</posx>
@@ -23,23 +24,126 @@
             <width>1010</width>
             <height>510</height>
             <texture>menu.png</texture>
+            <visible>false</visible>
+        </control>
+
+        <control type="list" id="7004">
+            <description>categories</description>
+            <left>0</left>
+            <top>0</top>
+            <width>1280</width>
+            <height>720</height>
+            <visible>true</visible>
+            <onup>2</onup>
+            <ondown>3</ondown>
+            <onleft>1</onleft>
+            <onright>1</onright>
+            <viewtype label="3D list">list</viewtype>
+            <orientation>vertical</orientation>
+
+            <itemlayout width="200" height="40">
+                <control type="image">
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>200</width>
+                    <height>40</height>
+                    <texture>menu-grey.png</texture>
+                    <visible>true</visible>
+                </control>
+                <control type="label">
+                    <left>0</left>
+                    <top>0</top>
+                    <width>200</width>
+                    <height>40</height>
+                    <font>font13</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <textcolor>white</textcolor>
+                    <selectedcolor>cyan</selectedcolor>
+                    <align>left</align>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout height="40" width="200">
+                <control type="image">
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>200</width>
+                    <height>40</height>
+                    <texture>menu-grey-focus.png</texture>
+                    <visible>true</visible>
+                </control>            
+                <control type="label">
+                    <left>0</left>
+                    <top>0</top>
+                    <width>200</width>
+                    <height>40</height>
+                    <font>font13</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <textcolor>white</textcolor>
+                    <selectedcolor>cyan</selectedcolor>
+                    <align>left</align>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+            <content>
+                <item id="1">
+                    <label>All</label>
+                    <label2>Label 2</label2>
+                    <icon>icon1.png</icon>
+                    <thumb>thumb1.png</thumb>
+                    <onclick>ActivateWindow(Home)</onclick>
+                    <visible>true</visible>
+                    <property name="foo">Some1stValueHere</property>
+                    <property name="foo2">Some2ndValueHere</property>
+                </item>
+                <item id="2">
+                    <label>Sports</label>
+                    <label2>Label 2</label2>
+                    <icon>icon2.png</icon>
+                    <thumb>thumb2.png</thumb>
+                    <onclick>ActivateWindow(MyMusicLibrary)</onclick>
+                    <property name="foo">Some1stValueHere</property>
+                    <property name="foo2">Some2ndValueHere</property>
+                </item>
+                <item id="1">
+                    <label>Entertainment</label>
+                    <label2>Label 2</label2>
+                    <icon>icon1.png</icon>
+                    <thumb>thumb1.png</thumb>
+                    <onclick>ActivateWindow(Home)</onclick>
+                    <visible>true</visible>
+                    <property name="foo">Some1stValueHere</property>
+                    <property name="foo2">Some2ndValueHere</property>
+                </item>
+                <item id="2">
+                    <label>News</label>
+                    <label2>Label 2</label2>
+                    <icon>icon2.png</icon>
+                    <thumb>thumb2.png</thumb>
+                    <onclick>ActivateWindow(MyMusicLibrary)</onclick>
+                    <property name="foo">Some1stValueHere</property>
+                    <property name="foo2">Some2ndValueHere</property>
+                </item>                
+            </content>
         </control>
 
 
-		<control type="image" id="7002">
+        <control type="image" id="7002">
             <description>program image</description>
             <posx>423</posx>
             <posy>300</posy>
             <width>700</width>
             <height>260</height>
-			<align>center</align>
+            <align>center</align>
             <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
             <colordiffuse>darkgray</colordiffuse>
         </control>
 
-		<control type="label" id="7001">
+        <control type="label" id="7001">
             <description>Help and Tips</description>
             <posx>423</posx>
             <posy>120</posy>
@@ -47,11 +151,11 @@
             <height>50</height>
             <textcolor>ffffffff</textcolor>
             <font>font13</font>
-			<align>left</align>
+            <align>left</align>
             <aligny>top</aligny>
-			<label></label>
+            <label/>
         </control>
-		<control type="label" id="7000">
+        <control type="label" id="7000">
             <description>Help and Tips</description>
             <posx>423</posx>
             <posy>150</posy>
@@ -60,10 +164,10 @@
             <textcolor>ffffffff</textcolor>
             <shadowcolor>black</shadowcolor>
             <font>font13</font>
-			<align>left</align>
+            <align>left</align>
             <aligny>top</aligny>
-			<wrapmultiline>true</wrapmultiline>
-			<label></label>
+            <wrapmultiline>true</wrapmultiline>
+            <label/>
 
         </control>
 
@@ -76,7 +180,7 @@
             <align>right</align>
             <aligny>bottom</aligny>
             <aspectratio>keep</aspectratio>
-			<visible>true</visible>
+            <visible>true</visible>
         </control>
         <control type="label" id="4101">
             <posx>160</posx>
@@ -88,15 +192,16 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
         </control>
-        
-        <control type="button" id="4006"><!-- super favourites -->
+
+        <control type="button" id="4006">
+            <!-- super favourites -->
             <posx>160</posx>
             <posy>124</posy>
             <width>240</width>
             <height>50</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>80002</onup>
+            <onup>7004</onup>
             <ondown>4005</ondown>
             <align>center</align>
             <aligny>center</aligny>
@@ -104,8 +209,9 @@
             <textcolor>ffffffff</textcolor>
             <label>Super Favourites</label>
         </control>
-        
-        <control type="button" id="4005"><!-- watch from beginning -->
+
+        <control type="button" id="4005">
+            <!-- watch from beginning -->
             <posx>160</posx>
             <posy>176</posy>
             <width>240</width>
@@ -120,7 +226,8 @@
             <textcolor>ffffffff</textcolor>
             <label>Meta Search</label>
         </control>
-        <control type="button" id="4000"><!-- Watch Stream -->
+        <control type="button" id="4000">
+            <!-- Watch Stream -->
             <posx>160</posx>
             <posy>228</posy>
             <width>240</width>
@@ -135,7 +242,8 @@
             <textcolor>ffffffff</textcolor>
         </control>
 
-        <control type="button" id="4001"><!-- Choose Stream -->
+        <control type="button" id="4001">
+            <!-- Choose Stream -->
             <posx>160</posx>
             <posy>280</posy>
             <width>240</width>
@@ -150,7 +258,8 @@
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30304]</label>
         </control>
-        <control type="label"><!-- Choose Stream Text -->
+        <control type="label">
+            <!-- Choose Stream Text -->
             <posx>20</posx>
             <posy>260</posy>
             <width>240</width>
@@ -159,10 +268,11 @@
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30305]</label>
             <wrapmultiline>true</wrapmultiline>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
-        <control type="label" id="4102"><!-- Show Title -->
+        <control type="label" id="4102">
+            <!-- Show Title -->
             <posx>20</posx>
             <posy>420</posy>
             <width>240</width>
@@ -171,9 +281,10 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
-        <control type="button" id="4002"><!-- REMINDER -->
+        <control type="button" id="4002">
+            <!-- REMINDER -->
             <posx>160</posx>
             <posy>332</posy>
             <width>240</width>
@@ -187,7 +298,8 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
         </control>
-        <control type="button" id="4003"><!-- CHANNELS -->
+        <control type="button" id="4003">
+            <!-- CHANNELS -->
             <posx>160</posx>
             <posy>384</posy>
             <width>240</width>
@@ -206,7 +318,8 @@
 
 
 
-        <control type="button" id="80000"><!-- MY MOVIES -->
+        <control type="button" id="80000">
+            <!-- MY MOVIES -->
             <posx>160</posx>
             <posy>436</posy>
             <width>240</width>
@@ -219,10 +332,11 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-			<label>$ADDON[script.tvguide.fullscreen 80000]</label>
+            <label>$ADDON[script.tvguide.fullscreen 80000]</label>
         </control>
 
-        <control type="button" id="80001"><!-- MY TV SHOWS -->
+        <control type="button" id="80001">
+            <!-- MY TV SHOWS -->
             <posx>160</posx>
             <posy>488</posy>
             <width>240</width>
@@ -235,10 +349,11 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-			<label>$ADDON[script.tvguide.fullscreen 80001]</label>
+            <label>$ADDON[script.tvguide.fullscreen 80001]</label>
         </control>
 
-		<control type="button" id="80002"><!-- VIDEO ADDONS -->
+        <control type="button" id="80002">
+            <!-- VIDEO ADDONS -->
             <posx>160</posx>
             <posy>540</posy>
             <width>240</width>
@@ -251,10 +366,11 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-			<label>$ADDON[script.tvguide.fullscreen 80002]</label>
+            <label>$ADDON[script.tvguide.fullscreen 80002]</label>
         </control>
 
-        <control type="button" id="4004"><!-- QUIT -->
+        <control type="button" id="4004">
+            <!-- QUIT -->
             <posx>20</posx>
             <posy>650</posy>
             <width>240</width>
@@ -268,7 +384,7 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30308]</label>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
 

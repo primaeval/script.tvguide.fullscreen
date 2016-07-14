@@ -449,6 +449,15 @@ class Database(object):
 
         channels = self._getChannelList(onlyVisible=True)
 
+        new_channels = []
+        for channel in channels:
+            xbmc.log(repr(channel.title))
+            if channel.title in [u"RTÉ One",u"BBC One",u"BBC Two",u"BBC Four"]:
+                xbmc.log("XXX")
+                new_channels.append(channel)
+        channels = new_channels
+        #channels = [channel in channels if (channel.title in ["RTÉ One","BBC One","BBC Two","BBC Four"])]
+
         if channelStart < 0:
             channelStart = len(channels) - 1
         elif channelStart > len(channels) - 1:
@@ -1067,6 +1076,7 @@ class XMLTVSource(Source):
                     else:
                         visible = True
                     result = Channel(cid, title, logo, streamUrl, visible)
+                    #xbmc.log("ZZZZZZ%s" % title.encode("utf8"))
 
                 if result:
                     elements_parsed += 1
