@@ -123,34 +123,44 @@
         </control>
 
         <control type="label" id="7001">
-            <description>Help and Tips</description>
+            <description>program title</description>
             <posx>550</posx>
-            <posy>20</posy>
+            <posy>70</posy>
             <width>710</width>
             <height>50</height>
             <textcolor>black</textcolor>
-            
-            <font>font13</font>
+            <font>font13_title</font>
             <align>left</align>
             <aligny>top</aligny>
             <label/>
         </control>
+        
         <control type="label" id="7000">
-            <description>Help and Tips</description>
+            <description>program description</description>
             <posx>550</posx>
-            <posy>50</posy>
+            <posy>100</posy>
             <width>710</width>
             <height>300</height>
             <textcolor>black</textcolor>
-            
             <font>font13</font>
             <align>left</align>
             <aligny>top</aligny>
             <wrapmultiline>true</wrapmultiline>
             <label/>
-
         </control>
-
+        
+        <control type="label" id="4101">
+            <posx>550</posx>
+            <posy>20</posy>
+            <width>240</width>
+            <height>50</height>
+            <align>left</align>
+            <aligny>center</aligny>
+            <font>font13_title</font>
+            <textcolor>white</textcolor>
+            <visible>true</visible>
+            <label>-</label>
+        </control>
         <control type="image" id="4100">
             <description>channel logo</description>
             <posx>280r</posx>
@@ -162,23 +172,14 @@
             <aspectratio>keep</aspectratio>
             <visible>true</visible>
         </control>
-        <control type="label" id="4101">
-            <posx>160</posx>
-            <posy>100</posy>
-            <width>240</width>
-            <height>50</height>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-        </control>
+
 
         <control type="button" id="4006">
             <!-- super favourites -->
             <posx>270</posx>
             <posy>24</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>7004</onup>
@@ -195,8 +196,8 @@
             <!-- watch from beginning -->
             <posx>270</posx>
             <posy>76</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4006</onup>
@@ -212,8 +213,8 @@
             <!-- Watch Stream -->
             <posx>270</posx>
             <posy>228</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4005</onup>
@@ -229,8 +230,8 @@
             <!-- Choose Stream -->
             <posx>270</posx>
             <posy>280</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4000</onup>
@@ -246,7 +247,7 @@
             <!-- Choose Stream Text -->
             <posx>20</posx>
             <posy>260</posy>
-            <width>240</width>
+            <width>200</width>
             <height>200</height>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
@@ -259,8 +260,8 @@
             <!-- Show Title -->
             <posx>20</posx>
             <posy>420</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
@@ -271,8 +272,8 @@
             <!-- REMINDER -->
             <posx>270</posx>
             <posy>332</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4001</onup>
@@ -287,8 +288,8 @@
             <!-- CHANNELS -->
             <posx>270</posx>
             <posy>384</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4002</onup>
@@ -308,8 +309,8 @@
             <!-- MY MOVIES -->
             <posx>270</posx>
             <posy>436</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4002</onup>
@@ -326,8 +327,8 @@
             <!-- MY TV SHOWS -->
             <posx>270</posx>
             <posy>488</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>80000</onup>
@@ -344,8 +345,8 @@
             <!-- VIDEO ADDONS -->
             <posx>270</posx>
             <posy>540</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>80001</onup>
@@ -362,8 +363,8 @@
             <!-- QUIT -->
             <posx>20</posx>
             <posy>650</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4003</onup>
@@ -383,8 +384,8 @@
             <!-- QUIT -->
             <posx>270</posx>
             <posy>660</posy>
-            <width>240</width>
-            <height>50</height>
+            <width>200</width>
+            <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4003</onup>

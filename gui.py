@@ -1210,10 +1210,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
         if self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
-            channelTitleControl.setVisible(False)
-        else:
-            channelTitleControl.setLabel(self.program.channel.title)
-            channelLogoControl.setVisible(False)
+        channelTitleControl.setLabel(self.program.channel.title)
+        #    #channelTitleControl.setVisible(False)
+        #else:
+        #    #channelTitleControl.setLabel(self.program.channel.title)
+        #    channelLogoControl.setVisible(False)
 
         programTitleControl.setLabel(self.program.title)
         label = ""
