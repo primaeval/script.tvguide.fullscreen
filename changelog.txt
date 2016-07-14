@@ -5,6 +5,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.28
+- broader channel search
+- (some channels will find lots eg W)
+
 version 0.0.27
 - fix
 
