@@ -104,7 +104,7 @@ class StreamsService(object):
                 else:
                     labelx = re.sub(r' ','',label.lower())
                     title = re.sub(r' ','',channel.title.lower())
-                    titleRe = r".*%s.*" % title
+                    titleRe = r".*%s.*" % re.escape(title)
                     if re.match(titleRe,labelx):
                         matches.append((id, label, stream))
                     numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine" , "ten"]
