@@ -27,11 +27,28 @@
             <visible>false</visible>
         </control>
 
+        <control type="button" id="80003">
+            <description>add category</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>menu-grey-focus.png</texturefocus>
+            <texturenofocus>menu-grey.png</texturenofocus>
+            <onup>4003</onup>
+            <ondown>80000</ondown>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+            <label>Add Category</label>
+            <visible>true</visible>
+        </control>        
 
         <control type="list" id="7004">
             <description>categories</description>
             <left>0</left>
-            <top>0</top>
+            <top>60</top>
             <width>1280</width>
             <height>720</height>
             <visible>true</visible>
@@ -93,11 +110,11 @@
 
         <control type="image" id="7002">
             <description>program image</description>
-            <posx>423</posx>
+            <posx>550</posx>
             <posy>300</posy>
             <width>700</width>
             <height>260</height>
-            <align>center</align>
+            <align>left</align>
             <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
@@ -106,11 +123,12 @@
 
         <control type="label" id="7001">
             <description>Help and Tips</description>
-            <posx>423</posx>
-            <posy>120</posy>
+            <posx>550</posx>
+            <posy>20</posy>
             <width>710</width>
             <height>50</height>
-            <textcolor>ffffffff</textcolor>
+            <textcolor>black</textcolor>
+            
             <font>font13</font>
             <align>left</align>
             <aligny>top</aligny>
@@ -118,12 +136,12 @@
         </control>
         <control type="label" id="7000">
             <description>Help and Tips</description>
-            <posx>423</posx>
-            <posy>150</posy>
+            <posx>550</posx>
+            <posy>50</posy>
             <width>710</width>
             <height>300</height>
-            <textcolor>ffffffff</textcolor>
-            <shadowcolor>black</shadowcolor>
+            <textcolor>black</textcolor>
+            
             <font>font13</font>
             <align>left</align>
             <aligny>top</aligny>
@@ -134,12 +152,12 @@
 
         <control type="image" id="4100">
             <description>channel logo</description>
-            <posx>880</posx>
-            <posy>480</posy>
+            <posx>280r</posx>
+            <posy>120r</posy>
             <width>240</width>
             <height>80</height>
             <align>right</align>
-            <aligny>bottom</aligny>
+            <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
             <visible>true</visible>
         </control>
@@ -156,8 +174,8 @@
 
         <control type="button" id="4006">
             <!-- super favourites -->
-            <posx>160</posx>
-            <posy>124</posy>
+            <posx>250</posx>
+            <posy>24</posy>
             <width>240</width>
             <height>50</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
@@ -173,8 +191,8 @@
 
         <control type="button" id="4005">
             <!-- watch from beginning -->
-            <posx>160</posx>
-            <posy>176</posy>
+            <posx>250</posx>
+            <posy>76</posy>
             <width>240</width>
             <height>50</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
@@ -189,7 +207,7 @@
         </control>
         <control type="button" id="4000">
             <!-- Watch Stream -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>228</posy>
             <width>240</width>
             <height>50</height>
@@ -205,7 +223,7 @@
 
         <control type="button" id="4001">
             <!-- Choose Stream -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>280</posy>
             <width>240</width>
             <height>50</height>
@@ -246,7 +264,7 @@
         </control>
         <control type="button" id="4002">
             <!-- REMINDER -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>332</posy>
             <width>240</width>
             <height>50</height>
@@ -261,7 +279,7 @@
         </control>
         <control type="button" id="4003">
             <!-- CHANNELS -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>384</posy>
             <width>240</width>
             <height>50</height>
@@ -281,7 +299,7 @@
 
         <control type="button" id="80000">
             <!-- MY MOVIES -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>436</posy>
             <width>240</width>
             <height>50</height>
@@ -298,7 +316,7 @@
 
         <control type="button" id="80001">
             <!-- MY TV SHOWS -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>488</posy>
             <width>240</width>
             <height>50</height>
@@ -315,7 +333,7 @@
 
         <control type="button" id="80002">
             <!-- VIDEO ADDONS -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>540</posy>
             <width>240</width>
             <height>50</height>
@@ -348,27 +366,11 @@
             <visible>false</visible>
         </control>
 
-        <control type="button" id="80003">
-            <!-- QUIT -->
-            <posx>160</posx>
-            <posy>600</posy>
-            <width>240</width>
-            <height>50</height>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>4003</onup>
-            <ondown>80000</ondown>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-            <label>Add Category</label>
-            <visible>true</visible>
-        </control>
+
         
         <control type="button" id="80004">
             <!-- QUIT -->
-            <posx>160</posx>
+            <posx>250</posx>
             <posy>660</posy>
             <width>240</width>
             <height>50</height>
@@ -381,7 +383,7 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
             <label>Remove Category</label>
-            <visible>true</visible>
+            <visible>false</visible>
         </control>        
 
     </controls>

@@ -475,7 +475,8 @@ class Database(object):
                 if channel.title in filter:
                     #xbmc.log("XXX")
                     new_channels.append(channel)
-            channels = new_channels
+            if new_channels:
+                channels = new_channels
             f.close()
         #channels = [channel in channels if (channel.title in ["RTÉ One","BBC One","BBC Two","BBC Four"])]
 
