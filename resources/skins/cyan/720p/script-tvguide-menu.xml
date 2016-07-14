@@ -44,7 +44,7 @@
             <textcolor>ffffffff</textcolor>
             <label>Add Category</label>
             <visible>true</visible>
-        </control>        
+        </control>
 
         <control type="list" id="7004">
             <description>categories</description>
@@ -78,12 +78,13 @@
                     <align>center</align>
                     <aligny>center</aligny>
                     <textcolor>white</textcolor>
-                    <selectedcolor>cyan</selectedcolor>
+                    <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
                 </control>
             </itemlayout>
             <focusedlayout height="40" width="200">
+
                 <control type="image">
                     <posx>0</posx>
                     <posy>0</posy>
@@ -91,7 +92,7 @@
                     <height>40</height>
                     <texture>menu-grey-focus.png</texture>
                     <visible>true</visible>
-                </control>            
+                </control>
                 <control type="label">
                     <left>0</left>
                     <top>0</top>
@@ -101,9 +102,17 @@
                     <align>center</align>
                     <aligny>center</aligny>
                     <textcolor>white</textcolor>
-                    <selectedcolor>cyan</selectedcolor>
+                    <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
+                </control>
+                <control type="image">
+                    <width>20</width>
+                    <height>20</height>
+                    <left>30r</left>
+                    <top>10</top>
+                    <visible>Control.HasFocus(7004)</visible>
+                    <texture>tvguide-bullet.png</texture>
                 </control>
             </focusedlayout>
         </control>
@@ -134,7 +143,7 @@
             <aligny>top</aligny>
             <label/>
         </control>
-        
+
         <control type="label" id="7000">
             <description>program description</description>
             <posx>550</posx>
@@ -148,7 +157,7 @@
             <wrapmultiline>true</wrapmultiline>
             <label/>
         </control>
-        
+
         <control type="label" id="4101">
             <posx>550</posx>
             <posy>20</posy>
@@ -379,7 +388,7 @@
         </control>
 
 
-        
+
         <control type="button" id="80004">
             <!-- QUIT -->
             <posx>270</posx>
@@ -397,7 +406,7 @@
             <textcolor>ffffffff</textcolor>
             <label>Remove Category</label>
             <visible>false</visible>
-        </control>        
+        </control>
 
     </controls>
 </window>
