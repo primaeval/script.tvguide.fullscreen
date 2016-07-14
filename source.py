@@ -449,36 +449,25 @@ class Database(object):
 
         channels = self._getChannelList(onlyVisible=True)
 
-        xbmc.log("CATEGORY %s" % category)
         if category and category != "Any":
-            xbmc.log("READ")
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
             lines = f.read().splitlines()
-            xbmc.log(repr(lines))
             f.close()
             filter = set()
             for line in lines:
                 name,cat = line.split('=')
-                #xbmc.log(repr((name,cat)))
                 if cat == category:
-                    #xbmc.log(repr(name))
                     filter.add(name)
-                    
 
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channels.ini','wb')
             new_channels = []
             for channel in channels:
                 f.write("%s=Sports\n" % channel.title.encode("utf8"))
-                #xbmc.log(repr(channel.title))
-                #if channel.title in [u"RTÉ One",u"BBC One",u"BBC Two",u"BBC Four"]:
-                xbmc.log(repr((channel.title,filter)))
                 if channel.title in filter:
-                    #xbmc.log("XXX")
                     new_channels.append(channel)
             if new_channels:
                 channels = new_channels
             f.close()
-        #channels = [channel in channels if (channel.title in ["RTÉ One","BBC One","BBC Two","BBC Four"])]
 
         if channelStart < 0:
             channelStart = len(channels) - 1
@@ -1098,7 +1087,6 @@ class XMLTVSource(Source):
                     else:
                         visible = True
                     result = Channel(cid, title, logo, streamUrl, visible)
-                    #xbmc.log("ZZZZZZ%s" % title.encode("utf8"))
 
                 if result:
                     elements_parsed += 1
