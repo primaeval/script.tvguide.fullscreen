@@ -220,8 +220,8 @@
                 
                 <control type="label">
                     <description>Displays todays date</description>
-                    <posx>0r</posx>
-                    <posy>-20</posy>
+                    <posx>5r</posx>
+                    <posy>-15</posy>
                     <width>280</width>
                     <height>20</height>
                     <textcolor>ffffffff</textcolor>
