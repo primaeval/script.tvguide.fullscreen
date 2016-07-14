@@ -898,9 +898,9 @@
 
             <control type="label" id="7025">
                 <description>Channel name</description>
-                <posx>10</posx>
+                <posx>190</posx>
                 <posy>470</posy>
-                <width>170</width>
+                <width>280</width>
                 <height>50</height>
                 <textcolor>cyan</textcolor>
                 <font>font13</font>
@@ -910,24 +910,25 @@
             </control>
             <control type="label" id="7020">
                 <description>Program title</description>
-                <posx>190</posx>
+                <posx>450</posx>
                 <posy>470</posy>
                 <width>630</width>
                 <height>50</height>
                 <textcolor>cyan</textcolor>
+                <shadowcolor>black</shadowcolor>
                 <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
             </control>
             <control type="image" id="7024">
                 <description>Channel logo</description>
-                <posx>540</posx>
-                <posy>468</posy>
-                <width>80</width>
+                <posx>10</posx>
+                <posy>470</posy>
+                <width>160</width>
                 <height>40</height>
                 <aspectratio>keep</aspectratio>
                 <fadetime>500</fadetime>
-                <visible>false</visible>
+                <visible>true</visible>
                 <!-- unused in default skin -->
             </control>
             <control type="label" id="7021">
