@@ -456,6 +456,8 @@ class TVGuide(xbmcgui.WindowXML):
                 self.categories = categories
                 
         elif buttonClicked == 99:
+            if self.category == "Any":
+                return
             dialog = xbmcgui.Dialog()
             categories = sorted(self.categories)
             channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False)])
@@ -1223,7 +1225,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         categories = ["Any"] + categories
         '''
         items = list()
-        for label in self.categories:
+        categories = ["Any"] + list(self.categories)
+        for label in categories:
             item = xbmcgui.ListItem(label)
             items.append(item)
         listControl = self.getControl(self.C_POPUP_CATEGORY)
