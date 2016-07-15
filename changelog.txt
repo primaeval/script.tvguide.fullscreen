@@ -6,6 +6,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.40
+- channel matching setting
+
 version 0.0.39
 - sort by categories.ini setting
 
