@@ -2,8 +2,12 @@ USAGE NOTES:
 - "Import addons.ini" will overwrite addon folders on next update timer
 - use cyan theme with 8 channels per page to match original tv guide icon layout
 - click to load in addon browse dialog
+- right click to add channels to categories
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.31
+- categories (right click to add channels)
 
 version 0.0.30
 - channel logo
