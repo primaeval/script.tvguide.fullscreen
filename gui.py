@@ -152,7 +152,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.mode = MODE_EPG
         self.currentChannel = None
-        
+
         self.category = None
         #self.categories = set()
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
@@ -431,58 +431,10 @@ class TVGuide(xbmcgui.WindowXML):
                 self.notification.addNotification(program)
 
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-            
-        elif buttonClicked == 80003:
-            dialog = xbmcgui.Dialog()
-            cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
-            if cat:
-                categories = set(self.categories)
-                categories.add(cat)
-                self.categories = categories
-                
-        elif buttonClicked == 80004:
-            dialog = xbmcgui.Dialog()
-            categories = sorted(self.categories)
-            ret = dialog.select('Remove Category', categories)
-            if ret:
-                categories.remove(categories[ret])
-                self.categories = categories
-                
-        elif buttonClicked == 99:
-            if self.category == "Any":
-                return
-            dialog = xbmcgui.Dialog()
-            categories = sorted(self.categories)
-            channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False)])
-            str = 'Add Channels to %s' % self.category
-            ret = dialog.multiselect(str, channelList)
-            channels = []
-            for i in ret:
-                channels.append(channelList[i])
-            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
-            lines = f.read().splitlines()
-            f.close()
-            categories = {}
-            categories[self.category] = []
-            for line in lines:
-                name,cat = line.split('=')
-                if cat not in categories:
-                    categories[cat] = []
-                if cat != self.category:
-                    categories[cat].append(name)
-            for channel in channels:
-                categories[self.category].append(channel)
-            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
-            for cat in categories:
-                channels = categories[cat]
-                for channel in channels:
-                    f.write("%s=%s\n" % (channel.encode("utf8"),cat))
-            f.close()
-            self.categories = [category for category in categories if category]
 
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-            
+
         elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_STREAM:
             d = StreamSetupDialog(self.database, program.channel)
             d.doModal()
@@ -1211,12 +1163,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         if self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
         channelTitleControl.setLabel(self.program.channel.title)
-        #    #channelTitleControl.setVisible(False)
-        #else:
-        #    #channelTitleControl.setLabel(self.program.channel.title)
-        #    channelLogoControl.setVisible(False)
-
         programTitleControl.setLabel(self.program.title)
+
         label = ""
         try:
             season = self.program.season
@@ -1247,10 +1195,40 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
             if item:
-                self.category = item.getLabel()            
-            self.close()
+                self.category = item.getLabel()
+            if self.category == "Any":
+                return
+            dialog = xbmcgui.Dialog()
+            categories = sorted(self.categories)
+            channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False)])
+            str = 'Add Channels to %s' % self.category
+            ret = dialog.multiselect(str, channelList)
+            channels = []
+            for i in ret:
+                channels.append(channelList[i])
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+            lines = f.read().splitlines()
+            f.close()
+            categories = {}
+            categories[self.category] = []
+            for line in lines:
+                name,cat = line.split('=')
+                if cat not in categories:
+                    categories[cat] = []
+                if cat != self.category:
+                    categories[cat].append(name)
+            for channel in channels:
+                categories[self.category].append(channel)
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
+            for cat in categories:
+                channels = categories[cat]
+                for channel in channels:
+                    f.write("%s=%s\n" % (channel.encode("utf8"),cat))
+            f.close()
+            self.categories = [category for category in categories if category]                  
+  
 
-    def onClick(self, controlId):  
+    def onClick(self, controlId):
         if controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
             self.database.deleteCustomStreamUrl(self.program.channel)
             chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
@@ -1263,9 +1241,55 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
             if item:
-                self.category = item.getLabel()       
+                self.category = item.getLabel()
             self.buttonClicked = controlId
             self.close()
+        elif controlId == 80003:
+            dialog = xbmcgui.Dialog()
+            cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
+            if cat:
+                categories = set(self.categories)
+                categories.add(cat)
+                self.categories = list(set(categories))
+                items = list()
+                categories = ["Any"] + list(self.categories)
+                for label in categories:
+                    item = xbmcgui.ListItem(label)
+                    items.append(item)
+                listControl = self.getControl(self.C_POPUP_CATEGORY)
+                listControl.reset()
+                listControl.addItems(items)
+        elif controlId == 7004:
+            if self.category == "Any":
+                return
+            dialog = xbmcgui.Dialog()
+            categories = sorted(self.categories)
+            channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False)])
+            str = 'Add Channels to %s' % self.category
+            ret = dialog.multiselect(str, channelList)
+            channels = []
+            for i in ret:
+                channels.append(channelList[i])
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+            lines = f.read().splitlines()
+            f.close()
+            categories = {}
+            categories[self.category] = []
+            for line in lines:
+                name,cat = line.split('=')
+                if cat not in categories:
+                    categories[cat] = []
+                if cat != self.category:
+                    categories[cat].append(name)
+            for channel in channels:
+                categories[self.category].append(channel)
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
+            for cat in categories:
+                channels = categories[cat]
+                for channel in channels:
+                    f.write("%s=%s\n" % (channel.encode("utf8"),cat))
+            f.close()
+            self.categories = [category for category in categories if category]                
         else:
             self.buttonClicked = controlId
             self.close()
