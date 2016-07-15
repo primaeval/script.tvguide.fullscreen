@@ -31,6 +31,7 @@ import xbmcaddon
 
 class StreamsService(object):
     def __init__(self, addon):
+        self.addon = addon
         path = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen', 'addons.ini'))
         self.addonsParser = ConfigParser.ConfigParser(dict_type=OrderedDict)
         self.addonsParser.optionxform = lambda option: option
@@ -88,7 +89,10 @@ class StreamsService(object):
 
 
         # Second check all addons and return all matches
-        matches = list()
+        matches = []
+        exact_matches = []
+        sub_matches = []
+        numword_matches = []
         for id in self.getAddons():
             try:
                 xbmcaddon.Addon(id)
@@ -99,23 +103,43 @@ class StreamsService(object):
                 if id == "plugin.video.meta":
                     label = channel.title
                     stream = str(stream.replace("<channel>", channel.title.replace(" ","%20")))
+
                 if label == channel.title:
-                    matches.append((id, label, stream))
-                else:
+                    exact_matches.append((id, label, stream))
+                if int(self.addon.getSetting('addon.match')) > 0:
                     labelx = re.sub(r' ','',label.lower())
                     title = re.sub(r' ','',channel.title.lower())
                     titleRe = r".*%s.*" % re.escape(title)
                     if re.match(titleRe,labelx):
-                        matches.append((id, label, stream))
+                        sub_matches.append((id, label, stream))
+                if int(self.addon.getSetting('addon.match')) > 1:
+                    title = re.sub(r' ','',channel.title.lower())
+                    titleRe = r".*%s.*" % re.escape(title)
                     numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine" , "ten"]
                     for num in range(1,11):
                         word = numbers[num-1]
                         labelnum = re.sub(word,str(num),label.lower())
                         labelnum = re.sub(r' ','',labelnum)
                         if re.match(titleRe,labelnum):
-                            matches.append((id, label, stream))
-        matches = set(matches)
-        matches = sorted(matches, key=lambda match: match[1])
+                            numword_matches.append((id, label, stream))
+                    for num in range(1,11):
+                        word = numbers[num-1]
+                        labelnum = re.sub(str(num),word,label.lower())
+                        labelnum = re.sub(r' ','',labelnum)
+                        if re.match(titleRe,labelnum):
+                            numword_matches.append((id, label, stream))
+
+        exact_matches = set(exact_matches)
+        sorted_exact_matches = sorted(exact_matches, key=lambda match: match[1])
+        sub_matches = set(sub_matches) - set(exact_matches)
+        sorted_sub_matches = sorted(sub_matches, key=lambda match: match[1])
+        numword_matches = set(numword_matches) - set(sub_matches) - exact_matches
+        sorted_numword_matches = sorted(numword_matches, key=lambda match: match[1])
+        matches = sorted_exact_matches
+        if int(self.addon.getSetting('addon.match')) > 0:
+            matches = matches + sorted_sub_matches
+        if int(self.addon.getSetting('addon.match')) > 1:
+            matches = matches + sorted_numword_matches
         if len(matches) == 1:
             return matches[0][2]
         else:
