@@ -33,7 +33,7 @@
         <setting type="sep"/>
         <setting id="channels.per.page" label="Channels per Page" type="labelenum" default="14" values="1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16"/>
         <setting type="sep"/>
-        <setting id="channel.filter.sort" label="Sort Order for Channels in Categories" type="enum" default="None" values="None|Sorted|categories.ini"/>
+        <setting id="channel.filter.sort" label="Sort Order for Channels in Categories" type="enum" default="0" values="Default|Sorted|categories.ini"/>
 	</category>
 	
 	<category label="30114">
