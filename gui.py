@@ -422,6 +422,7 @@ class TVGuide(xbmcgui.WindowXML):
         d.doModal()
         buttonClicked = d.buttonClicked
         self.category = d.category
+        self.categories = d.categories
         del d
 
         if buttonClicked == PopupMenu.C_POPUP_REMIND:
@@ -1191,7 +1192,6 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
             self.close()
         elif action.getId() in [KEY_CONTEXT_MENU]:
-            self.buttonClicked = 99
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
             if item:
