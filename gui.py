@@ -910,6 +910,7 @@ class TVGuide(xbmcgui.WindowXML):
         if success:
             self.notification = Notification(self.database, ADDON.getAddonInfo('path'))
             self.onRedrawEPG(0, self.viewStartDate)
+            self.database.exportChannelList()
 
     def onSourceProgressUpdate(self, percentageComplete):
         control = self.getControl(self.C_MAIN_LOADING_PROGRESS)

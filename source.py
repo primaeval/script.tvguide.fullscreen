@@ -459,10 +459,8 @@ class Database(object):
                 if cat == category:
                     filter.add(name)
 
-            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channels.ini','wb')
             new_channels = []
             for channel in channels:
-                f.write("%s=Sports\n" % channel.title.encode("utf8"))
                 if channel.title in filter:
                     new_channels.append(channel)
             if new_channels:
@@ -470,8 +468,6 @@ class Database(object):
                     channels = sorted(new_channels, key=lambda channel: channel.title.lower())
                 else:
                     channels = new_channels
-
-            f.close()
 
         if channelStart < 0:
             channelStart = len(channels) - 1
@@ -520,6 +516,15 @@ class Database(object):
         c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
         self.channelList = None
         self.conn.commit()
+
+    def exportChannelList(self):
+        channelsList = self.getChannelList()
+        channels = [channel.title for channel in channelsList]
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channels.ini','wb')
+        for channel in sorted(channels):
+            f.write("%s=nothing\n" % channel.encode("utf8"))
+        f.close()
+
 
     def getChannelList(self, onlyVisible=True):
         if not self.channelList or not onlyVisible:
@@ -875,7 +880,7 @@ class XMLTVSource(Source):
     XMLTV_SOURCE_FILE = 0
     XMLTV_SOURCE_URL = 1
     CATEGORIES_TYPE_FILE = 0
-    CATEGORIES_TYPE_URL = 1    
+    CATEGORIES_TYPE_URL = 1
 
     def __init__(self, addon):
         #gType = GuideTypes()
