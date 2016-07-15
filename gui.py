@@ -1204,7 +1204,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             str = 'Select Channels for %s Categeory' % self.category
             ret = dialog.multiselect(str, channelList)
             if not ret:
-                return
+                ret = []
             channels = []
             for i in ret:
                 channels.append(channelList[i])
