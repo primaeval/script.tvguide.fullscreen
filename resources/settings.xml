@@ -27,6 +27,8 @@
         <setting id="logos.url" label="Logos Url" type="text" visible="eq(-3,true) + eq(-2,1)" />
         <setting type="sep"/>
         <setting id="channels.per.page" label="Channels per Page" type="labelenum" default="14" values="1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16"/>
+        <setting type="sep"/>
+        <setting id="channel.filter.sort" label="Sort Channels in Categories" type="bool" default="true" />
 	</category>
 	
 	<category label="30114">

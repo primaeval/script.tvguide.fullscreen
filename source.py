@@ -466,7 +466,11 @@ class Database(object):
                 if channel.title in filter:
                     new_channels.append(channel)
             if new_channels:
-                channels = new_channels
+                if ADDON.getSetting('channel.filter.sort') == 'true':
+                    channels = sorted(new_channels, key=lambda channel: channel.title.lower())
+                else:
+                    channels = new_channels
+
             f.close()
 
         if channelStart < 0:
