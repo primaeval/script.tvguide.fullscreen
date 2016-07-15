@@ -908,6 +908,15 @@ class XMLTVSource(Source):
         else:
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
 
+        if addon.getSetting('categories.ini.enabled') == 'true':
+            if self.addonsType == XMLTVSource.INI_TYPE_FTV:
+                customFile = str(addon.getSetting('categories.ini.file'))
+            else:
+                customFile = str(addon.getSetting('categories.ini.url'))
+            if customFile:
+                self.updateLocalFile(customFile, addon, True)
+
+
         # make sure the ini file is fetched as well if necessary
 
         if addon.getSetting('addons.ini.enabled') == 'true':
@@ -917,6 +926,7 @@ class XMLTVSource(Source):
                 customFile = str(addon.getSetting('addons.ini.url'))
             if customFile:
                 self.updateLocalFile(customFile, addon, True)
+
 
         path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
         if not xbmcvfs.exists(path):
