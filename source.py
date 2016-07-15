@@ -453,23 +453,37 @@ class Database(object):
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
             lines = f.read().splitlines()
             f.close()
-            filter = set()
+            filter = []
+            seen = set()
             for line in lines:
                 if "=" not in line:
                     continue
                 name,cat = line.split('=')
                 if cat == category:
-                    filter.add(name)
+                    if name not in seen:
+                        filter.append(name)
+                    seen.add(name)
 
+            NONE = "0"
+            SORT = "1"
+            CATEGORIES = "2"
             new_channels = []
-            for channel in channels:
-                if channel.title in filter:
-                    new_channels.append(channel)
-            if new_channels:
-                if ADDON.getSetting('channel.filter.sort') == 'true':
-                    channels = sorted(new_channels, key=lambda channel: channel.title.lower())
-                else:
+            if ADDON.getSetting('channel.filter.sort') == CATEGORIES:
+                for filter_name in filter:
+                    for channel in channels:
+                        if channel.title == filter_name:
+                            new_channels.append(channel)
+                if new_channels:
                     channels = new_channels
+            else:
+                for channel in channels:
+                    if channel.title in filter:
+                        new_channels.append(channel)
+                if new_channels:
+                    if ADDON.getSetting('channel.filter.sort') == SORT:
+                        channels = sorted(new_channels, key=lambda channel: channel.title.lower())
+                    else:
+                        channels = new_channels
 
         if channelStart < 0:
             channelStart = len(channels) - 1
