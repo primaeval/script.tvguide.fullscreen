@@ -1201,7 +1201,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             dialog = xbmcgui.Dialog()
             categories = sorted(self.categories)
             channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False)])
-            str = 'Add Channels to %s' % self.category
+            str = 'Select Channels for %s Categeory' % self.category
             ret = dialog.multiselect(str, channelList)
             channels = []
             for i in ret:
@@ -1259,37 +1259,6 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 listControl = self.getControl(self.C_POPUP_CATEGORY)
                 listControl.reset()
                 listControl.addItems(items)
-        elif controlId == 7004:
-            if self.category == "Any":
-                return
-            dialog = xbmcgui.Dialog()
-            categories = sorted(self.categories)
-            channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False)])
-            str = 'Add Channels to %s' % self.category
-            ret = dialog.multiselect(str, channelList)
-            channels = []
-            for i in ret:
-                channels.append(channelList[i])
-            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
-            lines = f.read().splitlines()
-            f.close()
-            categories = {}
-            categories[self.category] = []
-            for line in lines:
-                name,cat = line.split('=')
-                if cat not in categories:
-                    categories[cat] = []
-                if cat != self.category:
-                    categories[cat].append(name)
-            for channel in channels:
-                categories[self.category].append(channel)
-            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
-            for cat in categories:
-                channels = categories[cat]
-                for channel in channels:
-                    f.write("%s=%s\n" % (channel.encode("utf8"),cat))
-            f.close()
-            self.categories = [category for category in categories if category]                
         else:
             self.buttonClicked = controlId
             self.close()
