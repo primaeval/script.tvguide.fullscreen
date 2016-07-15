@@ -160,6 +160,8 @@ class TVGuide(xbmcgui.WindowXML):
         f.close()
         categories = set()
         for line in lines:
+            if "=" not in line:
+                continue
             name,cat = line.split('=')
             categories.add(cat)
         categories = sorted(categories)

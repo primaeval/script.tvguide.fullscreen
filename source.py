@@ -455,6 +455,8 @@ class Database(object):
             f.close()
             filter = set()
             for line in lines:
+                if "=" not in line:
+                    continue
                 name,cat = line.split('=')
                 if cat == category:
                     filter.add(name)
