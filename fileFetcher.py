@@ -100,12 +100,9 @@ class FileFetcher(object):
                 for chunk in r.iter_content(chunk_size):
                     f.write(chunk)
                 f.close()
-            if os.path.getsize(tmpFile) > 256:
-                if os.path.exists(self.filePath):
-                    os.remove(self.filePath)
-                os.rename(tmpFile, self.filePath)
-                retVal = self.FETCH_OK
-                xbmc.log('[script.tvguide.fullscreen] file %s was downloaded' % self.filePath, xbmc.LOGDEBUG)
-            else:
-                retVal = self.FETCH_ERROR
+            if os.path.exists(self.filePath):
+                os.remove(self.filePath)
+            os.rename(tmpFile, self.filePath)
+            retVal = self.FETCH_OK
+            xbmc.log('[script.tvguide.fullscreen] file %s was downloaded' % self.filePath, xbmc.LOGDEBUG)
         return retVal

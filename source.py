@@ -867,13 +867,15 @@ class Source(object):
 class XMLTVSource(Source):
     PLUGIN_DATA = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen'))
     KEY = 'xmltv'
-    INI_TYPE_FTV = 0
-    INI_TYPE_CUSTOM = 1
+    INI_TYPE_FILE = 0
+    INI_TYPE_URL = 1
     INI_FILE = 'addons.ini'
     LOGO_SOURCE_FOLDER = 0
     LOGO_SOURCE_URL = 1
     XMLTV_SOURCE_FILE = 0
     XMLTV_SOURCE_URL = 1
+    CATEGORIES_TYPE_FILE = 0
+    CATEGORIES_TYPE_URL = 1    
 
     def __init__(self, addon):
         #gType = GuideTypes()
@@ -884,6 +886,7 @@ class XMLTVSource(Source):
         self.xmltvInterval = int(addon.getSetting('xmltv.interval'))
         self.logoSource = int(addon.getSetting('logos.source'))
         self.addonsType = int(addon.getSetting('addons.ini.type'))
+        self.categoriesType = int(addon.getSetting('categories.ini.type'))
 
         # make sure the folder in the user's profile exists or create it!
         if not os.path.exists(XMLTVSource.PLUGIN_DATA):
@@ -909,7 +912,7 @@ class XMLTVSource(Source):
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
 
         if addon.getSetting('categories.ini.enabled') == 'true':
-            if self.addonsType == XMLTVSource.INI_TYPE_FTV:
+            if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
                 customFile = str(addon.getSetting('categories.ini.file'))
             else:
                 customFile = str(addon.getSetting('categories.ini.url'))
@@ -920,7 +923,7 @@ class XMLTVSource(Source):
         # make sure the ini file is fetched as well if necessary
 
         if addon.getSetting('addons.ini.enabled') == 'true':
-            if self.addonsType == XMLTVSource.INI_TYPE_FTV:
+            if self.addonsType == XMLTVSource.INI_TYPE_FILE:
                 customFile = str(addon.getSetting('addons.ini.file'))
             else:
                 customFile = str(addon.getSetting('addons.ini.url'))
