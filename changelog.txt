@@ -6,6 +6,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.33
+- sort channels in categories setting
+
 version 0.0.32
 - add channels to category is multiselect
 - removed addon in video section, only in programs now
