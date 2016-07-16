@@ -168,8 +168,8 @@ class TVGuide(xbmcgui.WindowXML):
         self.categories = categories
 
         self.osdEnabled = False
-        #self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
-        #    'alternative.playback') != 'true'
+        self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
+            'alternative.playback') != 'true'
         self.alternativePlayback = ADDON.getSetting('alternative.playback') == 'true'
         self.osdChannel = None
         self.osdProgram = None
@@ -234,6 +234,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.updateTimebar()
 
     def onAction(self, action):
+        xbmc.log("XXX onAction %s" % repr((self.mode,action.getId())))
         debug('Mode is: %s' % self.mode)
 
         if self.mode == MODE_TV:
@@ -244,6 +245,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.onActionEPGMode(action)
 
     def onActionTVMode(self, action):
+        xbmc.log("XXX onActionTVMode %d" % action.getId())
         if action.getId() == ACTION_PAGE_UP:
             self._channelUp()
 
