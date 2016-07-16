@@ -104,7 +104,7 @@ class StreamsService(object):
                     label = channel.title
                     stream = str(stream.replace("<channel>", channel.title.replace(" ","%20")))
 
-                if label == channel.title:
+                if label.lower() == channel.title.lower():
                     exact_matches.append((id, label, stream))
                 if int(self.addon.getSetting('addon.match')) > 0:
                     labelx = re.sub(r' ','',label.lower())
