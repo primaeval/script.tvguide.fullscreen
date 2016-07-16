@@ -420,7 +420,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
-        d = PopupMenu(self.database, program, not program.notificationScheduled, self.categories)
+        d = PopupMenu(self.database, program, not program.notificationScheduled, self.category, self.categories)
         d.doModal()
         buttonClicked = d.buttonClicked
         self.category = d.category
@@ -1117,10 +1117,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_VIDEOADDONS = 80002
 
 
-    def __new__(cls, database, program, showRemind, categories):
+    def __new__(cls, database, program, showRemind, category, categories):
         return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', ADDON.getAddonInfo('path'), SKIN)
 
-    def __init__(self, database, program, showRemind, categories):
+    def __init__(self, database, program, showRemind, category, categories):
         """
 
         @type database: source.Database
@@ -1133,7 +1133,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         self.program = program
         self.showRemind = showRemind
         self.buttonClicked = None
-        self.category = None
+        self.category = category
         self.categories = categories
 
     def onInit(self):
