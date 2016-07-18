@@ -27,6 +27,25 @@
             <visible>false</visible>
         </control>
 
+        <control type="image">
+            <description>category background</description>
+            <posx>10</posx>
+            <posy>10</posy>
+            <width>220</width>
+            <height>700</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <description>category background</description>
+            <posx>12</posx>
+            <posy>12</posy>
+            <width>216</width>
+            <height>696</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
+        </control>
+
         <control type="button" id="80003">
             <description>add category</description>
             <posx>20</posx>
@@ -117,7 +136,24 @@
             </focusedlayout>
         </control>
 
-
+        <control type="image">
+            <description>program background</description>
+            <posx>540</posx>
+            <posy>10</posy>
+            <width>730</width>
+            <height>700</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <description>program background</description>
+            <posx>542</posx>
+            <posy>12</posy>
+            <width>726</width>
+            <height>696</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
+        </control>
         <control type="image" id="7002">
             <description>program image</description>
             <posx>550</posx>
@@ -182,6 +218,24 @@
             <visible>true</visible>
         </control>
 
+        <control type="image">
+            <description>category background</description>
+            <posx>260</posx>
+            <posy>10</posy>
+            <width>220</width>
+            <height>170</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <description>category background</description>
+            <posx>262</posx>
+            <posy>12</posy>
+            <width>216</width>
+            <height>166</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
+        </control>
 
         <control type="button" id="4006">
             <!-- super favourites -->
@@ -236,6 +290,24 @@
             <textcolor>ffffffff</textcolor>
         </control>
 
+        <control type="image">
+            <description>category background</description>
+            <posx>260</posx>
+            <posy>270</posy>
+            <width>220</width>
+            <height>166</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <description>category background</description>
+            <posx>262</posx>
+            <posy>272</posy>
+            <width>216</width>
+            <height>162</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
+        </control>
 
         <control type="button" id="4000">
             <!-- Watch Stream -->
