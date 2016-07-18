@@ -210,7 +210,7 @@
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4006</onup>
-            <ondown>4000</ondown>
+            <ondown>4002</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -218,6 +218,25 @@
             <textcolor>ffffffff</textcolor>
             <label>Meta Search</label>
         </control>
+
+        <control type="button" id="4002">
+            <!-- REMINDER -->
+            <posx>270</posx>
+            <posy>128</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>menu-grey-focus.png</texturefocus>
+            <texturenofocus>menu-grey.png</texturenofocus>
+            <onup>4005</onup>
+            <ondown>4001</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+        </control>
+
+
         <control type="button" id="4000">
             <!-- Watch Stream -->
             <posx>270</posx>
@@ -233,6 +252,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
+			<visible>false</visible>
         </control>
 
         <control type="button" id="4001">
@@ -243,8 +263,8 @@
             <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>4000</onup>
-            <ondown>4002</ondown>
+            <onup>4002</onup>
+            <ondown>4003</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -277,22 +297,7 @@
             <textcolor>ffffffff</textcolor>
             <visible>false</visible>
         </control>
-        <control type="button" id="4002">
-            <!-- REMINDER -->
-            <posx>270</posx>
-            <posy>332</posy>
-            <width>200</width>
-            <height>40</height>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>4001</onup>
-            <ondown>4003</ondown>
-            <onleft>7004</onleft>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>ffffffff</textcolor>
-        </control>
+
         <control type="button" id="4003">
             <!-- CHANNELS -->
             <posx>270</posx>
@@ -301,7 +306,7 @@
             <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>4002</onup>
+            <onup>4001</onup>
             <ondown>80000</ondown>
             <onleft>7004</onleft>
             <align>center</align>
@@ -330,6 +335,7 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 80000]</label>
+			<visible>false</visible>
         </control>
 
         <control type="button" id="80001">
@@ -348,6 +354,7 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 80001]</label>
+			<visible>false</visible>
         </control>
 
         <control type="button" id="80002">
@@ -366,6 +373,7 @@
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 80002]</label>
+			<visible>false</visible>
         </control>
 
         <control type="button" id="4004">
