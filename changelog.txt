@@ -6,6 +6,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.44
+- WARNING cyan skin is back to Default skin (change your settings!)
+- supports audio addons too
+- make context menu clearer
+
 version 0.0.43
 - osd context menu key fix
 
