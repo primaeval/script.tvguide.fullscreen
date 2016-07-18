@@ -1495,8 +1495,13 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl.addItems(items)
         self.updateAddonInfo()
 
-        response = RPC.addons.get_addons(type="xbmc.addon.video",properties=["name", "thumbnail"])
-        addons = response["addons"]
+        addons = []
+        for type in ["xbmc.addon.video", "xbmc.addon.audio"]:
+            response = RPC.addons.get_addons(type=type,properties=["name", "thumbnail"])
+            found_addons = response["addons"]
+            addons = addons + found_addons
+        addons = {v['addonid']:v for v in addons}.values()
+
         items = list()
         addons = sorted(addons, key=lambda addon: remove_formatting(addon['name']).lower())
         for addon in addons:

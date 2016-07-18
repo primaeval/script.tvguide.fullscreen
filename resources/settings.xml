@@ -7,6 +7,8 @@
         <setting id="xmltv.url" label="XMLTV Url" type="text" visible="eq(-2,1)" />
         <setting id="xmltv.refresh" label="30149" type="bool" default="false" />
         <setting id="xmltv.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
+	</category>
+	<category label="Optional">
         <setting type="lsep" label="Import addons.ini will overwrite added addon folders!"/>
         <setting id="addons.ini.enabled" label="Import addons.ini" type="bool" default="false" />
         <setting id="addons.ini.type" label="addons.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
