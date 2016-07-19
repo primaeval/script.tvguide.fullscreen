@@ -844,7 +844,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.epgView.top + self.epgView.cellHeight * idx,
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
-                "-",
+                u"\u2014",
                 focusedColor="0xFF00FFFF",
                 noFocusTexture='black-back.png',
                 focusTexture='black-back.png'
