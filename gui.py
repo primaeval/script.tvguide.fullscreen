@@ -772,13 +772,6 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setWidth(176)
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setPosition(2,top)
-        for idx in range(CHANNELS_PER_PAGE,16):
-            control = self.getControl(4010 + idx)
-            control.setVisible(False)
-            control = self.getControl(4110 + idx)
-            control.setVisible(False)
-            control = self.getControl(4210 + idx)
-            control.setVisible(False)
 
         for program in programs:
             idx = channels.index(program.channel)
@@ -829,7 +822,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.epgView.top + self.epgView.cellHeight * idx,
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
-                "",
+                "-",
                 focusedColor="0xFF00FFFF",
                 noFocusTexture='black-back.png',
                 focusTexture='black-back.png'
@@ -838,19 +831,7 @@ class TVGuide(xbmcgui.WindowXML):
             program = src.Program(channel, "", None, None, None)
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
-        last = len(channels)
-        if last < CHANNELS_PER_PAGE:
-            control = xbmcgui.ControlImage(
-                2,
-                self.epgView.top + self.epgView.cellHeight * last,
-                (self.epgView.right - 2) - 2,
-                (self.epgView.cellHeight * (CHANNELS_PER_PAGE - last))  - 2,
-                'black-back.png',
-            )
-            program = src.Program(None, "", None, None, None)
-            self.controlAndProgramList.append(ControlAndProgram(control, program))
-
-        top = self.epgView.cellHeight * CHANNELS_PER_PAGE
+        top = self.epgView.cellHeight * len(channels)
         height = 720 - top
         control = self.getControl(self.C_MAIN_FOOTER)
         if control:
