@@ -199,7 +199,8 @@ class TVGuide(xbmcgui.WindowXML):
         if not self.isClosing:
             self.isClosing = True
             if self.player.isPlaying():
-                self.player.stop()
+                if ADDON.getSetting('stop.on.exit') == "true":
+                    self.player.stop()
             if self.database:
                 self.database.close(super(TVGuide, self).close)
             else:
