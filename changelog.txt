@@ -6,6 +6,12 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.45
+- rpi fix (hopefully)
+- last page scroll fix
+- new pip skin
+- less flashing
+
 version 0.0.44
 - WARNING cyan skin is back to Default skin (change your settings!)
 - supports audio addons too
