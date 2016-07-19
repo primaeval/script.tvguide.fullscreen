@@ -6,6 +6,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.47
+- stop on exit setting
+- license change
+
 version 0.0.46
 - clearer pip skin layout
 - seperate button for stream setup (beware!)
