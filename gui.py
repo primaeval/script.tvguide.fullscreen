@@ -1232,8 +1232,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 for channel in channels:
                     f.write("%s=%s\n" % (channel.encode("utf8"),cat))
             f.close()
-            self.categories = [category for category in categories if category]                  
-  
+            self.categories = [category for category in categories if category]
+
 
     def onClick(self, controlId):
         if controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
@@ -1495,12 +1495,18 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl.addItems(items)
         self.updateAddonInfo()
 
-        addons = []
+        all_addons = []
         for type in ["xbmc.addon.video", "xbmc.addon.audio"]:
             response = RPC.addons.get_addons(type=type,properties=["name", "thumbnail"])
             found_addons = response["addons"]
-            addons = addons + found_addons
-        addons = {v['addonid']:v for v in addons}.values()
+            all_addons = all_addons + found_addons
+
+        seen = set()
+        addons = []
+        for addon in all_addons:
+            if addon['addonid'] not in seen:
+                addons.append(addon)
+            seen.add(addon['addonid'])
 
         items = list()
         addons = sorted(addons, key=lambda addon: remove_formatting(addon['name']).lower())
