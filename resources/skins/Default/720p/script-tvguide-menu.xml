@@ -326,7 +326,6 @@
             <textcolor>ffffffff</textcolor>
 			<visible>false</visible>
         </control>
-
         <control type="button" id="4001">
             <!-- Choose Stream -->
             <posx>270</posx>
@@ -336,13 +335,30 @@
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4002</onup>
-            <ondown>4003</ondown>
+            <ondown>4007</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30304]</label>
+        </control>
+        <control type="button" id="4007">
+            <!-- Choose Stream -->
+            <posx>270</posx>
+            <posy>332</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>menu-grey-focus.png</texturefocus>
+            <texturenofocus>menu-grey.png</texturenofocus>
+            <onup>4001</onup>
+            <ondown>4003</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>ffffffff</textcolor>
+            <label>Stream Setup</label>
         </control>
         <control type="label">
             <!-- Choose Stream Text -->

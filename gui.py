@@ -441,11 +441,30 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_STREAM:
+            result = self.streamingService.detectStream(program.channel)
+            if not result:
+                # could not detect stream, show context menu
+                self._showContextMenu(program)
+            elif type(result) == str:
+                # one single stream detected, save it and start streaming
+                self.database.setCustomStreamUrl(program.channel, result)
+                self.playChannel(program.channel, program)
+
+            else:
+                # multiple matches, let user decide
+
+                d = ChooseStreamAddonDialog(result)
+                d.doModal()
+                if d.stream is not None:
+                    self.database.setCustomStreamUrl(program.channel, d.stream)
+                    self.playChannel(program.channel, program)
+
+        elif buttonClicked == PopupMenu.C_POPUP_STREAM_SETUP:
             d = StreamSetupDialog(self.database, program.channel)
             d.doModal()
             del d
             self.streamingService = streaming.StreamsService(ADDON)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)            
 
         elif buttonClicked == PopupMenu.C_POPUP_PLAY:
             self.playChannel(program.channel, program)
@@ -1093,6 +1112,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_QUIT = 4004
     C_POPUP_PLAY_BEGINNING = 4005
     C_POPUP_SUPER_FAVOURITES = 4006
+    C_POPUP_STREAM_SETUP = 4007
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
