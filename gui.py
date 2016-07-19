@@ -131,6 +131,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD_DESCRIPTION = 6003
     C_MAIN_OSD_CHANNEL_LOGO = 6004
     C_MAIN_OSD_CHANNEL_TITLE = 6005
+    C_MAIN_VIDEO_BACKGROUND = 5555
+    C_MAIN_VIDEO_PIP = 6666
 
     def __new__(cls):
         return super(TVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), SKIN)
