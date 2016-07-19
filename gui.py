@@ -543,6 +543,7 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             self.setControlImage(self.C_MAIN_LOGO, '')
 
+
         if program.imageSmall is not None:
             self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
         else:

@@ -902,19 +902,19 @@
 
             <control type="label" id="7025">
                 <description>Channel name</description>
-                <posx>190</posx>
+                <posx>360</posx>
                 <posy>470</posy>
                 <width>280</width>
                 <height>50</height>
                 <textcolor>cyan</textcolor>
                 <font>font13</font>
                 <align>left</align>
-                <visible>true</visible>
+                
                 <scroll>true</scroll>
             </control>
             <control type="label" id="7020">
                 <description>Program title</description>
-                <posx>450</posx>
+                <posx>640</posx>
                 <posy>470</posy>
                 <width>630</width>
                 <height>50</height>
@@ -926,13 +926,14 @@
             </control>
             <control type="image" id="7024">
                 <description>Channel logo</description>
-                <posx>10</posx>
+                <posx>360</posx>
                 <posy>470</posy>
                 <width>160</width>
                 <height>40</height>
+                <align>left</align>
                 <aspectratio>keep</aspectratio>
                 <fadetime>500</fadetime>
-                <visible>true</visible>
+                <visible>false</visible>
                 <!-- unused in default skin -->
             </control>
             <control type="label" id="7021">
@@ -949,9 +950,9 @@
             </control>
             <control type="label" id="7022">
                 <description>Program description</description>
-                <posx>190</posx>
+                <posx>360</posx>
                 <posy>505</posy>
-                <width>1090</width>
+                <width>920</width>
                 <height>130</height>
                 <textcolor>cyan</textcolor>
                 <font>font13</font>
@@ -963,9 +964,9 @@
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
                 <posx>0</posx>
-                <posy>505</posy>
-                <width>180</width>
-                <height>120</height>
+                <posy>240r</posy>
+                <width>350</width>
+                <height>180</height>
                 <aligny>top</aligny>
                 <aspectratio>keep</aspectratio>
 
@@ -1206,7 +1207,7 @@
             <width>1280</width>
             <height>720</height>
             <animation type="Conditional" condition="!Control.IsVisible(5000)">
-                <effect type="zoom" end="14" center="0,720" time="500" />
+                <effect type="zoom" end="25" center="0,720" time="500" />
             </animation>
             <visible>true</visible>
         </control>
