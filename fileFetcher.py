@@ -4,6 +4,9 @@
 # Copyright (C) 2015 Thomas Geppert [bluezed]
 # bluezed.apps@gmail.com
 #
+#      Modified for TV Guide Fullscren (2016)
+#      by primaeval - primaeval.dev@gmail.com
+#
 # This Program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2, or (at your option)
@@ -27,8 +30,6 @@ import datetime
 import zlib
 import requests
 
-
-#MAIN_URL = 'http://thaisatellite.tv/ftv/'
 
 
 class FileFetcher(object):

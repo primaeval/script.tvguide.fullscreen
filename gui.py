@@ -236,6 +236,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.updateTimebar()
 
     def onAction(self, action):
+        xbmc.log("%s" % repr((self.mode,action.getId())))
         debug('Mode is: %s' % self.mode)
 
         if self.mode == MODE_TV:

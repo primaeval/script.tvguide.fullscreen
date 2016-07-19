@@ -5,6 +5,9 @@
 #      Modified for FTV Guide (09/2014 onwards)
 #      by Thomas Geppert [bluezed] - bluezed.apps@gmail.com
 #
+#      Modified for TV Guide Fullscren (2016)
+#      by primaeval - primaeval.dev@gmail.com
+#
 # This Program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2, or (at your option)
