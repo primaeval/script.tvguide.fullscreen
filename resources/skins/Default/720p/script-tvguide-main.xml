@@ -957,7 +957,7 @@
 
                 <visible>true</visible>
             </control>
-            <control type="label" id="7022">
+            <control type="textbox" id="7022">
                 <description>Program description</description>
                 <posx>190</posx>
                 <posy>505</posy>
@@ -967,8 +967,7 @@
                 <font>font13</font>
                 <align>justify</align>
                 <wrapmultiline>true</wrapmultiline>
-                <scroll>true</scroll>
-
+                
             </control>
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>

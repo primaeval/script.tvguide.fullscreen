@@ -171,11 +171,12 @@
             </control>
 
             <control type="textbox" id="1005">
-                <posx>20</posx>
-                <posy>160</posy>
-                <width>560</width>
+                <posx>140</posx>
+                <posy>240</posy>
+                <width>1280</width>
                 <height>80</height>
                 <wrapmultiline>true</wrapmultiline>
+                
             </control>
 
 

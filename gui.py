@@ -468,7 +468,7 @@ class TVGuide(xbmcgui.WindowXML):
             d.doModal()
             del d
             self.streamingService = streaming.StreamsService(ADDON)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)            
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_PLAY:
             self.playChannel(program.channel, program)
@@ -559,7 +559,7 @@ class TVGuide(xbmcgui.WindowXML):
             description = ""
         self.setControlText(self.C_MAIN_DESCRIPTION, description)
 
-        self.setControlText(self.C_MAIN_CHANNEL, '[B]%s[/B]' % program.channel.title)
+        self.setControlLabel(self.C_MAIN_CHANNEL, '[B]%s[/B]' % program.channel.title)
 
         if program.channel.logo is not None:
             self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
@@ -1545,10 +1545,31 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             self.addBrowseFolder()
 
         elif controlId == self.C_STREAM_STRM_BROWSE:
-            stream = xbmcgui.Dialog().browse(1, ADDON.getLocalizedString(30304), 'video', '.strm')
+            dialog = xbmcgui.Dialog()
+            stream = dialog.browse(1, ADDON.getLocalizedString(30304), 'video', '.strm')
+            if stream:
+                f = xbmcvfs.File(stream,"rb")
+                data = f.read()
+                lines = data.splitlines()
+                if len(lines) > 1:
+                    matches = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
+                    names = []
+                    urls =[]
+                    for name,url in matches:
+                        xbmc.log(repr((name.strip(),url.strip())))
+                        names.append(name)
+                        urls.append(url)
+                    if names:
+                        index = dialog.select("Choose stream",names)
+                        xbmc.log(repr(index))
+                        if index != -1:
+                            stream = urls[index]
+                            stream_name = names[index]
+
+            xbmc.log(stream)
             if stream:
                 self.database.setCustomStreamUrl(self.channel, stream)
-                self.getControl(self.C_STREAM_STRM_FILE_LABEL).setText(stream)
+                self.getControl(self.C_STREAM_STRM_FILE_LABEL).setText(stream_name)
                 self.strmFile = stream
 
         elif controlId == self.C_STREAM_ADDONS_OK:
