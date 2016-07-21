@@ -1,10 +1,14 @@
 USAGE NOTES:
+- controls: osd (info,i), normal overlays (fullscreen,tab), pip toggle (context menu, c), exit (back,esc)
 - "Import addons.ini" will overwrite addon folders on next update timer
 - use pip theme with 8 channels per page to match original tv guide icon layout
 - click to load in addon browse dialog
 - right click to add channels to categories
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.48
+- osd fix
 
 version 0.0.47
 - stop on exit setting
