@@ -1557,17 +1557,14 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     names = []
                     urls =[]
                     for name,url in matches:
-                        #xbmc.log(repr((name.strip(),url.strip())))
                         names.append(name.strip())
                         urls.append(url.strip())
                     if names:
                         index = dialog.select("Choose stream",names)
-                        #xbmc.log(repr(index))
                         if index != -1:
                             stream = urls[index]
                             stream_name = names[index]
 
-            #xbmc.log(stream)
             if stream:
                 self.database.setCustomStreamUrl(self.channel, stream)
                 self.getControl(self.C_STREAM_STRM_FILE_LABEL).setText(stream_name)
