@@ -1279,13 +1279,13 @@
             </control>
             <control type="label" id="6005">
                 <description>Program channel text</description>
-                <posx>60</posx>
+                <posx>1100</posx>
                 <posy>155</posy>
                 <width>160</width>
                 <height>45</height>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
-                <align>center</align>
+                <align>right</align>
                 <visible>StringCompare(Control.GetLabel(6004),)</visible>
             </control>
 

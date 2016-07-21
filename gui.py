@@ -240,7 +240,6 @@ class TVGuide(xbmcgui.WindowXML):
         self.updateTimebar()
 
     def onAction(self, action):
-        xbmc.log("%s" % repr((self.mode,action.getId())))
         debug('Mode is: %s' % self.mode)
 
         if self.mode == MODE_TV:
@@ -1084,7 +1083,7 @@ class TVGuide(xbmcgui.WindowXML):
     def setControlText(self, controlId, text):
         control = self.getControl(controlId)
         if control:
-            control.setLabel(text)
+            control.setText(text)
 
     def updateTimebar(self, scheduleTimer=True):
         # move timebar to current time
