@@ -1546,8 +1546,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
         elif controlId == self.C_STREAM_STRM_BROWSE:
             dialog = xbmcgui.Dialog()
-            stream = dialog.browse(1, ADDON.getLocalizedString(30304), 'video', '.strm')
+            stream = dialog.browse(1, ADDON.getLocalizedString(30304), 'video', '.strm|.m3u|.m3u8')
             if stream:
+                stream_name = stream
                 f = xbmcvfs.File(stream,"rb")
                 data = f.read()
                 lines = data.splitlines()
@@ -1556,17 +1557,17 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     names = []
                     urls =[]
                     for name,url in matches:
-                        xbmc.log(repr((name.strip(),url.strip())))
-                        names.append(name)
-                        urls.append(url)
+                        #xbmc.log(repr((name.strip(),url.strip())))
+                        names.append(name.strip())
+                        urls.append(url.strip())
                     if names:
                         index = dialog.select("Choose stream",names)
-                        xbmc.log(repr(index))
+                        #xbmc.log(repr(index))
                         if index != -1:
                             stream = urls[index]
                             stream_name = names[index]
 
-            xbmc.log(stream)
+            #xbmc.log(stream)
             if stream:
                 self.database.setCustomStreamUrl(self.channel, stream)
                 self.getControl(self.C_STREAM_STRM_FILE_LABEL).setText(stream_name)
