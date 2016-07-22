@@ -1101,7 +1101,13 @@ class XMLTVSource(Source):
                 elif elem.tag == "channel":
                     cid = elem.get("id").replace("'", "")  # Make ID safe to use as ' can cause crashes!
                     title = elem.findtext("display-name")
+                    iconElement = elem.find("icon")
+                    icon = None
+                    if iconElement is not None:
+                        icon = iconElement.get("src")
                     logo = None
+                    if icon:
+                        logo = icon
                     if logoFolder:
                         logoFile = os.path.join(logoFolder, title + '.png')
                         if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
