@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
 	<category label="30101">
-		
+
         <setting id="xmltv.type" label="XMLTV Source" type="enum" enable="true" visible="true" default="0" values="File|Url" />
         <setting id="xmltv.file" label="XMLTV File" type="file" visible="eq(-1,0)" />
         <setting id="xmltv.url" label="XMLTV Url" type="text" visible="eq(-2,1)" />
@@ -15,14 +15,14 @@
         <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="addons.ini" default=''/>
         <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
         <setting type="lsep" label="Refresh may take some time!"/>
-        <setting label="Refresh Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />        
+        <setting label="Refresh Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />
         <setting type="lsep" label="Categories can be created via context menu"/>
         <setting id="categories.ini.enabled" label="Import categories.ini" type="bool" default="false" />
         <setting id="categories.ini.type" label="categories.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="categories.ini.file" label="categories.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="categories.ini" default=''/>
         <setting id="categories.ini.url" label="categories.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
 	</category>
-	
+
 	<category label="30148">
 		<setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="Default" />
         <setting type="sep"/>
@@ -33,6 +33,8 @@
         <setting id="logos.folder" label="Logos Folder" type="folder" visible="eq(-2,true) + eq(-1,0)" />
         <setting id="logos.url" label="Logos Url" type="text" visible="eq(-3,true) + eq(-2,1)" />
         <setting type="sep"/>
+        <setting id="addon.logos" label="Use Addon Logos for Channels" type="bool" default="false" />
+        <setting type="sep"/>
         <setting id="channels.per.page" label="Channels per Page" type="labelenum" default="14" values="1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16"/>
         <setting type="sep"/>
         <setting id="channel.filter.sort" label="Sort Order for Channels in Categories" type="enum" default="0" values="Default|Sorted|categories.ini"/>
@@ -41,7 +43,7 @@
         <setting type="sep"/>
         <setting id="stop.on.exit" label="Stop Playing on Exit" type="bool" default="true" />
 	</category>
-	
+
 	<category label="30114">
         <setting id="autostart" label="30900" type="bool" default="false" />
 		<setting id="enable.osd" label="30118" type="bool" default="true" enable="eq(2,false)" />
@@ -57,7 +59,7 @@
 		<setting id="notifications.enabled" label="30106" type="bool" default="true" />
 		<setting label="30108" type="action" action="RunScript($CWD/notification.py)" />
 	</category>
-	
+
 	<category label="30140">
 		<setting type="lsep" label="30137"/>
 		<setting type="lsep" label="30138"/>

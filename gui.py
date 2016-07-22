@@ -1886,7 +1886,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 #name = re.sub(r'[:=]',' ',name)
                 if not stream:
                     stream = 'nothing'
-                write_str = "%s=%s\n" % (name,stream)
+                write_str = "%s|%s\n" % (name,stream)
                 f.write(write_str)
         f.close()
 
