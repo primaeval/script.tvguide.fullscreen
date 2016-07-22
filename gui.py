@@ -1738,6 +1738,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         files = response["files"]
         dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
         links = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "file"])
+        thumbnails = dict([[f["label"], f["thumbnail"]] for f in files if f["filetype"] == "file"])
+        xbmc.log(repr(thumbnails))
 
         items = list()
         item = xbmcgui.ListItem('[B]..[/B]')
@@ -1759,6 +1761,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             stream = links[label]
             item = xbmcgui.ListItem(label)
             item.setProperty('stream', stream)
+            item.setProperty('icon', thumbnails[label])
             items.append(item)
         item = xbmcgui.ListItem('[B][/B]') #NOTE focus placeholder
         item.setProperty('stream', '')
@@ -1834,6 +1837,58 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 f.write(write_str)
         f.close()
 
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/icons.ini'
+
+        f = xbmcvfs.File(file_name)
+        items = f.read().splitlines()
+        f.close()
+        streams = {}
+        addonId = 'nothing'
+        for item in items:
+            if item.startswith('['):
+                addonId = item.strip('[] \t')
+                streams[addonId] = {}
+            elif item.startswith('#'):
+                pass
+            else:
+                name_url = item.split('=',1)
+                if len(name_url) == 2:
+                    name = name_url[0]
+                    url = name_url[1]
+                    if url:
+                        streams[addonId][name] = url
+
+        addonId = self.previousBrowseId
+        if addonId not in streams:
+            streams[addonId] = {}
+
+        listControl = self.getControl(StreamSetupDialog.C_STREAM_BROWSE_STREAMS)
+        for i in range(0,listControl.size()):
+            listItem = listControl.getListItem(i)
+            #name = listItem.getLabel()
+            #name = re.sub(r'\[.*?\]','',name)
+            stream = listItem.getProperty('stream')
+            icon = listItem.getProperty('icon')
+            if stream:
+                streams[addonId][stream] = icon
+
+        f = xbmcvfs.File(file_name,'w')
+        write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"
+        f.write(write_str.encode("utf8"))
+        for addonId in sorted(streams):
+            write_str = "[%s]\n" % (addonId)
+            f.write(write_str)
+            addonStreams = streams[addonId]
+            for name in sorted(addonStreams):
+                stream = addonStreams[name]
+                if name.startswith(' '):
+                    continue
+                #name = re.sub(r'[:=]',' ',name)
+                if not stream:
+                    stream = 'nothing'
+                write_str = "%s=%s\n" % (name,stream)
+                f.write(write_str)
+        f.close()
 
 
 
