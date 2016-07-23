@@ -259,6 +259,7 @@ class Database(object):
         settingsChanged = False
         noRows = True
         count = 0
+        settingsChanged = addon.getSetting('xmltv.refresh') == 'true'
 
         c = self.conn.cursor()
         c.execute('SELECT * FROM settings')
@@ -915,8 +916,8 @@ class XMLTVSource(Source):
     INI_TYPE_FILE = 0
     INI_TYPE_URL = 1
     INI_FILE = 'addons.ini'
-    LOGO_SOURCE_FOLDER = 0
-    LOGO_SOURCE_URL = 1
+    LOGO_SOURCE_FOLDER = 1
+    LOGO_SOURCE_URL = 2
     XMLTV_SOURCE_FILE = 0
     XMLTV_SOURCE_URL = 1
     CATEGORIES_TYPE_FILE = 0
@@ -939,8 +940,10 @@ class XMLTVSource(Source):
 
         if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             self.logoFolder = addon.getSetting('logos.folder')
-        else:
+        elif self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
             self.logoFolder = addon.getSetting('logos.url')
+        else:
+            self.logoFolder = ""
 
         if self.xmltvType == XMLTVSource.XMLTV_SOURCE_FILE:
             customFile = str(addon.getSetting('xmltv.file'))
@@ -1129,7 +1132,7 @@ class XMLTVSource(Source):
                     logo = None
                     if icon and ADDON.getSetting('xmltv.logos'):
                         logo = icon
-                    if logoFolder and ADDON.getSetting('logos.enabled'):
+                    if logoFolder:
                         logoFile = os.path.join(logoFolder, title + '.png')
                         if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
                             logo = logoFile.replace(' ', '%20')  # needed due to fetching from a server!

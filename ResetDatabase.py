@@ -71,6 +71,27 @@ def deleteAddons():
         xbmc.log('[script.tvguide.fullscreen] Deleting addons.ini...EXCEPTION', xbmc.LOGDEBUG)
         return False
 
+def deleteIcons():
+    try:
+        xbmc.log("[script.tvguide.fullscreen] Deleting icons.ini...", xbmc.LOGDEBUG)
+        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getAddonInfo('profile'))
+        dbPath = os.path.join(dbPath, 'icons.ini')
+
+        delete_file(dbPath)
+
+        passed = not os.path.exists(dbPath)
+
+        if passed:
+            xbmc.log("[script.tvguide.fullscreen] Deleting icons.ini...PASSED", xbmc.LOGDEBUG)
+        else:
+            xbmc.log("[script.tvguide.fullscreen] Deleting icons.ini...FAILED", xbmc.LOGDEBUG)
+
+        return passed
+
+    except Exception, e:
+        xbmc.log('[script.tvguide.fullscreen] Deleting icons.ini...EXCEPTION', xbmc.LOGDEBUG)
+        return False
+
 def deleteFolders():
     try:
         xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...", xbmc.LOGDEBUG)
@@ -103,6 +124,7 @@ def delete_file(filename):
 
 if __name__ == '__main__':
     deleteAddons()
+    deleteIcons()
     deleteFolders()
     if deleteDB():
         d = xbmcgui.Dialog()

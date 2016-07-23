@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
-	<category label="30101">
+    <category label="30101">
 
         <setting id="xmltv.type" label="XMLTV Source" type="enum" enable="true" visible="true" default="0" values="File|Url" />
         <setting id="xmltv.file" label="XMLTV File" type="file" visible="eq(-1,0)" />
         <setting id="xmltv.url" label="XMLTV Url" type="text" visible="eq(-2,1)" />
         <setting id="xmltv.refresh" label="30149" type="bool" default="false" />
         <setting id="xmltv.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
-	</category>
-	<category label="Optional">
+    </category>
+    <category label="Optional">
         <setting type="lsep" label="Import addons.ini will overwrite added addon folders!"/>
         <setting id="addons.ini.enabled" label="Import addons.ini" type="bool" default="false" />
         <setting id="addons.ini.type" label="addons.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
@@ -21,20 +21,27 @@
         <setting id="categories.ini.type" label="categories.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="categories.ini.file" label="categories.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="categories.ini" default=''/>
         <setting id="categories.ini.url" label="categories.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
-	</category>
+    </category>
 
-	<category label="30148">
-		<setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="Default" />
+    <category label="Logos">
         <setting type="sep"/>
-		<setting id="program.background.enabled" label="Background Program Image" type="bool" default="true" />
+        <setting id="logos.enabled" label="Enable Channel Logos" type="bool" default="true" />
+        <setting id="logos.source" label="External Logo Source" type="enum" default="0" values="None|Folder|Url" visible="eq(-1,true)" />
+        <setting id="logos.folder" label="Logos Folder" type="folder" visible="eq(-2,true) + eq(-1,1)" />
+        <setting id="logos.url" label="Logos Url" type="text" visible="eq(-3,true) + eq(-2,2)" />
         <setting type="sep"/>
-		<setting id="logos.enabled" label="30117" type="bool" default="true" />
-        <setting id="logos.source" label="Logo Source" type="enum" default="0" values="Folder|Url" visible="eq(-1,true)" />
-        <setting id="logos.folder" label="Logos Folder" type="folder" visible="eq(-2,true) + eq(-1,0)" />
-        <setting id="logos.url" label="Logos Url" type="text" visible="eq(-3,true) + eq(-2,1)" />
+        <setting id="xmltv.logos" label="Use xmltv Logos" type="bool" visible="eq(-5,true)" default="false" />
+        <setting id="addon.logos" label="Use Addon Logos" type="bool" visible="eq(-6,true)" default="false" />
+    </category>
+
+    <category label="30148">
+        <setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="Default" />
+        <setting label="30119" type="lsep" />
+        <setting id="enable.osd" label="30118" type="bool" default="true" enable="eq(2,false)" />
         <setting type="sep"/>
-        <setting id="xmltv.logos" label="Use xmltv Logos for Channels" type="bool" default="false" />
-        <setting id="addon.logos" label="Use Addon Logos for Channels" type="bool" default="false" />
+        <setting id="alternative.playback" label="30120" type="bool" default="false" />
+        <setting type="sep"/>
+        <setting id="program.background.enabled" label="Background Program Image" type="bool" default="true" />
         <setting type="sep"/>
         <setting id="channels.per.page" label="Channels per Page" type="labelenum" default="14" values="1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16"/>
         <setting type="sep"/>
@@ -43,27 +50,23 @@
         <setting id="addon.match" label="Channel Matching" type="enum" default="2" values="Exact|Containing|Everything"/>
         <setting type="sep"/>
         <setting id="stop.on.exit" label="Stop Playing on Exit" type="bool" default="true" />
-	</category>
+    </category>
 
-	<category label="30114">
+    <category label="30114">
         <setting id="autostart" label="30900" type="bool" default="false" />
-		<setting id="enable.osd" label="30118" type="bool" default="true" enable="eq(2,false)" />
-		<setting label="30119" type="lsep" />
-		<setting id="alternative.playback" label="30120" type="bool" default="false" />
-
-		<!--<setting label="30121" type="lsep" />-->
-		<setting id="background.service" label="30400" type="bool" default="false" />
+        <!--<setting label="30121" type="lsep" />-->
+        <setting id="background.service" label="30400" type="bool" default="false" />
         <setting id="service.interval" label="30401" type="enum" default="1" lvalues="30402|30403|30404|30405" visible="eq(-1,true)" />
-	</category>
+    </category>
 
-	<category label="30112">
-		<setting id="notifications.enabled" label="30106" type="bool" default="true" />
-		<setting label="30108" type="action" action="RunScript($CWD/notification.py)" />
-	</category>
+    <category label="30112">
+        <setting id="notifications.enabled" label="30106" type="bool" default="true" />
+        <setting label="30108" type="action" action="RunScript($CWD/notification.py)" />
+    </category>
 
-	<category label="30140">
-		<setting type="lsep" label="30137"/>
-		<setting type="lsep" label="30138"/>
+    <category label="30140">
+        <setting type="lsep" label="30137"/>
+        <setting type="lsep" label="30138"/>
         <setting label="30139" type="action" action="RunScript($CWD/ResetDatabase.py)" />
     </category>
 </settings>
