@@ -49,6 +49,8 @@ for addonId in sorted(logos):
         if logo:
             label = re.sub(r'[:/\\]', '',label)
             label = label.strip()
+            label = re.sub(r"\[/?[BI]\]",'',label)
+            label = re.sub(r"\[/?COLOR.*?\]",'',label)
             logo = re.sub(r'^image://','',logo)
             logo = urllib.unquote_plus(logo)
             logo = logo.strip('/')
