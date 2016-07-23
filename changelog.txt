@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.50
+- channel icons from xmltv or addon folders
+
 version 0.0.49
 - strm/m3u8 sub-streams
 

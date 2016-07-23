@@ -31,7 +31,7 @@
         <setting id="logos.url" label="Logos Url" type="text" visible="eq(-3,true) + eq(-2,2)" />
         <setting type="sep"/>
         <setting id="xmltv.logos" label="Use xmltv Logos" type="bool" visible="eq(-5,true)" default="false" />
-        <setting id="addon.logos" label="Use Addon Logos" type="bool" visible="eq(-6,true)" default="false" />
+        <setting id="addon.logos" label="Use Addon Folder Logos" type="bool" visible="eq(-6,true)" default="false" />
     </category>
 
     <category label="30148">
