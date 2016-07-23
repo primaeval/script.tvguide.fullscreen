@@ -1074,7 +1074,7 @@ class XMLTVSource(Source):
         if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
-
+            #xbmc.log(repr(logos))
         for event, elem in context:
             if event == "end":
                 result = None
@@ -1135,10 +1135,11 @@ class XMLTVSource(Source):
                     if logoFolder:
                         logoFile = os.path.join(logoFolder, title + '.png')
                         if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
-                            logo = logoFile.replace(' ', '%20')  # needed due to fetching from a server!
-                        elif xbmcvfs.exists(logoFile):
-                            logo = logoFile  # local file instead of remote!
+                            logo = logoFile.replace(' ', '%20')  
+                        #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
+                        #    logo = logoFile 
                         else:
+                            #TODO use hash or db
                             for l in sorted(logos):
                                 logox = re.sub(r' ','',l.lower())
                                 t = re.sub(r' ','',title.lower())
