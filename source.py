@@ -678,11 +678,10 @@ class Database(object):
             # no result, but block until operation is done
 
     def _setCustomStreamUrl(self, channel, stream_url):
-        xbmc.log(repr((channel,stream_url)))
         if stream_url is not None:
             image = ""
             if ADDON.getSetting("addon.logos"):
-                file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
+                file_name = 'special://profile/addon_data/script.tvguide.fullscreen/icons.ini'
                 f = xbmcvfs.File(file_name)
                 items = f.read().splitlines()
                 f.close()
@@ -693,17 +692,15 @@ class Database(object):
                         pass
                     else:
                         url_icon = item.split('|',1)
-                        #xbmc.log(repr(url_icon))
                         if len(url_icon) == 2:
                             url = url_icon[0]
                             icon = url_icon[1]
-                            if icon and icon != "nothing":
-                                image = icon
+                            if url == stream_url:
+                                if icon and icon != "nothing":
+                                    image = icon
             c = self.conn.cursor()
-            
             if image:
-                str = 'UPDATE OR REPLACE INTO channels SET logo="%s" WHERE id=%s' % (image, channel.id)
-                c.execute(str)
+                c.execute('UPDATE OR REPLACE channels SET logo=? WHERE id=?' , (image, channel.id))
             c.execute("DELETE FROM custom_stream_url WHERE channel=?", [channel.id])
             c.execute("INSERT INTO custom_stream_url(channel, stream_url) VALUES(?, ?)",
                       [channel.id, stream_url.decode('utf-8', 'ignore')])
