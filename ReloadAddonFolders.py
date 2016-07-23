@@ -21,6 +21,7 @@ if int(ADDON.getSetting('addons.ini.type')) == 1:
         file_name = customFile
 
 plugins = {}
+logos = {}
 for path in unique:
     try:
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
@@ -29,7 +30,7 @@ for path in unique:
     files = response["files"]
     dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
     links = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "file"])
-
+    thumbnails = dict([[f["file"], f["thumbnail"]] for f in files if f["filetype"] == "file"])
     match = re.match(r"plugin://(.*?)/",path)
     if match:
         plugin = match.group(1)
@@ -37,12 +38,17 @@ for path in unique:
         continue
     if plugin not in plugins:
         plugins[plugin] = {}
+    if plugin not in logos:
+        logos[plugin] = {}
 
     streams = plugins[plugin]
     for label in links:
         file = links[label]
         streams[label] = file
-
+    thumbs = logos[plugin]
+    for file in thumbnails:
+        thumb = thumbnails[file]
+        thumbs[file] = thumb
 
 f = xbmcvfs.File(file_name,'wb')
 write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"
@@ -66,6 +72,22 @@ for addonId in sorted(plugins):
             stream = 'nothing'
         write_str = "%s=%s\n" % (name,stream)
         f.write(write_str.encode("utf8"))
+f.close()
+
+file_name = 'special://profile/addon_data/script.tvguide.fullscreen/icons.ini'
+f = xbmcvfs.File(file_name,'wb')
+write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"
+f.write(write_str.encode("utf8"))
+
+for addonId in sorted(logos):
+    write_str = "[%s]\n" % (addonId)
+    f.write(write_str)
+    addonLogos = logos[addonId]
+    for file in sorted(addonLogos):
+        logo = addonLogos[file]
+        if logo:
+            write_str = "%s|%s\n" % (file,logo)
+            f.write(write_str.encode("utf8"))
 f.close()
 
 dialog = xbmcgui.Dialog()
