@@ -1127,9 +1127,9 @@ class XMLTVSource(Source):
                     if iconElement is not None:
                         icon = iconElement.get("src")
                     logo = None
-                    if icon:
+                    if icon and ADDON.getSetting('xmltv.logos'):
                         logo = icon
-                    if logoFolder:
+                    if logoFolder and ADDON.getSetting('logos.enabled'):
                         logoFile = os.path.join(logoFolder, title + '.png')
                         if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
                             logo = logoFile.replace(' ', '%20')  # needed due to fetching from a server!
