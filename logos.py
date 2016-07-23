@@ -30,7 +30,11 @@ for path in unique:
     if match:
         plugin = match.group(1)
     else:
-        continue
+        match = re.match(r"plugin://(.*?)$",path)
+        if match:
+            plugin = match.group(1)
+        else:
+            continue
 
     if plugin not in logos:
         logos[plugin] = {}
@@ -39,7 +43,7 @@ for path in unique:
     for file in thumbnails:
         thumb = thumbnails[file]
         thumbs[file] = thumb
-
+logo_folder = 'special://profile/addon_data/script.tvguide.fullscreen/logos/'
 for addonId in sorted(logos):
     folder = 'special://profile/addon_data/script.tvguide.fullscreen/logos/%s' % addonId
     xbmcvfs.mkdirs(folder)
@@ -55,19 +59,21 @@ for addonId in sorted(logos):
             logo = urllib.unquote_plus(logo)
             logo = logo.strip('/')
             file_name = "%s/%s.png" % (folder,label)
-
-            try:
-                r = requests.get(logo)
-                if r.status_code == 200:
-                    f = xbmcvfs.File(file_name, 'wb')
-                    chunk_size = 16 * 1024
-                    for chunk in r.iter_content(chunk_size):
-                        f.write(chunk)
-                    f.close()
-            except Exception as detail:
-                xbmcvfs.copy(logo,file_name)
+            logos_file_name = "%s/%s.png" % (logo_folder,label)
+            if not xbmcvfs.exists(file_name):
+                try:
+                    r = requests.get(logo)
+                    if r.status_code == 200:
+                        f = xbmcvfs.File(file_name, 'wb')
+                        chunk_size = 16 * 1024
+                        for chunk in r.iter_content(chunk_size):
+                            f.write(chunk)
+                        f.close()
+                except Exception as detail:
+                    xbmcvfs.copy(logo,file_name)
+            xbmcvfs.copy(file_name,logos_file_name)
 
 
 
 dialog = xbmcgui.Dialog()
-dialog.notification("TV Guide Fullscreen","Done: Reload Addon Folders")
+dialog.notification("TV Guide Fullscreen","Done: Download Logos")
