@@ -169,7 +169,7 @@ class Database(object):
                     break
 
             except Exception as detail:
-                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s' % detail)
+                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s = %s' % (detail,command.__name__))
 
         print 'Database.eventLoop() >>>>>>>>>> exiting...'
 
@@ -678,6 +678,7 @@ class Database(object):
             # no result, but block until operation is done
 
     def _setCustomStreamUrl(self, channel, stream_url):
+        xbmc.log(repr((channel,stream_url)))
         if stream_url is not None:
             image = ""
             if ADDON.getSetting("addon.logos"):
@@ -692,7 +693,7 @@ class Database(object):
                         pass
                     else:
                         url_icon = item.split('|',1)
-                        xbmc.log(url_icon)
+                        #xbmc.log(repr(url_icon))
                         if len(url_icon) == 2:
                             url = url_icon[0]
                             icon = url_icon[1]
@@ -702,7 +703,7 @@ class Database(object):
             
             if image:
                 str = 'UPDATE OR REPLACE INTO channels SET logo="%s" WHERE id=%s' % (image, channel.id)
-                #c.execute(str)
+                c.execute(str)
             c.execute("DELETE FROM custom_stream_url WHERE channel=?", [channel.id])
             c.execute("INSERT INTO custom_stream_url(channel, stream_url) VALUES(?, ?)",
                       [channel.id, stream_url.decode('utf-8', 'ignore')])
