@@ -18,7 +18,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture>black.png</texture>
+            <texture>grey.png</texture>
             <visible>true</visible>
         </control>
         <control type="image">
@@ -39,39 +39,51 @@
         </control>
 
         <control type="image" id="4023">
-            <description>Program logo / Source logo</description>
-            <posx>930</posx>
-            <posy>515</posy>
-            <width>320</width>
-            <height>160</height>
+            <description>Channel Logo</description>
+            <posx>180r</posx>
+            <posy>0</posy>
+            <width>150</width>
+            <height>150</height>
             <aspectratio>keep</aspectratio>
             <fadetime>500</fadetime>
-            <texture>tvguide-logo-epg.png</texture>
-            <visible>false</visible>
+            <texture>black.png</texture>
+            <visible>true</visible>
+        </control>
+
+        <control type="label" id="4024">
+            <description>Channel Name</description>
+            <posx>40</posx>
+            <posy>40</posy>
+            <width>500</width>
+            <height>40</height>
+            <font>font13_title</font>
+            <textcolor>cyan</textcolor>
+            <label></label>
+            <align>left</align>
         </control>
 
         <control type="image">
-            <posx>150</posx>
+            <posx>40</posx>
             <posy>100</posy>
             <width>1010</width>
             <height>510</height>
             <texture>menu-stream.png</texture>
-            <visible>true</visible>
+            <visible>false</visible>
         </control>
 
         <control type="label">
             <!-- Set Up Stream Text -->
-            <posx>180</posx>
-            <posy>105</posy>
-            <width>174</width>
+            <posx>40</posx>
+            <posy>80</posy>
+            <width>500</width>
             <height>40</height>
             <label>$ADDON[script.tvguide.fullscreen 30600]</label>
-            <align>center</align>
+            <align>left</align>
         </control>
 
         <control type="button" id="101">
             <posx>360</posx>
-            <posy>110</posy>
+            <posy>40</posy>
             <width>173</width>
             <height>40</height>
             <align>center</align>
@@ -87,7 +99,7 @@
         </control>
         <control type="button" id="102">
             <posx>534</posx>
-            <posy>110</posy>
+            <posy>40</posy>
             <width>174</width>
             <height>40</height>
             <align>center</align>
@@ -103,7 +115,7 @@
         </control>
         <control type="button" id="103">
             <posx>709</posx>
-            <posy>110</posy>
+            <posy>40</posy>
             <width>173</width>
             <height>40</height>
             <align>center</align>
@@ -120,7 +132,7 @@
 
         <control type="button" id="104">
             <posx>884</posx>
-            <posy>110</posy>
+            <posy>40</posy>
             <width>173</width>
             <height>40</height>
             <align>center</align>
@@ -176,13 +188,13 @@
                 <width>1280</width>
                 <height>80</height>
                 <wrapmultiline>true</wrapmultiline>
-                
+
             </control>
 
 
             <control type="button" id="1002">
                 <posx>518</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>240</width>
                 <height>40</height>
                 <align>center</align>
@@ -198,7 +210,7 @@
             </control>
             <control type="button" id="1003">
                 <posx>759</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -214,7 +226,7 @@
             </control>
             <control type="button" id="1004">
                 <posx>930</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -250,9 +262,9 @@
 
             <control type="list" id="2001">
                 <posx>550</posx>
-                <posy>50</posy>
+                <posy>20</posy>
                 <width>500</width>
-                <height>354</height>
+                <height>480</height>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
                 <focusposition>7</focusposition>
@@ -317,7 +329,7 @@
 
             <control type="button" id="2002">
                 <posx>518</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>240</width>
                 <height>40</height>
                 <align>center</align>
@@ -333,7 +345,7 @@
             </control>
             <control type="button" id="2003">
                 <posx>759</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -349,7 +361,7 @@
             </control>
             <control type="button" id="2004">
                 <posx>930</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -375,15 +387,15 @@
             <visible>StringCompare(Control.GetLabel(100),addons)</visible>
 
             <control type="image">
-                <posx>190</posx>
-                <posy>50</posy>
+                <posx>90</posx>
+                <posy>20</posy>
                 <width>40</width>
                 <height>12</height>
                 <texture>tvguide-channel-arrow.png</texture>
             </control>
 
             <control type="image">
-                <posx>190</posx>
+                <posx>90</posx>
                 <posy>230</posy>
                 <width>40</width>
                 <height>-12</height>
@@ -391,7 +403,7 @@
             </control>
 
             <control type="wraplist" id="3001">
-                <posx>140</posx>
+                <posx>40</posx>
                 <posy>65</posy>
                 <width>150</width>
                 <height>150</height>
@@ -446,17 +458,18 @@
             </control>
 
             <control type="label" id="3003">
-                <posx>300</posx>
-                <posy>60</posy>
-                <width>230</width>
+                <posx>40</posx>
+                <posy>280</posy>
+                <width>330</width>
                 <height>40</height>
                 <label>[B][/B]</label>
+                <textcolor>cyan</textcolor>
             </control>
             <control type="textbox" id="3004">
-                <posx>300</posx>
-                <posy>100</posy>
-                <width>230</width>
-                <height>120</height>
+                <posx>40</posx>
+                <posy>310</posy>
+                <width>350</width>
+                <height>100</height>
                 <label/>
                 <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
@@ -465,9 +478,9 @@
 
             <control type="list" id="3002">
                 <posx>550</posx>
-                <posy>50</posy>
+                <posy>20</posy>
                 <width>500</width>
-                <height>354</height>
+                <height>480</height>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
                 <focusposition>7</focusposition>
@@ -532,7 +545,7 @@
 
             <control type="button" id="3005">
                 <posx>518</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>240</width>
                 <height>40</height>
                 <align>center</align>
@@ -548,7 +561,7 @@
             </control>
             <control type="button" id="3006">
                 <posx>759</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -564,7 +577,7 @@
             </control>
             <control type="button" id="3007">
                 <posx>930</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -589,15 +602,15 @@
             <visible>StringCompare(Control.GetLabel(100),browse)</visible>
 
             <control type="image">
-                <posx>190</posx>
-                <posy>50</posy>
+                <posx>90</posx>
+                <posy>20</posy>
                 <width>40</width>
                 <height>12</height>
                 <texture>tvguide-channel-arrow.png</texture>
             </control>
 
             <control type="image">
-                <posx>190</posx>
+                <posx>90</posx>
                 <posy>280</posy>
                 <width>40</width>
                 <height>-12</height>
@@ -605,7 +618,7 @@
             </control>
 
             <control type="list" id="4001">
-                <posx>140</posx>
+                <posx>40</posx>
                 <posy>65</posy>
                 <width>212</width>
                 <height>212</height>
@@ -681,7 +694,7 @@
 
             <control type="label">
                 <posx>400</posx>
-                <posy>50</posy>
+                <posy>20</posy>
                 <width>560</width>
                 <height>38</height>
                 <aligny>center</aligny>
@@ -693,9 +706,9 @@
 
             <control type="list" id="4008">
                 <posx>400</posx>
-                <posy>50</posy>
+                <posy>20</posy>
                 <width>300</width>
-                <height>354</height>
+                <height>480</height>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
                 <focusposition>7</focusposition>
@@ -759,16 +772,17 @@
             </control>
 
             <control type="label" id="4003">
-                <posx>150</posx>
+                <posx>40</posx>
                 <posy>280</posy>
-                <width>230</width>
+                <width>330</width>
                 <height>40</height>
                 <label>[B][/B]</label>
+                <textcolor>cyan</textcolor>
             </control>
             <control type="textbox" id="4004">
-                <posx>150</posx>
+                <posx>40</posx>
                 <posy>310</posy>
-                <width>250</width>
+                <width>350</width>
                 <height>100</height>
                 <label/>
                 <align>left</align>
@@ -778,9 +792,9 @@
 
             <control type="list" id="4002">
                 <posx>750</posx>
-                <posy>50</posy>
+                <posy>20</posy>
                 <width>300</width>
-                <height>354</height>
+                <height>480</height>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
                 <focusposition>7</focusposition>
@@ -845,7 +859,7 @@
 
             <control type="button" id="4009">
                 <posx>390</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -861,7 +875,7 @@
             </control>
             <control type="button" id="4005">
                 <posx>570</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -877,7 +891,7 @@
             </control>
             <control type="button" id="4006">
                 <posx>750</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -893,7 +907,7 @@
             </control>
             <control type="button" id="4007">
                 <posx>930</posx>
-                <posy>430</posy>
+                <posy>530</posy>
                 <width>170</width>
                 <height>40</height>
                 <align>center</align>
@@ -910,8 +924,8 @@
         </control>
 
         <control type="videowindow">
-            <posx>180</posx>
-            <posy>370</posy>
+            <posx>0</posx>
+            <posy>180r</posy>
             <width>360</width>
             <height>180</height>
         </control>

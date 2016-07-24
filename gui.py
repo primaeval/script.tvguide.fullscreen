@@ -1445,6 +1445,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_BROWSE_CANCEL = 4007
     C_STREAM_BROWSE_DIRS = 4008
     C_STREAM_BROWSE_FOLDER = 4009
+    C_STREAM_CHANNEL_LOGO = 4023
+    C_STREAM_CHANNEL_LABEL = 4024
 
     C_STREAM_VISIBILITY_MARKER = 100
 
@@ -1525,7 +1527,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl = self.getControl(StreamSetupDialog.C_STREAM_BROWSE_ADDONS)
         listControl.addItems(items)
 
-
+        self.getControl(self.C_STREAM_CHANNEL_LABEL).setLabel(self.channel.title)
+        self.getControl(self.C_STREAM_CHANNEL_LOGO).setImage(self.channel.logo)
 
 
     def onAction(self, action):
