@@ -90,7 +90,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.tvguide.fullscreen 30601]</label>
+            <label>strm|m3u</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onleft>104</onleft>
@@ -160,8 +160,8 @@
                 <posy>60</posy>
                 <width>560</width>
                 <height>80</height>
-                <align>justify</align>
-                <label>$ADDON[script.tvguide.fullscreen 30611]</label>
+                <align>left</align>
+                <label>Choose stream if several are found in the file.</label>
                 <wrapmultiline>true</wrapmultiline>
             </control>
 
@@ -170,7 +170,7 @@
                 <posy>160</posy>
                 <width>173</width>
                 <height>40</height>
-                <label>$ADDON[script.tvguide.fullscreen 30610]</label>
+                <label>strm|m3u File</label>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
