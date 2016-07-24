@@ -1160,9 +1160,14 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         categories = ["Any"] + list(self.categories)
         for label in categories:
             item = xbmcgui.ListItem(label)
+
             items.append(item)
         listControl = self.getControl(self.C_POPUP_CATEGORY)
         listControl.addItems(items)
+        if self.category:
+            index = categories.index(self.category)
+            if index >= 0:
+                listControl.selectItem(index)
 
         playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
         if not self.program.channel.isPlayable():
