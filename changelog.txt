@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.51
+- setting to download action folder icons
+- persistent category selection
+- fullscreen stream setup window
+
 version 0.0.50
 - channel icons from xmltv or addon folders
 
