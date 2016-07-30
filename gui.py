@@ -1513,8 +1513,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         all_addons = []
         for type in ["xbmc.addon.video", "xbmc.addon.audio"]:
             response = RPC.addons.get_addons(type=type,properties=["name", "thumbnail"])
-            found_addons = response["addons"]
-            all_addons = all_addons + found_addons
+            if "addons" in response:
+                found_addons = response["addons"]
+                all_addons = all_addons + found_addons
 
         seen = set()
         addons = []
