@@ -46,7 +46,7 @@
             <height>150</height>
             <aspectratio>keep</aspectratio>
             <fadetime>500</fadetime>
-            <texture>black.png</texture>
+            <texture>-</texture>
             <visible>true</visible>
         </control>
 

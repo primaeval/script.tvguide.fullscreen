@@ -55,7 +55,7 @@ class FileFetcher(object):
         self.addon = addon
 
         if fileName.startswith("http://") or fileName.startswith("sftp://") or fileName.startswith("ftp://") or \
-                fileName.startswith("https://") or fileName.startswith("ftps://") or fileName.startswith("smb://") :
+                fileName.startswith("https://") or fileName.startswith("ftps://") :
             self.fileType = self.TYPE_REMOTE
             self.fileUrl = fileName
             self.filePath = os.path.join(self.basePath, fileName.split('/')[-1])

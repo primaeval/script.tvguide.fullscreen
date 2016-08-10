@@ -362,7 +362,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>$ADDON[script.tvguide.fullscreen 30304]</label>
+            <label>Addon Matches</label>
         </control>
         <control type="button" id="4007">
             <!-- Choose Stream -->

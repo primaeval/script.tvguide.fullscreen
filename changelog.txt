@@ -7,6 +7,15 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.54
+- smb fix
+
+version 0.0.53
+- no addons fix
+
+version 0.0.52
+- cosmetic fixes
+
 version 0.0.51
 - setting to download action folder icons
 - persistent category selection
