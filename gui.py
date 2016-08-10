@@ -1747,7 +1747,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
         links = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "file"])
         thumbnails = dict([[f["label"], f["thumbnail"]] for f in files if f["filetype"] == "file"])
-        xbmc.log(repr(thumbnails))
 
         items = list()
         item = xbmcgui.ListItem('[B]..[/B]')
@@ -1859,7 +1858,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             elif item.startswith('#'):
                 pass
             else:
-                name_url = item.split('=',1)
+                name_url = item.rsplit('|',1)
                 if len(name_url) == 2:
                     name = name_url[0]
                     url = name_url[1]

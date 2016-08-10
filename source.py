@@ -692,13 +692,13 @@ class Database(object):
                     elif item.startswith('#'):
                         pass
                     else:
-                        url_icon = item.split('|',1)
+                        url_icon = item.rsplit('|',1)
                         if len(url_icon) == 2:
                             url = url_icon[0]
                             icon = url_icon[1]
                             if url == stream_url:
                                 if icon and icon != "nothing":
-                                    image = icon
+                                    image = icon.rstrip('/')
             c = self.conn.cursor()
             if image:
                 c.execute('UPDATE OR REPLACE channels SET logo=? WHERE id=?' , (image, channel.id))
@@ -1074,7 +1074,6 @@ class XMLTVSource(Source):
         if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
-            #xbmc.log(repr(logos))
         for event, elem in context:
             if event == "end":
                 result = None
