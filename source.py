@@ -681,7 +681,7 @@ class Database(object):
     def _setCustomStreamUrl(self, channel, stream_url):
         if stream_url is not None:
             image = ""
-            if ADDON.getSetting("addon.logos"):
+            if ADDON.getSetting("addon.logos") == "true":
                 file_name = 'special://profile/addon_data/script.tvguide.fullscreen/icons.ini'
                 f = xbmcvfs.File(file_name)
                 items = f.read().splitlines()
