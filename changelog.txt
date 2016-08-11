@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.56
+- logo fix
+
 version 0.0.55
 - logo fix (delete icons.ini or do a database reset)
 
