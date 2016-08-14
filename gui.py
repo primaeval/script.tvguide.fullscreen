@@ -835,7 +835,7 @@ class TVGuide(xbmcgui.WindowXML):
             if cellWidth > 1:
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
-                    focusTexture = 'tvguide-program-red-black-back.png'
+                    focusTexture = 'tvguide-program-red-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
