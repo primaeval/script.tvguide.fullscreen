@@ -134,6 +134,10 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD_DESCRIPTION = 6003
     C_MAIN_OSD_CHANNEL_LOGO = 6004
     C_MAIN_OSD_CHANNEL_TITLE = 6005
+    C_MAIN_OSD_CHANNEL_IMAGE = 6006
+    C_NEXT_OSD_DESCRIPTION = 6007
+    C_NEXT_OSD_TITLE = 6008
+    C_NEXT_OSD_TIME = 6009
     C_MAIN_VIDEO_BACKGROUND = 5555
     C_MAIN_VIDEO_PIP = 6666
 
@@ -711,6 +715,20 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_OSD_CHANNEL_LOGO, self.osdProgram.channel.logo)
             else:
                 self.setControlImage(self.C_MAIN_OSD_CHANNEL_LOGO, '')
+            if self.osdProgram.imageSmall is not None:
+                self.setControlImage(self.C_MAIN_OSD_CHANNEL_IMAGE, self.osdProgram.imageSmall)
+            else:
+                self.setControlImage(self.C_MAIN_OSD_CHANNEL_IMAGE, '')
+
+            nextOsdProgram = self.database.getNextProgram(self.osdProgram)
+            if nextOsdProgram:
+                self.setControlText(self.C_NEXT_OSD_DESCRIPTION, nextOsdProgram.description)
+                self.setControlLabel(self.C_NEXT_OSD_TITLE, nextOsdProgram.title)
+                if nextOsdProgram.startDate or nextOsdProgram.endDate:
+                    self.setControlLabel(self.C_NEXT_OSD_TIME, '[B]%s - %s[/B]' % (
+                        self.formatTime(nextOsdProgram.startDate), self.formatTime(nextOsdProgram.endDate)))
+                else:
+                    self.setControlLabel(self.C_NEXT_OSD_TIME, '')
 
         self.mode = MODE_OSD
         self._showControl(self.C_MAIN_OSD)
@@ -817,7 +835,7 @@ class TVGuide(xbmcgui.WindowXML):
             if cellWidth > 1:
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
-                    focusTexture = 'tvguide-program-red-focus.png'
+                    focusTexture = 'tvguide-program-red-black-back.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
