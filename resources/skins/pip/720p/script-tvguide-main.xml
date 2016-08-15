@@ -101,7 +101,7 @@
                 <posy>-60</posy>
                 <width>1280</width>
                 <height>58</height>
-                <texture>black-back.png</texture>
+                <texture>black.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>

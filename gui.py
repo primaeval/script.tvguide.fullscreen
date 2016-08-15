@@ -877,10 +877,12 @@ class TVGuide(xbmcgui.WindowXML):
 
         top = self.epgView.cellHeight * len(channels)
         height = 720 - top
+        xbmc.log(repr((top,height)))
         control = self.getControl(self.C_MAIN_FOOTER)
         if control:
             control.setPosition(0,top)
-            control.setHeight(height)
+            control.setHeight(280)
+            control.setImage('black.png')
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top)
