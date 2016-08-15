@@ -11,6 +11,7 @@
     <controls>
 
         <control type="image">
+			<description>test</description>
             <posx>0</posx>
             <posy>0</posy>
             <width>1280</width>
