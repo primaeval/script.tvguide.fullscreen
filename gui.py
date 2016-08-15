@@ -881,6 +881,7 @@ class TVGuide(xbmcgui.WindowXML):
         if control:
             control.setPosition(0,top)
             control.setHeight(height)
+            control.setImage('black.png')
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top)
