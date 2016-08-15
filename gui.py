@@ -877,7 +877,6 @@ class TVGuide(xbmcgui.WindowXML):
 
         top = self.epgView.cellHeight * len(channels)
         height = 720 - top
-        xbmc.log(repr((top,height)))
         control = self.getControl(self.C_MAIN_FOOTER)
         if control:
             control.setPosition(0,top)
