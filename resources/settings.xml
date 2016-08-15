@@ -36,7 +36,7 @@
     </category>
 
     <category label="30148">
-        <setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="sly" />
+        <setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="Default" />
         <setting label="30119" type="lsep" />
         <setting id="enable.osd" label="30118" type="bool" default="true" enable="eq(2,false)" />
         <setting type="sep"/>
