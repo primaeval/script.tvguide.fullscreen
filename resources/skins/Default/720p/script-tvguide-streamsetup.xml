@@ -43,7 +43,7 @@
             <posx>180r</posx>
             <posy>0</posy>
             <width>150</width>
-            <height>150</height>
+            <height>100</height>
             <aspectratio>keep</aspectratio>
             <fadetime>500</fadetime>
             <texture>-</texture>
@@ -85,7 +85,7 @@
         <control type="button" id="101">
             <posx>300</posx>
             <posy>40</posy>
-            <width>180</width>
+            <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
@@ -101,7 +101,7 @@
         <control type="button" id="102">
             <posx>500</posx>
             <posy>40</posy>
-            <width>180</width>
+            <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
@@ -117,7 +117,7 @@
         <control type="button" id="103">
             <posx>700</posx>
             <posy>40</posy>
-            <width>180</width>
+            <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
@@ -134,7 +134,7 @@
         <control type="button" id="104">
             <posx>900</posx>
             <posy>40</posy>
-            <width>180</width>
+            <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
@@ -196,7 +196,7 @@
             <control type="button" id="1002">
                 <posx>500</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -212,7 +212,7 @@
             <control type="button" id="1003">
                 <posx>700</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -228,7 +228,7 @@
             <control type="button" id="1004">
                 <posx>900</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -331,7 +331,7 @@
             <control type="button" id="2002">
                 <posx>500</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -347,7 +347,7 @@
             <control type="button" id="2003">
                 <posx>700</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -363,7 +363,7 @@
             <control type="button" id="2004">
                 <posx>900</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -547,7 +547,7 @@
             <control type="button" id="3005">
                 <posx>500</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -563,7 +563,7 @@
             <control type="button" id="3006">
                 <posx>700</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -579,7 +579,7 @@
             <control type="button" id="3007">
                 <posx>900</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -773,19 +773,21 @@
             </control>
 
             <control type="label" id="4003">
-                <posx>40</posx>
+                <description>addon name</description>
+                <posx>20</posx>
                 <posy>280</posy>
-                <width>330</width>
+                <width>350</width>
                 <height>40</height>
                 <label>[B][/B]</label>
                 <textcolor>cyan</textcolor>
             </control>
             <control type="textbox" id="4004">
-                <posx>40</posx>
+                <description>addon info text</description>
+                <posx>20</posx>
                 <posy>310</posy>
-                <width>350</width>
-                <height>100</height>
-                <label/>
+                <width>370</width>
+                <height>260</height>
+                <label>-</label>
                 <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
@@ -800,7 +802,7 @@
                 <orientation>vertical</orientation>
                 <focusposition>7</focusposition>
                 <onleft>4008</onleft>
-                <onright>4009</onright>
+                <onright>4005</onright>
 
                 <itemlayout width="400" height="40">
                     <control type="image">
@@ -858,26 +860,11 @@
                 </focusedlayout>
             </control>
 
-            <control type="button" id="4009">
-                <posx>300</posx>
-                <posy>530</posy>
-                <width>180</width>
-                <height>40</height>
-                <align>center</align>
-                <aligny>center</aligny>
-                <font>font13</font>
-                <textcolor>ffffffff</textcolor>
-                <label>Add Folder</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
-                <onup>104</onup>
-                <onleft>4002</onleft>
-                <onright>4005</onright>
-            </control>
+
             <control type="button" id="4005">
                 <posx>500</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -887,13 +874,13 @@
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>104</onup>
-                <onleft>4009</onleft>
+                <onleft>4002</onleft>
                 <onright>4006</onright>
             </control>
             <control type="button" id="4006">
                 <posx>700</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -909,7 +896,7 @@
             <control type="button" id="4007">
                 <posx>900</posx>
                 <posy>530</posy>
-                <width>180</width>
+                <width>170</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -920,8 +907,23 @@
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>104</onup>
                 <onleft>4006</onleft>
+                <onright>4009</onright>
             </control>
-
+            <control type="button" id="4009">
+                <posx>1100</posx>
+                <posy>530</posy>
+                <width>170</width>
+                <height>40</height>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>ffffffff</textcolor>
+                <label>Add Folder</label>
+                <texturefocus>menu-grey-focus.png</texturefocus>
+                <texturenofocus>menu-grey.png</texturenofocus>
+                <onup>104</onup>
+                <onleft>4007</onleft>
+            </control>
         </control>
 
         <control type="videowindow">
