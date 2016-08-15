@@ -209,7 +209,7 @@
                     <posy>0</posy>
                     <width>180</width>
                     <height>50</height>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <font>font13</font>
                     <align>center</align>
@@ -282,7 +282,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>white</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -292,7 +292,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>white</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -302,7 +302,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>white</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -312,7 +312,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>white</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -914,25 +914,29 @@
                 <description>Channel name</description>
                 <posx>190</posx>
                 <posy>470</posy>
-                <width>280</width>
+                <width>250</width>
                 <height>50</height>
-                <textcolor>cyan</textcolor>
+                <textcolor>white</textcolor>
+                <shadowcolor>black</shadowcolor>
                 <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
                 <scroll>true</scroll>
+                <label>-</label>
             </control>
             <control type="label" id="7020">
                 <description>Program title</description>
                 <posx>450</posx>
                 <posy>470</posy>
-                <width>630</width>
+                <width>600</width>
                 <height>50</height>
-                <textcolor>cyan</textcolor>
+                <textcolor>white</textcolor>
                 <shadowcolor>black</shadowcolor>
                 <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
+                <scroll>true</scroll>
+                <label>-</label>
             </control>
             <control type="image" id="7024">
                 <description>Channel logo</description>
@@ -951,7 +955,8 @@
                 <posy>470</posy>
                 <width>1090</width>
                 <height>50</height>
-                <textcolor>cyan</textcolor>
+                <textcolor>white</textcolor>
+                <shadowcolor>black</shadowcolor>
                 <font>font13</font>
                 <align>right</align>
 
@@ -961,13 +966,13 @@
                 <description>Program description</description>
                 <posx>190</posx>
                 <posy>505</posy>
-                <width>1090</width>
-                <height>130</height>
-                <textcolor>cyan</textcolor>
+                <width>1070</width>
+                <height>140</height>
+                <textcolor>white</textcolor>
                 <font>font13</font>
-                <align>justify</align>
+                <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
-                
+                <label>-</label>
             </control>
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
@@ -1221,7 +1226,7 @@
             <width>1280</width>
             <height>220</height>
             <visible>!Control.IsVisible(6000)</visible>
-            <animation effect="fade" start="0" end="100" time="500">VisibleChange</animation>
+            <animation effect="fade" start="0" end="100" time="0">VisibleChange</animation>
 
             <control type="image">
                 <posx>0</posx>
@@ -1229,6 +1234,7 @@
                 <width>1280</width>
                 <height>220</height>
                 <texture>osd-main.png</texture>
+                <visible>false</visible>
             </control>
 
             <!-- Program description -->
