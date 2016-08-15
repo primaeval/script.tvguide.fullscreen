@@ -60,6 +60,8 @@ if __name__ == '__main__':
             monitor = xbmc.Monitor()
             xbmc.log("[script.tvguide.fullscreen] Background service started...", xbmc.LOGDEBUG)
             Service()
+            if ADDON.getSetting('service.addon.folders') == "true":
+                xbmc.executebuiltin('RunScript(special://home/addons/script.tvguide.fullscreen/ReloadAddonFolders.py)')
             interval = int(ADDON.getSetting('service.interval'))
             waitTime = 21600  # Default 6hrs
             if interval == 0:
