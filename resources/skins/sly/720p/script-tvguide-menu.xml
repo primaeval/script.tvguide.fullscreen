@@ -362,7 +362,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>ffffffff</textcolor>
-            <label>Addon Matches</label>
+            <label>Choose Stream</label>
         </control>
         <control type="button" id="4007">
             <!-- Choose Stream -->
