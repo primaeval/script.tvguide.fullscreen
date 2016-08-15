@@ -1233,8 +1233,8 @@
                 <posy>0</posy>
                 <width>1280</width>
                 <height>220</height>
-                <texture>osd-main.png</texture>
-                <visible>false</visible>
+                <texture>black-back.png</texture>
+                <visible>true</visible>
             </control>
 
             <!-- Program description -->

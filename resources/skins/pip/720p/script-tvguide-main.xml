@@ -1211,7 +1211,7 @@
             <width>1280</width>
             <height>720</height>
             <animation type="Conditional" condition="!Control.IsVisible(5000)">
-                <effect type="zoom" end="25" center="0,720" time="500" />
+                <effect type="zoom" end="25" center="0,720" time="0" />
             </animation>
             <visible>true</visible>
         </control>
@@ -1234,7 +1234,7 @@
                 <posy>0</posy>
                 <width>1280</width>
                 <height>220</height>
-                <texture>osd-main.png</texture>
+                <texture>black-back.png</texture>
             </control>
 
             <!-- Program description -->
