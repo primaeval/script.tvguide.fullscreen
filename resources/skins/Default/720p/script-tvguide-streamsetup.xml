@@ -52,14 +52,15 @@
 
         <control type="label" id="4024">
             <description>Channel Name</description>
-            <posx>40</posx>
+            <posx>20</posx>
             <posy>40</posy>
-            <width>500</width>
+            <width>260</width>
             <height>40</height>
             <font>font13_title</font>
             <textcolor>cyan</textcolor>
             <label></label>
             <align>left</align>
+            <scroll>true</scroll>
         </control>
 
         <control type="image">
