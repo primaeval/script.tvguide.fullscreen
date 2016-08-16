@@ -14,18 +14,18 @@
 
 
         <control type="image">
-            <posx>150</posx>
-            <posy>100</posy>
-            <width>1010</width>
-            <height>510</height>
-            <texture>menu-stream.png</texture>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>black-back.png</texture>
         </control>
         <control type="image">
-            <posx>150</posx>
-            <posy>100</posy>
-            <width>1010</width>
-            <height>510</height>
-            <texture>menu-stream.png</texture>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>black-back.png</texture>
         </control>
 
         <control type="group">
@@ -112,7 +112,7 @@
             <height>400</height>
             <textcolor>ffffffff</textcolor>
             <font>font13</font>
-			<align>justify</align>
+			<align>left</align>
             <aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
 			<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
@@ -190,14 +190,15 @@
         </control>
 
         <control type="button" id="6003">
-            <posx>736</posx>
+            <posx>700</posx>
             <posy>550</posy>
-            <width>200</width>
+            <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>ffffffff</textcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30502]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
@@ -206,14 +207,15 @@
             <onup>6000</onup>
         </control>
         <control type="button" id="6004">
-            <posx>937</posx>
+            <posx>900</posx>
             <posy>550</posy>
-            <width>200</width>
+            <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>ffffffff</textcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30503]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
