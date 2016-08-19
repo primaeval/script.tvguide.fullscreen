@@ -7,6 +7,12 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.67
+- skin tweaks
+
+version 0.0.66
+- attempt at android fix (didn't work)
+
 version 0.0.65
 - skin tweaks
 
