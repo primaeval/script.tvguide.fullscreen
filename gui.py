@@ -111,6 +111,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_IMAGE = 7023
     C_MAIN_LOGO = 7024
     C_MAIN_CHANNEL = 7025
+    C_MAIN_PROGRESS = 7026
+    C_MAIN_PROGRESS2 = 7027
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -135,9 +137,11 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD_CHANNEL_LOGO = 6004
     C_MAIN_OSD_CHANNEL_TITLE = 6005
     C_MAIN_OSD_CHANNEL_IMAGE = 6006
+    C_MAIN_OSD_PROGRESS = 6011
     C_NEXT_OSD_DESCRIPTION = 6007
     C_NEXT_OSD_TITLE = 6008
     C_NEXT_OSD_TIME = 6009
+    C_NEXT_OSD_CHANNEL_IMAGE = 6010
     C_MAIN_VIDEO_BACKGROUND = 5555
     C_MAIN_VIDEO_PIP = 6666
 
@@ -558,6 +562,12 @@ class TVGuide(xbmcgui.WindowXML):
                                  '[B]%s - %s[/B]' % (self.formatTime(program.startDate), self.formatTime(program.endDate)))
         else:
             self.setControlLabel(self.C_MAIN_TIME, '')
+        if program.startDate and program.endDate:
+            programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
+            programprogresscontrol2 = self.getControl(self.C_MAIN_PROGRESS2)
+            if programprogresscontrol and programprogresscontrol:
+                programprogresscontrol.setPercent(self.percent(program.startDate,program.endDate))
+                programprogresscontrol2.setPercent(self.percent(program.startDate,program.endDate))
         if program.description:
             description = program.description
         else:
@@ -719,6 +729,10 @@ class TVGuide(xbmcgui.WindowXML):
                     self.formatTime(self.osdProgram.startDate), self.formatTime(self.osdProgram.endDate)))
             else:
                 self.setControlLabel(self.C_MAIN_OSD_TIME, '')
+            if self.osdProgram.startDate and self.osdProgram.endDate:
+                osdprogramprogresscontrol = self.getControl(self.C_MAIN_OSD_PROGRESS)
+                if osdprogramprogresscontrol:
+                    osdprogramprogresscontrol.setPercent(self.percent(self.osdProgram.startDate,self.osdProgram.endDate))
             self.setControlText(self.C_MAIN_OSD_DESCRIPTION, self.osdProgram.description)
             self.setControlLabel(self.C_MAIN_OSD_CHANNEL_TITLE, self.osdChannel.title)
             if self.osdProgram.channel.logo is not None:
@@ -735,10 +749,18 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlText(self.C_NEXT_OSD_DESCRIPTION, nextOsdProgram.description)
                 self.setControlLabel(self.C_NEXT_OSD_TITLE, nextOsdProgram.title)
                 if nextOsdProgram.startDate or nextOsdProgram.endDate:
-                    self.setControlLabel(self.C_NEXT_OSD_TIME, '[B]%s - %s[/B]' % (
+                    self.setControlLabel(self.C_NEXT_OSD_TIME, '%s - %s' % (
                         self.formatTime(nextOsdProgram.startDate), self.formatTime(nextOsdProgram.endDate)))
                 else:
                     self.setControlLabel(self.C_NEXT_OSD_TIME, '')
+                try:
+                    nextOsdControl = self.getControl(self.C_NEXT_OSD_CHANNEL_IMAGE)
+                    if nextOsdControl != None and nextOsdProgram.imageSmall is not None:
+                        nextOsdControl.setImage(nextOsdProgram.imageSmall)
+                    elif nextOsdControl != None:
+                        nextOsdControl.setImage('')
+                except:
+                    pass
 
         self.mode = MODE_OSD
         self._showControl(self.C_MAIN_OSD)
@@ -827,6 +849,11 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setPosition(2,top)
 
+        if SKIN == 'sly':
+            focusColor = '0xFF00B8FF'
+        else:
+            focusColor = '0xFF00FFFF'
+
         for program in programs:
             idx = channels.index(program.channel)
             if program.channel in channelsWithoutPrograms:
@@ -861,7 +888,7 @@ class TVGuide(xbmcgui.WindowXML):
                     cellWidth - 2,
                     self.epgView.cellHeight - 2,
                     title,
-                    focusedColor="0xFF00FFFF",
+                    focusedColor=focusColor,
                     noFocusTexture=noFocusTexture,
                     focusTexture=focusTexture
                 )
@@ -877,7 +904,7 @@ class TVGuide(xbmcgui.WindowXML):
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
                 u"\u2014",
-                focusedColor="0xFF00FFFF",
+                focusedColor=focusColor,
                 noFocusTexture='black-back.png',
                 focusTexture='black-back.png'
             )
@@ -1091,6 +1118,15 @@ class TVGuide(xbmcgui.WindowXML):
             return timestamp.strftime(format)
         else:
             return ''
+    def t(self,dt):
+        return time.mktime(dt.timetuple())
+
+    def percent(self,start_time, end_time):
+        total = self.t(end_time) - self.t(start_time)
+        current_time = datetime.datetime.now()
+        current = self.t(current_time) - self.t(start_time)
+        percentagefloat = (100.0 * current) / total
+        return int(round(percentagefloat))
 
     def formatDate(self, timestamp, longdate=False):
         if timestamp:
