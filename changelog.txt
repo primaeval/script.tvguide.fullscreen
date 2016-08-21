@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.68
+- up wraparound fix
+
 version 0.0.67
 - skin tweaks
 
