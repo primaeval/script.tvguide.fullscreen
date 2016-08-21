@@ -112,7 +112,6 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_LOGO = 7024
     C_MAIN_CHANNEL = 7025
     C_MAIN_PROGRESS = 7026
-    C_MAIN_PROGRESS2 = 7027
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -564,10 +563,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlLabel(self.C_MAIN_TIME, '')
         if program.startDate and program.endDate:
             programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
-            programprogresscontrol2 = self.getControl(self.C_MAIN_PROGRESS2)
             if programprogresscontrol and programprogresscontrol:
                 programprogresscontrol.setPercent(self.percent(program.startDate,program.endDate))
-                programprogresscontrol2.setPercent(self.percent(program.startDate,program.endDate))
         if program.description:
             description = program.description
         else:

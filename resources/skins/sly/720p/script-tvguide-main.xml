@@ -77,7 +77,6 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
-                <colordiffuse>FF00B8FF</colordiffuse>
                 <animation effect="fade" start="100" end="55" time="0" condition="true">Conditional</animation>
             </control>
             <control type="image">
@@ -981,18 +980,6 @@
             </control>
 
             <control type="progress" id="7026">
-                <posx>2</posx>
-                <posy>655</posy>
-                <width>350</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg border="3" colordiffuse="8800B8FF">white50.png</texturebg>
-                <midtexture colordiffuse="FF00B8FF">white50.png</midtexture>
-                <visible>!Player.HasMedia + IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
-            </control>
-
-            <control type="progress" id="7027">
                 <posx>360</posx>
                 <posy>509</posy>
                 <width>901</width>
@@ -1001,7 +988,7 @@
                 <righttexture />
                 <texturebg border="3" colordiffuse="8800B8FF">white50.png</texturebg>
                 <midtexture colordiffuse="FF00B8FF">white50.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(7027),0)</visible>
+                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
             <control type="label" id="4200">

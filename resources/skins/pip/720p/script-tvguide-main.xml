@@ -979,7 +979,15 @@
                 <visible>!Player.HasMedia</visible>
             </control>
 
-
+            <control type="progress" id="7026">
+                <posx>360</posx>
+                <posy>509</posy>
+                <width>901</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <visible>false</visible>
+            </control>
 
             <control type="label" id="4200">
                 <description>visibility marker for loading group</description>
@@ -1343,6 +1351,28 @@
                 <font>font12</font>
                 <align>left</align>
                 <aligny>top</aligny>
+                <visible>false</visible>
+            </control>
+
+            <control type="image" id="6010">
+                <description>Next Program image</description>
+                <posx>1045</posx>
+                <posy>50</posy>
+                <width>220</width>
+                <height>124</height>
+                <aspectratio>keep</aspectratio>
+                <texture>-</texture>
+                <visible>false</visible>
+            </control>
+
+
+            <control type="progress" id="6011">
+                <posx>280</posx>
+                <posy>177</posy>
+                <width>296</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
                 <visible>false</visible>
             </control>
 
