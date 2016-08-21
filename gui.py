@@ -112,7 +112,6 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_LOGO = 7024
     C_MAIN_CHANNEL = 7025
     C_MAIN_PROGRESS = 7026
-    C_MAIN_PROGRESS2 = 7027
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -438,6 +437,7 @@ class TVGuide(xbmcgui.WindowXML):
         d.doModal()
         buttonClicked = d.buttonClicked
         self.category = d.category
+        self.database.setCategory(self.category)
         self.categories = d.categories
         del d
 
@@ -563,10 +563,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlLabel(self.C_MAIN_TIME, '')
         if program.startDate and program.endDate:
             programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
-            programprogresscontrol2 = self.getControl(self.C_MAIN_PROGRESS2)
             if programprogresscontrol and programprogresscontrol:
                 programprogresscontrol.setPercent(self.percent(program.startDate,program.endDate))
-                programprogresscontrol2.setPercent(self.percent(program.startDate,program.endDate))
         if program.description:
             description = program.description
         else:
@@ -621,8 +619,13 @@ class TVGuide(xbmcgui.WindowXML):
         if control is not None:
             self.setFocus(control)
         elif control is None:
+            first_channel = self.channelIdx - CHANNELS_PER_PAGE
+            if first_channel < 0:
+                len_channels = self.database.getNumberOfChannels()
+                last_page = len_channels % CHANNELS_PER_PAGE
+                first_channel = len_channels - last_page
             self.focusPoint.y = self.epgView.bottom
-            self.onRedrawEPG(self.channelIdx - CHANNELS_PER_PAGE, self.viewStartDate,
+            self.onRedrawEPG(first_channel, self.viewStartDate,
                              focusFunction=self._findControlAbove)
 
     def _down(self, currentFocus):
