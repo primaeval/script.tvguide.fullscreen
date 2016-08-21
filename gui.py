@@ -155,7 +155,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.channelIdx = 0
         self.focusPoint = Point()
         self.epgView = EPGView()
-        #self.streamingService = streaming.StreamsService(ADDON)
+
         self.player = xbmc.Player()
         self.database = None
 
@@ -163,7 +163,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.currentChannel = None
 
         self.category = None
-        #self.categories = set()
+
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
         f.close()
@@ -278,16 +278,16 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SELECT_ITEM:
-            if self.playChannel(self.osdChannel, self.osdProgram):
-                self._hideOsd()
+            self._hideOsd()
+            self.playChannel(self.osdChannel, self.osdProgram)
 
         elif action.getId() == ACTION_PAGE_UP:
             self._channelUp()
-            self._showOsd()
+            self._hideOsd()
 
         elif action.getId() == ACTION_PAGE_DOWN:
             self._channelDown()
-            self._showOsd()
+            self._hideOsd()
 
         elif action.getId() == ACTION_UP:
             self.osdChannel = self.database.getPreviousChannel(self.osdChannel)
@@ -687,8 +687,7 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.player.play(item=url, windowed=self.osdEnabled)
 
-            if not wasPlaying:
-                self._hideEpg()
+            self._hideEpg()
 
         threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
@@ -903,7 +902,10 @@ class TVGuide(xbmcgui.WindowXML):
             focusFunction = self._findControlAt
         focusControl = focusFunction(self.focusPoint)
         controls = [elem.control for elem in self.controlAndProgramList]
-        self.addControls(controls)
+        try:
+            self.addControls(controls)
+        except:
+            pass
         if focusControl is not None:
             debug('onRedrawEPG - setFocus %d' % focusControl.getId())
             self.setFocus(focusControl)
