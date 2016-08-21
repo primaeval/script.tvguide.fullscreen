@@ -640,11 +640,16 @@ class TVGuide(xbmcgui.WindowXML):
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def _moveUp(self, count=1, scrollEvent=False):
+        first_channel = self.channelIdx - count
+        if first_channel < 0:
+            len_channels = self.database.getNumberOfChannels()
+            last_page = len_channels % CHANNELS_PER_PAGE
+            first_channel = len_channels - last_page    
         if scrollEvent:
-            self.onRedrawEPG(self.channelIdx - count, self.viewStartDate)
+            self.onRedrawEPG(first_channel, self.viewStartDate)
         else:
             self.focusPoint.y = self.epgView.bottom
-            self.onRedrawEPG(self.channelIdx - count, self.viewStartDate, focusFunction=self._findControlAbove)
+            self.onRedrawEPG(first_channel, self.viewStartDate, focusFunction=self._findControlAbove)
 
     def _moveDown(self, count=1, scrollEvent=False):
         if scrollEvent:
