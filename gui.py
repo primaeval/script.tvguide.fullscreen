@@ -612,8 +612,13 @@ class TVGuide(xbmcgui.WindowXML):
         if control is not None:
             self.setFocus(control)
         elif control is None:
+            first_channel = self.channelIdx - CHANNELS_PER_PAGE
+            if first_channel < 0:
+                len_channels = self.database.getNumberOfChannels()
+                last_page = len_channels % CHANNELS_PER_PAGE
+                first_channel = len_channels - last_page
             self.focusPoint.y = self.epgView.bottom
-            self.onRedrawEPG(self.channelIdx - CHANNELS_PER_PAGE, self.viewStartDate,
+            self.onRedrawEPG(first_channel, self.viewStartDate,
                              focusFunction=self._findControlAbove)
 
     def _down(self, currentFocus):

@@ -441,6 +441,7 @@ class Database(object):
 
     def setCategory(self,category):
         self.category = category
+        self.channelList = None
 
     def getEPGView(self, channelStart, date=datetime.datetime.now(), progress_callback=None,
                    clearExistingProgramList=True,category=None):
@@ -467,6 +468,10 @@ class Database(object):
         programs = self._getProgramList(channelsOnPage, date)
 
         return [channelStart, channelsOnPage, programs]
+
+    def getNumberOfChannels(self):
+        channels = self.getChannelList()
+        return len(channels)
 
     def getNextChannel(self, currentChannel):
         channels = self.getChannelList()
@@ -517,11 +522,10 @@ class Database(object):
     def getChannelList(self, onlyVisible=True):
         if not self.channelList or not onlyVisible:
             result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible)
-
             if not onlyVisible:
                 return result
-
             self.channelList = result
+
         return self.channelList
 
     def _getChannelList(self, onlyVisible):
@@ -534,7 +538,6 @@ class Database(object):
         for row in c:
             channel = Channel(row['id'], row['title'], row['logo'], row['stream_url'], row['visible'], row['weight'])
             channelList.append(channel)
-
         if self.category and self.category != "Any":
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
             lines = f.read().splitlines()
