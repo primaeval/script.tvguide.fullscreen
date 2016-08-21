@@ -133,6 +133,7 @@ class Database(object):
         self.settingsChanged = None
         self.alreadyTriedUnlinking = False
         self.channelList = list()
+        self.category = "Any"
 
         profilePath = xbmc.translatePath(ADDON.getAddonInfo('profile'))
         if not os.path.exists(profilePath):
@@ -438,6 +439,9 @@ class Database(object):
             self.updateInProgress = False
             c.close()
 
+    def setCategory(self,category):
+        self.category = category
+
     def getEPGView(self, channelStart, date=datetime.datetime.now(), progress_callback=None,
                    clearExistingProgramList=True,category=None):
         result = self._invokeAndBlockForResult(self._getEPGView, channelStart, date, progress_callback,
@@ -452,42 +456,6 @@ class Database(object):
         self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
 
         channels = self._getChannelList(onlyVisible=True)
-
-        if category and category != "Any":
-            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
-            lines = f.read().splitlines()
-            f.close()
-            filter = []
-            seen = set()
-            for line in lines:
-                if "=" not in line:
-                    continue
-                name,cat = line.split('=')
-                if cat == category:
-                    if name not in seen:
-                        filter.append(name)
-                    seen.add(name)
-
-            NONE = "0"
-            SORT = "1"
-            CATEGORIES = "2"
-            new_channels = []
-            if ADDON.getSetting('channel.filter.sort') == CATEGORIES:
-                for filter_name in filter:
-                    for channel in channels:
-                        if channel.title == filter_name:
-                            new_channels.append(channel)
-                if new_channels:
-                    channels = new_channels
-            else:
-                for channel in channels:
-                    if channel.title in filter:
-                        new_channels.append(channel)
-                if new_channels:
-                    if ADDON.getSetting('channel.filter.sort') == SORT:
-                        channels = sorted(new_channels, key=lambda channel: channel.title.lower())
-                    else:
-                        channels = new_channels
 
         if channelStart < 0:
             channelStart = len(channels) - 1
@@ -566,6 +534,43 @@ class Database(object):
         for row in c:
             channel = Channel(row['id'], row['title'], row['logo'], row['stream_url'], row['visible'], row['weight'])
             channelList.append(channel)
+
+        if self.category and self.category != "Any":
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+            lines = f.read().splitlines()
+            f.close()
+            filter = []
+            seen = set()
+            for line in lines:
+                if "=" not in line:
+                    continue
+                name,cat = line.split('=')
+                if cat == self.category:
+                    if name not in seen:
+                        filter.append(name)
+                    seen.add(name)
+
+            NONE = "0"
+            SORT = "1"
+            CATEGORIES = "2"
+            new_channels = []
+            if ADDON.getSetting('channel.filter.sort') == CATEGORIES:
+                for filter_name in filter:
+                    for channel in channelList:
+                        if channel.title == filter_name:
+                            new_channels.append(channel)
+                if new_channels:
+                    channelList = new_channels
+            else:
+                for channel in channelList:
+                    if channel.title in filter:
+                        new_channels.append(channel)
+                if new_channels:
+                    if ADDON.getSetting('channel.filter.sort') == SORT:
+                        channelList = sorted(new_channels, key=lambda channel: channel.title.lower())
+                    else:
+                        channelList = new_channels
+
         c.close()
         return channelList
 
@@ -1134,9 +1139,9 @@ class XMLTVSource(Source):
                     if logoFolder:
                         logoFile = os.path.join(logoFolder, title + '.png')
                         if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
-                            logo = logoFile.replace(' ', '%20')  
+                            logo = logoFile.replace(' ', '%20')
                         #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
-                        #    logo = logoFile 
+                        #    logo = logoFile
                         else:
                             #TODO use hash or db
                             for l in sorted(logos):

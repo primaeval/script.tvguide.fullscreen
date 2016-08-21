@@ -434,6 +434,7 @@ class TVGuide(xbmcgui.WindowXML):
         d.doModal()
         buttonClicked = d.buttonClicked
         self.category = d.category
+        self.database.setCategory(self.category)
         self.categories = d.categories
         del d
 
