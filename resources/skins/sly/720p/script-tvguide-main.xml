@@ -979,6 +979,19 @@
                 <visible>!Player.HasMedia</visible>
             </control>
 
+            <control type="image">
+                <description>Program image backup for no channel image</description>
+                <posx>2</posx>
+                <posy>260r</posy>
+                <width>350</width>
+                <height>197</height>
+                <aligny>top</aligny>
+                <aspectratio>keep</aspectratio>
+                <fadetime>500</fadetime>
+                <texture>tv.jpg</texture>
+                <visible>StringCompare(Control.GetLabel(7023),)</visible>
+            </control>
+
             <control type="progress" id="7026">
                 <posx>360</posx>
                 <posy>509</posy>
