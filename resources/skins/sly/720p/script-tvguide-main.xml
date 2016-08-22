@@ -902,13 +902,13 @@
 
             <control type="label" id="7020">
                 <description>Program title</description>
-                <posx>360</posx>
+                <posx>500</posx>
                 <posy>452</posy>
-                <width>898</width>
+                <width>610</width>
                 <height>50</height>
                 <textcolor>FF00B8FF</textcolor>
                 <shadowcolor>22000000</shadowcolor>
-                <font>font16</font>
+                <font>font14</font>
                 <align>center</align>
                 <aligny>center</aligny>
                 <visible>true</visible>
@@ -920,8 +920,7 @@
                 <width>160</width>
                 <height>40</height>
                 <align>left</align>
-                <aspectratio>keep</aspectratio>
-                <aligny>top</aligny>
+                <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
                 <visible>true</visible>
             </control>
@@ -962,7 +961,6 @@
                 <height>142</height>
                 <textcolor>ccffffff</textcolor>
                 <font>font13</font>
-                <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
                 <visible>true</visible>
             </control>
@@ -1000,8 +998,8 @@
                 <height>10</height>
                 <lefttexture />
                 <righttexture />
-                <texturebg border="5" colordiffuse="">panel.png</texturebg>
-                <midtexture border="5" colordiffuse="FF00B8FF">panel.png</midtexture>
+                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
+                <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
@@ -1010,7 +1008,7 @@
                 <posy>509</posy>
                 <width>901</width>
                 <height>10</height>
-                <texture border="5" colordiffuse="">thinborder.png</texture>
+                <texture border="3" colordiffuse="">thinborder.png</texture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
@@ -1287,10 +1285,10 @@
             <control type="label">
                 <left>0</left>
                 <top>3</top>
-                <width>280</width>
+                <width>250</width>
                 <height>30</height>
                 <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]  $INFO[System.Time]</label>
-                <align>center</align>
+                <align>right</align>
                 <aligny>center</aligny>
                 <font>font12</font>
                 <shadowcolor>22000000</shadowcolor>
@@ -1330,27 +1328,6 @@
                 <visible>StringCompare(Control.GetLabel(6006),)</visible>
             </control>
 
-            <control type="progress" id="6011">
-                <posx>280</posx>
-                <posy>168</posy>
-                <width>296</width>
-                <height>10</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg border="3" colordiffuse="">panel.png</texturebg>
-                <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
-            </control>
-
-            <control type="image" >
-                <posx>280</posx>
-                <posy>168</posy>
-                <width>296</width>
-                <height>10</height>
-                <texture border="3" colordiffuse="">thinborder.png</texture>
-                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
-            </control>
-
             <!-- Program description -->
             <control type="label" id="6001">
                 <description>Program title</description>
@@ -1377,6 +1354,25 @@
                 <align>left</align>
                 <aligny>top</aligny>
             </control>
+            <control type="progress" id="6011">
+                <posx>590</posx>
+                <posy>42</posy>
+                <width>430</width>
+                <height>7</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
+                <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
+            </control>
+            <control type="image" >
+                <posx>590</posx>
+                <posy>42</posy>
+                <width>430</width>
+                <height>7</height>
+                <texture border="3" colordiffuse="">thinborder.png</texture>
+                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
+            </control>
             <control type="textbox" id="6003">
                 <description>Program description</description>
                 <posx>590</posx>
@@ -1387,17 +1383,16 @@
                 <textcolor>ffffffff</textcolor>
                 <font>font12</font>
                 <wrapmultiline>true</wrapmultiline>
-                <align>left</align>
+
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
             <control type="image" id="6004">
                 <description>Program channel logo</description>
                 <posx>5</posx>
-                <posy>155</posy>
-                <width>270</width>
+                <posy>160</posy>
+                <width>247</width>
                 <height>45</height>
-                <align>center</align>
-                <aspectratio>keep</aspectratio>
+                <aspectratio align="right" aligny="bottom">keep</aspectratio>
             </control>
 
             <control type="label" id="6008">
