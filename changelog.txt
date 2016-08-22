@@ -1,11 +1,17 @@
 USAGE NOTES:
 - controls: osd (info,i), normal overlays (fullscreen,tab), pip toggle (context menu, c), exit (back,esc)
+            change channel in tv mode (page up/down)
 - "Import addons.ini" will overwrite addon folders on next update timer
 - use pip theme with 8 channels per page to match original tv guide icon layout
 - click to load in addon browse dialog
 - right click to add channels to categories
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.70
+- progress bars
+- db exception recovery
+- stay in tv mode on channel change (sometimes goes back to epg?!)
 
 version 0.0.69
 - page up wraparound fix
