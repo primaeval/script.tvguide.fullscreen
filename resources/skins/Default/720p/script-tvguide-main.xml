@@ -1250,32 +1250,32 @@
             <control type="label" id="6001">
                 <description>Program title</description>
                 <posx>30</posx>
-                <posy>12</posy>
+                <posy>30</posy>
                 <width>850</width>
                 <height>50</height>
                 <label>[B]Title[/B]</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
-                <aligny>center</aligny>
+
             </control>
             <control type="label" id="6002">
                 <description>Program time</description>
                 <posx>1255</posx>
-                <posy>12</posy>
+                <posy>30</posy>
                 <width>240</width>
                 <height>50</height>
                 <label>[B]18:00 - 20:00[/B]</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
                 <align>right</align>
-                <aligny>center</aligny>
+
             </control>
             <control type="textbox" id="6003">
                 <description>Program description</description>
                 <posx>30</posx>
-                <posy>50</posy>
+                <posy>60</posy>
                 <width>1230</width>
-                <height>149</height>
+                <height>140</height>
                 <label>Description</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
@@ -1369,13 +1369,15 @@
             </control>
 
             <control type="progress" id="6011">
-                <posx>280</posx>
-                <posy>177</posy>
-                <width>296</width>
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
                 <height>5</height>
                 <lefttexture />
                 <righttexture />
-                <visible>false</visible>
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
             </control>
 
                 <control type="label">

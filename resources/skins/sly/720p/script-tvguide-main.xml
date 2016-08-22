@@ -962,7 +962,7 @@
                 <height>142</height>
                 <textcolor>ccffffff</textcolor>
                 <font>font13</font>
-                <align>justify</align>
+                <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
                 <visible>true</visible>
             </control>
@@ -1387,7 +1387,7 @@
                 <textcolor>ffffffff</textcolor>
                 <font>font12</font>
                 <wrapmultiline>true</wrapmultiline>
-
+                <align>left</align>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
             <control type="image" id="6004">
