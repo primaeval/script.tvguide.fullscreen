@@ -57,6 +57,7 @@ ACTION_SELECT_ITEM = 7
 ACTION_PARENT_DIR = 9
 ACTION_PREVIOUS_MENU = 10
 ACTION_SHOW_INFO = 11
+ACTION_STOP = 13
 ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
 
@@ -266,7 +267,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif not self.osdEnabled:
             pass  # skip the rest of the actions
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SHOW_INFO:
@@ -276,7 +277,7 @@ class TVGuide(xbmcgui.WindowXML):
         if action.getId() == ACTION_SHOW_INFO:
             self._hideOsd()
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
             self._hideOsd()
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
@@ -708,9 +709,9 @@ class TVGuide(xbmcgui.WindowXML):
                 break
 
         while self.player.isPlaying() and not xbmc.abortRequested and not self.isClosing:
-            time.sleep(0.5)
+            time.sleep(10.5)
 
-        self.onPlayBackStopped()
+        #self.onPlayBackStopped()
 
     def _showOsd(self):
         if not self.osdEnabled:
