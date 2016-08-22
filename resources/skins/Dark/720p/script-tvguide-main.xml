@@ -903,7 +903,7 @@
                 <description>Main menu program title</description>
                 <left>30</left>
                 <top>560</top>
-                <width>600</width>
+                <width>900</width>
                 <height>20</height>
                 <textcolor>white</textcolor>
                 <shadowcolor>black</shadowcolor>
@@ -937,11 +937,22 @@
                 <left>30</left>
                 <top>590</top>
                 <width>990</width>
-                <height>120</height>
+                <height>100</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
                 <wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            </control>
+			<control type="progress" id="7026">
+                <posx>30</posx>
+                <posy>700</posy>
+                <width>990</width>
+                <height>10</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
+                <midtexture border="3" colordiffuse="ff00ffc6">panel.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
             <control type="image" id="7023">
                 <description>Main menu program image</description>
@@ -1275,7 +1286,7 @@
                 <description>Program title</description>
                 <left>10</left>
                 <top>10</top>
-                <width>1240</width>
+                <width>900</width>
                 <height>20</height>
                 <label>[B]Title[/B]</label>
                 <textcolor>white</textcolor>
@@ -1299,12 +1310,23 @@
                 <left>10</left>
                 <top>40</top>
                 <width>990</width>
-                <height>120</height>
+                <height>100</height>
                 <label>Description</label>
                 <textcolor>white</textcolor>
                 <font>font13</font>
                 <wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            </control>
+			<control type="progress" id="6011">
+                <left>10</left>
+                <top>150</top>
+                <width>990</width>
+                <height>10</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
+                <midtexture border="3" colordiffuse="ff00ffc6">panel.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
             </control>
 			<control type="image" id="6006">
                 <description>Program image</description>
@@ -1320,7 +1342,7 @@
                 <left>1045</left>
                 <top>50</top>
                 <width>220</width>
-                <height>124</height>
+                <height>100</height>
                 <label>Description</label>
                 <textcolor>white</textcolor>
                 <font>font12</font>
@@ -1351,6 +1373,16 @@
                 <font>font12</font>
                 <align>left</align>
                 <aligny>top</aligny>
+                <visible>false</visible>
+            </control>
+			<control type="image" id="6010">
+                <description>Next Program image</description>
+                <left>1045</left>
+                <top>50</top>
+                <width>220</width>
+                <height>124</height>
+                <aspectratio>keep</aspectratio>
+                <texture>-</texture>
                 <visible>false</visible>
             </control>
 		</control>
