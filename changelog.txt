@@ -8,6 +8,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.71
+- go home on exception instead of freezing
+
 version 0.0.70
 - progress bars
 - db exception recovery
