@@ -228,18 +228,18 @@
                     <posy>-15</posy>
                     <width>280</width>
                     <height>20</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>bbffffff</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <font>font13</font>
                     <align>right</align>
                     <aligny>center</aligny>
                     <visible>true</visible>
-                    <label>$INFO[System.Date]</label>
+                    <label>$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]</label>
                 </control>
 
                 <control type="label">
                     <description>time label</description>
-                    <right>20</right>
+                    <right>5</right>
                     <top>5</top>
                     <width>200</width>
                     <height>30</height>
@@ -248,7 +248,7 @@
                     <font>font28_title</font>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <label>$INFO[System.Time]</label>
+                    <label>$INFO[System.Time(hh:mm)]</label>
                     <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
                 </control>
 
@@ -1287,7 +1287,7 @@
                 <top>3</top>
                 <width>250</width>
                 <height>30</height>
-                <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]  $INFO[System.Time]</label>
+                <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]  $INFO[System.Time(hh:mm)]</label>
                 <align>right</align>
                 <aligny>center</aligny>
                 <font>font12</font>
