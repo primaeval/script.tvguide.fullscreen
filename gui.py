@@ -328,7 +328,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._showControl(self.C_MAIN_MOUSE_CONTROLS)
             return
 
-        elif action.getId() == KEY_CONTEXT_MENU:
+        elif action.getId() in [KEY_CONTEXT_MENU,ACTION_SHOW_INFO]:
             if self.player.isPlaying():
                 self._hideEpg()
 
