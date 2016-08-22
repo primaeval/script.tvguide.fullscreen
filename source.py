@@ -171,6 +171,7 @@ class Database(object):
 
             except Exception as detail:
                 xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s = %s' % (detail,command.__name__))
+                xbmc.executebuiltin("ActivateWindow(Home)")
 
         print 'Database.eventLoop() >>>>>>>>>> exiting...'
 
@@ -608,47 +609,41 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getNextProgram, channel)
 
     def _getNextProgram(self, program):
-        if not program.channel:
+        try:
+            nextProgram = None
+            c = self.conn.cursor()
+            c.execute(
+                'SELECT * FROM programs WHERE channel=? AND source=? AND start_date >= ? ORDER BY start_date ASC LIMIT 1',
+                [program.channel.id, self.source.KEY, program.endDate])
+            row = c.fetchone()
+            if row:
+                    nextProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'], row['description'],
+                                      row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                                      row['is_movie'], row['language'])
+            c.close()
+            return nextProgram
+        except:
             return
-        nextProgram = None
-        c = self.conn.cursor()
-        c.execute(
-            'SELECT * FROM programs WHERE channel=? AND source=? AND start_date >= ? ORDER BY start_date ASC LIMIT 1',
-            [program.channel.id, self.source.KEY, program.endDate])
-        row = c.fetchone()
-        if row:
-            try:
-                nextProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                                  row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                                  row['is_movie'], row['language'])
-            except:
-                return
-        c.close()
-
-        return nextProgram
 
     def getPreviousProgram(self, channel):
         return self._invokeAndBlockForResult(self._getPreviousProgram, channel)
 
     def _getPreviousProgram(self, program):
-        if not program.channel:
-            return
-        previousProgram = None
-        c = self.conn.cursor()
-        c.execute(
-            'SELECT * FROM programs WHERE channel=? AND source=? AND end_date <= ? ORDER BY start_date DESC LIMIT 1',
-            [program.channel.id, self.source.KEY, program.startDate])
-        row = c.fetchone()
-        if row:
-            try:
+        try:
+            previousProgram = None
+            c = self.conn.cursor()
+            c.execute(
+                'SELECT * FROM programs WHERE channel=? AND source=? AND end_date <= ? ORDER BY start_date DESC LIMIT 1',
+                [program.channel.id, self.source.KEY, program.startDate])
+            row = c.fetchone()
+            if row:
                 previousProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'],
-                                      row['description'], row['image_large'], row['image_small'], None, row['season'],
-                                      row['episode'], row['is_movie'], row['language'])
-            except:
-                return
-        c.close()
-
-        return previousProgram
+                                          row['description'], row['image_large'], row['image_small'], None, row['season'],
+                                          row['episode'], row['is_movie'], row['language'])
+            c.close()
+            return previousProgram
+        except:
+            return
 
     def _getProgramList(self, channels, startTime):
         """
