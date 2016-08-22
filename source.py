@@ -594,9 +594,12 @@ class Database(object):
                   [channel.id, self.source.KEY, now, now])
         row = c.fetchone()
         if row:
-            program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
+            try:
+                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
                               row['image_large'], row['image_small'], None, row['season'], row['episode'],
                               row['is_movie'], row['language'])
+            except:
+                return
         c.close()
 
         return program
@@ -605,6 +608,8 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getNextProgram, channel)
 
     def _getNextProgram(self, program):
+        if not program.channel:
+            return
         nextProgram = None
         c = self.conn.cursor()
         c.execute(
@@ -612,9 +617,12 @@ class Database(object):
             [program.channel.id, self.source.KEY, program.endDate])
         row = c.fetchone()
         if row:
-            nextProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'], row['description'],
+            try:
+                nextProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'], row['description'],
                                   row['image_large'], row['image_small'], None, row['season'], row['episode'],
                                   row['is_movie'], row['language'])
+            except:
+                return
         c.close()
 
         return nextProgram
@@ -623,6 +631,8 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getPreviousProgram, channel)
 
     def _getPreviousProgram(self, program):
+        if not program.channel:
+            return
         previousProgram = None
         c = self.conn.cursor()
         c.execute(
@@ -630,9 +640,12 @@ class Database(object):
             [program.channel.id, self.source.KEY, program.startDate])
         row = c.fetchone()
         if row:
-            previousProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'],
+            try:
+                previousProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'],
                                       row['description'], row['image_large'], row['image_small'], None, row['season'],
                                       row['episode'], row['is_movie'], row['language'])
+            except:
+                return
         c.close()
 
         return previousProgram
