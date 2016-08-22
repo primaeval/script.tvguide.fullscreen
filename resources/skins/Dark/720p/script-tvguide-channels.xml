@@ -51,21 +51,21 @@
 
             <control type="image">
                 <left>12</left>
-                <top>20</top>
+                <top>-5</top>
                 <width>16</width>
-                <height>40</height>
+                <height>38</height>
                 <texture>tvguide-channel-updownarrow.png</texture>
             </control>
             <control type="image">
                 <left>40</left>
                 <top>20</top>
                 <width>460</width>
-                <height>38</height>
+                <height>40</height>
             </control>
             <control type="button" id="6002">
 				<description>channel selected to move</description>
                 <left>36</left>
-                <top>20</top>
+                <top>-5</top>
                 <width>360</width>
                 <height>38</height>
                 <aligny>center</aligny>
