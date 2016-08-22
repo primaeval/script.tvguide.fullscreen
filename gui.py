@@ -70,6 +70,8 @@ KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
 KEY_ESC = 61467
 
+REMOTE_ZERO = 58
+
 CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
 HALF_HOUR = datetime.timedelta(minutes=30)
@@ -165,6 +167,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.mode = MODE_EPG
         self.currentChannel = None
+        self.lastChannel = None
 
         self.category = None
 
@@ -272,6 +275,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() == ACTION_SHOW_INFO:
             self._showOsd()
+        elif action.getId() == REMOTE_ZERO:
+            self._playLastChannel()
 
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
@@ -677,6 +682,9 @@ class TVGuide(xbmcgui.WindowXML):
         self.playChannel(channel, program)
 
     def playChannel(self, channel, program = None):
+        if self.currentChannel:
+            self.lastChannel = self.currentChannel
+
         self.currentChannel = channel
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
@@ -766,6 +774,15 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.mode = MODE_OSD
         self._showControl(self.C_MAIN_OSD)
+
+    def _playLastChannel(self):
+        if not self.lastChannel:
+            return
+        else:
+            channel = self.lastChannel
+            program = self.database.getCurrentProgram(channel)
+            self.lastChannel = self.currentChannel
+            self.playChannel(channel, program)
 
     def _hideOsd(self):
         self.mode = MODE_TV
