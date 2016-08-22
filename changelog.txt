@@ -8,6 +8,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.72
+- info to return from epg
+- sly tweaks
+
 version 0.0.71
 - go home on exception instead of freezing
 
