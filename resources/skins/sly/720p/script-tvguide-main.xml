@@ -56,7 +56,8 @@
             <width>1280</width>
             <height>720</height>
             <visible>!Control.IsVisible(5000)</visible>
-
+            <animation time="200" effect="fade">Visible</animation>
+            <animation time="200" effect="fade">Hidden</animation>
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
@@ -92,7 +93,6 @@
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
             </control>
-
 
 
             <control type="image" id="4601">
@@ -173,7 +173,6 @@
             </control>
 
 
-
             <!-- Date and time row -->
             <control type="group">
                 <posx>0</posx>
@@ -249,7 +248,9 @@
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <label>$INFO[System.Time(hh:mm)]</label>
-                    <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
+                    <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">
+                        conditional
+                    </animation>
                 </control>
 
                 <control type="label">
@@ -996,14 +997,14 @@
                 <posy>509</posy>
                 <width>901</width>
                 <height>10</height>
-                <lefttexture />
-                <righttexture />
+                <lefttexture/>
+                <righttexture/>
                 <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
                 <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
-            <control type="image" >
+            <control type="image">
                 <posx>360</posx>
                 <posy>509</posy>
                 <width>901</width>
@@ -1056,10 +1057,10 @@
                     <posy>50</posy>
                     <width>580</width>
                     <height>2</height>
-                    <texturebg />
-                    <lefttexture />
+                    <texturebg/>
+                    <lefttexture/>
                     <midtexture>tvguide-white-progress.png</midtexture>
-                    <righttexture />
+                    <righttexture/>
                 </control>
                 <control type="label" id="4202">
                     <description>loading time left</description>
@@ -1265,7 +1266,7 @@
             <width>1280</width>
             <height>220</height>
             <visible>!Control.IsVisible(6000)</visible>
-            <animation effect="fade" start="0" end="100" time="500">VisibleChange</animation>
+            <animation effect="slide" start="0,400" end="0,0" time="200">VisibleChange</animation>
 
             <control type="image">
                 <posx>0</posx>
@@ -1287,7 +1288,7 @@
                 <top>3</top>
                 <width>250</width>
                 <height>30</height>
-                <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]  $INFO[System.Time(hh:mm)]</label>
+                <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)] $INFO[System.Time(hh:mm)]</label>
                 <align>right</align>
                 <aligny>center</aligny>
                 <font>font12</font>
@@ -1359,13 +1360,13 @@
                 <posy>42</posy>
                 <width>430</width>
                 <height>7</height>
-                <lefttexture />
-                <righttexture />
+                <lefttexture/>
+                <righttexture/>
                 <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
                 <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
             </control>
-            <control type="image" >
+            <control type="image">
                 <posx>590</posx>
                 <posy>42</posy>
                 <width>430</width>
@@ -1442,6 +1443,222 @@
                 <visible>StringCompare(Control.GetLabel(6010),)</visible>
             </control>
             <control type="label" id="6009">
+                <description>Next Program time</description>
+                <posx>1045</posx>
+                <posy>175</posy>
+                <width>220</width>
+                <height>50</height>
+                <label>[B]18:00 - 20:00[/B]</label>
+                <textcolor>bbffffff</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font12</font>
+                <align>left</align>
+                <aligny>top</aligny>
+            </control>
+
+        </control>
+
+        <control type="label" id="8000">
+            <description>visibility marker for Last Played Info bar</description>
+        </control>
+
+        <control type="group">
+            <description>Last Played Channel Info bar</description>
+            <posx>0</posx>
+            <posy>500</posy>
+            <width>1280</width>
+            <height>220</height>
+            <visible>!Control.IsVisible(8000)</visible>
+            <animation effect="slide" start="1280,0" end="0,0" time="300">VisibleChange</animation>
+
+            <control type="image">
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>220</height>
+                <texture colordiffuse="FF008B8B">skyq/Backgrounds/infobar1.png</texture>
+            </control>
+            <control type="image">
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>220</height>
+                <texture colordiffuse="FF1E90FF">skyq/Backgrounds/infobar1.png</texture>
+            </control>
+
+            <control type="label">
+                <left>0</left>
+                <top>3</top>
+                <width>250</width>
+                <height>30</height>
+                <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)] $INFO[System.Time(hh:mm)]</label>
+                <align>right</align>
+                <aligny>center</aligny>
+                <font>font12</font>
+                <shadowcolor>22000000</shadowcolor>
+                <textcolor>bbffffff</textcolor>
+            </control>
+
+            <control type="label">
+                <description>Last channel text</description>
+                <posx>252</posx>
+                <posy>70</posy>
+                <width>255</width>
+                <height>25</height>
+                <textcolor>eeffffff</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font13_title</font>
+                <align>right</align>
+                <label>Last Channel</label>
+            </control>
+
+            <control type="label" id="8005">
+                <description>Program channel text</description>
+                <posx>252</posx>
+                <posy>90</posy>
+                <width>255</width>
+                <height>45</height>
+                <textcolor>ffffffff</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font24_title</font>
+                <align>right</align>
+            </control>
+
+            <control type="image" id="8006">
+                <description>Program image</description>
+                <posx>280</posx>
+                <posy>15</posy>
+                <width>296</width>
+                <height>162</height>
+                <aspectratio align="left">keep</aspectratio>
+                <texture>-</texture>
+            </control>
+
+            <control type="image">
+                <description>Program image</description>
+                <posx>280</posx>
+                <posy>7</posy>
+                <width>296</width>
+                <height>177</height>
+                <aspectratio>keep</aspectratio>
+                <texture>tv.jpg</texture>
+                <visible>StringCompare(Control.GetLabel(8006),)</visible>
+            </control>
+
+            <!-- Program description -->
+            <control type="label" id="8001">
+                <description>Program title</description>
+                <posx>590</posx>
+                <posy>1</posy>
+                <width>430</width>
+                <height>50</height>
+                <label>[B]Title[/B]</label>
+                <textcolor>FF00B8FF</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font13</font>
+                <aligny>center</aligny>
+            </control>
+            <control type="label" id="8002">
+                <description>Program time</description>
+                <posx>280</posx>
+                <posy>185</posy>
+                <width>296</width>
+                <height>50</height>
+                <label>[B]18:00 - 20:00[/B]</label>
+                <textcolor>99ffffff</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font12</font>
+                <align>left</align>
+                <aligny>top</aligny>
+            </control>
+            <control type="progress" id="8011">
+                <posx>590</posx>
+                <posy>42</posy>
+                <width>430</width>
+                <height>7</height>
+                <lefttexture/>
+                <righttexture/>
+                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
+                <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
+            </control>
+            <control type="image">
+                <posx>590</posx>
+                <posy>42</posy>
+                <width>430</width>
+                <height>7</height>
+                <texture border="3" colordiffuse="">thinborder.png</texture>
+                <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
+            </control>
+            <control type="textbox" id="8003">
+                <description>Program description</description>
+                <posx>590</posx>
+                <posy>50</posy>
+                <width>430</width>
+                <height>124</height>
+                <label>Description</label>
+                <textcolor>ffffffff</textcolor>
+                <font>font12</font>
+                <wrapmultiline>true</wrapmultiline>
+
+                <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            </control>
+            <control type="image" id="8004">
+                <description>Program channel logo</description>
+                <posx>5</posx>
+                <posy>160</posy>
+                <width>247</width>
+                <height>45</height>
+                <aspectratio align="right" aligny="bottom">keep</aspectratio>
+            </control>
+
+            <control type="label" id="8008">
+                <description>Next Program title</description>
+                <posx>1045</posx>
+                <posy>9</posy>
+                <width>220</width>
+                <height>50</height>
+                <label>[B]Title[/B]</label>
+                <textcolor>bbffffff</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font12</font>
+                <align>left</align>
+                <aligny>center</aligny>
+            </control>
+
+            <control type="textbox" id="8007">
+                <description>Next Program description</description>
+                <posx>1045</posx>
+                <posy>50</posy>
+                <width>220</width>
+                <height>124</height>
+                <label>Description</label>
+                <textcolor>ffcccccc</textcolor>
+                <font>font12</font>
+                <wrapmultiline>true</wrapmultiline>
+                <visible>false</visible>
+                <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            </control>
+            <control type="image" id="8010">
+                <description>Next Program image</description>
+                <posx>1045</posx>
+                <posy>50</posy>
+                <width>220</width>
+                <height>124</height>
+                <aspectratio>keep</aspectratio>
+                <texture>-</texture>
+            </control>
+            <control type="image">
+                <description>Next Program image</description>
+                <posx>1045</posx>
+                <posy>50</posy>
+                <width>220</width>
+                <height>124</height>
+                <aspectratio>keep</aspectratio>
+                <texture>tv.jpg</texture>
+                <visible>StringCompare(Control.GetLabel(8010),)</visible>
+            </control>
+            <control type="label" id="8009">
                 <description>Next Program time</description>
                 <posx>1045</posx>
                 <posy>175</posy>
