@@ -1312,7 +1312,7 @@
                 <posx>280</posx>
                 <posy>15</posy>
                 <width>296</width>
-                <height>161</height>
+                <height>162</height>
                 <aspectratio align="left">keep</aspectratio>
                 <texture>-</texture>
             </control>
