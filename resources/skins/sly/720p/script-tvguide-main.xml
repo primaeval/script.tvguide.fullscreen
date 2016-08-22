@@ -1310,10 +1310,10 @@
             <control type="image" id="6006">
                 <description>Program image</description>
                 <posx>280</posx>
-                <posy>7</posy>
+                <posy>15</posy>
                 <width>296</width>
-                <height>177</height>
-                <aspectratio>keep</aspectratio>
+                <height>161</height>
+                <aspectratio align="left">keep</aspectratio>
                 <texture>-</texture>
             </control>
 
