@@ -709,7 +709,7 @@ class TVGuide(xbmcgui.WindowXML):
                 break
 
         while self.player.isPlaying() and not xbmc.abortRequested and not self.isClosing:
-            time.sleep(10.5)
+            time.sleep(5.5)
 
         #self.onPlayBackStopped()
 
