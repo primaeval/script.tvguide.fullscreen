@@ -148,36 +148,6 @@
                 <texture>aqua.png</texture>
             </control>
 
-            <control type="image">
-                <description>workaround for texture not being loaded</description>
-                <left>177</left>
-                <top>60</top>
-                <width>3</width>
-                <height>400</height>
-                <visible>false</visible>
-                <texture>background-cover2.png</texture>
-            </control>
-
-            <control type="image">
-                <description>workaround for texture not being loaded</description>
-                <left>0</left>
-                <top>60</top>
-                <width>5</width>
-                <height>400</height>
-                <visible>false</visible>
-                <texture>background-cover2.png</texture>
-            </control>
-
-            <control type="image">
-                <description>workaround for texture not being loaded</description>
-                <left>1280</left>
-                <top>60</top>
-                <width>-23</width>
-                <height>450</height>
-                <visible>false</visible>
-                <texture>tvguide-background-right.png</texture>
-            </control>
-			
             <!-- Date and time row -->
             <control type="group">
                 <left>0</left>
@@ -1049,138 +1019,126 @@
                 <height>40</height>
             </control>
             <control type="group">
+				<description>Mouse control label</description>
                 <visible>true</visible>
                 <left>0</left>
-                <top>-60</top>
+                <top>550</top>
                 <width>1280</width>
                 <height>720</height>
                 <visible>!Control.IsVisible(4300)</visible>
-                <control type="image">
-                    <left>0</left>
-                    <top>0</top>
-                    <width>1280</width>
-                    <height>70</height>
-                    <texture>tvguide-glasspane.png</texture>
-                    <visible>false</visible>
-                </control>
-                <control type="image">
-                    <left>0</left>
-                    <top>0</top>
-                    <width>1280</width>
-                    <height>70</height>
-                    <texture>tvguide-glasspane.png</texture>
-                    <visible>false</visible>
-                </control>
                 <control type="label">
-                    <left>20</left>
-                    <top>10</top>
-                    <width>300</width>
-                    <height>50</height>
+                    <left>550</left>
+                    <top>-545</top>
+                    <width>180</width>
+                    <height>30</height>
                     <label>$ADDON[script.tvguide.fullscreen 30005]</label>
                     <textcolor>yellow</textcolor>
+					<focusedcolor>FF00FFC6</focusedcolor>
                     <font>font13</font>
-                    <aligny>center</aligny>
-                    <visible>false</visible>
+                    <align>center</align>
+                    <visible>true</visible>
                 </control>
-
                 <control type="label">
+					<description>Mouse control tip</description>
                     <left>800</left>
                     <top>10</top>
                     <width>400</width>
-                    <height>50</height>
+                    <height>30</height>
                     <label>$ADDON[script.tvguide.fullscreen 30007]</label>
                     <textcolor>yellow</textcolor>
-                    <font>font13</font>
-                    <aligny>center</aligny>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
+                    <align>center</align>
                     <visible>false</visible>
                 </control>
-
                 <control type="button" id="4301">
                     <description>navigate to now</description>
-                    <left>580</left>
-                    <top>60</top>
-                    <width>100</width>
-                    <height>40</height>
+                    <left>640</left>
+                    <top>10</top>
+                    <width>60</width>
+                    <height>30</height>
                     <label>$ADDON[script.tvguide.fullscreen 30006]</label>
                     <textcolor>yellow</textcolor>
-                    <font>font13</font>
-                    <aligny>center</aligny>
-                    <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
+					<align>center</align>
+                    <texturefocus>-</texturefocus>
                     <texturenofocus>-</texturenofocus>
                 </control>
-
                 <control type="button" id="4302">
                     <description>navigate left</description>
-                    <left>300</left>
-                    <top>0</top>
-                    <width>100</width>
-                    <height>40</height>
+                    <left>610</left>
+                    <top>10</top>
+                    <width>30</width>
+                    <height>30</height>
                     <textcolor>yellow</textcolor>
-                    <font>font13</font>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
                     <label>&lt;</label>
-                    <aligny>center</aligny>
-                    <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
+					<align>center</align>
+                    <texturefocus>-</texturefocus>
                     <texturenofocus>-</texturenofocus>
                 </control>
                 <control type="button" id="4303">
                     <description>navigate up</description>
-                    <left>40</left>
-                    <top>0</top>
-                    <width>100</width>
-                    <height>40</height>
+                    <left>550</left>
+                    <top>10</top>
+                    <width>30</width>
+                    <height>30</height>
                     <textcolor>yellow</textcolor>
-                    <font>font13</font>
-                    <label>^</label>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
+                    <label>&#652;</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
+                    <texturefocus>-</texturefocus>
                     <texturenofocus>-</texturenofocus>
                 </control>
                 <control type="button" id="4304">
                     <description>navigate down</description>
-                    <left>40</left>
-                    <top>40r</top>
-                    <width>100</width>
-                    <height>40</height>
+                    <left>580</left>
+                    <top>10</top>
+                    <width>30</width>
+                    <height>30</height>
                     <textcolor>yellow</textcolor>
-                    <font>font13</font>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
                     <label>v</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
+                    <texturefocus>-</texturefocus>
                     <texturenofocus>-</texturenofocus>
                 </control>
                 <control type="button" id="4305">
                     <description>navigate right</description>
-                    <left>850</left>
-                    <top>0</top>
-                    <width>100</width>
-                    <height>40</height>
+                    <left>700</left>
+                    <top>10</top>
+                    <width>30</width>
+                    <height>30</height>
                     <textcolor>yellow</textcolor>
-                    <font>font13</font>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
                     <label>&gt;</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
+                    <texturefocus>-</texturefocus>
                     <texturenofocus>-</texturenofocus>
                 </control>
-
-                <control type="button" id="4306">
+                <control type="button" id="4306" >
                     <description>exit</description>
-                    <left>1120</left>
-                    <top>0</top>
-                    <width>100</width>
-                    <height>40</height>
+                    <left>0</left>
+                    <top>-550</top>
+                    <width>30</width>
+                    <height>30</height>
                     <textcolor>yellow</textcolor>
-                    <font>font13</font>
-                    <label>x</label>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
+                    <label>X</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
-                    <visible>false</visible>
+                    <texturefocus border="2">menu-grey-focus.png</texturefocus>
+                    <texturenofocus border="2">menu-grey-focus.png</texturenofocus>
+                    <visible>true</visible>
                 </control>
 
             </control>
@@ -1408,10 +1366,10 @@
             </control>
             <control type="label" id="8005">
                 <description>station call sign</description>
-                <left>100</left>
+                <left>60</left>
                 <top>10</top>
                 <width>300</width>
-                <height>50</height>
+                <height>40</height>
                 <textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
                 <font>font13</font>
@@ -1436,8 +1394,8 @@
                 <description>Program channel logo</description>
                 <top>10</top>
                 <left>10</left>
-                <width>80</width>
-                <height>80</height>
+                <width>40</width>
+                <height>40</height>
                 <aspectratio>keep</aspectratio>
 				<visible>true</visible>
             </control>
