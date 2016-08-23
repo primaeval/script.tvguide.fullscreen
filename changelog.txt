@@ -1,13 +1,16 @@
 USAGE NOTES:
 - controls: osd (info,i), normal overlays (fullscreen,tab), pip toggle (context menu, c), exit (back,esc)
             change channel in tv mode (page up/down)
-            sly skin  - last channel (0), show last channel info in tv mode (right), hide (left)
+            last channel (0), show last channel info in tv mode (right), hide (left)
 - "Import addons.ini" will overwrite addon folders on next update timer
 - use pip theme with 8 channels per page to match original tv guide icon layout
 - click to load in addon browse dialog
 - right click to add channels to categories
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.75
+- last channel info in Default and pip skins
 
 version 0.0.74
 - last played channel in sly skin
