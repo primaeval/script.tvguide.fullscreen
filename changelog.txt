@@ -9,6 +9,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.76
+- fit footer
+- keep epg in sync
+
 version 0.0.75
 - last channel info in Default and pip skins
 
