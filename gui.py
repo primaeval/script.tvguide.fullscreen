@@ -752,6 +752,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.lastChannel = self.currentChannel
 
         self.currentChannel = channel
+        self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:
@@ -771,7 +772,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             self._hideEpg()
 
-        #threading.Timer(1, self.waitForPlayBackStopped).start()
+        threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
