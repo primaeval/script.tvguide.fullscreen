@@ -248,7 +248,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.epgView.right = left + control.getWidth()
             self.epgView.bottom = top + control.getHeight()
             self.epgView.width = control.getWidth()
-            self.epgView.cellHeight = control.getHeight() / CHANNELS_PER_PAGE
+            self.epgView.cellHeight = int(control.getHeight() / float(CHANNELS_PER_PAGE))
 
         if self.database:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
@@ -704,7 +704,7 @@ class TVGuide(xbmcgui.WindowXML):
         if first_channel < 0:
             len_channels = self.database.getNumberOfChannels()
             last_page = len_channels % CHANNELS_PER_PAGE
-            first_channel = len_channels - last_page    
+            first_channel = len_channels - last_page
         if scrollEvent:
             self.onRedrawEPG(first_channel, self.viewStartDate)
         else:
@@ -752,7 +752,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             self._hideEpg()
 
-        threading.Timer(1, self.waitForPlayBackStopped).start()
+        #threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
@@ -1037,11 +1037,10 @@ class TVGuide(xbmcgui.WindowXML):
         if control:
             control.setPosition(0,top)
             control.setHeight(height)
-            control.setImage('black-back.png')
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
-            control.setHeight(top)
-
+            control.setHeight(top-2)
+        self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
 
         # add program controls
         if focusFunction is None:
@@ -1060,8 +1059,6 @@ class TVGuide(xbmcgui.WindowXML):
 
         if focusControl is None and len(self.controlAndProgramList) > 0:
             self.setFocus(self.controlAndProgramList[0].control)
-
-
 
         self._hideControl(self.C_MAIN_LOADING)
         self.redrawingEPG = False

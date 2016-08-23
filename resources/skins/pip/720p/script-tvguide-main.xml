@@ -71,7 +71,7 @@
                 <posx>0</posx>
                 <posy>-2</posy>
                 <width>1280</width>
-                <height>452</height>
+                <height>450</height>
                 <texture>grey.png</texture>
                 <visible>true</visible>
                 <aspectratio>scale</aspectratio>
@@ -84,7 +84,7 @@
                 <posx>0</posx>
                 <posy>-2</posy>
                 <width>1280</width>
-                <height>452</height>
+                <height>450</height>
                 <texture>black-back.png</texture>
                 <visible>!Control.IsVisible(4200)</visible>
                 <aspectratio>scale</aspectratio>
@@ -119,7 +119,7 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
-
+                <visible>Player.HasMedia</visible>
             </control>
 
             <control type="image" id="4100">
