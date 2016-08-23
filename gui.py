@@ -159,6 +159,19 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_LAST_PLAYED_TITLE = 8008
     C_NEXT_LAST_PLAYED_TIME = 8009
     C_NEXT_LAST_PLAYED_CHANNEL_IMAGE = 8010
+    C_UP_NEXT = 9000
+    C_MAIN_UP_NEXT_TITLE = 9001
+    C_MAIN_UP_NEXT_TIME = 9002
+    C_MAIN_UP_NEXT_DESCRIPTION = 9003
+    C_MAIN_UP_NEXT_CHANNEL_LOGO = 9004
+    C_MAIN_UP_NEXT_CHANNEL_TITLE = 9005
+    C_MAIN_UP_NEXT_CHANNEL_IMAGE = 9006
+    C_MAIN_UP_NEXT_PROGRESS = 9011
+    C_NEXT_UP_NEXT_DESCRIPTION = 9007
+    C_NEXT_UP_NEXT_TITLE = 9008
+    C_NEXT_UP_NEXT_TIME = 9009
+    C_NEXT_UP_NEXT_CHANNEL_IMAGE = 9010
+    C_MAIN_UP_NEXT_TIME_REMAINING = 9012
 
     def __new__(cls):
         return super(TVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), SKIN)
@@ -182,6 +195,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.currentChannel = None
         self.lastChannel = None
         self.lastProgram = None
+        self.currentProgram = None
 
         self.category = None
 
@@ -200,9 +214,13 @@ class TVGuide(xbmcgui.WindowXML):
         self.osdEnabled = False
         self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
             'alternative.playback') != 'true'
+        self.upNextEnabled = False
+        self.upNextEnabled = ADDON.getSetting('enable.nextup') == 'true'
+        self.upNextTime = int(ADDON.getSetting('nextup.time'))
         self.alternativePlayback = ADDON.getSetting('alternative.playback') == 'true'
         self.osdChannel = None
         self.osdProgram = None
+        self.lastOsdProgram = None
 
         # find nearest half hour
         self.viewStartDate = datetime.datetime.today()
@@ -237,6 +255,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._showControl(self.C_MAIN_EPG, self.C_MAIN_LOADING)
         self.setControlLabel(self.C_MAIN_LOADING_TIME_LEFT, strings(BACKGROUND_UPDATE_IN_PROGRESS))
         self.setFocusId(self.C_MAIN_LOADING_CANCEL)
+        self._hideControl(self.C_UP_NEXT)
 
         control = self.getControl(self.C_MAIN_EPG_VIEW_MARKER)
         if control:
@@ -733,6 +752,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.lastChannel = self.currentChannel
 
         self.currentChannel = channel
+        self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:
@@ -752,7 +772,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             self._hideEpg()
 
-        #threading.Timer(1, self.waitForPlayBackStopped).start()
+        threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
@@ -764,10 +784,78 @@ class TVGuide(xbmcgui.WindowXML):
                 break
 
         while self.player.isPlaying() and not xbmc.abortRequested and not self.isClosing:
+            if self.upNextEnabled and self.mode == MODE_TV:
+                if not self.currentProgram:
+                    self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+                if self.currentProgram and self.currentProgram.endDate:
+                    remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                    if remainingseconds < self.upNextTime and remainingseconds > 1:
+                        self._updateNextUpInfo()
+                        self._showControl(self.C_UP_NEXT)
+                        while remainingseconds < self.upNextTime and remainingseconds > 1:
+                            self._updateNextUpInfo()
+                            remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                            time.sleep(1)
+                        self._hideControl(self.C_UP_NEXT)
+                        self.currentProgram = None
+
             time.sleep(5.5)
 
         #self.onPlayBackStopped()
 
+    def _updateNextUpInfo(self):
+        if self.currentProgram and self.lastOsdProgram and self.currentProgram != self.lastOsdProgram:
+            # a change so update last
+            self.lastOsdProgram = self.currentProgram
+        elif self.currentProgram and not self.lastOsdProgram:
+            # no last so set it
+            self.lastOsdProgram = self.currentProgram
+
+        self._populateNextUpInfo()
+
+    def _populateNextUpInfo(self):
+        if self.currentProgram is not None:
+            self.setControlLabel(self.C_MAIN_UP_NEXT_TITLE, '[B]%s[/B]' % self.currentProgram.title)
+            if self.currentProgram.startDate or self.currentProgram.endDate:
+                self.setControlLabel(self.C_MAIN_UP_NEXT_TIME, '[B]%s - %s[/B]' % (
+                    self.formatTime(self.currentProgram.startDate), self.formatTime(self.currentProgram.endDate)))
+            else:
+                self.setControlLabel(self.C_MAIN_UP_NEXT_TIME, '')
+            if self.currentProgram.startDate and self.currentProgram.endDate:
+                osdprogramprogresscontrol = self.getControl(self.C_MAIN_OSD_PROGRESS)
+                if osdprogramprogresscontrol:
+                    osdprogramprogresscontrol.setPercent(self.percent(self.currentProgram.startDate,self.currentProgram.endDate))
+                remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                self.setControlLabel(self.C_MAIN_UP_NEXT_TIME_REMAINING, '%s' % remainingseconds)
+
+            self.setControlText(self.C_MAIN_UP_NEXT_DESCRIPTION, self.currentProgram.description)
+            self.setControlLabel(self.C_MAIN_UP_NEXT_CHANNEL_TITLE, self.currentChannel.title)
+            if self.currentProgram.channel.logo is not None:
+                self.setControlImage(self.C_MAIN_UP_NEXT_CHANNEL_LOGO, self.currentProgram.channel.logo)
+            else:
+                self.setControlImage(self.C_MAIN_UP_NEXT_CHANNEL_LOGO, '')
+            if self.currentProgram.imageSmall is not None:
+                self.setControlImage(self.C_MAIN_UP_NEXT_CHANNEL_IMAGE, self.currentProgram.imageSmall)
+            else:
+                self.setControlImage(self.C_MAIN_UP_NEXT_CHANNEL_IMAGE, '')
+
+            nextOsdProgram = self.database.getNextProgram(self.currentProgram)
+            if nextOsdProgram:
+                self.setControlText(self.C_NEXT_UP_NEXT_DESCRIPTION, nextOsdProgram.description)
+                self.setControlLabel(self.C_NEXT_UP_NEXT_TITLE, nextOsdProgram.title)
+                if nextOsdProgram.startDate or nextOsdProgram.endDate:
+                    self.setControlLabel(self.C_NEXT_UP_NEXT_TIME, '%s - %s' % (
+                        self.formatTime(nextOsdProgram.startDate), self.formatTime(nextOsdProgram.endDate)))
+                else:
+                    self.setControlLabel(self.C_NEXT_UP_NEXT_TIME, '')
+                try:
+                    nextOsdControl = self.getControl(self.C_NEXT_UP_NEXT_CHANNEL_IMAGE)
+                    if nextOsdControl != None and nextOsdProgram.imageSmall is not None:
+                        nextOsdControl.setImage(nextOsdProgram.imageSmall)
+                    elif nextOsdControl != None:
+                        nextOsdControl.setImage('')
+                except:
+                    pass
     def _showOsd(self):
         if not self.osdEnabled:
             return
