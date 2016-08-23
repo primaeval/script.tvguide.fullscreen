@@ -54,7 +54,7 @@
             <posx>0</posx>
             <posy>60</posy>
             <width>1280</width>
-            <height>720</height>
+            <height>660</height>
             <visible>!Control.IsVisible(5000)</visible>
 
             <control type="button" id="5001">
@@ -980,13 +980,15 @@
             </control>
 
             <control type="progress" id="7026">
-                <posx>360</posx>
-                <posy>509</posy>
-                <width>901</width>
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
                 <height>5</height>
                 <lefttexture />
                 <righttexture />
-                <visible>false</visible>
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>true</visible>
             </control>
 
             <control type="label" id="4200">
@@ -1219,7 +1221,7 @@
             <width>1280</width>
             <height>720</height>
             <animation type="Conditional" condition="!Control.IsVisible(5000)">
-                <effect type="zoom" end="25" center="0,720" time="0" />
+                <effect type="zoom" end="25" center="0,700" time="0" />
             </animation>
             <visible>true</visible>
         </control>
