@@ -635,7 +635,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlLabel(self.C_MAIN_TIME, '')
         if program.startDate and program.endDate:
             programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
-            if programprogresscontrol and programprogresscontrol:
+            if programprogresscontrol:
                 programprogresscontrol.setPercent(self.percent(program.startDate,program.endDate))
         if program.description:
             description = program.description
