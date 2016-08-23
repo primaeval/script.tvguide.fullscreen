@@ -81,7 +81,7 @@
                 <posx>0</posx>
                 <posy>-2</posy>
                 <width>1280</width>
-                <height>452</height>
+                <height>450</height>
                 <texture>grey.png</texture>
                 <visible>!Player.HasMedia</visible>
                 <aspectratio>scale</aspectratio>
@@ -94,7 +94,7 @@
                 <posx>0</posx>
                 <posy>-2</posy>
                 <width>1280</width>
-                <height>452</height>
+                <height>450</height>
                 <texture>black-back.png</texture>
                 <visible>!Control.IsVisible(4200)</visible>
                 <aspectratio>scale</aspectratio>
@@ -130,6 +130,7 @@
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
 
+                <visible>Player.HasMedia</visible>
             </control>
 
             <control type="image" id="4100">
@@ -1369,6 +1370,191 @@
             </control>
 
             <control type="progress" id="6011">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
+            </control>
+
+                <control type="label">
+                    <description>time label</description>
+                    <right>20</right>
+                    <top>-495</top>
+                    <width>200</width>
+                    <height>30</height>
+                    <align>right</align>
+                    <aligny>center</aligny>
+                    <font>font28_title</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <label>$INFO[System.Time]</label>
+                    <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
+                </control>
+
+        </control>
+
+        <control type="label" id="8000">
+            <description>visibility marker for OSD Info bar</description>
+        </control>
+        <control type="group">
+            <description>OSD Info bar</description>
+            <posx>0</posx>
+            <posy>500</posy>
+            <width>1280</width>
+            <height>220</height>
+            <visible>!Control.IsVisible(8000)</visible>
+            <animation effect="fade" start="0" end="100" time="0">VisibleChange</animation>
+
+            <control type="image">
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>220</height>
+                <texture>black-back.png</texture>
+                <visible>true</visible>
+            </control>
+
+            <!-- Program description -->
+            <control type="label" id="8001">
+                <description>Program title</description>
+                <posx>30</posx>
+                <posy>30</posy>
+                <width>850</width>
+                <height>50</height>
+                <label>[B]Title[/B]</label>
+                <textcolor>ffffffff</textcolor>
+                <font>font13</font>
+
+            </control>
+
+            <control type="label" id="8002">
+                <description>Program time</description>
+                <posx>1255</posx>
+                <posy>30</posy>
+                <width>240</width>
+                <height>50</height>
+                <label>[B]18:00 - 20:00[/B]</label>
+                <textcolor>ffffffff</textcolor>
+                <font>font13</font>
+                <align>right</align>
+
+            </control>
+            <control type="textbox" id="8003">
+                <description>Program description</description>
+                <posx>30</posx>
+                <posy>60</posy>
+                <width>1230</width>
+                <height>140</height>
+                <label>Description</label>
+                <textcolor>ffffffff</textcolor>
+                <font>font13</font>
+                <wrapmultiline>true</wrapmultiline>
+
+                <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            </control>
+            <control type="image" id="8004">
+                <description>Program channel logo</description>
+                <posx>170r</posx>
+                <posy>60r</posy>
+                <width>160</width>
+                <height>45</height>
+                <aspectratio>keep</aspectratio>
+                <colordiffuse>grey</colordiffuse>
+            </control>
+            <control type="label" id="8005">
+                <description>Program channel text</description>
+                <posx>30</posx>
+                <posy>0</posy>
+                <width>850</width>
+                <height>20</height>
+                <textcolor>grey</textcolor>
+                <font>font13_title</font>
+                <align>left</align>
+                <!--<visible>StringCompare(Control.GetLabel(6004),)</visible>-->
+                <visible>true</visible>
+            </control>
+            <control type="label">
+                <description>Last Channel</description>
+                <posx>1255</posx>
+                <posy>0</posy>
+                <width>850</width>
+                <height>20</height>
+                <textcolor>grey</textcolor>
+                <font>font13_title</font>
+                <align>right</align>
+                <label>Last Channel</label>
+                <visible>true</visible>
+            </control>
+
+            <control type="image" id="8006">
+                <description>Program image</description>
+                <posx>280</posx>
+                <posy>7</posy>
+                <width>296</width>
+                <height>177</height>
+                <aspectratio>keep</aspectratio>
+                <texture>-</texture>
+                <visible>false</visible>
+            </control>
+
+            <control type="textbox" id="8007">
+                <description>Next Program description</description>
+                <posx>1045</posx>
+                <posy>50</posy>
+                <width>220</width>
+                <height>124</height>
+                <label>Description</label>
+                <textcolor>ffcccccc</textcolor>
+                <font>font12</font>
+                <wrapmultiline>true</wrapmultiline>
+                <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+                <visible>false</visible>
+            </control>
+
+            <control type="label" id="8008">
+                <description>Next Program title</description>
+                <posx>1045</posx>
+                <posy>1</posy>
+                <width>220</width>
+                <height>50</height>
+                <label>[B]Title[/B]</label>
+                <textcolor>ffcccccc</textcolor>
+                <font>font13_title</font>
+                <aligny>center</aligny>
+                <visible>false</visible>
+            </control>
+
+            <control type="label" id="8009">
+                <description>Next Program time</description>
+                <posx>1045</posx>
+                <posy>190</posy>
+                <width>220</width>
+                <height>50</height>
+                <label>[B]18:00 - 20:00[/B]</label>
+                <textcolor>ddcccccc</textcolor>
+                <font>font12</font>
+                <align>left</align>
+                <aligny>top</aligny>
+                <visible>false</visible>
+            </control>
+
+            <control type="image" id="8010">
+                <description>Next Program image</description>
+                <posx>1045</posx>
+                <posy>50</posy>
+                <width>220</width>
+                <height>124</height>
+                <aspectratio>keep</aspectratio>
+                <texture>-</texture>
+                <visible>false</visible>
+            </control>
+
+            <control type="progress" id="8011">
                 <posx>0</posx>
                 <posy>10r</posy>
                 <width>1280</width>
