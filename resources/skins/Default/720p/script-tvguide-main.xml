@@ -947,7 +947,7 @@
                 <width>160</width>
                 <height>40</height>
                 <aspectratio>keep</aspectratio>
-                <fadetime>500</fadetime>
+                <fadetime>0</fadetime>
                 <visible>true</visible>
                 <!-- unused in default skin -->
             </control>
@@ -999,7 +999,7 @@
                 <righttexture />
                 <texturebg  colordiffuse="white">black.png</texturebg>
                 <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>true</visible>
+                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
             <control type="label" id="4200">

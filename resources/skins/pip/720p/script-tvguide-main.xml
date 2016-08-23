@@ -988,7 +988,7 @@
                 <righttexture />
                 <texturebg  colordiffuse="white">black.png</texturebg>
                 <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>true</visible>
+                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
             <control type="label" id="4200">

@@ -636,7 +636,8 @@ class TVGuide(xbmcgui.WindowXML):
         if program.startDate and program.endDate:
             programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
             if programprogresscontrol:
-                programprogresscontrol.setPercent(self.percent(program.startDate,program.endDate))
+                percent = self.percent(program.startDate,program.endDate)
+                programprogresscontrol.setPercent(percent)
         if program.description:
             description = program.description
         else:
@@ -799,7 +800,7 @@ class TVGuide(xbmcgui.WindowXML):
                         self._hideControl(self.C_UP_NEXT)
                         self.currentProgram = None
 
-            time.sleep(5.5)
+            time.sleep(1)
 
         #self.onPlayBackStopped()
 
