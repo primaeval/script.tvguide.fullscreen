@@ -46,6 +46,7 @@ DEBUG = False
 MODE_EPG = 'EPG'
 MODE_TV = 'TV'
 MODE_OSD = 'OSD'
+MODE_LASTCHANNEL = 'LASTCHANNEL'
 
 ACTION_LEFT = 1
 ACTION_RIGHT = 2
@@ -69,6 +70,8 @@ KEY_NAV_BACK = 92
 KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
 KEY_ESC = 61467
+
+REMOTE_ZERO = 58
 
 CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
@@ -144,6 +147,18 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_OSD_CHANNEL_IMAGE = 6010
     C_MAIN_VIDEO_BACKGROUND = 5555
     C_MAIN_VIDEO_PIP = 6666
+    C_MAIN_LAST_PLAYED = 8000
+    C_MAIN_LAST_PLAYED_TITLE = 8001
+    C_MAIN_LAST_PLAYED_TIME = 8002
+    C_MAIN_LAST_PLAYED_DESCRIPTION = 8003
+    C_MAIN_LAST_PLAYED_CHANNEL_LOGO = 8004
+    C_MAIN_LAST_PLAYED_CHANNEL_TITLE = 8005
+    C_MAIN_LAST_PLAYED_CHANNEL_IMAGE = 8006
+    C_MAIN_LAST_PLAYED_PROGRESS = 8011
+    C_NEXT_LAST_PLAYED_DESCRIPTION = 8007
+    C_NEXT_LAST_PLAYED_TITLE = 8008
+    C_NEXT_LAST_PLAYED_TIME = 8009
+    C_NEXT_LAST_PLAYED_CHANNEL_IMAGE = 8010
 
     def __new__(cls):
         return super(TVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), SKIN)
@@ -165,6 +180,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.mode = MODE_EPG
         self.currentChannel = None
+        self.lastChannel = None
+        self.lastProgram = None
 
         self.category = None
 
@@ -216,6 +233,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def onInit(self):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS, self.C_MAIN_OSD)
+        self._hideControl(self.C_MAIN_LAST_PLAYED)
         self._showControl(self.C_MAIN_EPG, self.C_MAIN_LOADING)
         self.setControlLabel(self.C_MAIN_LOADING_TIME_LEFT, strings(BACKGROUND_UPDATE_IN_PROGRESS))
         self.setFocusId(self.C_MAIN_LOADING_CANCEL)
@@ -230,7 +248,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.epgView.right = left + control.getWidth()
             self.epgView.bottom = top + control.getHeight()
             self.epgView.width = control.getWidth()
-            self.epgView.cellHeight = control.getHeight() / CHANNELS_PER_PAGE
+            self.epgView.cellHeight = int(control.getHeight() / float(CHANNELS_PER_PAGE))
 
         if self.database:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
@@ -256,6 +274,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.onActionOSDMode(action)
         elif self.mode == MODE_EPG:
             self.onActionEPGMode(action)
+        elif self.mode == MODE_LASTCHANNEL:
+            self.onActionLastPlayedMode(action)
 
     def onActionTVMode(self, action):
         if action.getId() == ACTION_PAGE_UP:
@@ -268,10 +288,18 @@ class TVGuide(xbmcgui.WindowXML):
             pass  # skip the rest of the actions
 
         elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
+            self.viewStartDate = datetime.datetime.today()
+            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SHOW_INFO:
             self._showOsd()
+        elif action.getId() == REMOTE_ZERO:
+            self._playLastChannel()
+        elif action.getId() == ACTION_RIGHT:
+            self._showLastPlayedChannel()
+        elif action.getId == ACTION_LEFT:
+            self._showLastPlayedChannel()
 
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
@@ -279,6 +307,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
             self._hideOsd()
+            self.viewStartDate = datetime.datetime.today()
+            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SELECT_ITEM:
@@ -314,6 +344,28 @@ class TVGuide(xbmcgui.WindowXML):
             if nextProgram:
                 self.osdProgram = nextProgram
                 self._showOsd()
+
+    def onActionLastPlayedMode(self, action):
+        if action.getId() == ACTION_SHOW_INFO:
+            self._hideLastPlayed()
+
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
+            self._hideLastPlayed()
+            self.viewStartDate = datetime.datetime.today()
+            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+        elif action.getId() == ACTION_SELECT_ITEM:
+            self._hideLastPlayed()
+            self.playChannel(self.lastChannel, self.lastProgram)
+
+        elif action.getId() == ACTION_LEFT:
+            self._hideLastPlayed()
+
+        elif action.getId() == ACTION_RIGHT:
+            self._hideLastPlayed()
+
+
 
     def onActionEPGMode(self, action):
         if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK]:
@@ -652,7 +704,7 @@ class TVGuide(xbmcgui.WindowXML):
         if first_channel < 0:
             len_channels = self.database.getNumberOfChannels()
             last_page = len_channels % CHANNELS_PER_PAGE
-            first_channel = len_channels - last_page    
+            first_channel = len_channels - last_page
         if scrollEvent:
             self.onRedrawEPG(first_channel, self.viewStartDate)
         else:
@@ -677,6 +729,9 @@ class TVGuide(xbmcgui.WindowXML):
         self.playChannel(channel, program)
 
     def playChannel(self, channel, program = None):
+        if self.currentChannel:
+            self.lastChannel = self.currentChannel
+
         self.currentChannel = channel
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
@@ -697,7 +752,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             self._hideEpg()
 
-        threading.Timer(1, self.waitForPlayBackStopped).start()
+        #threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
@@ -719,6 +774,10 @@ class TVGuide(xbmcgui.WindowXML):
 
         if self.mode != MODE_OSD:
             self.osdChannel = self.currentChannel
+
+        # refresh the current program each time it's shown if it's the same channel
+        if self.osdChannel == self.currentChannel:
+            self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         if self.osdProgram is not None:
             self.setControlLabel(self.C_MAIN_OSD_TITLE, '[B]%s[/B]' % self.osdProgram.title)
@@ -763,9 +822,71 @@ class TVGuide(xbmcgui.WindowXML):
         self.mode = MODE_OSD
         self._showControl(self.C_MAIN_OSD)
 
+    def _showLastPlayedChannel(self):
+        if not self.lastChannel:
+            return
+
+        self.lastProgram = self.database.getCurrentProgram(self.lastChannel)
+
+        if self.lastProgram is not None:
+            self.setControlLabel(self.C_MAIN_LAST_PLAYED_TITLE, '[B]%s[/B]' % self.lastProgram.title)
+            if self.lastProgram.startDate or self.lastProgram.endDate:
+                self.setControlLabel(self.C_MAIN_LAST_PLAYED_TIME, '[B]%s - %s[/B]' % (
+                    self.formatTime(self.lastProgram.startDate), self.formatTime(self.lastProgram.endDate)))
+            else:
+                self.setControlLabel(self.C_MAIN_LAST_PLAYED_TIME, '')
+            if self.lastProgram.startDate and self.lastProgram.endDate:
+                osdprogramprogresscontrol = self.getControl(self.C_MAIN_LAST_PLAYED_PROGRESS)
+                if osdprogramprogresscontrol:
+                    osdprogramprogresscontrol.setPercent(self.percent(self.lastProgram.startDate,self.lastProgram.endDate))
+            self.setControlText(self.C_MAIN_LAST_PLAYED_DESCRIPTION, self.lastProgram.description)
+            self.setControlLabel(self.C_MAIN_LAST_PLAYED_CHANNEL_TITLE, self.lastChannel.title)
+            if self.lastProgram.channel.logo is not None:
+                self.setControlImage(self.C_MAIN_LAST_PLAYED_CHANNEL_LOGO, self.lastProgram.channel.logo)
+            else:
+                self.setControlImage(self.C_MAIN_LAST_PLAYED_CHANNEL_LOGO, '')
+            if self.lastProgram.imageSmall is not None:
+                self.setControlImage(self.C_MAIN_LAST_PLAYED_CHANNEL_IMAGE, self.lastProgram.imageSmall)
+            else:
+                self.setControlImage(self.C_MAIN_LAST_PLAYED_CHANNEL_IMAGE, '')
+
+            nextLastPlayedProgram = self.database.getNextProgram(self.lastProgram)
+            if nextLastPlayedProgram:
+                self.setControlText(self.C_NEXT_LAST_PLAYED_DESCRIPTION, nextLastPlayedProgram.description)
+                self.setControlLabel(self.C_NEXT_LAST_PLAYED_TITLE, nextLastPlayedProgram.title)
+                if nextLastPlayedProgram.startDate or nextLastPlayedProgram.endDate:
+                    self.setControlLabel(self.C_NEXT_LAST_PLAYED_TIME, '%s - %s' % (
+                        self.formatTime(nextLastPlayedProgram.startDate), self.formatTime(nextLastPlayedProgram.endDate)))
+                else:
+                    self.setControlLabel(self.C_NEXT_LAST_PLAYED_TIME, '')
+                try:
+                    nextOsdControl = self.getControl(self.C_NEXT_LAST_PLAYED_CHANNEL_IMAGE)
+                    if nextOsdControl != None and nextLastPlayedProgram.imageSmall is not None:
+                        nextOsdControl.setImage(nextLastPlayedProgram.imageSmall)
+                    elif nextOsdControl != None:
+                        nextOsdControl.setImage('')
+                except:
+                    pass
+
+        self.mode = MODE_LASTCHANNEL
+        self._showControl(self.C_MAIN_LAST_PLAYED)
+
+    def _playLastChannel(self):
+        if not self.lastChannel:
+            return
+        else:
+            channel = self.lastChannel
+            program = self.database.getCurrentProgram(channel)
+            self.lastChannel = self.currentChannel
+            self.playChannel(channel, program)
+
     def _hideOsd(self):
         self.mode = MODE_TV
         self._hideControl(self.C_MAIN_OSD)
+
+    def _hideLastPlayed(self):
+        self.mode = MODE_TV
+        self._hideControl(self.C_MAIN_LAST_PLAYED)
 
     def _hideEpg(self):
         self._hideControl(self.C_MAIN_EPG)
@@ -849,6 +970,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         if SKIN == 'sly':
             focusColor = '0xFF00B8FF'
+        elif SKIN == 'Dark':
+            focusColor = '0xFF00FFC6'
         else:
             focusColor = '0xFF00FFFF'
 
@@ -916,11 +1039,10 @@ class TVGuide(xbmcgui.WindowXML):
         if control:
             control.setPosition(0,top)
             control.setHeight(height)
-            control.setImage('black-back.png')
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
-            control.setHeight(top)
-
+            control.setHeight(top-2)
+        self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
 
         # add program controls
         if focusFunction is None:
@@ -939,8 +1061,6 @@ class TVGuide(xbmcgui.WindowXML):
 
         if focusControl is None and len(self.controlAndProgramList) > 0:
             self.setFocus(self.controlAndProgramList[0].control)
-
-
 
         self._hideControl(self.C_MAIN_LOADING)
         self.redrawingEPG = False
