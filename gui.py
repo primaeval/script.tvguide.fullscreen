@@ -970,6 +970,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         if SKIN == 'sly':
             focusColor = '0xFF00B8FF'
+        elif SKIN == 'Dark':
+            focusColor = '0xFF00FFC6'
         else:
             focusColor = '0xFF00FFFF'
 
