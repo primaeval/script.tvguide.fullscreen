@@ -784,7 +784,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         while self.player.isPlaying() and not xbmc.abortRequested and not self.isClosing:
             if self.upNextEnabled and self.mode == MODE_TV:
-                self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+                if not self.currentProgram:
+                    self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
                 if self.currentProgram and self.currentProgram.endDate:
                     remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
                     if remainingseconds < self.upNextTime and remainingseconds > 1:
@@ -795,6 +796,7 @@ class TVGuide(xbmcgui.WindowXML):
                             remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
                             time.sleep(1)
                         self._hideControl(self.C_UP_NEXT)
+                        self.currentProgram = None
 
             time.sleep(5.5)
 
