@@ -905,7 +905,7 @@
                 <description>Program title</description>
                 <posx>500</posx>
                 <posy>452</posy>
-                <width>610</width>
+                <width>620</width>
                 <height>50</height>
                 <textcolor>FF00B8FF</textcolor>
                 <shadowcolor>22000000</shadowcolor>
@@ -936,8 +936,6 @@
                 <shadowcolor>22000000</shadowcolor>
                 <font>font13</font>
                 <align>left</align>
-
-                <scroll>true</scroll>
                 <visible>StringCompare(Control.GetLabel(7024),)</visible>
             </control>
             <control type="label" id="7021">
@@ -1000,7 +998,7 @@
                 <lefttexture/>
                 <righttexture/>
                 <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
-                <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
+                <midtexture border="3" colordiffuse="FF00ff48">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
@@ -1362,8 +1360,8 @@
                 <height>7</height>
                 <lefttexture/>
                 <righttexture/>
-                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
-                <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
+                <texturebg border="3" colordiffuse="">panel.png</texturebg>
+                <midtexture border="3" colordiffuse="FF00ff48">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
             </control>
             <control type="image">
@@ -1578,8 +1576,8 @@
                 <height>7</height>
                 <lefttexture/>
                 <righttexture/>
-                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
-                <midtexture border="3" colordiffuse="FF00B8FF">panel.png</midtexture>
+                <texturebg border="3" colordiffuse="">panel.png</texturebg>
+                <midtexture border="3" colordiffuse="FF00ff48">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
             </control>
             <control type="image">
