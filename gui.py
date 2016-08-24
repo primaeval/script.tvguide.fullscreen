@@ -321,6 +321,8 @@ class TVGuide(xbmcgui.WindowXML):
             self._showLastPlayedChannel()
         elif action.getId == ACTION_LEFT:
             self._showLastPlayedChannel()
+        elif action.getId() == ACTION_SELECT_ITEM:
+            self._hideControl(self.C_UP_NEXT)
 
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
