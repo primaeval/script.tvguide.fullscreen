@@ -799,14 +799,17 @@ class TVGuide(xbmcgui.WindowXML):
                         self._showControl(self.C_UP_NEXT)
                         while remainingseconds < self.upNextTime and remainingseconds > 1:
                             self._updateNextUpInfo()
-                            remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                            try: remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                            except: pass
                             time.sleep(1)
+                            if not self.player.isPlaying() or xbmc.abortRequested or self.isClosing:
+                                break
                         self._hideControl(self.C_UP_NEXT)
                         self.currentProgram = None
 
             time.sleep(1)
 
-        #self.onPlayBackStopped()
+        self.onPlayBackStopped()
 
     def _updateNextUpInfo(self):
         if self.currentProgram and self.lastOsdProgram and self.currentProgram != self.lastOsdProgram:
