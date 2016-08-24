@@ -9,21 +9,21 @@
     <controls>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red-focus.png</texture>
         </control>
-
+		
 		<!-- Transparent background -->
 		<control type="image">
             <description>background</description>
@@ -34,7 +34,7 @@
             <texture>highlight.png</texture>
             <visible>true</visible>
         </control>
-
+		
 
 		<!-- Blackout background on playback -->
         <control type="image">
@@ -46,7 +46,7 @@
             <texture>black.png</texture>
             <visible>Control.IsVisible(5000)</visible>
         </control>
-
+        
 		<!-- Background Video-->
         <control type="videowindow">
             <description>video window</description>
@@ -63,7 +63,7 @@
         <control type="label" id="5000">
             <description>visibility marker for TV Guide group</description>
         </control>
-
+		
 		<!--TV Guide Group -->
         <control type="group">
             <description>TV Guide group</description>
@@ -137,7 +137,7 @@
                 <texture>black-back.png</texture>
                 <fadetime>200</fadetime>
 				<visible>true</visible>
-            </control>
+            </control>			
             <control type="image" id="4100">
                 <description>time bar</description>
                 <left>180</left>
@@ -854,7 +854,7 @@
                     <aligny>center</aligny>
                 </control>
             </control>
-
+            
 			<!--Selected program information -->
 			<control type="label" id="7025">
                 <description>Main station name</description>
@@ -914,8 +914,8 @@
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
 			<control type="progress" id="7026">
-                <posx>30</posx>
-                <posy>700</posy>
+                <left>30</left>
+                <top>700</top>
                 <width>990</width>
                 <height>10</height>
                 <lefttexture />
@@ -1148,7 +1148,7 @@
         <control type="label" id="6000">
             <description>visibility marker for OSD Info bar</description>
         </control>
-
+		
 		<!-- OSD top half code -->
 		<control type="group">
 		<description>OSD Title Bar Information</description>
@@ -1344,13 +1344,13 @@
                 <visible>false</visible>
             </control>
 		</control>
-
+		
 		<control type="label" id="8000">
             <description>visibility marker for last played OSD Info bar</description>
         </control>
-		<!-- OSD top half code last played-->
+		<!-- OSD top half code - Last Played-->
 		<control type="group">
-		<description>OSD Title Bar Information</description>
+		<description>OSD Title Bar Information - last played</description>
             <top>0</top>
             <left>0</left>
             <width>1280</width>
@@ -1365,7 +1365,7 @@
                 <texture>black-back.png</texture>
             </control>
             <control type="label" id="8005">
-                <description>station call sign</description>
+                <description>station call sign - last played</description>
                 <left>60</left>
                 <top>10</top>
                 <width>300</width>
@@ -1378,7 +1378,7 @@
                 <visible>StringCompare(Control.GetLabel(8004),)</visible>
             </control>
 			<control type="label">
-                <description>current time</description>
+                <description>current time - last played</description>
                 <left>1030</left>
                 <top>10</top>
                 <width>240</width>
@@ -1391,7 +1391,7 @@
                 <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
             </control>
 			<control type="image" id="8004">
-                <description>Program channel logo</description>
+                <description>Program channel logo - last played</description>
                 <top>10</top>
                 <left>10</left>
                 <width>40</width>
@@ -1400,7 +1400,7 @@
 				<visible>true</visible>
             </control>
 			<control type="label">
-				<description>todays date</description>
+				<description>todays date - last played</description>
                 <left>1000</left>
                 <top>30</top>
 				<width>270</width>
@@ -1414,9 +1414,9 @@
             </control>
         </control>
 
-		<!--OSD Bottom half code last played-->
+		<!--OSD Bottom half code - Last Played-->
         <control type="group">
-            <description>OSD Program Information</description>
+            <description>OSD Program Information - last played</description>
             <left>20</left>
             <top>550</top>
             <width>1240</width>
@@ -1431,7 +1431,7 @@
                 <texture>black-back.png</texture>
             </control>
 			<control type="image" id="8004">
-                <description>Program channel logo</description>
+                <description>Program channel logo - Last played</description>
                 <top>10</top>
                 <left>10</left>
                 <width>220</width>
@@ -1440,7 +1440,7 @@
 				<visible>true</visible>
             </control>
             <control type="label" id="8001">
-                <description>Program title</description>
+                <description>Program title - last played</description>
                 <left>10</left>
                 <top>10</top>
                 <width>900</width>
@@ -1451,7 +1451,7 @@
                 <font>font13</font>
             </control>
             <control type="label" id="8002">
-                <description>Program time</description>
+                <description>Program time - last played</description>
                 <left>990</left>
                 <top>10</top>
                 <width>240</width>
@@ -1463,7 +1463,7 @@
 				<align>right</align>
             </control>
             <control type="textbox" id="8003">
-                <description>Program description</description>
+                <description>Program description - last played</description>
                 <left>10</left>
                 <top>40</top>
                 <width>990</width>
@@ -1486,7 +1486,7 @@
                 <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
             </control>
 			<control type="image" id="8006">
-                <description>Program image</description>
+                <description>Program image - last played</description>
                 <top>40</top>
                 <left>1010</left>
                 <width>220</width>
@@ -1544,225 +1544,180 @@
             </control>
 		</control>
 
-		<control type="label" id="9000">
-            <description>visibility marker for last played OSD Info bar</description>
+		
+        <control type="label" id="9000">
+            <description>visibility marker for Up Next</description>
         </control>
-		<!-- OSD top half code last played-->
-		<control type="group">
-		<description>OSD Title Bar Information</description>
-            <top>0</top>
-            <left>0</left>
-            <width>1280</width>
-            <height>100</height>
+		<!-- OSD code- Up Next-->
+        <control type="group">
+            <description>Up Next</description>
+            <left>800</left>
+            <top>550</top>
+            <width>480</width>
+            <height>220</height>
             <visible>!Control.IsVisible(9000)</visible>
-            <animation effect="fade" start="0" end="100" time="500">VisibleChange</animation>
+            <animation effect="fade" start="0" end="100" time="1000">VisibleChange</animation>
             <control type="image">
-                <top>0</top>
                 <left>0</left>
-                <width>1280</width>
-                <height>60</height>
+                <top>0</top>
+                <width>480</width>
+                <height>220</height>
                 <texture>black-back.png</texture>
             </control>
             <control type="label" id="9005">
-                <description>station call sign</description>
-                <left>60</left>
-                <top>10</top>
-                <width>300</width>
-                <height>40</height>
+                <description>Program channel text</description>
+                <left>252</left>
+                <top>60</top>
+                <width>255</width>
+                <height>45</height>
                 <textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-                <font>font13</font>
-                <align>left</align>
-				<aligny>center</aligny>
-                <visible>StringCompare(Control.GetLabel(9004),)</visible>
-            </control>
-			<control type="label">
-                <description>current time</description>
-                <left>1030</left>
-                <top>10</top>
-                <width>240</width>
-                <height>20</height>
-				<align>right</align>
-                <font>font13_title</font>
-                <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
-                <label>$INFO[System.Time]</label>
-                <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
-            </control>
-			<control type="image" id="9004">
-                <description>Program channel logo</description>
-                <top>10</top>
-                <left>10</left>
-                <width>40</width>
-                <height>40</height>
-                <aspectratio>keep</aspectratio>
-				<visible>true</visible>
-            </control>
-			<control type="label">
-				<description>todays date</description>
-                <left>1000</left>
-                <top>30</top>
-				<width>270</width>
-                <height>20</height>
-                <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
-                <font>font12</font>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font24_title</font>
                 <align>right</align>
-                <visible>true</visible>
-                <label>$INFO[System.Date]</label>
+				<visible>false</visible>
             </control>
-        </control>
-		<!--OSD Bottom half code last played-->
-        <control type="group">
-            <description>OSD Program Information</description>
-            <left>20</left>
-            <top>550</top>
-            <width>1240</width>
-            <height>160</height>
-            <visible>!Control.IsVisible(9000)</visible>
-            <animation effect="fade" start="0" end="100" time="500">VisibleChange</animation>
-            <control type="image">
-                <left>0</left>
-                <top>0</top>
-                <width>1240</width>
-                <height>220</height>
-                <texture>black-back.png</texture>
-            </control>
-			<control type="image" id="9004">
-                <description>Program channel logo</description>
-                <top>10</top>
-                <left>10</left>
+			<control type="label" id="9001">
+                <description>Current Program title</description>
+                <left>1045</left>
+                <top>19</top>
                 <width>220</width>
-                <height>220</height>
-                <aspectratio>keep</aspectratio>
-				<visible>true</visible>
-            </control>
-            <control type="label" id="9008">
-                <description>Program title</description>
-                <left>10</left>
-                <top>10</top>
-                <width>900</width>
-                <height>20</height>
+                <height>50</height>
                 <label>[B]Title[/B]</label>
-                <textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-                <font>font13</font>
-            </control>
-            <control type="label" id="9009">
-                <description>Program time</description>
-                <left>990</left>
-                <top>10</top>
-                <width>240</width>
-                <height>20</height>
-                <label>[B]18:00 - 20:00[/B]</label>
-                <textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-                <font>font13</font>
-				<align>right</align>
-            </control>
-            <control type="textbox" id="9007">
-                <description>Program description</description>
-                <left>10</left>
-                <top>40</top>
-                <width>990</width>
-                <height>100</height>
-                <label>Description</label>
-                <textcolor>white</textcolor>
-                <font>font13</font>
-                <wrapmultiline>true</wrapmultiline>
-                <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
-            </control>
-			<control type="progress" id="9011">
-                <left>10</left>
-                <top>150</top>
-                <width>990</width>
-                <height>10</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
-                <midtexture border="3" colordiffuse="ff00ffc6">panel.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(9011),0)</visible>
-            </control>
-			<control type="image" id="9010">
-                <description>Program image</description>
-                <top>40</top>
-                <left>1010</left>
-                <width>220</width>
-                <height>120</height>
-                <aspectratio>keep</aspectratio>
-                <visible>true</visible>
+                <textcolor>bbffffff</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font12</font>
+                <align>left</align>
+                <aligny>center</aligny>
+				<visible>false</visible>
             </control>
             <control type="textbox" id="9003">
-                <description>Next Program description</description>
-                <left>1045</left>
-                <top>50</top>
-                <width>220</width>
-                <height>100</height>
-                <label>Description</label>
-                <textcolor>white</textcolor>
-                <font>font12</font>
-                <wrapmultiline>true</wrapmultiline>
-                <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
-                <visible>false</visible>
-            </control>
-            <control type="label" id="9001">
-                <description>Next Program title</description>
-                <left>1045</left>
-                <top>1</top>
-                <width>220</width>
-                <height>50</height>
-                <label>[B]Title[/B]</label>
-                <textcolor>white</textcolor>
-                <font>font13_title</font>
-                <aligny>center</aligny>
-                <visible>false</visible>
-            </control>
-            <control type="label" id="9002">
-                <description>Next Program time</description>
-                <left>1045</left>
-                <top>190</top>
-                <width>220</width>
-                <height>50</height>
-                <label>[B]18:00 - 20:00[/B]</label>
-                <textcolor>white</textcolor>
-                <font>font12</font>
-                <align>left</align>
-                <aligny>top</aligny>
-                <visible>false</visible>
-            </control>
-			<control type="image" id="9006">
-                <description>Next Program image</description>
+                <description>Current Program description</description>
                 <left>1045</left>
                 <top>50</top>
                 <width>220</width>
                 <height>124</height>
-                <aspectratio>keep</aspectratio>
-                <texture>-</texture>
-                <visible>false</visible>
-            </control>
-            <control type="label" id="9012">
-                <posy>185</posy>
-                <posx>590</posx>
-                <width>430</width>
-                <align>left</align>
-                <height>50</height>
-                <aligny>top</aligny>
-                <textcolor>ddffffff</textcolor>
+                <label>Description</label>
+                <textcolor>ffcccccc</textcolor>
                 <font>font12</font>
+                <wrapmultiline>true</wrapmultiline>
+                <visible>false</visible>
+                <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            </control>
+            <control type="image" id="9006">
+                <description>Current Program image</description>
+                <left>1045</left>
+                <top>60</top>
+                <width>220</width>
+                <height>124</height>
+                <aspectratio>keep</aspectratio>
+				<visible>false</visible>
+                <texture>-</texture>
+            </control>
+            <control type="label" id="9002">
+                <description>Current Program time</description>
+                <left>1045</left>
+                <top>185</top>
+                <width>220</width>
+                <height>50</height>
+                <label>[B]18:00 - 20:00[/B]</label>
+                <textcolor>bbffffff</textcolor>
                 <shadowcolor>22000000</shadowcolor>
+                <font>font12</font>
+                <align>left</align>
+                <aligny>top</aligny>
+				<visible>false</visible>
+            </control>
+
+			<!-- Up Next - Program description -->
+            <control type="label">
+                <description>Up Next</description>
+                <left>10</left>
+                <top>10</top>
+                <width>85</width>
+                <height>20</height>
+                <label>Up Next:</label>
+                <textcolor>ff00ffc6</textcolor>
+                <font>font13</font>
+				<visible>true</visible>
+            </control>
+			<control type="label" id="9008">
+                <description>Next Program title</description>
+                <left>95</left>
+                <top>10</top>
+                <width>365</width>
+                <height>20</height>
+                <label>[B]Title[/B]</label>
+                <textcolor>ff00ffc6</textcolor>
+                <font>font13</font>
+				<scroll>true</scroll>
+            </control>
+			    <control type="label" id="9012">
+                <description>Countdown</description>
+				<top>10</top>
+                <left>385</left>
+                <width>85</width>
+                <align>right</align>
+                <height>40</height>
+                <aligny>top</aligny>
+                <textcolor>ff00ffc6</textcolor>
+                <font>font13</font>
+                <visible>true</visible>
+            </control>
+            <control type="label" id="9009">
+                <description>Next Program time</description>
+                <left>230</left>
+                <top>10</top>
+                <width>220</width>
+                <height>20</height>
+                <label>[B]18:00 - 20:00[/B]</label>
+                <textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+                <font>font13</font>
+				<align>right</align>
+				<visible>false</visible>
+            </control>
+                <control type="textbox" id="9007">
+                <description>Next Program description</description>
+                <left>10</left>
+                <top>40</top>
+                <width>220</width>
+                <height>170</height>
+                <textcolor>white</textcolor>
+                <font>font13</font>
+                <wrapmultiline>true</wrapmultiline>
+                <autoscroll time="1000" delay="3000" repeat="6000">true</autoscroll>
+            </control>
+			<control type="image" id="9010">
+                <description>Next Program image</description>
+                <top>40</top>
+                <left>250</left>
+                <width>220</width>
+                <height>120</height>
+                <aspectratio>keep</aspectratio>
+				<align>center</align>
+                <visible>true</visible>
+            </control>
+			<control type="progress" id="9011">
+                <left>590</left>
+                <top>42</top>
+                <width>430</width>
+                <height>7</height>
+                <lefttexture/>
+                <righttexture/>
+                <texturebg border="3" colordiffuse="">panel.png</texturebg>
+                <midtexture border="3" colordiffuse="FF00ff48">panel.png</midtexture>
                 <visible>false</visible>
             </control>
-            <control type="label">
-                <posx>1220</posx>
-                <posy>40r</posy>
-                <width>850</width>
-                <height>20</height>
-                <textcolor>grey</textcolor>
-                <font>font13_title</font>
-                <align>right</align>
-                <label>$INFO[Control.GetLabel(9012), Next program in , seconds]</label>
+            <control type="image" id="9004">
+                <description>Program channel logo</description>
+                <left>5</left>
+                <top>160</top>
+                <width>247</width>
+                <height>45</height>
+                <aspectratio align="right" aligny="bottom">keep</aspectratio>
+				<visible>false</visible>
             </control>
-		</control>
+
+        </control>
     </controls>
 </window>
-
