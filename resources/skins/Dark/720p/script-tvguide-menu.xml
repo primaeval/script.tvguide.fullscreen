@@ -11,21 +11,12 @@
     <controls>
 
         <control type="image">
-			<description>test</description>
             <left>0</left>
             <top>0</top>
             <width>1280</width>
             <height>720</height>
             <texture>black.png</texture>
             <visible>true</visible>
-        </control>
-        <control type="image">
-            <left>150</left>
-            <top>100</top>
-            <width>1010</width>
-            <height>510</height>
-            <texture>menu.png</texture>
-            <visible>false</visible>
         </control>
 
         <control type="image">
@@ -187,7 +178,6 @@
             <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
-            <colordiffuse>darkgray</colordiffuse>
         </control>
 
         <control type="label" id="7001">
@@ -233,9 +223,9 @@
         </control>
         <control type="image" id="4100">
             <description>channel logo</description>
-            <left>280r</left>
-            <top>120r</top>
-            <width>240</width>
+            <left>1165</left>
+            <top>125r</top>
+            <width>80</width>
             <height>80</height>
             <align>right</align>
             <aligny>top</aligny>
