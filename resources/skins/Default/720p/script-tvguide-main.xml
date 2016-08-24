@@ -294,7 +294,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>white</textcolor>
+                    <textcolor>grey</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -314,7 +314,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>white</textcolor>
+                    <textcolor>grey</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
