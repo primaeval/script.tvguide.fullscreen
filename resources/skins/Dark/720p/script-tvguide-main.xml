@@ -873,7 +873,7 @@
                 <description>Main menu program title</description>
                 <left>30</left>
                 <top>560</top>
-                <width>900</width>
+                <width>400</width>
                 <height>20</height>
                 <textcolor>white</textcolor>
                 <shadowcolor>black</shadowcolor>
@@ -1051,9 +1051,53 @@
                     <align>center</align>
                     <visible>false</visible>
                 </control>
-                <control type="button" id="4301">
+                <control type="button" id="4303">
+                    <description>navigate up</description>
+                    <left>440</left>
+                    <top>10</top>
+                    <width>60</width>
+                    <height>30</height>
+                    <textcolor>yellow</textcolor>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
+                    <label>^</label>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+				<control type="button" id="4304">
+                    <description>navigate down</description>
+                    <left>500</left>
+                    <top>10</top>
+                    <width>60</width>
+                    <height>30</height>
+                    <textcolor>yellow</textcolor>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
+                    <label>v</label>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+				<control type="button" id="4302">
+                    <description>navigate left</description>
+                    <left>560</left>
+                    <top>10</top>
+                    <width>60</width>
+                    <height>30</height>
+                    <textcolor>yellow</textcolor>
+					<focusedcolor>FF00FFC6</focusedcolor>
+                    <font>font13_title</font>
+                    <label>&lt;</label>
+					<align>center</align>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+				<control type="button" id="4301">
                     <description>navigate to now</description>
-                    <left>640</left>
+                    <left>620</left>
                     <top>10</top>
                     <width>60</width>
                     <height>30</height>
@@ -1065,55 +1109,11 @@
                     <texturefocus>-</texturefocus>
                     <texturenofocus>-</texturenofocus>
                 </control>
-                <control type="button" id="4302">
-                    <description>navigate left</description>
-                    <left>610</left>
-                    <top>10</top>
-                    <width>30</width>
-                    <height>30</height>
-                    <textcolor>yellow</textcolor>
-					<focusedcolor>FF00FFC6</focusedcolor>
-                    <font>font13_title</font>
-                    <label>&lt;</label>
-					<align>center</align>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
-                </control>
-                <control type="button" id="4303">
-                    <description>navigate up</description>
-                    <left>550</left>
-                    <top>10</top>
-                    <width>30</width>
-                    <height>30</height>
-                    <textcolor>yellow</textcolor>
-					<focusedcolor>FF00FFC6</focusedcolor>
-                    <font>font13_title</font>
-                    <label>^</label>
-                    <aligny>center</aligny>
-                    <align>center</align>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
-                </control>
-                <control type="button" id="4304">
-                    <description>navigate down</description>
-                    <left>580</left>
-                    <top>10</top>
-                    <width>30</width>
-                    <height>30</height>
-                    <textcolor>yellow</textcolor>
-					<focusedcolor>FF00FFC6</focusedcolor>
-                    <font>font13_title</font>
-                    <label>v</label>
-                    <aligny>center</aligny>
-                    <align>center</align>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
-                </control>
                 <control type="button" id="4305">
                     <description>navigate right</description>
-                    <left>700</left>
+                    <left>680</left>
                     <top>10</top>
-                    <width>30</width>
+                    <width>60</width>
                     <height>30</height>
                     <textcolor>yellow</textcolor>
 					<focusedcolor>FF00FFC6</focusedcolor>
@@ -1244,7 +1244,7 @@
                 <description>Program title</description>
                 <left>10</left>
                 <top>10</top>
-                <width>900</width>
+                <width>400</width>
                 <height>20</height>
                 <label>[B]Title[/B]</label>
                 <textcolor>white</textcolor>
@@ -1443,7 +1443,7 @@
                 <description>Program title - last played</description>
                 <left>10</left>
                 <top>10</top>
-                <width>900</width>
+                <width>400</width>
                 <height>20</height>
                 <label>[B]Title[/B]</label>
                 <textcolor>white</textcolor>
@@ -1551,17 +1551,17 @@
 		<!-- OSD code- Up Next-->
         <control type="group">
             <description>Up Next</description>
-            <left>800</left>
+            <left>700</left>
             <top>550</top>
-            <width>480</width>
-            <height>220</height>
+            <width>580</width>
+            <height>170</height>
             <visible>!Control.IsVisible(9000)</visible>
             <animation effect="fade" start="0" end="100" time="1000">VisibleChange</animation>
             <control type="image">
                 <left>0</left>
                 <top>0</top>
-                <width>480</width>
-                <height>220</height>
+                <width>580</width>
+                <height>170</height>
                 <texture>black-back.png</texture>
             </control>
             <control type="label" id="9005">
@@ -1641,10 +1641,10 @@
 				<visible>true</visible>
             </control>
 			<control type="label" id="9008">
-                <description>Next Program title</description>
+                <description>Up Next Program title</description>
                 <left>95</left>
                 <top>10</top>
-                <width>365</width>
+                <width>465</width>
                 <height>20</height>
                 <label>[B]Title[/B]</label>
                 <textcolor>ff00ffc6</textcolor>
@@ -1652,19 +1652,19 @@
 				<scroll>true</scroll>
             </control>
 			    <control type="label" id="9012">
-                <description>Countdown</description>
+                <description>Up Next Countdown</description>
 				<top>10</top>
-                <left>385</left>
+                <left>485</left>
                 <width>85</width>
+				<height>20</height>
                 <align>right</align>
                 <height>40</height>
-                <aligny>top</aligny>
                 <textcolor>ff00ffc6</textcolor>
                 <font>font13</font>
                 <visible>true</visible>
             </control>
             <control type="label" id="9009">
-                <description>Next Program time</description>
+                <description>Up Next Program time</description>
                 <left>230</left>
                 <top>10</top>
                 <width>220</width>
@@ -1677,20 +1677,20 @@
 				<visible>false</visible>
             </control>
                 <control type="textbox" id="9007">
-                <description>Next Program description</description>
+                <description>Up Next Program description</description>
                 <left>10</left>
                 <top>40</top>
-                <width>220</width>
-                <height>170</height>
+                <width>330</width>
+                <height>120</height>
                 <textcolor>white</textcolor>
-                <font>font13</font>
+                <font>font12</font>
                 <wrapmultiline>true</wrapmultiline>
-                <autoscroll time="1000" delay="3000" repeat="6000">true</autoscroll>
+				<scrolltime>200</scrolltime>
             </control>
 			<control type="image" id="9010">
-                <description>Next Program image</description>
+                <description>Up Next Program image</description>
                 <top>40</top>
-                <left>250</left>
+                <left>350</left>
                 <width>220</width>
                 <height>120</height>
                 <aspectratio>keep</aspectratio>
