@@ -234,6 +234,9 @@ class TVGuide(xbmcgui.WindowXML):
         self.upNextEnabled = False
         self.upNextEnabled = ADDON.getSetting('enable.nextup') == 'true'
         self.upNextTime = int(ADDON.getSetting('nextup.time'))
+        self.upNextShowTimeEnabled = False
+        self.upNextShowTimeEnabled = ADDON.getSetting('enable.nextup.showTime') == 'true'
+        self.upNextShowTime = int(ADDON.getSetting('nextup.showTime'))
         self.alternativePlayback = ADDON.getSetting('alternative.playback') == 'true'
         self.osdChannel = None
         self.osdProgram = None
@@ -1005,12 +1008,16 @@ class TVGuide(xbmcgui.WindowXML):
                         self._updateNextUpInfo(firstTime)
                         firstTime = False
                         self._showControl(self.C_UP_NEXT)
+                        count = 0
                         while remainingseconds < self.upNextTime and remainingseconds > 1 and self.mode == MODE_TV:
                             self._updateNextUpInfo(firstTime)
                             try: remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
                             except: pass
+                            count = count + 1
                             time.sleep(1)
                             if not self.player.isPlaying() or xbmc.abortRequested or self.isClosing:
+                                break
+                            if self.upNextShowTimeEnabled and self.upNextShowTime >= count:
                                 break
                         self._hideControl(self.C_UP_NEXT)
                         self.currentProgram = None
