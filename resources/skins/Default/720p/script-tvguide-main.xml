@@ -1273,6 +1273,15 @@
                 <align>right</align>
 
             </control>
+            <control type="image" id="6004">
+                <description>Program channel logo</description>
+                <posx>170r</posx>
+                <posy>60r</posy>
+                <width>160</width>
+                <height>45</height>
+                <aspectratio>keep</aspectratio>
+                <colordiffuse>grey</colordiffuse>
+            </control>
             <control type="textbox" id="6003">
                 <description>Program description</description>
                 <posx>30</posx>
@@ -1286,15 +1295,7 @@
 
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
-            <control type="image" id="6004">
-                <description>Program channel logo</description>
-                <posx>170r</posx>
-                <posy>60r</posy>
-                <width>160</width>
-                <height>45</height>
-                <aspectratio>keep</aspectratio>
-                <colordiffuse>grey</colordiffuse>
-            </control>
+
             <control type="label" id="6005">
                 <description>Program channel text</description>
                 <posx>30</posx>
@@ -1446,6 +1447,15 @@
                 <align>right</align>
 
             </control>
+            <control type="image" id="8004">
+                <description>Program channel logo</description>
+                <posx>170r</posx>
+                <posy>60r</posy>
+                <width>160</width>
+                <height>45</height>
+                <aspectratio>keep</aspectratio>
+                <colordiffuse>grey</colordiffuse>
+            </control>
             <control type="textbox" id="8003">
                 <description>Program description</description>
                 <posx>30</posx>
@@ -1459,15 +1469,7 @@
 
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
-            <control type="image" id="8004">
-                <description>Program channel logo</description>
-                <posx>170r</posx>
-                <posy>60r</posy>
-                <width>160</width>
-                <height>45</height>
-                <aspectratio>keep</aspectratio>
-                <colordiffuse>grey</colordiffuse>
-            </control>
+
             <control type="label" id="8005">
                 <description>Program channel text</description>
                 <posx>30</posx>
@@ -1631,6 +1633,15 @@
                 <align>right</align>
 
             </control>
+            <control type="image" id="9004">
+                <description>Program channel logo</description>
+                <posx>170r</posx>
+                <posy>60r</posy>
+                <width>160</width>
+                <height>45</height>
+                <aspectratio>keep</aspectratio>
+                <colordiffuse>grey</colordiffuse>
+            </control>
             <control type="textbox" id="9007">
                 <description>Program description</description>
                 <posx>30</posx>
@@ -1666,15 +1677,7 @@
                 <align>right</align>
                 <label>$INFO[Control.GetLabel(9012), Next program in , seconds]</label>
             </control>
-            <control type="image" id="9004">
-                <description>Program channel logo</description>
-                <posx>170r</posx>
-                <posy>60r</posy>
-                <width>160</width>
-                <height>45</height>
-                <aspectratio>keep</aspectratio>
-                <colordiffuse>grey</colordiffuse>
-            </control>
+
             <control type="label" id="9005">
                 <description>Program channel text</description>
                 <posx>30</posx>
