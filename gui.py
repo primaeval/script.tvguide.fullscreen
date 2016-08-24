@@ -802,6 +802,8 @@ class TVGuide(xbmcgui.WindowXML):
                             try: remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
                             except: pass
                             time.sleep(1)
+                            if not self.player.isPlaying() or xbmc.abortRequested or self.isClosing:
+                                break
                         self._hideControl(self.C_UP_NEXT)
                         self.currentProgram = None
 
