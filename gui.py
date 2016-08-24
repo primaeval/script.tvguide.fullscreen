@@ -847,7 +847,8 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.setControlImage(self.C_MAIN_UP_NEXT_CHANNEL_IMAGE, '')
 
-            nextOsdProgram = self.database.getNextProgram(self.currentProgram)
+            try: nextOsdProgram = self.database.getNextProgram(self.currentProgram)
+            except: return
             if nextOsdProgram:
                 self.setControlText(self.C_NEXT_UP_NEXT_DESCRIPTION, nextOsdProgram.description)
                 self.setControlLabel(self.C_NEXT_UP_NEXT_TITLE, nextOsdProgram.title)
