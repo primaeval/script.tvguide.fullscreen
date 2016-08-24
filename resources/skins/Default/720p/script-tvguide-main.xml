@@ -87,7 +87,7 @@
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>200</fadetime>
+                <fadetime>0</fadetime>
             </control>
             <control type="image">
                 <description>background</description>
@@ -100,7 +100,7 @@
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>200</fadetime>
+                <fadetime>0</fadetime>
             </control>
 
 
@@ -947,7 +947,7 @@
                 <width>160</width>
                 <height>40</height>
                 <aspectratio>keep</aspectratio>
-                <fadetime>500</fadetime>
+                <fadetime>0</fadetime>
                 <visible>true</visible>
                 <!-- unused in default skin -->
             </control>
@@ -985,7 +985,7 @@
                 <aligny>top</aligny>
                 <aspectratio>keep</aspectratio>
 
-                <fadetime>500</fadetime>
+                <fadetime>0</fadetime>
                 <texture>-</texture>
                 <visible>true</visible>
             </control>
@@ -999,7 +999,7 @@
                 <righttexture />
                 <texturebg  colordiffuse="white">black.png</texturebg>
                 <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>true</visible>
+                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
 
             <control type="label" id="4200">
@@ -1401,10 +1401,10 @@
         </control>
 
         <control type="label" id="8000">
-            <description>visibility marker for OSD Info bar</description>
+            <description>visibility marker for Last Channel popup</description>
         </control>
         <control type="group">
-            <description>OSD Info bar</description>
+            <description>Last Channel popup</description>
             <posx>0</posx>
             <posy>500</posy>
             <width>1280</width>
@@ -1565,7 +1565,7 @@
                 <righttexture />
                 <texturebg  colordiffuse="white">black.png</texturebg>
                 <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
+                <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
             </control>
 
                 <control type="label">
@@ -1586,10 +1586,10 @@
         </control>
 
         <control type="label" id="9000">
-            <description>visibility marker for OSD Info bar</description>
+            <description>visibility marker for Next Program popup</description>
         </control>
         <control type="group">
-            <description>OSD Info bar</description>
+            <description>Next Program popup</description>
             <posx>0</posx>
             <posy>500</posy>
             <width>1280</width>
@@ -1607,7 +1607,7 @@
             </control>
 
             <!-- Program description -->
-            <control type="label" id="9001">
+            <control type="label" id="9008">
                 <description>Program title</description>
                 <posx>30</posx>
                 <posy>30</posy>
@@ -1619,7 +1619,7 @@
 
             </control>
 
-            <control type="label" id="9002">
+            <control type="label" id="9009">
                 <description>Program time</description>
                 <posx>1255</posx>
                 <posy>30</posy>
@@ -1631,7 +1631,7 @@
                 <align>right</align>
 
             </control>
-            <control type="textbox" id="9003">
+            <control type="textbox" id="9007">
                 <description>Program description</description>
                 <posx>30</posx>
                 <posy>60</posy>
@@ -1643,6 +1643,28 @@
                 <wrapmultiline>true</wrapmultiline>
 
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            </control>
+            <control type="label" id="9012">
+                <posy>185</posy>
+                <posx>590</posx>
+                <width>430</width>
+                <align>left</align>
+                <height>50</height>
+                <aligny>top</aligny>
+                <textcolor>ddffffff</textcolor>
+                <font>font12</font>
+                <shadowcolor>22000000</shadowcolor>
+                <visible>false</visible>
+            </control>
+            <control type="label">
+                <posx>1255</posx>
+                <posy>0</posy>
+                <width>850</width>
+                <height>20</height>
+                <textcolor>grey</textcolor>
+                <font>font13_title</font>
+                <align>right</align>
+                <label>$INFO[Control.GetLabel(9012), Next program in , seconds]</label>
             </control>
             <control type="image" id="9004">
                 <description>Program channel logo</description>
@@ -1666,7 +1688,7 @@
                 <visible>true</visible>
             </control>
             <control type="label">
-                <description>Last Channel</description>
+                <description>Next Program</description>
                 <posx>1255</posx>
                 <posy>0</posy>
                 <width>850</width>
@@ -1675,10 +1697,10 @@
                 <font>font13_title</font>
                 <align>right</align>
                 <label>Next Program</label>
-                <visible>true</visible>
+                <visible>false</visible>
             </control>
 
-            <control type="image" id="9006">
+            <control type="image" id="9010">
                 <description>Program image</description>
                 <posx>280</posx>
                 <posy>7</posy>
@@ -1689,7 +1711,7 @@
                 <visible>false</visible>
             </control>
 
-            <control type="textbox" id="9007">
+            <control type="textbox" id="9003">
                 <description>Next Program description</description>
                 <posx>1045</posx>
                 <posy>50</posy>
@@ -1703,7 +1725,7 @@
                 <visible>false</visible>
             </control>
 
-            <control type="label" id="9008">
+            <control type="label" id="9001">
                 <description>Next Program title</description>
                 <posx>1045</posx>
                 <posy>1</posy>
@@ -1716,7 +1738,7 @@
                 <visible>false</visible>
             </control>
 
-            <control type="label" id="9009">
+            <control type="label" id="9002">
                 <description>Next Program time</description>
                 <posx>1045</posx>
                 <posy>190</posy>
@@ -1730,7 +1752,7 @@
                 <visible>false</visible>
             </control>
 
-            <control type="image" id="9010">
+            <control type="image" id="9006">
                 <description>Next Program image</description>
                 <posx>1045</posx>
                 <posy>50</posy>
@@ -1750,7 +1772,7 @@
                 <righttexture />
                 <texturebg  colordiffuse="white">black.png</texturebg>
                 <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
+                <visible>IntegerGreaterThan(Control.GetLabel(9011),0)</visible>
             </control>
 
                 <control type="label">

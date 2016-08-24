@@ -9,6 +9,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.77
+- Dark skin is back
+- Up Next popup (setting for seconds)
+
 version 0.0.76
 - fit footer
 - keep epg in sync
