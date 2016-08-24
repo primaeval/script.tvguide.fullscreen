@@ -806,7 +806,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             time.sleep(1)
 
-        #self.onPlayBackStopped()
+        self.onPlayBackStopped()
 
     def _updateNextUpInfo(self):
         if self.currentProgram and self.lastOsdProgram and self.currentProgram != self.lastOsdProgram:
