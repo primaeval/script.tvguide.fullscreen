@@ -1595,7 +1595,7 @@
             <posy>500</posy>
             <width>1280</width>
             <height>220</height>
-            <visible>false</visible>
+            <visible>!Control.IsVisible(9000)</visible>
             <control type="label" id="9005">
                 <description>Program channel text</description>
                 <posx>252</posx>
