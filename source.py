@@ -454,6 +454,16 @@ class Database(object):
 
         return result
 
+    def getQuickEPGView(self, channelStart, date=datetime.datetime.now(), progress_callback=None,
+                   clearExistingProgramList=True,category=None):
+        result = self._invokeAndBlockForResult(self._getQuickEPGView, channelStart, date, progress_callback,
+                                               clearExistingProgramList, category)
+
+        if self.updateFailed:
+            raise SourceException('No channels or programs imported')
+
+        return result
+
     def _getEPGView(self, channelStart, date, progress_callback, clearExistingProgramList, category):
         self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
 
@@ -464,6 +474,22 @@ class Database(object):
         elif channelStart > len(channels) - 1:
             channelStart = 0
         channelEnd = channelStart + Database.CHANNELS_PER_PAGE
+        channelsOnPage = channels[channelStart: channelEnd]
+
+        programs = self._getProgramList(channelsOnPage, date)
+
+        return [channelStart, channelsOnPage, programs]
+
+    def _getQuickEPGView(self, channelStart, date, progress_callback, clearExistingProgramList, category):
+        self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
+
+        channels = self._getChannelList(onlyVisible=True)
+
+        if channelStart < 0:
+            channelStart = len(channels) - 1
+        elif channelStart > len(channels) - 1:
+            channelStart = 0
+        channelEnd = channelStart + 3
         channelsOnPage = channels[channelStart: channelEnd]
 
         programs = self._getProgramList(channelsOnPage, date)

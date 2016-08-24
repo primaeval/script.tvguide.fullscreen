@@ -1801,5 +1801,452 @@
 
         </control>
 
+        <control type="label" id="10000">
+            <description>visibility marker for Quick TV Guide group</description>
+        </control>
+        <control type="group">
+            <description>Quick TV Guide group</description>
+            <posx>0</posx>
+            <posy>600</posy>
+            <width>1280</width>
+            <height>280</height>
+            <visible>false</visible>
+            <control type="button" id="10001">
+                <description>marker for EPG data view - should be hidden!</description>
+                <posx>180</posx>
+                <posy>600</posy>
+                <width>1100</width>
+                <height>120</height>
+                <visible>false</visible>
+            </control>
+
+            <control type="image">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>-2</posy>
+                <width>1280</width>
+                <height>126</height>
+                <texture>black-back.png</texture>
+                <visible>!Control.IsVisible(14200)</visible>
+                <aspectratio>scale</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <fadetime>200</fadetime>
+            </control>
+
+            <control type="image" id="14601">
+                <description>header</description>
+                <posx>0</posx>
+                <posy>-60</posy>
+                <width>1280</width>
+                <height>58</height>
+                <texture>black-back.png</texture>
+                <aspectratio>-</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <fadetime>200</fadetime>
+
+            </control>
+            <control type="image" id="14602">
+                <description>footer</description>
+                <posx>0</posx>
+                <posy>450</posy>
+                <width>1280</width>
+                <height>220</height>
+                <texture>black-back.png</texture>
+                <aspectratio>-</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <fadetime>200</fadetime>
+                <visible>false</visible>
+            </control>
+
+            <control type="image" id="14100">
+                <description>time bar</description>
+                <posx>180</posx>
+                <posy>0</posy>
+                <width>-10</width>
+                <height>116</height>
+                <texture>cyan.png</texture>
+            </control>
+
+            <control type="image">
+                <description>channels background</description>
+                <posx>2</posx>
+                <posy>0</posy>
+                <width>176</width>
+                <height>558</height>
+                <visible>false</visible>
+                <texture>tvguide-program-grey2.png</texture>
+            </control>
+
+            <control type="image">
+                <description>workaround for texture not being loaded</description>
+                <posx>177</posx>
+                <posy>60</posy>
+                <width>3</width>
+                <height>400</height>
+                <visible>false</visible>
+                <texture>background-cover2.png</texture>
+            </control>
+
+            <control type="image">
+                <description>workaround for texture not being loaded</description>
+                <posx>0</posx>
+                <posy>60</posy>
+                <width>5</width>
+                <height>400</height>
+                <visible>false</visible>
+                <texture>background-cover2.png</texture>
+            </control>
+
+            <control type="image">
+                <description>workaround for texture not being loaded</description>
+                <posx>1280</posx>
+                <posy>60</posy>
+                <width>-23</width>
+                <height>450</height>
+                <visible>false</visible>
+                <texture>tvguide-background-right.png</texture>
+            </control>
+
+
+            <!-- Date and time row -->
+            <control type="group">
+                <posx>0</posx>
+                <posy>-40</posy>
+                <width>1280</width>
+                <height>40</height>
+                <visible>true</visible>
+
+                <control type="image">
+                    <description>workaround for texture not being loaded</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>1280</width>
+                    <height>720</height>
+                    <texture>tvguide-program-red.png</texture>
+                    <visible>false</visible>
+                </control>
+
+
+                <control type="label" id="14000">
+                    <description>Displays todays date</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>180</width>
+                    <height>50</height>
+                    <textcolor>ffffffff</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <font>font13</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+
+                    <visible>true</visible>
+                </control>
+
+                <control type="label">
+                    <description>Displays todays date</description>
+                    <posx>5r</posx>
+                    <posy>-15</posy>
+                    <width>280</width>
+                    <height>20</height>
+                    <textcolor>bbffffff</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <font>font13</font>
+                    <align>right</align>
+                    <aligny>center</aligny>
+                    <visible>true</visible>
+                    <label>$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]</label>
+                </control>
+
+                <control type="label">
+                    <description>time label</description>
+                    <right>5</right>
+                    <top>5</top>
+                    <width>200</width>
+                    <height>30</height>
+                    <align>right</align>
+                    <aligny>center</aligny>
+                    <font>font28_title</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <label>$INFO[System.Time(hh:mm)]</label>
+                    <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">
+                        conditional
+                    </animation>
+                </control>
+
+                <control type="label">
+                    <description>Displays todays date</description>
+                    <posx>0</posx>
+                    <posy>35</posy>
+                    <width>180</width>
+                    <height>100</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <label>CHANNELS</label>
+                    <visible>false</visible>
+                </control>
+
+                <control type="label" id="14001">
+                    <description>1st half hour column</description>
+                    <posx>180</posx>
+                    <posy>0</posy>
+                    <width>270</width>
+                    <height>50</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                </control>
+                <control type="label" id="14002">
+                    <description>2nd half hour column</description>
+                    <posx>455</posx>
+                    <posy>0</posy>
+                    <width>270</width>
+                    <height>50</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                </control>
+                <control type="label" id="14003">
+                    <description>3rd half hour column</description>
+                    <posx>730</posx>
+                    <posy>0</posy>
+                    <width>270</width>
+                    <height>50</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                </control>
+                <control type="label" id="14004">
+                    <description>4th half hour column</description>
+                    <posx>1005</posx>
+                    <posy>0</posy>
+                    <width>270</width>
+                    <height>50</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                </control>
+            </control>
+
+            <!-- Channels column -->
+            <control type="group">
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>180</width>
+                <height>120</height>
+                <visible>true</visible>
+
+                <!-- logo images backgrounds -->
+                <control type="image" id="14210">
+                    <description>1st channel</description>
+                    <posx>-10000</posx>
+                    <posy>0</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>Control.IsVisible(14010)|Control.IsVisible(14110)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black-back.png</texture>
+                </control>
+                <control type="image" id="14211">
+                    <description>2nd channel</description>
+                    <posx>-10000</posx>
+                    <posy>40</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>Control.IsVisible(14011)|Control.IsVisible(14111)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black-back.png</texture>
+                </control>
+                <control type="image" id="14212">
+                    <description>3rd channel</description>
+                    <posx>-10000</posx>
+                    <posy>80</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>Control.IsVisible(14012)|Control.IsVisible(14112)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texture>black-back.png</texture>
+                </control>
+
+                <!-- text labels -->
+                <control type="label" id="14010">
+                    <description>1st channel</description>
+                    <posx>2</posx>
+                    <posy>0</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <textcolor>ddffffff</textcolor>
+                    <shadowcolor>-</shadowcolor>
+                    <font>font13_title</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <visible>StringCompare(Control.GetLabel(14110),)</visible>
+                </control>
+                <control type="label" id="14011">
+                    <description>2nd channel</description>
+                    <posx>2</posx>
+                    <posy>40</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <textcolor>ddffffff</textcolor>
+                    <shadowcolor>-</shadowcolor>
+                    <font>font13_title</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <visible>StringCompare(Control.GetLabel(14111),)</visible>
+                </control>
+                <control type="label" id="14012">
+                    <description>3rd channel</description>
+                    <posx>2</posx>
+                    <posy>80</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <textcolor>ddffffff</textcolor>
+                    <shadowcolor>-</shadowcolor>
+                    <font>font13_title</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <visible>StringCompare(Control.GetLabel(14112),)</visible>
+                </control>
+
+                <!-- logo images -->
+                <control type="image" id="14110">
+                    <description>1st channel</description>
+                    <posx>2</posx>
+                    <posy>0</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <aspectratio>keep</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(14110),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                </control>
+                <control type="image" id="14111">
+                    <description>2nd channel</description>
+                    <posx>2</posx>
+                    <posy>40</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <aspectratio>keep</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(14111),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                </control>
+                <control type="image" id="14112">
+                    <description>3rd channel</description>
+                    <posx>2</posx>
+                    <posy>80</posy>
+                    <width>176</width>
+                    <height>40</height>
+                    <aspectratio>keep</aspectratio>
+                    <visible>!StringCompare(Control.GetLabel(14112),)</visible>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                </control>
+
+            </control>
+
+            <control type="label" id="17020">
+                <description>Program title</description>
+                <posx>500</posx>
+                <posy>460</posy>
+                <width>620</width>
+                <height>50</height>
+                <textcolor>eeffffff</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font14</font>
+                <align>center</align>
+                <aligny>top</aligny>
+                <visible>false</visible>
+            </control>
+
+            <control type="label" id="17025">
+                <description>Channel name</description>
+                <posx>360</posx>
+                <posy>460</posy>
+                <width>160</width>
+                <height>50</height>
+                <textcolor>ccffffff</textcolor>
+                <font>font13</font>
+                <align>left</align>
+                <aligny>top</aligny>
+                <visible>false</visible>
+            </control>
+
+            <control type="image" id="170244">
+                <description>Channel logo</description>
+                <posx>360</posx>
+                <posy>462</posy>
+                <width>160</width>
+                <height>40</height>
+                <align>left</align>
+                <aspectratio align="left">keep</aspectratio>
+                <fadetime>500</fadetime>
+                <texture>$INFO[Control.GetLabel(7024)]</texture>
+                <visible>false</visible>
+            </control>
+            <control type="label" id="17021">
+                <description>Program time</description>
+                <posx>1260</posx>
+                <posy>460</posy>
+                <width>1090</width>
+                <height>50</height>
+                <textcolor>ccffffff</textcolor>
+                <font>font13</font>
+                <align>right</align>
+                <aligny>top</aligny>
+                <visible>false</visible>
+            </control>
+
+            <control type="textbox" id="17022">
+                <description>Program description</description>
+                <posx>360</posx>
+                <posy>519</posy>
+                <width>898</width>
+                <height>142</height>
+                <textcolor>bbffffff</textcolor>
+                <font>font13</font>
+                <wrapmultiline>true</wrapmultiline>
+                <visible>false</visible>
+            </control>
+
+            <control type="image" id="17023">
+                <description>Program logo / Source logo</description>
+                <posx>2</posx>
+                <posy>260r</posy>
+                <width>350</width>
+                <height>197</height>
+                <aligny>top</aligny>
+                <aspectratio>keep</aspectratio>
+                <fadetime>500</fadetime>
+                <texture>-</texture>
+                <visible>false</visible>
+            </control>
+
+
+            <control type="image" id="17024">
+                <description>Channel logo</description>
+                <posx>5</posx>
+                <posy>620</posy>
+                <width>100</width>
+                <height>35</height>
+                <align>left</align>
+                <aspectratio align="left">keep</aspectratio>
+                <fadetime>500</fadetime>
+                <visible>false</visible>
+            </control>
+
+        </control>
     </controls>
 </window>

@@ -44,6 +44,7 @@ import streaming
 DEBUG = False
 
 MODE_EPG = 'EPG'
+MODE_QUICK_EPG = 'QUICKEPG'
 MODE_TV = 'TV'
 MODE_OSD = 'OSD'
 MODE_LASTCHANNEL = 'LASTCHANNEL'
@@ -133,6 +134,17 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_FOOTER = 4602
     C_MAIN_EPG = 5000
     C_MAIN_EPG_VIEW_MARKER = 5001
+    C_QUICK_EPG = 10000
+    C_QUICK_EPG_VIEW_MARKER = 10001
+    C_QUICK_EPG_DATE = 14000
+    C_QUICK_EPG_TITLE = 17020
+    C_QUICK_EPG_TIME = 17021
+    C_QUICK_EPG_DESCRIPTION = 17022
+    C_QUICK_EPG_LOGO = 17024
+    C_QUICK_EPG_CHANNEL = 17025
+    C_QUICK_EPG_TIMEBAR = 14100
+    C_QUICK_EPG_HEADER = 14601
+    C_QUICK_EPG_FOOTER = 14602
     C_MAIN_OSD = 6000
     C_MAIN_OSD_TITLE = 6001
     C_MAIN_OSD_TIME = 6002
@@ -181,12 +193,17 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.notification = None
         self.redrawingEPG = False
+        self.redrawingQuickEPG = False
         self.isClosing = False
         self.controlAndProgramList = list()
+        self.quickControlAndProgramList = list()
         self.ignoreMissingControlIds = list()
         self.channelIdx = 0
         self.focusPoint = Point()
         self.epgView = EPGView()
+        self.quickEpgView = EPGView()
+        self.quickChannelIdx = 0
+        self.quickFocusPoint = Point()
 
         self.player = xbmc.Player()
         self.database = None
@@ -227,6 +244,10 @@ class TVGuide(xbmcgui.WindowXML):
         self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                  seconds=self.viewStartDate.second)
 
+        self.quickViewStartDate = datetime.datetime.today()
+        self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 30,
+                                                 seconds=self.quickViewStartDate.second)
+
 
     def getControl(self, controlId):
         try:
@@ -252,10 +273,11 @@ class TVGuide(xbmcgui.WindowXML):
     def onInit(self):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS, self.C_MAIN_OSD)
         self._hideControl(self.C_MAIN_LAST_PLAYED)
+        self._hideControl(self.C_UP_NEXT)
+        self._hideControl(self.C_QUICK_EPG)
         self._showControl(self.C_MAIN_EPG, self.C_MAIN_LOADING)
         self.setControlLabel(self.C_MAIN_LOADING_TIME_LEFT, strings(BACKGROUND_UPDATE_IN_PROGRESS))
         self.setFocusId(self.C_MAIN_LOADING_CANCEL)
-        self._hideControl(self.C_UP_NEXT)
 
         control = self.getControl(self.C_MAIN_EPG_VIEW_MARKER)
         if control:
@@ -268,6 +290,18 @@ class TVGuide(xbmcgui.WindowXML):
             self.epgView.bottom = top + control.getHeight()
             self.epgView.width = control.getWidth()
             self.epgView.cellHeight = int(control.getHeight() / float(CHANNELS_PER_PAGE))
+
+        control = self.getControl(self.C_QUICK_EPG_VIEW_MARKER)
+        if control:
+            left, top = control.getPosition()
+            self.quickFocusPoint.x = left
+            self.quickFocusPoint.y = top
+            self.quickEpgView.left = left
+            self.quickEpgView.top = top
+            self.quickEpgView.right = left + control.getWidth()
+            self.quickEpgView.bottom = top + control.getHeight()
+            self.quickEpgView.width = control.getWidth()
+            self.quickEpgView.cellHeight = int(control.getHeight() / float(3))
 
         if self.database:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
@@ -295,6 +329,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.onActionOSDMode(action)
         elif self.mode == MODE_EPG:
             self.onActionEPGMode(action)
+        elif self.mode == MODE_QUICK_EPG:
+            self.onActionQuickEPGMode(action)
         elif self.mode == MODE_LASTCHANNEL:
             self.onActionLastPlayedMode(action)
 
@@ -321,8 +357,16 @@ class TVGuide(xbmcgui.WindowXML):
             self._showLastPlayedChannel()
         elif action.getId() == ACTION_LEFT:
             self._showLastPlayedChannel()
+        elif action.getId() == ACTION_UP:
+            self.quickViewStartDate = datetime.datetime.today()
+            self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
+            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
+        elif action.getId() == ACTION_DOWN:
+            self.quickViewStartDate = datetime.datetime.today()
+            self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
+            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
         elif action.getId() == ACTION_SELECT_ITEM:
-            self._hideControl(self.C_UP_NEXT)
+            self._hideQuickEpg()
 
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
@@ -456,6 +500,57 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
+    def onActionQuickEPGMode(self, action):
+        if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK]:
+            self._hideQuickEpg()
+
+        # catch the ESC key
+        elif action.getId() == ACTION_PREVIOUS_MENU and action.getButtonCode() == KEY_ESC:
+            self._hideQuickEpg()
+
+        elif action.getId() in [KEY_CONTEXT_MENU,ACTION_SHOW_INFO]:
+            self._hideQuickEpg()
+
+        controlInFocus = None
+        currentFocus = self.quickFocusPoint
+        try:
+            controlInFocus = self.getFocus()
+            if controlInFocus in [elem.control for elem in self.quickControlAndProgramList]:
+                (left, top) = controlInFocus.getPosition()
+                currentFocus = Point()
+                currentFocus.x = left + (controlInFocus.getWidth() / 2)
+                currentFocus.y = top + (controlInFocus.getHeight() / 2)
+        except Exception:
+            control = self._findQuickControlAt(self.quickFocusPoint)
+            if control is None and len(self.quickControlAndProgramList) > 0:
+                control = self.quickControlAndProgramList[0].control
+            if control is not None:
+                self.setQuickFocus(control)
+                xbmc.log("exception in onActionQuickEPGMode")
+                return
+        if action.getId() == ACTION_LEFT:
+            self._quickLeft(currentFocus)
+        elif action.getId() == ACTION_RIGHT:
+            self._quickRight(currentFocus)
+        elif action.getId() == ACTION_UP:
+            self._quickUp(currentFocus)
+        elif action.getId() == ACTION_DOWN:
+            self._quickDown(currentFocus)
+        elif action.getId() == ACTION_NEXT_ITEM:
+            self._quickNextDay()
+        elif action.getId() == ACTION_PREV_ITEM:
+            self._quickPreviousDay()
+        elif action.getId() == ACTION_PAGE_UP:
+            self._quickMoveUp(3)
+        elif action.getId() == ACTION_PAGE_DOWN:
+            self._quickMoveDown(3)
+        elif action.getId() == ACTION_MOUSE_WHEEL_UP:
+            self._moveUp(scrollEvent=True)
+        elif action.getId() == ACTION_MOUSE_WHEEL_DOWN:
+            self._moveDown(scrollEvent=True)
+        else:
+            xbmc.log('[script.tvguide.fullscreen] quick epg Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
+
     def onClick(self, controlId):
         if controlId in [self.C_MAIN_LOADING_CANCEL, self.C_MAIN_MOUSE_EXIT]:
             self.close()
@@ -485,6 +580,9 @@ class TVGuide(xbmcgui.WindowXML):
             return
 
         program = self._getProgramFromControl(self.getControl(controlId))
+        if self.mode == MODE_QUICK_EPG:
+            program = self._getQuickProgramFromControl(self.getControl(controlId))
+
         if program is None:
             return
 
@@ -605,6 +703,11 @@ class TVGuide(xbmcgui.WindowXML):
         if control:
             self.setFocus(control)
 
+    def setQuickFocusId(self, controlId):
+        control = self.getControl(controlId)
+        if control:
+            self.setQuickFocus(control)
+
     def setFocus(self, control):
         debug('setFocus %d' % control.getId())
         if control in [elem.control for elem in self.controlAndProgramList]:
@@ -617,12 +720,24 @@ class TVGuide(xbmcgui.WindowXML):
 
         super(TVGuide, self).setFocus(control)
 
+    def setQuickFocus(self, control):
+        if control in [elem.control for elem in self.quickControlAndProgramList]:
+            (left, top) = control.getPosition()
+            if left > self.quickFocusPoint.x or left + control.getWidth() < self.quickFocusPoint.x:
+                self.quickFocusPoint.x = left
+            self.quickFocusPoint.y = top + (control.getHeight() / 2)
+
+        super(TVGuide, self).setFocus(control)
+
     def onFocus(self, controlId):
         try:
             controlInFocus = self.getControl(controlId)
         except Exception:
             return
         program = self._getProgramFromControl(controlInFocus)
+        if self.mode == MODE_QUICK_EPG:
+            program = self._getQuickProgramFromControl(controlInFocus)
+
         if program is None:
             return
 
@@ -631,46 +746,66 @@ class TVGuide(xbmcgui.WindowXML):
             title += " [B]S%sE%s[/B]" % (program.season, program.episode)
         if program.is_movie == "Movie":
             title += " [B](Movie)[/B]"
-        self.setControlLabel(self.C_MAIN_TITLE, title)
-        if program.startDate or program.endDate:
-            self.setControlLabel(self.C_MAIN_TIME,
+
+        if self.mode == MODE_QUICK_EPG:
+            self.setControlLabel(self.C_QUICK_EPG_TITLE, title)
+            if program.startDate or program.endDate:
+                self.setControlLabel(self.C_QUICK_EPG_TIME,
                                  '[B]%s - %s[/B]' % (self.formatTime(program.startDate), self.formatTime(program.endDate)))
+            else:
+                self.setControlLabel(self.C_QUICK_EPG_TIME, '')
+            if program.description:
+                description = program.description
+            else:
+                description = ""
+            self.setControlText(self.C_QUICK_EPG_DESCRIPTION, description)
+            self.setControlLabel(self.C_QUICK_EPG_CHANNEL, '[B]%s[/B]' % program.channel.title)
+            if program.channel.logo is not None:
+                self.setControlImage(self.C_QUICK_EPG_LOGO, program.channel.logo)
+            else:
+                self.setControlImage(self.C_QUICK_EPG_LOGO, '')
+
         else:
-            self.setControlLabel(self.C_MAIN_TIME, '')
-        if program.startDate and program.endDate:
-            programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
-            if programprogresscontrol:
-                percent = self.percent(program.startDate,program.endDate)
-                programprogresscontrol.setPercent(percent)
-        if program.description:
-            description = program.description
-        else:
-            description = ""
-        self.setControlText(self.C_MAIN_DESCRIPTION, description)
+            self.setControlLabel(self.C_MAIN_TITLE, title)
+            if program.startDate or program.endDate:
+                self.setControlLabel(self.C_MAIN_TIME,
+                                     '[B]%s - %s[/B]' % (self.formatTime(program.startDate), self.formatTime(program.endDate)))
+            else:
+                self.setControlLabel(self.C_MAIN_TIME, '')
+            if program.startDate and program.endDate:
+                programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
+                if programprogresscontrol:
+                    percent = self.percent(program.startDate,program.endDate)
+                    programprogresscontrol.setPercent(percent)
+            if program.description:
+                description = program.description
+            else:
+                description = ""
+            self.setControlText(self.C_MAIN_DESCRIPTION, description)
 
-        self.setControlLabel(self.C_MAIN_CHANNEL, '[B]%s[/B]' % program.channel.title)
+            self.setControlLabel(self.C_MAIN_CHANNEL, '[B]%s[/B]' % program.channel.title)
 
-        if program.channel.logo is not None:
-            self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
-        else:
-            self.setControlImage(self.C_MAIN_LOGO, '')
-
-
-        if program.imageSmall is not None:
-            self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
-        else:
-            self.setControlImage(self.C_MAIN_IMAGE, '')
-        if program.imageLarge is not None:
-            self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
+            if program.channel.logo is not None:
+                self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
+            else:
+                self.setControlImage(self.C_MAIN_LOGO, '')
 
 
-        if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
-            self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
-        else:
-            self.setControlImage(self.C_MAIN_BACKGROUND, "grey.png")
+            if program.imageSmall is not None:
+                self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
+            else:
+                self.setControlImage(self.C_MAIN_IMAGE, '')
+            if program.imageLarge is not None:
+                self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
 
-        #if not self.osdEnabled and self.player.isPlaying():
-        #    self.player.stop()
+
+            if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
+                self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
+            else:
+                self.setControlImage(self.C_MAIN_BACKGROUND, "grey.png")
+
+            #if not self.osdEnabled and self.player.isPlaying():
+            #    self.player.stop()
 
     def _left(self, currentFocus):
         control = self._findControlOnLeft(currentFocus)
@@ -681,6 +816,15 @@ class TVGuide(xbmcgui.WindowXML):
             self.focusPoint.x = self.epgView.right
             self.onRedrawEPG(self.channelIdx, self.viewStartDate, focusFunction=self._findControlOnLeft)
 
+    def _quickLeft(self, currentFocus):
+        control = self._findQuickControlOnLeft(currentFocus)
+        if control is not None:
+            self.setQuickFocus(control)
+        elif control is None:
+            self.quickViewStartDate -= datetime.timedelta(hours=2)
+            self.quickFocusPoint.x = self.quickEpgView.right
+            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate, focusFunction=self._findQuickControlOnLeft)
+
     def _right(self, currentFocus):
         control = self._findControlOnRight(currentFocus)
         if control is not None:
@@ -689,6 +833,15 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate += datetime.timedelta(hours=2)
             self.focusPoint.x = self.epgView.left
             self.onRedrawEPG(self.channelIdx, self.viewStartDate, focusFunction=self._findControlOnRight)
+
+    def _quickRight(self, currentFocus):
+        control = self._findQuickControlOnRight(currentFocus)
+        if control is not None:
+            self.setQuickFocus(control)
+        elif control is None:
+            self.quickViewStartDate += datetime.timedelta(hours=2)
+            self.quickFocusPoint.x = self.quickEpgView.left
+            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate, focusFunction=self._findQuickControlOnRight)
 
     def _up(self, currentFocus):
         currentFocus.x = self.focusPoint.x
@@ -705,6 +858,21 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(first_channel, self.viewStartDate,
                              focusFunction=self._findControlAbove)
 
+    def _quickUp(self, currentFocus):
+        currentFocus.x = self.quickFocusPoint.x
+        control = self._findQuickControlAbove(currentFocus)
+        if control is not None:
+            self.setQuickFocus(control)
+        elif control is None:
+            first_channel = self.quickChannelIdx - 3
+            if first_channel < 0:
+                len_channels = self.database.getNumberOfChannels()
+                last_page = len_channels % 3
+                first_channel = len_channels - last_page
+            self.quickFocusPoint.y = self.quickEpgView.bottom
+            self.onRedrawQuickEPG(first_channel, self.quickViewStartDate,
+                             focusFunction=self._findQuickControlAbove)
+
     def _down(self, currentFocus):
         currentFocus.x = self.focusPoint.x
         control = self._findControlBelow(currentFocus)
@@ -715,13 +883,31 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx + CHANNELS_PER_PAGE, self.viewStartDate,
                              focusFunction=self._findControlBelow)
 
+    def _quickDown(self, currentFocus):
+        currentFocus.x = self.quickFocusPoint.x
+        control = self._findQuickControlBelow(currentFocus)
+        if control is not None:
+            self.setQuickFocus(control)
+        elif control is None:
+            self.quickFocusPoint.y = self.quickEpgView.top
+            self.onRedrawQuickEPG(self.quickChannelIdx + 3, self.quickViewStartDate,
+                             focusFunction=self._findQuickControlBelow)
+
     def _nextDay(self):
         self.viewStartDate += datetime.timedelta(days=1)
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+    def _quickNextDay(self):
+        self.quickViewStartDate += datetime.timedelta(days=1)
+        self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
+
     def _previousDay(self):
         self.viewStartDate -= datetime.timedelta(days=1)
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+    def _quickPreviousDay(self):
+        self.quickViewStartDate -= datetime.timedelta(days=1)
+        self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
 
     def _moveUp(self, count=1, scrollEvent=False):
         first_channel = self.channelIdx - count
@@ -735,12 +921,31 @@ class TVGuide(xbmcgui.WindowXML):
             self.focusPoint.y = self.epgView.bottom
             self.onRedrawEPG(first_channel, self.viewStartDate, focusFunction=self._findControlAbove)
 
+    def _quickMoveUp(self, count=1, scrollEvent=False):
+        first_channel = self.quickChannelIdx - count
+        if first_channel < 0:
+            len_channels = self.database.getNumberOfChannels()
+            last_page = len_channels % 3
+            first_channel = len_channels - last_page
+        if scrollEvent:
+            self.onRedrawQuickEPG(first_channel, self.quickViewStartDate)
+        else:
+            self.quickFocusPoint.y = self.quickEpgView.bottom
+            self.onRedrawQuickEPG(first_channel, self.quickViewStartDate, focusFunction=self._findQuickControlAbove)
+
     def _moveDown(self, count=1, scrollEvent=False):
         if scrollEvent:
             self.onRedrawEPG(self.channelIdx + count, self.viewStartDate)
         else:
             self.focusPoint.y = self.epgView.top
             self.onRedrawEPG(self.channelIdx + count, self.viewStartDate, focusFunction=self._findControlBelow)
+
+    def _quickMoveDown(self, count=1, scrollEvent=False):
+        if scrollEvent:
+            self.onRedrawQuickEPG(self.quickChannelIdx + count, self.quickViewStartDate)
+        else:
+            self.quickFocusPoint.y = self.quickEpgView.top
+            self.onRedrawQuickEPG(self.quickChannelIdx + count, self.quickViewStartDate, focusFunction=self._findQuickControlBelow)
 
     def _channelUp(self):
         channel = self.database.getNextChannel(self.currentChannel)
@@ -776,6 +981,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.player.play(item=url, windowed=self.osdEnabled)
 
             self._hideEpg()
+            self._hideQuickEpg()
 
         threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
@@ -795,10 +1001,12 @@ class TVGuide(xbmcgui.WindowXML):
                 if self.currentProgram and self.currentProgram.endDate:
                     remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
                     if remainingseconds < self.upNextTime and remainingseconds > 1:
-                        self._updateNextUpInfo()
+                        firstTime = True
+                        self._updateNextUpInfo(firstTime)
+                        firstTime = False
                         self._showControl(self.C_UP_NEXT)
-                        while remainingseconds < self.upNextTime and remainingseconds > 1:
-                            self._updateNextUpInfo()
+                        while remainingseconds < self.upNextTime and remainingseconds > 1 and self.mode == MODE_TV:
+                            self._updateNextUpInfo(firstTime)
                             try: remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
                             except: pass
                             time.sleep(1)
@@ -811,7 +1019,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.onPlayBackStopped()
 
-    def _updateNextUpInfo(self):
+    def _updateNextUpInfo(self,firstTime):
         if self.currentProgram and self.lastOsdProgram and self.currentProgram != self.lastOsdProgram:
             # a change so update last
             self.lastOsdProgram = self.currentProgram
@@ -819,10 +1027,10 @@ class TVGuide(xbmcgui.WindowXML):
             # no last so set it
             self.lastOsdProgram = self.currentProgram
 
-        self._populateNextUpInfo()
+        self._populateNextUpInfo(firstTime)
 
-    def _populateNextUpInfo(self):
-        if self.currentProgram is not None:
+    def _populateNextUpInfo(self,firstTime):
+        if self.currentProgram is not None and firstTime:
             self.setControlLabel(self.C_MAIN_UP_NEXT_TITLE, '[B]%s[/B]' % self.currentProgram.title)
             if self.currentProgram.startDate or self.currentProgram.endDate:
                 self.setControlLabel(self.C_MAIN_UP_NEXT_TIME, '[B]%s - %s[/B]' % (
@@ -865,6 +1073,10 @@ class TVGuide(xbmcgui.WindowXML):
                         nextOsdControl.setImage('')
                 except:
                     pass
+        elif self.currentProgram is not None and not firstTime:
+            if self.currentProgram.startDate and self.currentProgram.endDate:
+                remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                self.setControlLabel(self.C_MAIN_UP_NEXT_TIME_REMAINING, '%s' % remainingseconds)
     def _showOsd(self):
         if not self.osdEnabled:
             return
@@ -989,6 +1201,11 @@ class TVGuide(xbmcgui.WindowXML):
         self._hideControl(self.C_MAIN_EPG)
         self.mode = MODE_TV
         self._clearEpg()
+
+    def _hideQuickEpg(self):
+        self._hideControl(self.C_QUICK_EPG)
+        self.mode = MODE_TV
+        self._clearQuickEpg()
 
     def onRedrawEPG(self, channelStart, startTime, focusFunction=None):
         if self.redrawingEPG or (self.database is not None and self.database.updateInProgress) or self.isClosing:
@@ -1162,6 +1379,169 @@ class TVGuide(xbmcgui.WindowXML):
         self._hideControl(self.C_MAIN_LOADING)
         self.redrawingEPG = False
 
+    def onRedrawQuickEPG(self, channelStart, startTime, focusFunction=None):
+        if self.redrawingQuickEPG or (self.database is not None and self.database.updateInProgress) or self.isClosing:
+            debug('onRedrawQuickEPG - already redrawing')
+            return  # ignore redraw request while redrawing
+        debug('onRedrawQuickEPG')
+
+        self.redrawingQuickEPG = True
+        self.mode = MODE_QUICK_EPG
+        self._showControl(self.C_QUICK_EPG)
+        self.updateQuickTimebar(scheduleTimer=False)
+
+        # remove existing controls
+        self._clearQuickEpg()
+
+        try:
+            self.quickChannelIdx, channels, programs = self.database.getQuickEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False, category=self.category)
+        except src.SourceException:
+            self.onEPGLoadError()
+            return
+
+        channelsWithoutPrograms = list(channels)
+
+        # date and time row
+        self.setControlLabel(self.C_QUICK_EPG_DATE, self.quickViewStartDate.strftime("%A"))
+        for col in range(1, 5):
+            self.setControlLabel(14000 + col, self.formatTime(startTime))
+            startTime += HALF_HOUR
+
+        if programs is None:
+            self.onEPGLoadError()
+            return
+
+        # set channel logo or text
+        showLogo = ADDON.getSetting('logos.enabled') == 'true'
+        for idx in range(0, 3):
+            if idx >= len(channels):
+                self.setControlImage(14110 + idx, ' ')
+                self.setControlLabel(14010 + idx, ' ')
+                control = self.getControl(14210 + idx)
+                control.setVisible(False)
+            else:
+                control = self.getControl(14210 + idx)
+                control.setVisible(True)
+                channel = channels[idx]
+                self.setControlLabel(14010 + idx, channel.title)
+                if (channel.logo is not None and showLogo == True):
+                    self.setControlImage(14110 + idx, channel.logo)
+                else:
+                    self.setControlImage(14110 + idx, ' ')
+            control = self.getControl(14010 + idx)
+            height = self.quickEpgView.cellHeight
+            top = self.quickEpgView.cellHeight * idx
+            control = self.getControl(14210 + idx)
+            if control:
+                control.setHeight(self.quickEpgView.cellHeight-2)
+                control.setWidth(176)
+                control.setPosition(2,top)
+            control = self.getControl(14010 + idx)
+            if control:
+                control.setHeight(self.quickEpgView.cellHeight-2)
+                control.setWidth(176)
+                control.setPosition(2,top)
+            control = self.getControl(14110 + idx)
+            if control:
+                control.setWidth(176)
+                control.setHeight(self.quickEpgView.cellHeight-2)
+                control.setPosition(2,top)
+
+        if SKIN == 'sly':
+            focusColor = '0xFF00B8FF'
+        elif SKIN == 'Dark':
+            focusColor = '0xFF00FFC6'
+        else:
+            focusColor = '0xFF00FFFF'
+
+        for program in programs:
+            idx = channels.index(program.channel)
+            if program.channel in channelsWithoutPrograms:
+                channelsWithoutPrograms.remove(program.channel)
+
+            startDelta = program.startDate - self.quickViewStartDate
+            stopDelta = program.endDate - self.quickViewStartDate
+
+            cellStart = self._secondsToXposition(startDelta.seconds)
+            if startDelta.days < 0:
+                cellStart = self.quickEpgView.left
+            cellWidth = self._secondsToXposition(stopDelta.seconds) - cellStart
+            if cellStart + cellWidth > self.quickEpgView.right:
+                cellWidth = self.quickEpgView.right - cellStart
+
+            if cellWidth > 1:
+                if program.notificationScheduled:
+                    noFocusTexture = 'tvguide-program-red.png'
+                    focusTexture = 'tvguide-program-red-focus.png'
+                else:
+                    noFocusTexture = 'black-back.png'
+                    focusTexture = 'black-back.png'
+
+                if cellWidth < 25:
+                    title = ''  # Text will overflow outside the button if it is too narrow
+                else:
+                    title = program.title
+
+                control = xbmcgui.ControlButton(
+                    cellStart,
+                    self.quickEpgView.top + self.quickEpgView.cellHeight * idx,
+                    cellWidth - 2,
+                    self.quickEpgView.cellHeight - 2,
+                    title,
+                    focusedColor=focusColor,
+                    noFocusTexture=noFocusTexture,
+                    focusTexture=focusTexture
+                )
+
+                self.quickControlAndProgramList.append(ControlAndProgram(control, program))
+
+        for channel in channelsWithoutPrograms:
+            idx = channels.index(channel)
+
+            control = xbmcgui.ControlButton(
+                self.quickEpgView.left,
+                self.quickEpgView.top + self.quickEpgView.cellHeight * idx,
+                (self.quickEpgView.right - self.quickEpgView.left) - 2,
+                self.quickEpgView.cellHeight - 2,
+                u"\u2014",
+                focusedColor=focusColor,
+                noFocusTexture='black-back.png',
+                focusTexture='black-back.png'
+            )
+
+            program = src.Program(channel, "", None, None, None)
+            self.quickControlAndProgramList.append(ControlAndProgram(control, program))
+
+        top = self.quickEpgView.cellHeight * len(channels)
+        height = 720 - top
+        control = self.getControl(self.C_QUICK_EPG_FOOTER)
+        if control:
+            control.setPosition(0,top)
+            control.setHeight(height)
+        control = self.getControl(self.C_QUICK_EPG_TIMEBAR)
+        if control:
+            control.setHeight(top-2)
+
+        # add program controls
+        if focusFunction is None:
+            focusFunction = self._findQuickControlAt
+        focusControl = focusFunction(self.quickFocusPoint)
+        controls = [elem.control for elem in self.quickControlAndProgramList]
+        try:
+            self.addControls(controls)
+        except:
+            pass
+        if focusControl is not None:
+            debug('onRedrawEPG - setFocus %d' % focusControl.getId())
+            self.setQuickFocus(focusControl)
+
+        self.ignoreMissingControlIds.extend([elem.control.getId() for elem in self.quickControlAndProgramList])
+
+        if focusControl is None and len(self.quickControlAndProgramList) > 0:
+            self.setQuickFocus(self.quickControlAndProgramList[0].control)
+
+        self.redrawingQuickEPG = False
+
     def _clearEpg(self):
         controls = [elem.control for elem in self.controlAndProgramList]
         try:
@@ -1173,6 +1553,18 @@ class TVGuide(xbmcgui.WindowXML):
                 except RuntimeError:
                     pass  # happens if we try to remove a control that doesn't exist
         del self.controlAndProgramList[:]
+
+    def _clearQuickEpg(self):
+        controls = [elem.control for elem in self.quickControlAndProgramList]
+        try:
+            self.removeControls(controls)
+        except RuntimeError:
+            for elem in self.quickControlAndProgramList:
+                try:
+                    self.removeControl(elem.control)
+                except RuntimeError:
+                    pass  # happens if we try to remove a control that doesn't exist
+        del self.quickControlAndProgramList[:]
 
     def onEPGLoadError(self):
         self.redrawingEPG = False
@@ -1244,11 +1636,47 @@ class TVGuide(xbmcgui.WindowXML):
 
         return nearestControl
 
+    def _findQuickControlOnRight(self, point):
+        distanceToNearest = 10000
+        nearestControl = None
+
+        for elem in self.quickControlAndProgramList:
+            control = elem.control
+            (left, top) = control.getPosition()
+            x = left + (control.getWidth() / 2)
+            y = top + (control.getHeight() / 2)
+
+            if point.x < x and point.y == y:
+                distance = abs(point.x - x)
+                if distance < distanceToNearest:
+                    distanceToNearest = distance
+                    nearestControl = control
+
+        return nearestControl
+
     def _findControlOnLeft(self, point):
         distanceToNearest = 10000
         nearestControl = None
 
         for elem in self.controlAndProgramList:
+            control = elem.control
+            (left, top) = control.getPosition()
+            x = left + (control.getWidth() / 2)
+            y = top + (control.getHeight() / 2)
+
+            if point.x > x and point.y == y:
+                distance = abs(point.x - x)
+                if distance < distanceToNearest:
+                    distanceToNearest = distance
+                    nearestControl = control
+
+        return nearestControl
+
+    def _findQuickControlOnLeft(self, point):
+        distanceToNearest = 10000
+        nearestControl = None
+
+        for elem in self.quickControlAndProgramList:
             control = elem.control
             (left, top) = control.getPosition()
             x = left + (control.getWidth() / 2)
@@ -1277,9 +1705,38 @@ class TVGuide(xbmcgui.WindowXML):
 
         return nearestControl
 
+    def _findQuickControlBelow(self, point):
+        nearestControl = None
+
+        for elem in self.quickControlAndProgramList:
+            control = elem.control
+            (leftEdge, top) = control.getPosition()
+            y = top + (control.getHeight() / 2)
+
+            if point.y < y:
+                rightEdge = leftEdge + control.getWidth()
+                if leftEdge <= point.x < rightEdge and (nearestControl is None or nearestControl.getPosition()[1] > top):
+                    nearestControl = control
+
+        return nearestControl
+
     def _findControlAbove(self, point):
         nearestControl = None
         for elem in self.controlAndProgramList:
+            control = elem.control
+            (leftEdge, top) = control.getPosition()
+            y = top + (control.getHeight() / 2)
+
+            if point.y > y:
+                rightEdge = leftEdge + control.getWidth()
+                if leftEdge <= point.x < rightEdge and (nearestControl is None or nearestControl.getPosition()[1] < top):
+                    nearestControl = control
+
+        return nearestControl
+
+    def _findQuickControlAbove(self, point):
+        nearestControl = None
+        for elem in self.quickControlAndProgramList:
             control = elem.control
             (leftEdge, top) = control.getPosition()
             y = top + (control.getHeight() / 2)
@@ -1303,8 +1760,26 @@ class TVGuide(xbmcgui.WindowXML):
 
         return None
 
+    def _findQuickControlAt(self, point):
+        for elem in self.quickControlAndProgramList:
+            control = elem.control
+            (left, top) = control.getPosition()
+            bottom = top + control.getHeight()
+            right = left + control.getWidth()
+
+            if left <= point.x <= right and top <= point.y <= bottom:
+                return control
+
+        return None
+
     def _getProgramFromControl(self, control):
         for elem in self.controlAndProgramList:
+            if elem.control == control:
+                return elem.program
+        return None
+
+    def _getQuickProgramFromControl(self, control):
+        for elem in self.quickControlAndProgramList:
             if elem.control == control:
                 return elem.program
         return None
@@ -1384,6 +1859,23 @@ class TVGuide(xbmcgui.WindowXML):
 
         if scheduleTimer and not xbmc.abortRequested and not self.isClosing:
             threading.Timer(1, self.updateTimebar).start()
+
+    def updateQuickTimebar(self, scheduleTimer=True):
+        # move timebar to current time
+        timeDelta = datetime.datetime.today() - self.quickViewStartDate
+        control = self.getControl(self.C_QUICK_EPG_TIMEBAR)
+        if control:
+            (x, y) = control.getPosition()
+            try:
+                # Sometimes raises:
+                # exceptions.RuntimeError: Unknown exception thrown from the call "setVisible"
+                control.setVisible(timeDelta.days == 0)
+            except:
+                pass
+            control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
+
+        if scheduleTimer and not xbmc.abortRequested and not self.isClosing:
+            threading.Timer(1, self.updateQuickTimebar).start()
 
 
 class PopupMenu(xbmcgui.WindowXMLDialog):
