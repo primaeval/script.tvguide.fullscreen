@@ -10,7 +10,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
-version 0.0.77
+version 0.0.78
 - select (enter) to close Up Next popup
 - tweaks and fixes
 
