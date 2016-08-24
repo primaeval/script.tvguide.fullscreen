@@ -1088,7 +1088,7 @@
                     <textcolor>yellow</textcolor>
 					<focusedcolor>FF00FFC6</focusedcolor>
                     <font>font13_title</font>
-                    <label>&#652;</label>
+                    <label>^</label>
                     <aligny>center</aligny>
                     <align>center</align>
                     <texturefocus>-</texturefocus>
