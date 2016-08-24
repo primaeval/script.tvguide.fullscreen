@@ -1685,7 +1685,7 @@
                 <textcolor>white</textcolor>
                 <font>font12</font>
                 <wrapmultiline>true</wrapmultiline>
-				<scrolltime>200</scrolltime>
+				<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
 			<control type="image" id="9010">
                 <description>Up Next Program image</description>
