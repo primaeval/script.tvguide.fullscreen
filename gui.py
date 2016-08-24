@@ -287,6 +287,8 @@ class TVGuide(xbmcgui.WindowXML):
     def onAction(self, action):
         debug('Mode is: %s' % self.mode)
 
+        self._hideControl(self.C_UP_NEXT)
+
         if self.mode == MODE_TV:
             self.onActionTVMode(action)
         elif self.mode == MODE_OSD:
