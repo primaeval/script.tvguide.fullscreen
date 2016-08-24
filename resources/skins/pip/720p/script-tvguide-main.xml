@@ -77,7 +77,7 @@
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>0</fadetime>
+                <fadetime>200</fadetime>
             </control>
             <control type="image">
                 <description>background</description>
@@ -90,7 +90,7 @@
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>0</fadetime>
+                <fadetime>200</fadetime>
             </control>
 
 
@@ -974,7 +974,7 @@
                 <aligny>top</aligny>
                 <aspectratio>keep</aspectratio>
 
-                <fadetime>0</fadetime>
+                <fadetime>500</fadetime>
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>
             </control>
@@ -988,7 +988,7 @@
                 <righttexture />
                 <texturebg  colordiffuse="white">black.png</texturebg>
                 <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
+                <visible>true</visible>
             </control>
 
             <control type="label" id="4200">

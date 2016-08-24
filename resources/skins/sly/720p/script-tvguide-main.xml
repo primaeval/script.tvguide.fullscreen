@@ -518,7 +518,7 @@
                     <posy>0</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -531,7 +531,7 @@
                     <posy>40</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -544,7 +544,7 @@
                     <posy>80</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -557,7 +557,7 @@
                     <posy>120</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -570,7 +570,7 @@
                     <posy>160</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -583,7 +583,7 @@
                     <posy>200</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -596,7 +596,7 @@
                     <posy>240</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -609,7 +609,7 @@
                     <posy>280</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -622,7 +622,7 @@
                     <posy>320</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -635,7 +635,7 @@
                     <posy>360</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -649,7 +649,7 @@
                     <posy>400</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -663,7 +663,7 @@
                     <posy>440</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -676,7 +676,7 @@
                     <posy>480</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -689,7 +689,7 @@
                     <posy>520</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -702,7 +702,7 @@
                     <posy>560</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -715,7 +715,7 @@
                     <posy>600</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>ddffffff</textcolor>
                     <shadowcolor>-</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
@@ -904,17 +904,31 @@
             <control type="label" id="7020">
                 <description>Program title</description>
                 <posx>500</posx>
-                <posy>452</posy>
+                <posy>460</posy>
                 <width>620</width>
                 <height>50</height>
-                <textcolor>FF00B8FF</textcolor>
+                <textcolor>eeffffff</textcolor>
                 <shadowcolor>22000000</shadowcolor>
                 <font>font14</font>
                 <align>center</align>
-                <aligny>center</aligny>
+                <aligny>top</aligny>
                 <visible>true</visible>
             </control>
-            <control type="image" id="7024">
+
+            <control type="label" id="7025">
+                <description>Channel name</description>
+                <posx>360</posx>
+                <posy>460</posy>
+                <width>160</width>
+                <height>50</height>
+                <textcolor>ccffffff</textcolor>
+                <font>font13</font>
+                <align>left</align>
+                <aligny>top</aligny>
+                <visible>!Player.HasMedia | [Player.HasMedia + StringCompare(Control.GetLabel(70244),)]</visible>
+            </control>
+
+            <control type="image" id="70244">
                 <description>Channel logo</description>
                 <posx>360</posx>
                 <posy>462</posy>
@@ -923,32 +937,19 @@
                 <align>left</align>
                 <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
-                <visible>true</visible>
-            </control>
-
-            <control type="label" id="7025">
-                <description>Channel name</description>
-                <posx>360</posx>
-                <posy>462</posy>
-                <width>160</width>
-                <height>40</height>
-                <textcolor>ddffffff</textcolor>
-                <shadowcolor>22000000</shadowcolor>
-                <font>font13</font>
-                <align>left</align>
-                <visible>StringCompare(Control.GetLabel(7024),)</visible>
+                <texture>$INFO[Control.GetLabel(7024)]</texture>
+                <visible>Player.HasMedia</visible>
             </control>
             <control type="label" id="7021">
                 <description>Program time</description>
                 <posx>1260</posx>
-                <posy>452</posy>
+                <posy>460</posy>
                 <width>1090</width>
                 <height>50</height>
-                <textcolor>ddffffff</textcolor>
-                <shadowcolor>22000000</shadowcolor>
+                <textcolor>ccffffff</textcolor>
                 <font>font13</font>
                 <align>right</align>
-                <aligny>center</aligny>
+                <aligny>top</aligny>
                 <visible>true</visible>
             </control>
 
@@ -958,7 +959,7 @@
                 <posy>519</posy>
                 <width>898</width>
                 <height>142</height>
-                <textcolor>ccffffff</textcolor>
+                <textcolor>bbffffff</textcolor>
                 <font>font13</font>
                 <wrapmultiline>true</wrapmultiline>
                 <visible>true</visible>
@@ -988,6 +989,18 @@
                 <fadetime>500</fadetime>
                 <texture>tv.jpg</texture>
                 <visible>StringCompare(Control.GetLabel(7023),)</visible>
+            </control>
+
+            <control type="image" id="7024">
+                <description>Channel logo</description>
+                <posx>5</posx>
+                <posy>620</posy>
+                <width>100</width>
+                <height>35</height>
+                <align>left</align>
+                <aspectratio align="left">keep</aspectratio>
+                <fadetime>500</fadetime>
+                <visible>!Player.HasMedia</visible>
             </control>
 
             <control type="progress" id="7026">
@@ -1283,12 +1296,12 @@
 
             <control type="label">
                 <left>0</left>
-                <top>3</top>
+                <top>185</top>
                 <width>250</width>
                 <height>30</height>
                 <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)] $INFO[System.Time(hh:mm)]</label>
                 <align>right</align>
-                <aligny>center</aligny>
+                <aligny>top</aligny>
                 <font>font12</font>
                 <shadowcolor>22000000</shadowcolor>
                 <textcolor>bbffffff</textcolor>
@@ -1325,6 +1338,15 @@
                 <aspectratio>keep</aspectratio>
                 <texture>tv.jpg</texture>
                 <visible>StringCompare(Control.GetLabel(6006),)</visible>
+            </control>
+
+            <control type="image" id="6004">
+                <description>Program channel logo</description>
+                <posx>285</posx>
+                <posy>150</posy>
+                <width>60</width>
+                <height>25</height>
+                <aspectratio align="left" aligny="bottom">keep</aspectratio>
             </control>
 
             <!-- Program description -->
@@ -1385,14 +1407,6 @@
 
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
-            <control type="image" id="6004">
-                <description>Program channel logo</description>
-                <posx>5</posx>
-                <posy>160</posy>
-                <width>247</width>
-                <height>45</height>
-                <aspectratio align="right" aligny="bottom">keep</aspectratio>
-            </control>
 
             <control type="label" id="6008">
                 <description>Next Program title</description>
@@ -1440,6 +1454,15 @@
                 <texture>tv.jpg</texture>
                 <visible>StringCompare(Control.GetLabel(6010),)</visible>
             </control>
+            <control type="image">
+                <description>Program channel logo</description>
+                <posx>1050</posx>
+                <posy>145</posy>
+                <width>60</width>
+                <height>25</height>
+                <texture>$INFO[Control.GetLabel(6004)]</texture>
+                <aspectratio align="left" aligny="bottom">keep</aspectratio>
+            </control>
             <control type="label" id="6009">
                 <description>Next Program time</description>
                 <posx>1045</posx>
@@ -1486,12 +1509,12 @@
 
             <control type="label">
                 <left>0</left>
-                <top>3</top>
+                <top>185</top>
                 <width>250</width>
                 <height>30</height>
                 <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)] $INFO[System.Time(hh:mm)]</label>
                 <align>right</align>
-                <aligny>center</aligny>
+                <aligny>top</aligny>
                 <font>font12</font>
                 <shadowcolor>22000000</shadowcolor>
                 <textcolor>bbffffff</textcolor>
@@ -1601,13 +1624,14 @@
 
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
+
             <control type="image" id="8004">
                 <description>Program channel logo</description>
-                <posx>5</posx>
-                <posy>160</posy>
-                <width>247</width>
-                <height>45</height>
-                <aspectratio align="right" aligny="bottom">keep</aspectratio>
+                <posx>285</posx>
+                <posy>150</posy>
+                <width>60</width>
+                <height>25</height>
+                <aspectratio align="left" aligny="bottom">keep</aspectratio>
             </control>
 
             <control type="label" id="8008">
@@ -1656,6 +1680,15 @@
                 <texture>tv.jpg</texture>
                 <visible>StringCompare(Control.GetLabel(8010),)</visible>
             </control>
+            <control type="image">
+                <description>Program channel logo</description>
+                <posx>1050</posx>
+                <posy>145</posy>
+                <width>60</width>
+                <height>25</height>
+                <texture>$INFO[Control.GetLabel(8004)]</texture>
+                <aspectratio align="left" aligny="bottom">keep</aspectratio>
+            </control>
             <control type="label" id="8009">
                 <description>Next Program time</description>
                 <posx>1045</posx>
@@ -1701,12 +1734,12 @@
 
             <control type="label">
                 <left>0</left>
-                <top>3</top>
+                <top>185</top>
                 <width>250</width>
                 <height>30</height>
                 <label fallback="">$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)] $INFO[System.Time(hh:mm)]</label>
                 <align>right</align>
-                <aligny>center</aligny>
+                <aligny>top</aligny>
                 <font>font12</font>
                 <shadowcolor>22000000</shadowcolor>
                 <textcolor>bbffffff</textcolor>
@@ -1819,13 +1852,14 @@
                 <label>$INFO[Control.GetLabel(9012), Next episode starts in , seconds]</label>
                 <shadowcolor>22000000</shadowcolor>
             </control>
+
             <control type="image" id="9004">
                 <description>Program channel logo</description>
-                <posx>5</posx>
-                <posy>160</posy>
-                <width>247</width>
-                <height>45</height>
-                <aspectratio align="right" aligny="bottom">keep</aspectratio>
+                <posx>285</posx>
+                <posy>150</posy>
+                <width>60</width>
+                <height>25</height>
+                <aspectratio align="left" aligny="bottom">keep</aspectratio>
             </control>
 
             <control type="label">
@@ -1887,6 +1921,15 @@
                 <aspectratio>keep</aspectratio>
                 <texture>tv.jpg</texture>
                 <visible>StringCompare(Control.GetLabel(9006),)</visible>
+            </control>
+            <control type="image">
+                <description>Program channel logo</description>
+                <posx>1050</posx>
+                <posy>145</posy>
+                <width>60</width>
+                <height>25</height>
+                <texture>$INFO[Control.GetLabel(9004)]</texture>
+                <aspectratio align="left" aligny="bottom">keep</aspectratio>
             </control>
             <control type="label" id="9002">
                 <description>Current Program time</description>
