@@ -319,7 +319,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._playLastChannel()
         elif action.getId() == ACTION_RIGHT:
             self._showLastPlayedChannel()
-        elif action.getId == ACTION_LEFT:
+        elif action.getId() == ACTION_LEFT:
             self._showLastPlayedChannel()
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideControl(self.C_UP_NEXT)
