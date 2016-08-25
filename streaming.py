@@ -107,7 +107,7 @@ class StreamsService(object):
                     label = channel.title
                     stream = str(stream.replace("<channel>", channel.title.replace(" ","%20")))
 
-                if unicode(label.lower()) == unicode(channel.title.lower()):
+                if label.lower() == channel.title.lower(): #TODO unicode
                     exact_matches.append((id, label, stream))
                 if int(self.addon.getSetting('addon.match')) > 0:
                     labelx = re.sub(r' ','',label.lower())
