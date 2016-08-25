@@ -1847,10 +1847,13 @@ class TVGuide(xbmcgui.WindowXML):
         if timestamp:
             today = datetime.datetime.today()
             tomorrow = today + datetime.timedelta(days=1)
+            yesterday = today - datetime.timedelta(days=1)
             if today.date() == timestamp.date():
                 return 'Today'
             elif tomorrow.date() == timestamp.date():
                 return 'Tomorrow'
+            elif yesterday.date() == timestamp.date():
+                return 'Yesterday'
             else:
                 return timestamp.strftime("%A")
 
