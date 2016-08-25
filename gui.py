@@ -80,6 +80,11 @@ HALF_HOUR = datetime.timedelta(minutes=30)
 
 SKIN = ADDON.getSetting('skin')
 
+def timedelta_total_seconds(timedelta):
+    return (
+        timedelta.microseconds + 0.0 +
+        (timedelta.seconds + timedelta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+
 def debug(s):
     if DEBUG: xbmc.log(str(s), xbmc.LOGDEBUG)
 
@@ -1005,7 +1010,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if not self.currentProgram:
                     self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
                 if self.currentProgram and self.currentProgram.endDate:
-                    remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                    remainingseconds = int(timedelta_total_seconds((self.currentProgram.endDate - datetime.datetime.now())))
                     if remainingseconds < self.upNextTime and remainingseconds > 1:
                         firstTime = True
                         self._updateNextUpInfo(firstTime)
@@ -1014,7 +1019,7 @@ class TVGuide(xbmcgui.WindowXML):
                         count = 0
                         while remainingseconds < self.upNextTime and remainingseconds > 1 and self.mode == MODE_TV:
                             self._updateNextUpInfo(firstTime)
-                            try: remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                            try: remainingseconds = int(timedelta_total_seconds((self.currentProgram.endDate - datetime.datetime.now())))
                             except: pass
                             count = count + 1
                             time.sleep(1)
@@ -1051,7 +1056,7 @@ class TVGuide(xbmcgui.WindowXML):
                 osdprogramprogresscontrol = self.getControl(self.C_MAIN_OSD_PROGRESS)
                 if osdprogramprogresscontrol:
                     osdprogramprogresscontrol.setPercent(self.percent(self.currentProgram.startDate,self.currentProgram.endDate))
-                remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                remainingseconds = int(timedelta_total_seconds((self.currentProgram.endDate - datetime.datetime.now())))
                 self.setControlLabel(self.C_MAIN_UP_NEXT_TIME_REMAINING, '%s' % remainingseconds)
 
             self.setControlText(self.C_MAIN_UP_NEXT_DESCRIPTION, self.currentProgram.description)
@@ -1085,7 +1090,7 @@ class TVGuide(xbmcgui.WindowXML):
                     pass
         elif self.currentProgram is not None and not firstTime:
             if self.currentProgram.startDate and self.currentProgram.endDate:
-                remainingseconds = int((self.currentProgram.endDate - datetime.datetime.now()).total_seconds())
+                remainingseconds = int(timedelta_total_seconds((self.currentProgram.endDate - datetime.datetime.now())))
                 self.setControlLabel(self.C_MAIN_UP_NEXT_TIME_REMAINING, '%s' % remainingseconds)
     def _showOsd(self):
         if not self.osdEnabled:
