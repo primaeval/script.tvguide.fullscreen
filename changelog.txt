@@ -11,6 +11,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.82
+- fix
+
 version 0.0.81
 - Quick EPG
 
