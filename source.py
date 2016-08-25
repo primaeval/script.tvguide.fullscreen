@@ -617,8 +617,9 @@ class Database(object):
         program = None
         now = datetime.datetime.now()
         c = self.conn.cursor()
-        c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
+        try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
                   [channel.id, self.source.KEY, now, now])
+        except: return
         row = c.fetchone()
         if row:
             try:
