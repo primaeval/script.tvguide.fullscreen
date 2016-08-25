@@ -1729,7 +1729,8 @@
             <posy>600</posy>
             <width>1280</width>
             <height>280</height>
-            <visible>false</visible>
+            <visible>!Control.IsVisible(10000)</visible>
+
             <control type="button" id="10001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
@@ -1752,6 +1753,16 @@
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
             </control>
+            <control type="image">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>-2</posy>
+                <width>1280</width>
+                <height>126</height>
+                <texture colordiffuse="FF00BFFF">white50.png</texture>
+                <visible>true</visible>
+            </control>
+
 
             <control type="image" id="14601">
                 <description>header</description>
@@ -1765,6 +1776,15 @@
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
 
+            </control>
+            <control type="image">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>-60</posy>
+                <width>1280</width>
+                <height>58</height>
+                <texture colordiffuse="FF00BFFF">white50.png</texture>
+                <visible>true</visible>
             </control>
             <control type="image" id="14602">
                 <description>footer</description>
@@ -2167,5 +2187,6 @@
             </control>
 
         </control>
+
     </controls>
 </window>

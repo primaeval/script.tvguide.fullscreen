@@ -551,6 +551,9 @@ class TVGuide(xbmcgui.WindowXML):
             self._moveUp(scrollEvent=True)
         elif action.getId() == ACTION_MOUSE_WHEEL_DOWN:
             self._moveDown(scrollEvent=True)
+        elif action.getId() == ACTION_SELECT_ITEM:
+            self._hideQuickEpg()
+            self.playChannel(self.osdChannel, self.osdProgram)
         else:
             xbmc.log('[script.tvguide.fullscreen] quick epg Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
