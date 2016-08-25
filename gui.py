@@ -1017,8 +1017,8 @@ class TVGuide(xbmcgui.WindowXML):
                             time.sleep(1)
                             if not self.player.isPlaying() or xbmc.abortRequested or self.isClosing:
                                 break
-                            if self.upNextShowTimeEnabled and self.upNextShowTime >= count:
-                                break
+                            if self.upNextShowTimeEnabled and count >= self.upNextShowTime:
+                                self._hideControl(self.C_UP_NEXT)
                         self._hideControl(self.C_UP_NEXT)
                         self.currentProgram = None
 
