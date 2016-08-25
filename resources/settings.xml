@@ -38,14 +38,14 @@
     <category label="30148">
         <setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="Default" />
         <setting label="30119" type="lsep" />
-        <setting id="enable.osd" label="30118" type="bool" default="true"  />
+        <setting id="enable.osd" label="30118" type="bool" default="true"  enable="eq(1,false)"/>
+        <setting id="alternative.playback" label="30120" type="bool" default="false" />
         <setting type="sep"/>
         <setting id="enable.nextup" label="Show Up Next" type="bool" default="true" />
         <setting id="nextup.time" type="number" label="  - Time before end in seconds to show" default="20" visible="eq(-1,true)" enable="true"/>
         <setting id="enable.nextup.showTime" label="  - Set display time" visible="eq(-2,true)" type="bool" default="false" />
         <setting id="nextup.showTime" type="number" label="    - Time in seconds to show" default="10" visible="eq(-1,true)" enable="true"/>
-        <setting type="sep"/>
-        <setting id="alternative.playback" label="30120" type="bool" default="false" />
+
         <setting type="sep"/>
         <setting id="program.background.enabled" label="Background Program Image" type="bool" default="true" />
         <setting type="sep"/>
