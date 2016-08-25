@@ -27,6 +27,15 @@
             <height>720</height>
             <texture>black-back.png</texture>
         </control>
+        <control type="image">
+            <description>background</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="FF02A5DB">white50.png</texture>
+            <visible>true</visible>
+        </control>
 
         <control type="group">
             <posx>200</posx>
@@ -75,7 +84,7 @@
                 <width>360</width>
                 <height>38</height>
                 <aligny>center</aligny>
-                <font>font13</font>
+                <font>font12</font>
                 <textcolor>ffffffff</textcolor>
                 <label>text</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
@@ -86,7 +95,7 @@
                 <posy>70</posy>
                 <width>410</width>
                 <height>60</height>
-                <font>font13</font>
+                <font>font12</font>
                 <textcolor>ffffffff</textcolor>
 				<visible>false</visible>
                 <label>$ADDON[script.tvguide.fullscreen 30501]</label>
@@ -111,7 +120,7 @@
             <width>500</width>
             <height>400</height>
             <textcolor>ffffffff</textcolor>
-            <font>font13</font>
+            <font>font12</font>
 			<align>left</align>
             <aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
@@ -141,7 +150,7 @@
                     <width>450</width>
                     <height>38</height>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font12</font>
                     <textcolor>white</textcolor>
                     <info>ListItem.Label</info>
                 </control>
@@ -175,7 +184,7 @@
                     <width>450</width>
                     <height>38</height>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font12</font>
                     <textcolor>cyan</textcolor>
                     <label>[B]$INFO[ListItem.Label][/B]</label>
                 </control>
@@ -196,7 +205,7 @@
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
-            <font>font13</font>
+            <font>font12</font>
             <textcolor>white</textcolor>
             <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30502]</label>
@@ -213,7 +222,7 @@
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
-            <font>font13</font>
+            <font>font12</font>
             <textcolor>white</textcolor>
             <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30503]</label>
