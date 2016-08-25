@@ -1250,7 +1250,7 @@ class TVGuide(xbmcgui.WindowXML):
         channelsWithoutPrograms = list(channels)
 
         # date and time row
-        self.setControlLabel(self.C_MAIN_DATE, self.viewStartDate.strftime("%A"))
+        self.setControlLabel(self.C_MAIN_DATE, self.formatDateTodayTomorrow(self.viewStartDate))
         #self.setControlLabel(self.C_MAIN_DATE, self.formatDate(self.viewStartDate, False))
         self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
         for col in range(1, 5):
@@ -1417,7 +1417,7 @@ class TVGuide(xbmcgui.WindowXML):
         channelsWithoutPrograms = list(channels)
 
         # date and time row
-        self.setControlLabel(self.C_QUICK_EPG_DATE, self.quickViewStartDate.strftime("%A"))
+        self.setControlLabel(self.C_QUICK_EPG_DATE, self.formatDateTodayTomorrow(self.quickViewStartDate))
         for col in range(1, 5):
             self.setControlLabel(14000 + col, self.formatTime(startTime))
             startTime += HALF_HOUR
@@ -1842,6 +1842,21 @@ class TVGuide(xbmcgui.WindowXML):
             return timestamp.strftime(format)
         else:
             return ''
+
+    def formatDateTodayTomorrow(self, timestamp):
+        if timestamp:
+            today = datetime.datetime.today()
+            tomorrow = today + datetime.timedelta(days=1)
+            yesterday = today - datetime.timedelta(days=1)
+            if today.date() == timestamp.date():
+                return 'Today'
+            elif tomorrow.date() == timestamp.date():
+                return 'Tomorrow'
+            elif yesterday.date() == timestamp.date():
+                return 'Yesterday'
+            else:
+                return timestamp.strftime("%A")
+
 
     def setControlImage(self, controlId, image):
         control = self.getControl(controlId)
