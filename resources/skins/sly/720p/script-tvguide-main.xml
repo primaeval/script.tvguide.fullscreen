@@ -30,7 +30,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture colordiffuse="FF00BFFF">white50.png</texture>
+            <texture colordiffuse="FF02A5DB">white50.png</texture>
             <visible>true</visible>
         </control>
 
@@ -40,7 +40,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture>black.png</texture>
+            <texture colordiffuse="FF02A5DB">skyq/Backgrounds/loading.jpg</texture>
             <visible>Control.IsVisible(5000)</visible>
         </control>
         <!-- Background -->
@@ -101,7 +101,7 @@
                 <posy>-60</posy>
                 <width>1280</width>
                 <height>58</height>
-                <texture>black-back.png</texture>
+                <texture></texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -114,7 +114,7 @@
                 <posy>450</posy>
                 <width>1280</width>
                 <height>220</height>
-                <texture>black-back.png</texture>
+                <texture></texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -1987,7 +1987,7 @@
                 <posy>-2</posy>
                 <width>1280</width>
                 <height>126</height>
-                <texture colordiffuse="FF00BFFF">white50.png</texture>
+                <texture colordiffuse="FF02A5DB">white50.png</texture>
                 <visible>true</visible>
             </control>
 
@@ -2011,7 +2011,7 @@
                 <posy>-60</posy>
                 <width>1280</width>
                 <height>58</height>
-                <texture colordiffuse="FF00BFFF">white50.png</texture>
+                <texture colordiffuse="FF02A5DB">white50.png</texture>
                 <visible>true</visible>
             </control>
             <control type="image" id="14602">
