@@ -2324,7 +2324,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl.addItems(items)
 
         self.getControl(self.C_STREAM_CHANNEL_LABEL).setLabel(self.channel.title)
-        self.getControl(self.C_STREAM_CHANNEL_LOGO).setImage(self.channel.logo)
+        if self.channel.logo:
+            self.getControl(self.C_STREAM_CHANNEL_LOGO).setImage(self.channel.logo)
 
 
     def onAction(self, action):
