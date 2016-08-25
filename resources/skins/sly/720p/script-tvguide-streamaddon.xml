@@ -24,6 +24,15 @@
             <height>720</height>
             <texture>black-back.png</texture>
         </control>
+        <control type="image">
+            <description>background</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="FF02A5DB">white50.png</texture>
+            <visible>true</visible>
+        </control>
 
         <control type="label" id="4000">
             <posx>330</posx>
@@ -68,7 +77,7 @@
                     <width>200</width>
                     <height>40</height>
                     <align>center</align>
-                    <font>font13</font>
+                    <font>font12</font>
                     <textcolor>ffffffff</textcolor>
                     <info>ListItem.Label</info>
                 </control>
@@ -95,7 +104,7 @@
                     <width>180</width>
                     <height>40</height>
                     <align>center</align>
-                    <font>font13</font>
+                    <font>font12</font>
                     <textcolor>ffffffff</textcolor>
                     <info>ListItem.Label</info>
                 </control>

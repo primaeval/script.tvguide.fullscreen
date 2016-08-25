@@ -1998,6 +1998,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programLabelControl.setLabel(self.program.title+label)
         if self.program.imageSmall:
             programImageControl.setImage(self.program.imageSmall)
+        if self.program.imageLarge:
+            programImageControl.setImage(self.program.imageLarge)
         labelControl.setLabel(self.program.description)
 
         if self.program.startDate:
