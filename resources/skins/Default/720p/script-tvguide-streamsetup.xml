@@ -41,9 +41,9 @@
         <control type="image" id="4023">
             <description>Channel Logo</description>
             <posx>20</posx>
-            <posy>60</posy>
+            <posy>70</posy>
             <width>100</width>
-            <height>100</height>
+            <height>60</height>
             <aspectratio>keep</aspectratio>
             <fadetime>500</fadetime>
             <texture>-</texture>
