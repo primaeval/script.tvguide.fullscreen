@@ -1,15 +1,33 @@
 USAGE NOTES:
-- controls: osd (info,i), normal overlays (fullscreen,tab), pip toggle (context menu, c), exit (back,esc)
-            change channel in tv mode (page up/down)
-            Last Channel (0), show last channel info in tv mode (right), hide (left)
-            close Up Next popup (select, enter)
-            Quick EPG in tv mode (up/down), movement as normal epg (up,down,left,right,ok,context), close (esc)
+- controls:
+
+  EPG mode:
+    menu (context,c)
+    Listings view (info,i)
+    movement (up,down,left,right,ok)
+    close (esc,back)
+  TV mode:
+    osd (info,i)
+    normal overlays (fullscreen,tab)
+    pip toggle (context menu, c)
+    exit (back,esc)
+    change channel (page up/down)
+    Last Channel (0)
+    Last Channel info (right), hide (left)
+  OSD mode:
+    movement (up,down,left,right,ok)
+  UP Next mode:
+    close Up Next popup (select, enter)
+
 - "Import addons.ini" will overwrite addon folders on next update timer
 - use pip theme with 8 channels per page to match original tv guide icon layout
 - click to load in addon browse dialog
 - right click to add channels to categories
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.84
+- Listings view (info,i)
 
 version 0.0.83
 - today/tomorrow date in epg
@@ -258,11 +276,11 @@ version 0.0.9
 - tweaks
 
 version 0.0.8
-- hide background video 
+- hide background video
 
 version 0.0.7
 - Super Favourites (use Spoyser's repo)
-- addon folders batch reload 
+- addon folders batch reload
 
 version 0.0.6
 - fuzzy logo matching
@@ -271,7 +289,7 @@ version 0.0.5
 - fuzzy channel matching
 
 version 0.0.4
-- add addon folders to ini file 
+- add addon folders to ini file
 - (back out of dialog/app to reload)
 
 version 0.0.2
