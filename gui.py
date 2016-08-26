@@ -630,7 +630,7 @@ class TVGuide(xbmcgui.WindowXML):
                 color = "grey"
             else:
                 color = "white"
-            label = "[COLOR %s] %s-%s - %s[/COLOR]" % (color,self.formatTime(p.startDate),self.formatTime(p.endDate),p.title)
+            label = "[COLOR %s] %s - %s[/COLOR]" % (color,self.formatTime(p.startDate),p.title)
             labels.append(label)
         title = channel.title
         d = xbmcgui.Dialog()
