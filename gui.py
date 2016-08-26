@@ -260,7 +260,8 @@ class TVGuide(xbmcgui.WindowXML):
     def getControl(self, controlId):
         try:
             return super(TVGuide, self).getControl(controlId)
-        except:
+        except Exception as detail:
+            xbmc.log("EXCEPTION: (script.tvguide.fullscreen) TVGuide.getControl %s" % detail, xbmc.LOGERROR)
             if controlId in self.ignoreMissingControlIds:
                 return None
             if not self.isClosing:
