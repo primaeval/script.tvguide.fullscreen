@@ -968,7 +968,7 @@
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
                 <posx>0</posx>
-                <posy>240r</posy>
+                <posy>180r</posy>
                 <width>350</width>
                 <height>180</height>
                 <aligny>top</aligny>
@@ -1240,6 +1240,17 @@
             <animation effect="fade" start="0" end="100" time="0">VisibleChange</animation>
 
             <control type="image">
+                <description>header</description>
+                <posx>0</posx>
+                <posy>-500</posy>
+                <width>1280</width>
+                <height>50</height>
+                <texture>black-back.png</texture>
+                <visible>true</visible>
+            </control>
+
+            <control type="image">
+                <description>footer</description>
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1280</width>
@@ -1274,12 +1285,12 @@
             </control>
             <control type="image" id="6004">
                 <description>Program channel logo</description>
-                <posx>170r</posx>
-                <posy>60r</posy>
+                <posx>5</posx>
+                <posy>-495</posy>
                 <width>160</width>
-                <height>45</height>
+                <height>40</height>
                 <aspectratio>keep</aspectratio>
-                <colordiffuse>grey</colordiffuse>
+                <colordiffuse>white</colordiffuse>
             </control>
             <control type="textbox" id="6003">
                 <description>Program description</description>
@@ -1311,10 +1322,10 @@
             <control type="image" id="6006">
                 <description>Program image</description>
                 <posx>280</posx>
-                <posy>7</posy>
+                <posy>57</posy>
                 <width>296</width>
                 <height>177</height>
-                <aspectratio>keep</aspectratio>
+                <aspectratio>stretch</aspectratio>
                 <texture>-</texture>
                 <visible>false</visible>
             </control>
@@ -1413,6 +1424,17 @@
             <animation effect="fade" start="0" end="100" time="0">VisibleChange</animation>
 
             <control type="image">
+                <description>header</description>
+                <posx>0</posx>
+                <posy>-500</posy>
+                <width>1280</width>
+                <height>50</height>
+                <texture>black-back.png</texture>
+                <visible>true</visible>
+            </control>
+
+            <control type="image">
+                <description>footer</description>
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1280</width>
@@ -1448,12 +1470,12 @@
             </control>
             <control type="image" id="8004">
                 <description>Program channel logo</description>
-                <posx>170r</posx>
-                <posy>60r</posy>
+                <posx>5</posx>
+                <posy>-495</posy>
                 <width>160</width>
-                <height>45</height>
+                <height>40</height>
                 <aspectratio>keep</aspectratio>
-                <colordiffuse>grey</colordiffuse>
+                <colordiffuse>white</colordiffuse>
             </control>
             <control type="textbox" id="8003">
                 <description>Program description</description>
@@ -1599,6 +1621,17 @@
             <animation effect="fade" start="0" end="100" time="0">VisibleChange</animation>
 
             <control type="image">
+                <description>header</description>
+                <posx>0</posx>
+                <posy>-500</posy>
+                <width>1280</width>
+                <height>50</height>
+                <texture>black-back.png</texture>
+                <visible>true</visible>
+            </control>
+
+            <control type="image">
+                <description>footer</description>
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1280</width>
@@ -1634,12 +1667,12 @@
             </control>
             <control type="image" id="9004">
                 <description>Program channel logo</description>
-                <posx>170r</posx>
-                <posy>60r</posy>
+                <posx>5</posx>
+                <posy>-495</posy>
                 <width>160</width>
-                <height>45</height>
+                <height>40</height>
                 <aspectratio>keep</aspectratio>
-                <colordiffuse>grey</colordiffuse>
+                <colordiffuse>white</colordiffuse>>
             </control>
             <control type="textbox" id="9007">
                 <description>Program description</description>

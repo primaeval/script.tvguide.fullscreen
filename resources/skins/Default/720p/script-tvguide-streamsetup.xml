@@ -429,7 +429,7 @@
                 <onleft>103</onleft>
                 <onright>3002</onright>
 
-                <itemlayout width="212" height="212">
+                <itemlayout width="150" height="150">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
@@ -443,6 +443,7 @@
                         <width>130</width>
                         <height>130</height>
                         <info>ListItem.Icon</info>
+                        <aspectratio>stretch</aspectratio>
                     </control>
                 </itemlayout>
                 <focusedlayout width="150" height="150">
@@ -468,6 +469,7 @@
                         <width>130</width>
                         <height>130</height>
                         <info>ListItem.Icon</info>
+                        <aspectratio>stretch</aspectratio>
                     </control>
                 </focusedlayout>
             </control>
@@ -642,8 +644,8 @@
             <control type="list" id="4001">
                 <posx>40</posx>
                 <posy>65</posy>
-                <width>212</width>
-                <height>212</height>
+                <width>150</width>
+                <height>150</height>
                 <aspectratio>keep</aspectratio>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
@@ -651,7 +653,7 @@
                 <onleft>104</onleft>
                 <onright>4008</onright>
 
-                <itemlayout width="212" height="212">
+                <itemlayout width="150" height="150">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
@@ -669,7 +671,7 @@
                     <control type="label">
                         <posx>10</posx>
                         <posy>150</posy>
-                        <width>212</width>
+                        <width>150</width>
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
@@ -677,7 +679,7 @@
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="212" height="212">
+                <focusedlayout width="150" height="150">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
@@ -704,7 +706,7 @@
                     <control type="label">
                         <posx>10</posx>
                         <posy>150</posy>
-                        <width>212</width>
+                        <width>150</width>
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
