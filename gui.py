@@ -1321,7 +1321,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setPosition(2,top)
 
         if SKIN == 'sly':
-            focusColor = '0xFF00B8FF'
+            focusColor = '0xFF00ff48'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
         else:
@@ -1346,6 +1346,12 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
                     focusTexture = 'tvguide-program-red-focus.png'
+                elif self.isProgramPlaying(program):
+                    noFocusTexture = 'tvguide-program-grey-focus.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
+                elif SKIN == 'sly':
+                    noFocusTexture = 'tvguide-program-grey.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
@@ -1486,7 +1492,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setPosition(2,top)
 
         if SKIN == 'sly':
-            focusColor = '0xFF00B8FF'
+            focusColor = '0xFF00ff48'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
         else:
@@ -1511,6 +1517,12 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
                     focusTexture = 'tvguide-program-red-focus.png'
+                elif self.isProgramPlaying(program):
+                    noFocusTexture = 'tvguide-program-grey-focus.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
+                elif SKIN == 'sly':
+                    noFocusTexture = 'tvguide-program-grey.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
@@ -1651,6 +1663,8 @@ class TVGuide(xbmcgui.WindowXML):
     def onPlayBackStopped(self):
         if not self.player.isPlaying() and not self.isClosing:
             self._hideControl(self.C_MAIN_OSD)
+            self.currentChannel = None
+            self.currentProgram = None
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def _secondsToXposition(self, seconds):
@@ -1880,6 +1894,18 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 return timestamp.strftime("%A")
 
+    def isProgramPlaying(self, program):
+        if self.currentChannel and self.currentProgram:
+            currentTitle = self.currentProgram.title
+            currentStartDate = self.currentProgram.startDate
+            currentEndDate = self.currentProgram.endDate
+            programTitle = program.title
+            programStartDate = program.startDate
+            programEndDate = program.endDate
+            if currentTitle == programTitle and currentStartDate == programStartDate and currentEndDate == programEndDate and self.currentChannel.title == program.channel.title:
+              return True
+
+        return False
 
     def setControlImage(self, controlId, image):
         control = self.getControl(controlId)
