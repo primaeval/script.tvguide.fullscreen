@@ -8,7 +8,32 @@
     </coordinates>
     <controls>
 	<constant name="aquashadow">aa00ffc6</constant>
-        		
+
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-red.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-red-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-grey.png</texture>
+        </control>
+
 		<!-- Transparent background -->
 		<control type="image">
             <description>Background</description>
@@ -19,7 +44,7 @@
             <texture>highlight.png</texture>
             <visible>true</visible>
         </control>
-		
+
 		<!-- Blackout background on playback -->
         <control type="image">
             <description>Black background for playback</description>
@@ -30,7 +55,7 @@
             <texture>black.png</texture>
             <visible>Control.IsVisible(5000)</visible>
         </control>
-        
+
 		<!-- Background Video-->
         <control type="videowindow">
             <description>Video window dimensions</description>
@@ -120,7 +145,7 @@
                 <texture>black-back.png</texture>
                 <fadetime>200</fadetime>
 				<visible>true</visible>
-            </control>			
+            </control>
             <control type="image" id="4100">
                 <description>Progress bar over EPG</description>
                 <left>180</left>
@@ -224,7 +249,7 @@
                 <top>60</top>
                 <width>180</width>
                 <visible>true</visible>
-				
+
                 <!-- EPG layout - channel backgrounds -->
                 <control type="image" id="4210">
                     <description>1st channel</description>
@@ -805,7 +830,7 @@
                     <aligny>center</aligny>
                 </control>
             </control>
-            
+
 			<!-- Footer - Selected Programme information -->
 			<control type="label" id="7025">
                 <description>Station name</description>
@@ -895,7 +920,7 @@
                 <midtexture border="3" colordiffuse="ff00ffc6">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
-            
+
 			<!-- Loading screen -->
             <control type="label" id="4200">
                 <description>visibility marker for loading group</description>
@@ -1320,7 +1345,7 @@
                 <visible>false</visible>
             </control>
 		</control>
-		
+
 		<!-- OSD layout - Last played (all Next Programme layout needs work) -->
 		<control type="label" id="8000">
             <description>visibility marker for last played OSD Info bar</description>
@@ -1556,7 +1581,7 @@
                 <height>170</height>
                 <texture>black-back.png</texture>
             </control>
-			
+
 			<!-- Current programme details -->
             <control type="label" id="9005">
                 <description>Station call sign - Up Next</description>
@@ -1734,7 +1759,7 @@
 				<visible>false</visible>
             </control>
         </control>
-		
+
 		<!--Quick EPG -->
 		<control type="label" id="10000">
             <description>visibility marker for Quick TV Guide group</description>
