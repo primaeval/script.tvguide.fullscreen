@@ -129,7 +129,7 @@
                 <width>-10</width>
                 <height>446</height>
                 <visible>Control.IsVisible(4200)</visible>
-                <texture>cyan.png</texture>
+                <texture>aqua.png</texture>
             </control>
 
             <control type="image">
@@ -1998,7 +1998,7 @@
                 <posy>0</posy>
                 <width>-10</width>
                 <height>116</height>
-                <texture>cyan.png</texture>
+                <texture>aqua.png</texture>
             </control>
 
             <control type="image" id="14601">
