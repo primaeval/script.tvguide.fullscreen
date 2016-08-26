@@ -33,6 +33,14 @@
             <height>1</height>
             <texture>tvguide-program-grey.png</texture>
         </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-grey-focus.png</texture>
+        </control>
 
 		<!-- Transparent background -->
 		<control type="image">
