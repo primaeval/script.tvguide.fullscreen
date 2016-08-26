@@ -187,14 +187,13 @@
         </control>
         <control type="image" id="7002">
             <description>program image</description>
-            <posx>430</posx>
-            <posy>442</posy>
+            <posx>555</posx>
+            <posy>428</posy>
             <width>700</width>
             <height>260</height>
             <align>left</align>
             <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
-            <aspectratio align="left">keep</aspectratio>
         </control>
 
         <control type="label" id="7001">
