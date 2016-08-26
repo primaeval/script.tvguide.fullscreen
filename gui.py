@@ -1349,9 +1349,6 @@ class TVGuide(xbmcgui.WindowXML):
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
                     focusTexture = 'tvguide-program-grey-focus.png'
-                elif SKIN == 'sly':
-                    noFocusTexture = 'tvguide-program-grey.png'
-                    focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
@@ -1400,7 +1397,7 @@ class TVGuide(xbmcgui.WindowXML):
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top-2)
-        self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
+        self.getControl(self.C_MAIN_BACKGROUND).setHeight(top-3)
 
         # add program controls
         if focusFunction is None:
@@ -1519,9 +1516,6 @@ class TVGuide(xbmcgui.WindowXML):
                     focusTexture = 'tvguide-program-red-focus.png'
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
-                    focusTexture = 'tvguide-program-grey-focus.png'
-                elif SKIN == 'sly':
-                    noFocusTexture = 'tvguide-program-grey.png'
                     focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
