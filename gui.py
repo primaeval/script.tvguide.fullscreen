@@ -1354,6 +1354,9 @@ class TVGuide(xbmcgui.WindowXML):
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
                     focusTexture = 'tvguide-program-grey-focus.png'
+                elif SKIN == 'sly':
+                    noFocusTexture = 'tvguide-program-grey.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
@@ -1521,6 +1524,9 @@ class TVGuide(xbmcgui.WindowXML):
                     focusTexture = 'tvguide-program-red-focus.png'
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
+                elif SKIN == 'sly':
+                    noFocusTexture = 'tvguide-program-grey.png'
                     focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
