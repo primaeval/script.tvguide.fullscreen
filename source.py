@@ -604,6 +604,24 @@ class Database(object):
         c.close()
         return channelList
 
+    def getChannelListing(self, channel):
+        return self._invokeAndBlockForResult(self._getChannelListing, channel)
+
+    def _getChannelListing(self, channel):
+        programList = []
+        c = self.conn.cursor()
+        try: c.execute('SELECT * FROM programs WHERE channel=?',
+                  [channel.id])
+        except: return
+        for row in c:
+            program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
+                          row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                          row['is_movie'], row['language'])
+            programList.append(program)
+        c.close()
+
+        return programList
+
     def getCurrentProgram(self, channel):
         return self._invokeAndBlockForResult(self._getCurrentProgram, channel)
 

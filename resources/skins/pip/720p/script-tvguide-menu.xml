@@ -232,12 +232,12 @@
         </control>
         <control type="image" id="4100">
             <description>channel logo</description>
-            <posx>280r</posx>
-            <posy>120r</posy>
-            <width>240</width>
+            <posx>275</posx>
+            <posy>185</posy>
+            <width>220</width>
             <height>80</height>
-            <align>right</align>
-            <aligny>top</aligny>
+            <align>center</align>
+            <aligny>center</aligny>
             <aspectratio>keep</aspectratio>
             <visible>true</visible>
         </control>
@@ -277,7 +277,7 @@
             <font>font13</font>
             <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
-            <label>Super Favourites</label>
+            <label>iSearch</label>
         </control>
 
         <control type="button" id="4005">

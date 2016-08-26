@@ -260,7 +260,8 @@ class TVGuide(xbmcgui.WindowXML):
     def getControl(self, controlId):
         try:
             return super(TVGuide, self).getControl(controlId)
-        except:
+        except Exception as detail:
+            xbmc.log("EXCEPTION: (script.tvguide.fullscreen) TVGuide.getControl %s" % detail, xbmc.LOGERROR)
             if controlId in self.ignoreMissingControlIds:
                 return None
             if not self.isClosing:
@@ -456,9 +457,10 @@ class TVGuide(xbmcgui.WindowXML):
             self._showControl(self.C_MAIN_MOUSE_CONTROLS)
             return
 
-        elif action.getId() in [KEY_CONTEXT_MENU,ACTION_SHOW_INFO]:
+        elif action.getId() in [KEY_CONTEXT_MENU]:
             if self.player.isPlaying():
                 self._hideEpg()
+
 
         controlInFocus = None
         currentFocus = self.focusPoint
@@ -505,6 +507,9 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
+        elif action.getId() in [ACTION_SHOW_INFO]:
+            program = self._getProgramFromControl(controlInFocus)
+            self.showListing(program.channel)
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -615,6 +620,24 @@ class TVGuide(xbmcgui.WindowXML):
                 if d.stream is not None:
                     self.database.setCustomStreamUrl(program.channel, d.stream)
                     self.playChannel(program.channel, program)
+
+    def showListing(self, channel):
+        programList = self.database.getChannelListing(channel)
+        labels = []
+        now = datetime.datetime.now()
+        for p in programList:
+            if p.endDate < now:
+                color = "grey"
+            else:
+                color = "white"
+            label = "[COLOR %s] %s - %s[/COLOR]" % (color,self.formatTime(p.startDate),p.title)
+            labels.append(label)
+        title = channel.title
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            self._showContextMenu(programList[index])
+
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
@@ -1298,7 +1321,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setPosition(2,top)
 
         if SKIN == 'sly':
-            focusColor = '0xFF00B8FF'
+            focusColor = '0xFF00ff48'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
         else:
@@ -1323,6 +1346,12 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
                     focusTexture = 'tvguide-program-red-focus.png'
+                elif self.isProgramPlaying(program):
+                    noFocusTexture = 'tvguide-program-grey-focus.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
+                elif SKIN == 'sly':
+                    noFocusTexture = 'tvguide-program-grey.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
@@ -1463,7 +1492,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setPosition(2,top)
 
         if SKIN == 'sly':
-            focusColor = '0xFF00B8FF'
+            focusColor = '0xFF00ff48'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
         else:
@@ -1488,6 +1517,12 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
                     focusTexture = 'tvguide-program-red-focus.png'
+                elif self.isProgramPlaying(program):
+                    noFocusTexture = 'tvguide-program-grey-focus.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
+                elif SKIN == 'sly':
+                    noFocusTexture = 'tvguide-program-grey.png'
+                    focusTexture = 'tvguide-program-grey-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
@@ -1628,6 +1663,8 @@ class TVGuide(xbmcgui.WindowXML):
     def onPlayBackStopped(self):
         if not self.player.isPlaying() and not self.isClosing:
             self._hideControl(self.C_MAIN_OSD)
+            self.currentChannel = None
+            self.currentProgram = None
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def _secondsToXposition(self, seconds):
@@ -1857,6 +1894,18 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 return timestamp.strftime("%A")
 
+    def isProgramPlaying(self, program):
+        if self.currentChannel and self.currentProgram:
+            currentTitle = self.currentProgram.title
+            currentStartDate = self.currentProgram.startDate
+            currentEndDate = self.currentProgram.endDate
+            programTitle = program.title
+            programStartDate = program.startDate
+            programEndDate = program.endDate
+            if currentTitle == programTitle and currentStartDate == programStartDate and currentEndDate == programEndDate and self.currentChannel.title == program.channel.title:
+              return True
+
+        return False
 
     def setControlImage(self, controlId, image):
         control = self.getControl(controlId)
