@@ -435,7 +435,7 @@
                         <posy>0</posy>
                         <width>150</width>
                         <height>150</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>white.png</texture>
                     </control>
                     <control type="image">
                         <posx>10</posx>
@@ -443,7 +443,6 @@
                         <width>130</width>
                         <height>130</height>
                         <info>ListItem.Icon</info>
-                        <aspectratio>stretch</aspectratio>
                     </control>
                 </itemlayout>
                 <focusedlayout width="150" height="150">
@@ -452,7 +451,7 @@
                         <posy>0</posy>
                         <width>150</width>
                         <height>150</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>white.png</texture>
                         <visible>!Control.HasFocus(3001)</visible>
                     </control>
                     <control type="image">
@@ -460,7 +459,7 @@
                         <posy>0</posy>
                         <width>150</width>
                         <height>150</height>
-                        <texture>menu-grey-focus.png</texture>
+                        <texture>cyan.png</texture>
                         <visible>Control.HasFocus(3001)</visible>
                     </control>
                     <control type="image">
@@ -469,7 +468,6 @@
                         <width>130</width>
                         <height>130</height>
                         <info>ListItem.Icon</info>
-                        <aspectratio>stretch</aspectratio>
                     </control>
                 </focusedlayout>
             </control>
@@ -644,8 +642,8 @@
             <control type="list" id="4001">
                 <posx>40</posx>
                 <posy>65</posy>
-                <width>150</width>
-                <height>150</height>
+                <width>300</width>
+                <height>200</height>
                 <aspectratio>keep</aspectratio>
                 <viewtype label="list">list</viewtype>
                 <orientation>vertical</orientation>
@@ -653,13 +651,13 @@
                 <onleft>104</onleft>
                 <onright>4008</onright>
 
-                <itemlayout width="150" height="150">
+                <itemlayout width="150" height="200">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>150</width>
                         <height>150</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>white.png</texture>
                     </control>
                     <control type="image">
                         <posx>10</posx>
@@ -671,7 +669,7 @@
                     <control type="label">
                         <posx>10</posx>
                         <posy>150</posy>
-                        <width>150</width>
+                        <width>300</width>
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
@@ -679,13 +677,13 @@
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="150" height="150">
+                <focusedlayout width="150" height="200">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>150</width>
                         <height>150</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>white.png</texture>
                         <visible>!Control.HasFocus(4001)</visible>
                     </control>
                     <control type="image">
@@ -693,7 +691,7 @@
                         <posy>0</posy>
                         <width>150</width>
                         <height>150</height>
-                        <texture>menu-grey-focus.png</texture>
+                        <texture>cyan.png</texture>
                         <visible>Control.HasFocus(4001)</visible>
                     </control>
                     <control type="image">
@@ -706,7 +704,7 @@
                     <control type="label">
                         <posx>10</posx>
                         <posy>150</posy>
-                        <width>150</width>
+                        <width>300</width>
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
