@@ -7,6 +7,7 @@
         <top>0</top>
     </coordinates>
     <controls>
+	<constant name="aquashadow">aa00ffc6</constant>
         		
 		<!-- Transparent background -->
 		<control type="image">
@@ -1756,15 +1757,12 @@
             <control type="image">
                 <description>Quick EPG background</description>
                 <left>0</left>
-                <top>-60</top>
+                <top>0</top>
                 <width>1280</width>
-                <height>280</height>
-                <texture>grey.png</texture>
+                <height>120</height>
+                <texture>-</texture>
                 <visible>!Control.IsVisible(14200)</visible>
                 <aspectratio>scale</aspectratio>
-                <align>center</align>
-                <aligny>center</aligny>
-                <fadetime>200</fadetime>
             </control>
             <control type="image" id="14601">
                 <description>Quick EPG header background</description>
