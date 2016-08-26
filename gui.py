@@ -519,7 +519,7 @@ class TVGuide(xbmcgui.WindowXML):
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
     def onActionQuickEPGMode(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK]:
+        if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_STOP]:
             self._hideQuickEpg()
 
         # catch the ESC key
