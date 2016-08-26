@@ -356,6 +356,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SHOW_INFO:
@@ -369,10 +370,12 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_UP:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
         elif action.getId() == ACTION_DOWN:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideQuickEpg()
@@ -385,6 +388,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._hideOsd()
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SELECT_ITEM:
@@ -429,6 +433,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._hideLastPlayed()
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SELECT_ITEM:
