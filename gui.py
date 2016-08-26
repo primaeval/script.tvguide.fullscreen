@@ -457,9 +457,10 @@ class TVGuide(xbmcgui.WindowXML):
             self._showControl(self.C_MAIN_MOUSE_CONTROLS)
             return
 
-        elif action.getId() in [KEY_CONTEXT_MENU,ACTION_SHOW_INFO]:
+        elif action.getId() in [KEY_CONTEXT_MENU]:
             if self.player.isPlaying():
                 self._hideEpg()
+
 
         controlInFocus = None
         currentFocus = self.focusPoint
@@ -506,6 +507,9 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
+        elif action.getId() in [ACTION_SHOW_INFO]:
+            program = self._getProgramFromControl(controlInFocus)
+            self.showListing(program.channel)
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -616,6 +620,24 @@ class TVGuide(xbmcgui.WindowXML):
                 if d.stream is not None:
                     self.database.setCustomStreamUrl(program.channel, d.stream)
                     self.playChannel(program.channel, program)
+
+    def showListing(self, channel):
+        programList = self.database.getChannelListing(channel)
+        labels = []
+        now = datetime.datetime.now()
+        for p in programList:
+            if p.endDate < now:
+                color = "grey"
+            else:
+                color = "white"
+            label = "[COLOR %s] %s-%s - %s[/COLOR]" % (color,self.formatTime(p.startDate),self.formatTime(p.endDate),p.title)
+            labels.append(label)
+        title = channel.title
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            self._showContextMenu(programList[index])
+
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
