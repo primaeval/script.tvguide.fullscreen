@@ -62,8 +62,8 @@ ACTION_SHOW_INFO = 11
 ACTION_STOP = 13
 ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
-#TODO ACTION_MENU = 163
-#TODO ACTION_LAST_PAGE = 160
+ACTION_MENU = 163
+ACTION_LAST_PAGE = 160
 
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
@@ -654,7 +654,7 @@ class TVGuide(xbmcgui.WindowXML):
         programList = self.database.getNowList()
         labels = []
         for p in programList:
-            label = "%s - %s" % (p.channel.title,p.title)
+            label = "%s - %s" % (p.channel.title.encode("utf8"),p.title.encode("utf8"))
             labels.append(label)
         title = "Now"
         d = xbmcgui.Dialog()

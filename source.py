@@ -180,10 +180,8 @@ class Database(object):
         event.extend(args)
         self.eventQueue.append(event)
         self.event.set()
-
         while not method.__name__ in self.eventResults:
             time.sleep(0.1)
-
         result = self.eventResults.get(method.__name__)
         del self.eventResults[method.__name__]
         return result
@@ -546,13 +544,13 @@ class Database(object):
         f.close()
 
 
+    #TODO hangs on second call from _getNowList. use _getChannelList instead
     def getChannelList(self, onlyVisible=True):
         if not self.channelList or not onlyVisible:
             result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible)
             if not onlyVisible:
                 return result
             self.channelList = result
-
         return self.channelList
 
     def _getChannelList(self, onlyVisible):
@@ -600,7 +598,6 @@ class Database(object):
                         channelList = sorted(new_channels, key=lambda channel: channel.title.lower())
                     else:
                         channelList = new_channels
-
         c.close()
         return channelList
 
@@ -629,7 +626,7 @@ class Database(object):
         programList = []
         now = datetime.datetime.now()
         c = self.conn.cursor()
-        channelList = self.getChannelList()
+        channelList = self._getChannelList(True)
         for channel in channelList:
             try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
                       [channel.id, self.source.KEY,now,now])
@@ -650,7 +647,7 @@ class Database(object):
         programList = []
         now = datetime.datetime.now()
         c = self.conn.cursor()
-        channelList = self.getChannelList()
+        channelList = self._getChannelList(True)
         for channel in channelList:
             try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date >= ? AND end_date >= ?',
                       [channel.id, self.source.KEY,now,now])
