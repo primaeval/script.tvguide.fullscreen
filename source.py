@@ -622,6 +622,48 @@ class Database(object):
 
         return programList
 
+    def getNowList(self):
+        return self._invokeAndBlockForResult(self._getNowList)
+
+    def _getNowList(self):
+        programList = []
+        now = datetime.datetime.now()
+        c = self.conn.cursor()
+        channelList = self.getChannelList()
+        for channel in channelList:
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
+                      [channel.id, self.source.KEY,now,now])
+            except: return
+            row = c.fetchone()
+            if row:
+                program = Program(row['channel'], row['title'], row['start_date'], row['end_date'], row['description'],
+                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                              row['is_movie'], row['language'])
+                programList.append(program)
+        c.close()
+        return programList
+
+    def getNextList(self):
+        return self._invokeAndBlockForResult(self._getNextList)
+
+    def _getNextList(self):
+        programList = []
+        now = datetime.datetime.now()
+        c = self.conn.cursor()
+        channelList = self.getChannelList()
+        for channel in channelList:
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date >= ? AND end_date >= ?',
+                      [channel.id, self.source.KEY,now,now])
+            except: return
+            row = c.fetchone()
+            if row:
+                program = Program(row['channel'], row['title'], row['start_date'], row['end_date'], row['description'],
+                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                              row['is_movie'], row['language'])
+                programList.append(program)
+        c.close()
+        return programList
+
     def getCurrentProgram(self, channel):
         return self._invokeAndBlockForResult(self._getCurrentProgram, channel)
 

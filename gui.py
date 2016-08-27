@@ -62,6 +62,8 @@ ACTION_SHOW_INFO = 11
 ACTION_STOP = 13
 ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
+ACTION_MENU = 163
+ACTION_LAST_PAGE = 160
 
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
@@ -515,6 +517,10 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [ACTION_SHOW_INFO]:
             program = self._getProgramFromControl(controlInFocus)
             self.showListing(program.channel)
+        elif action.getId() in [ACTION_MENU]:
+            self.showNow()
+        elif action.getId() in [ACTION_LAST_PAGE]:
+            self.showNext()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -643,6 +649,29 @@ class TVGuide(xbmcgui.WindowXML):
         if index > -1:
             self._showContextMenu(programList[index])
 
+    def showNow(self):
+        programList = self.database.getNowList()
+        labels = []
+        for p in programList:
+            label = "%s - %s" % (p.channel,p.title)
+            labels.append(label)
+        title = "Now"
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            self._showContextMenu(programList[index])
+
+    def showNext(self):
+        programList = self.database.getNextList()
+        labels = []
+        for p in programList:
+            label = "%s - %s" % (p.channel,p.title)
+            labels.append(label)
+        title = "Next"
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            self._showContextMenu(programList[index])
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
