@@ -26,6 +26,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.85
+- highlight now playing channel and program
+- fixes and tweaks
+
 version 0.0.84
 - Listings view (info,i)
 
