@@ -952,6 +952,17 @@
 
                 <visible>true</visible>
             </control>
+            <control type="progress" id="7026">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
+            </control>
             <control type="textbox" id="7022">
                 <description>Program description</description>
                 <posx>360</posx>
@@ -978,19 +989,6 @@
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>
             </control>
-
-            <control type="progress" id="7026">
-                <posx>0</posx>
-                <posy>10r</posy>
-                <width>1280</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>true</visible>
-            </control>
-
             <control type="label" id="4200">
                 <description>visibility marker for loading group</description>
             </control>
@@ -1292,6 +1290,17 @@
                 <aspectratio>keep</aspectratio>
                 <colordiffuse>white</colordiffuse>
             </control>
+            <control type="progress" id="6011">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
+            </control>
             <control type="textbox" id="6003">
                 <description>Program description</description>
                 <posx>30</posx>
@@ -1381,19 +1390,6 @@
                 <texture>-</texture>
                 <visible>false</visible>
             </control>
-
-            <control type="progress" id="6011">
-                <posx>0</posx>
-                <posy>10r</posy>
-                <width>1280</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
-            </control>
-
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
@@ -1476,6 +1472,18 @@
                 <height>40</height>
                 <aspectratio>keep</aspectratio>
                 <colordiffuse>white</colordiffuse>
+            </control>
+
+            <control type="progress" id="8011">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
             </control>
             <control type="textbox" id="8003">
                 <description>Program description</description>
@@ -1579,18 +1587,6 @@
                 <visible>false</visible>
             </control>
 
-            <control type="progress" id="8011">
-                <posx>0</posx>
-                <posy>10r</posy>
-                <width>1280</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
-            </control>
-
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
@@ -1664,6 +1660,17 @@
                 <font>font13</font>
                 <align>right</align>
 
+            </control>
+            <control type="progress" id="9011">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(9011),0)</visible>
             </control>
             <control type="image" id="9004">
                 <description>Program channel logo</description>
