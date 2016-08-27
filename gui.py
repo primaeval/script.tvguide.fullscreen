@@ -660,7 +660,9 @@ class TVGuide(xbmcgui.WindowXML):
         d = xbmcgui.Dialog()
         index = d.select(title,labels)
         if index > -1:
-            self._showContextMenu(programList[index])
+            program = programList[index]
+            #self.playChannel(program.channel, program)
+            self._showContextMenu(program)
 
     def showNext(self):
         programList = self.database.getNextList()
@@ -672,7 +674,9 @@ class TVGuide(xbmcgui.WindowXML):
         d = xbmcgui.Dialog()
         index = d.select(title,labels)
         if index > -1:
-            self._showContextMenu(programList[index])
+            program = programList[index]
+            #self.playChannel(program.channel, program)
+            self._showContextMenu(program)
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
