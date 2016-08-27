@@ -72,7 +72,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture colordiffuse="FF02A5DB">skyq/Backgrounds/loading.jpg</texture>
+            <texture>background.png</texture>
             <visible>Control.IsVisible(5000)</visible>
         </control>
         <!-- Background -->
