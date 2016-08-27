@@ -62,8 +62,8 @@ ACTION_SHOW_INFO = 11
 ACTION_STOP = 13
 ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
-ACTION_MENU = 163
-ACTION_LAST_PAGE = 160
+#TODO ACTION_MENU = 163
+#TODO ACTION_LAST_PAGE = 160
 
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
@@ -649,11 +649,12 @@ class TVGuide(xbmcgui.WindowXML):
         if index > -1:
             self._showContextMenu(programList[index])
 
+
     def showNow(self):
         programList = self.database.getNowList()
         labels = []
         for p in programList:
-            label = "%s - %s" % (p.channel,p.title)
+            label = "%s - %s" % (p.channel.title,p.title)
             labels.append(label)
         title = "Now"
         d = xbmcgui.Dialog()
@@ -665,7 +666,7 @@ class TVGuide(xbmcgui.WindowXML):
         programList = self.database.getNextList()
         labels = []
         for p in programList:
-            label = "%s - %s" % (p.channel,p.title)
+            label = "%s - %s" % (p.channel.title,p.title)
             labels.append(label)
         title = "Next"
         d = xbmcgui.Dialog()
@@ -763,7 +764,6 @@ class TVGuide(xbmcgui.WindowXML):
                         title, program.language))
         elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
             xbmc.executebuiltin('ActivateWindow(10025,"plugin://plugin.program.super.favourites/?mode=0&keyword=%s")' % urllib.quote_plus(program.title))
-
 
 
     def setFocusId(self, controlId):
@@ -1308,8 +1308,7 @@ class TVGuide(xbmcgui.WindowXML):
         channelsWithoutPrograms = list(channels)
 
         # date and time row
-        self.setControlLabel(self.C_MAIN_DATE, self.formatDateTodayTomorrow(self.viewStartDate))
-        #self.setControlLabel(self.C_MAIN_DATE, self.formatDate(self.viewStartDate, False))
+        #self.setControlLabel(self.C_MAIN_DATE, self.formatDateTodayTomorrow(self.viewStartDate))
         self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
         for col in range(1, 5):
             self.setControlLabel(4000 + col, self.formatTime(startTime))

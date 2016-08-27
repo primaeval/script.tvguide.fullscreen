@@ -636,7 +636,7 @@ class Database(object):
             except: return
             row = c.fetchone()
             if row:
-                program = Program(row['channel'], row['title'], row['start_date'], row['end_date'], row['description'],
+                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
                               row['image_large'], row['image_small'], None, row['season'], row['episode'],
                               row['is_movie'], row['language'])
                 programList.append(program)
@@ -657,7 +657,7 @@ class Database(object):
             except: return
             row = c.fetchone()
             if row:
-                program = Program(row['channel'], row['title'], row['start_date'], row['end_date'], row['description'],
+                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
                               row['image_large'], row['image_small'], None, row['season'], row['episode'],
                               row['is_movie'], row['language'])
                 programList.append(program)
