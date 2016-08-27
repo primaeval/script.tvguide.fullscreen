@@ -661,7 +661,6 @@ class TVGuide(xbmcgui.WindowXML):
         index = d.select(title,labels)
         if index > -1:
             program = programList[index]
-            #self.playChannel(program.channel, program)
             self._showContextMenu(program)
 
     def showNext(self):
@@ -675,7 +674,6 @@ class TVGuide(xbmcgui.WindowXML):
         index = d.select(title,labels)
         if index > -1:
             program = programList[index]
-            #self.playChannel(program.channel, program)
             self._showContextMenu(program)
 
     def _showContextMenu(self, program):
@@ -2085,9 +2083,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if index >= 0:
                 listControl.selectItem(index)
 
-        playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
+        #playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
+        playControl.setLabel("Watch Channel")
         if not self.program.channel.isPlayable():
-            playControl.setEnabled(False)
+            #playControl.setEnabled(False)
             self.setFocusId(self.C_POPUP_CHOOSE_STREAM)
         if self.database.getCustomStreamUrl(self.program.channel):
             chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
@@ -2174,7 +2173,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
             if not self.program.channel.isPlayable():
                 playControl = self.getControl(self.C_POPUP_PLAY)
-                playControl.setEnabled(False)
+                #playControl.setEnabled(False)
         elif controlId == self.C_POPUP_CATEGORY:
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
