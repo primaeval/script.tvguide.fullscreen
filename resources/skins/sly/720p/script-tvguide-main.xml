@@ -90,7 +90,6 @@
             <visible>!Control.IsVisible(5000)</visible>
             <animation time="200" effect="fade">Visible</animation>
             <animation time="200" effect="fade">Hidden</animation>
-
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
