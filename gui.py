@@ -1310,6 +1310,13 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setWidth(176)
                 control.setPosition(2,top)
+                try:
+                    if self.currentChannel == channels[idx]:
+                        control.setImage("tvguide-program-grey-focus.png")
+                    else:
+                        control.setImage("black-back.png")
+                except:
+                    control.setImage("black-back.png")
             control = self.getControl(4010 + idx)
             if control:
                 control.setHeight(self.epgView.cellHeight-2)
@@ -1481,6 +1488,13 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.quickEpgView.cellHeight-2)
                 control.setWidth(176)
                 control.setPosition(2,top)
+                try:
+                    if self.currentChannel == channels[idx]:
+                        control.setImage("tvguide-program-grey-focus.png")
+                    else:
+                        control.setImage("black-back.png")
+                except:
+                    control.setImage("black-back.png")
             control = self.getControl(14010 + idx)
             if control:
                 control.setHeight(self.quickEpgView.cellHeight-2)
