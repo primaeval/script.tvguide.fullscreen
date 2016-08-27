@@ -40,11 +40,12 @@
 
         <control type="image" id="4023">
             <description>Channel Logo</description>
-            <posx>20</posx>
+            <posx>40</posx>
             <posy>70</posy>
             <width>100</width>
             <height>60</height>
             <aspectratio>keep</aspectratio>
+            <align>left</align>
             <fadetime>500</fadetime>
             <texture>-</texture>
             <visible>true</visible>
@@ -52,12 +53,12 @@
 
         <control type="label" id="4024">
             <description>Channel Name</description>
-            <posx>20</posx>
+            <posx>40</posx>
             <posy>40</posy>
             <width>260</width>
             <height>40</height>
             <font>font13_title</font>
-            <textcolor>cyan</textcolor>
+            <textcolor>white</textcolor>
             <label/>
             <align>left</align>
             <scroll>true</scroll>
