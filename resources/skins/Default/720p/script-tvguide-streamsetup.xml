@@ -91,11 +91,11 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>white</textcolor>
+            <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
             <label>strm|m3u</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onleft>104</onleft>
             <onright>102</onright>
             <ondown>1001</ondown>
@@ -108,11 +108,11 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>white</textcolor>
+            <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30602]</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onleft>101</onleft>
             <onright>103</onright>
             <ondown>2001</ondown>
@@ -125,11 +125,11 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>white</textcolor>
+            <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30603]</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onleft>102</onleft>
             <onright>104</onright>
             <ondown>3001</ondown>
@@ -143,11 +143,11 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>white</textcolor>
+            <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
             <label>Browse</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onleft>103</onleft>
             <onright>101</onright>
             <ondown>4001</ondown>
@@ -180,10 +180,10 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>101</onup>
                 <onright>1002</onright>
                 <ondown>1002</ondown>
@@ -207,11 +207,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>101</onup>
                 <onleft>1001</onleft>
                 <onright>1003</onright>
@@ -224,11 +224,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>101</onup>
                 <onleft>1002</onleft>
                 <onright>1004</onright>
@@ -241,11 +241,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>101</onup>
                 <onleft>1003</onleft>
             </control>
@@ -287,7 +287,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                     </control>
                     <control type="label">
                         <posx>16</posx>
@@ -296,7 +296,7 @@
                         <height>38</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>white</textcolor>
+                        <textcolor>black</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
@@ -307,7 +307,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                         <visible>!Control.HasFocus(2001)</visible>
                     </control>
                     <control type="image">
@@ -315,7 +315,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey-focus.png</texture>
+                        <texture>tvg-button-focus.png</texture>
                         <visible>Control.HasFocus(2001)</visible>
                     </control>
                     <control type="label">
@@ -347,11 +347,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>102</onup>
                 <onleft>2001</onleft>
                 <onright>2003</onright>
@@ -364,11 +364,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>102</onup>
                 <onleft>2002</onleft>
                 <onright>2004</onright>
@@ -381,11 +381,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>102</onup>
                 <onleft>2003</onleft>
             </control>
@@ -510,7 +510,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                     </control>
                     <control type="label">
                         <posx>16</posx>
@@ -519,7 +519,7 @@
                         <height>38</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>white</textcolor>
+                        <textcolor>black</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
@@ -530,7 +530,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                         <visible>!Control.HasFocus(3002)</visible>
                     </control>
                     <control type="image">
@@ -538,7 +538,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey-focus.png</texture>
+                        <texture>tvg-button-focus.png</texture>
                         <visible>Control.HasFocus(3002)</visible>
                     </control>
                     <control type="label">
@@ -570,11 +570,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>103</onup>
                 <onleft>3002</onleft>
                 <onright>3006</onright>
@@ -587,11 +587,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>103</onup>
                 <onleft>3005</onleft>
                 <onright>3007</onright>
@@ -604,11 +604,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>103</onup>
                 <onleft>3006</onleft>
             </control>
@@ -673,7 +673,7 @@
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>white</textcolor>
+                        <textcolor>black</textcolor>
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
@@ -708,7 +708,7 @@
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>white</textcolor>
+                        <textcolor>black</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
@@ -722,7 +722,7 @@
                 <height>38</height>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>Click and Wait to Load</label>
             </control>
@@ -745,7 +745,7 @@
                         <posy>0</posy>
                         <width>300</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                     </control>
                     <control type="label">
                         <posx>16</posx>
@@ -754,7 +754,7 @@
                         <height>38</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>white</textcolor>
+                        <textcolor>black</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
@@ -765,7 +765,7 @@
                         <posy>0</posy>
                         <width>300</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                         <visible>!Control.HasFocus(4008)</visible>
                     </control>
                     <control type="image">
@@ -773,7 +773,7 @@
                         <posy>0</posy>
                         <width>300</width>
                         <height>38</height>
-                        <texture>menu-grey-focus.png</texture>
+                        <texture>tvg-button-focus.png</texture>
                         <visible>Control.HasFocus(4008)</visible>
                     </control>
                     <control type="label">
@@ -836,7 +836,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                     </control>
                     <control type="label">
                         <posx>16</posx>
@@ -845,7 +845,7 @@
                         <height>38</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>white</textcolor>
+                        <textcolor>black</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
@@ -856,7 +856,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
+                        <texture>tvg-button-nofocus.png</texture>
                         <visible>!Control.HasFocus(4002)</visible>
                     </control>
                     <control type="image">
@@ -864,7 +864,7 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>menu-grey-focus.png</texture>
+                        <texture>tvg-button-focus.png</texture>
                         <visible>Control.HasFocus(4002)</visible>
                     </control>
                     <control type="label">
@@ -897,11 +897,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>104</onup>
                 <onleft>4002</onleft>
                 <onright>4006</onright>
@@ -914,11 +914,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>104</onup>
                 <onleft>4005</onleft>
                 <onright>4007</onright>
@@ -931,11 +931,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>104</onup>
                 <onleft>4006</onleft>
                 <onright>4009</onright>
@@ -948,11 +948,11 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>white</textcolor>
+                <textcolor>black</textcolor>
                 <focusedcolor>cyan</focusedcolor>
                 <label>Add Folder</label>
-                <texturefocus>menu-grey-focus.png</texturefocus>
-                <texturenofocus>menu-grey.png</texturenofocus>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>104</onup>
                 <onleft>4007</onleft>
             </control>
