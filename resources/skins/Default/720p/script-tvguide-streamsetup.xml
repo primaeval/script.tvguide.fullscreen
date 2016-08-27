@@ -530,16 +530,20 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>tvg-button-nofocus.png</texture>
-                        <visible>!Control.HasFocus(3002)</visible>
+                        <texture>tvg-button-focus.png</texture>
+                        <visible>true</visible>
                     </control>
-                    <control type="image">
-                        <posx>0</posx>
+                    <control type="label">
+                        <posx>16</posx>
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>tvg-button-focus.png</texture>
-                        <visible>Control.HasFocus(3002)</visible>
+                        <aligny>center</aligny>
+                        <font>font13</font>
+                        <textcolor>black</textcolor>
+                        <focusedcolor>black</focusedcolor>
+                        <info>ListItem.Label</info>
+                        <visible>!Control.HasFocus(3002)</visible>
                     </control>
                     <control type="label">
                         <posx>16</posx>
@@ -551,13 +555,7 @@
                         <textcolor>cyan</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
-                    </control>
-                    <control type="image">
-                        <posx>25r</posx>
-                        <posy>9</posy>
-                        <width>20</width>
-                        <height>20</height>
-                        <texture>tvguide-bullet.png</texture>
+                        <visible>Control.HasFocus(3002)</visible>
                     </control>
                 </focusedlayout>
             </control>
@@ -765,16 +763,20 @@
                         <posy>0</posy>
                         <width>300</width>
                         <height>38</height>
-                        <texture>tvg-button-nofocus.png</texture>
-                        <visible>!Control.HasFocus(4008)</visible>
+                        <texture>tvg-button-focus.png</texture>
+                        <visible>true</visible>
                     </control>
-                    <control type="image">
-                        <posx>0</posx>
+                    <control type="label">
+                        <posx>16</posx>
                         <posy>0</posy>
                         <width>300</width>
                         <height>38</height>
-                        <texture>tvg-button-focus.png</texture>
-                        <visible>Control.HasFocus(4008)</visible>
+                        <aligny>center</aligny>
+                        <font>font13</font>
+                        <textcolor>black</textcolor>
+                        <focusedcolor>black</focusedcolor>
+                        <info>ListItem.Label</info>
+                        <visible>!Control.HasFocus(4008)</visible>
                     </control>
                     <control type="label">
                         <posx>16</posx>
@@ -786,13 +788,7 @@
                         <textcolor>cyan</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
-                    </control>
-                    <control type="image">
-                        <posx>20r</posx>
-                        <posy>9</posy>
-                        <width>20</width>
-                        <height>20</height>
-                        <texture>tvguide-bullet.png</texture>
+                        <visible>Control.HasFocus(4008)</visible>
                     </control>
                 </focusedlayout>
             </control>
@@ -856,16 +852,20 @@
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>tvg-button-nofocus.png</texture>
-                        <visible>!Control.HasFocus(4002)</visible>
+                        <texture>tvg-button-focus.png</texture>
+                        <visible>true</visible>
                     </control>
-                    <control type="image">
-                        <posx>0</posx>
+                    <control type="label">
+                        <posx>16</posx>
                         <posy>0</posy>
                         <width>400</width>
                         <height>38</height>
-                        <texture>tvg-button-focus.png</texture>
-                        <visible>Control.HasFocus(4002)</visible>
+                        <aligny>center</aligny>
+                        <font>font13</font>
+                        <textcolor>black</textcolor>
+                        <focusedcolor>black</focusedcolor>
+                        <info>ListItem.Label</info>
+                        <visible>!Control.HasFocus(4002)</visible>
                     </control>
                     <control type="label">
                         <posx>16</posx>
@@ -877,13 +877,7 @@
                         <textcolor>cyan</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
-                    </control>
-                    <control type="image">
-                        <posx>20r</posx>
-                        <posy>9</posy>
-                        <width>20</width>
-                        <height>20</height>
-                        <texture>tvguide-bullet.png</texture>
+                        <visible>Control.HasFocus(4002)</visible>
                     </control>
                 </focusedlayout>
             </control>
