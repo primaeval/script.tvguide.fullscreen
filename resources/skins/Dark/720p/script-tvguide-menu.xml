@@ -38,6 +38,27 @@
             <visible>true</visible>
         </control>
 
+        <control type="image">
+            <description>top buttons mount</description>
+            <posx>275</posx>
+            <posy>10</posy>
+            <width>220</width>
+            <height>700</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <description>top button background</description>
+            <posx>277</posx>
+            <posy>12</posy>
+
+
+            <width>216</width>
+            <height>696</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+
         <control type="button" id="80003">
             <description>add category</description>
             <left>20</left>
@@ -233,25 +254,6 @@
             <visible>true</visible>
         </control>
 
-        <control type="image">
-            <description>top buttons mount</description>
-            <left>275</left>
-            <top>10</top>
-            <width>220</width>
-            <height>170</height>
-            <texture>grey.png</texture>
-            <visible>true</visible>
-        </control>
-        <control type="image">
-            <description>top button background</description>
-            <left>277</left>
-            <top>12</top>
-            <width>216</width>
-            <height>166</height>
-            <texture>black-back.png</texture>
-            <visible>true</visible>
-        </control>
-
         <control type="button" id="4006">
             <!-- super favourites -->
             <left>285</left>
@@ -299,32 +301,13 @@
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
             <onup>4005</onup>
-            <ondown>4001</ondown>
+            <ondown>4000</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
 			<focusedcolor>ff00ffc6</focusedcolor>
-        </control>
-
-        <control type="image">
-            <description>lower buttons mount</description>
-            <left>275</left>
-            <top>270</top>
-            <width>220</width>
-            <height>166</height>
-            <texture>grey.png</texture>
-            <visible>true</visible>
-        </control>
-        <control type="image">
-            <description>lower buttons background</description>
-            <left>277</left>
-            <top>272</top>
-            <width>216</width>
-            <height>162</height>
-            <texture>black-back.png</texture>
-            <visible>true</visible>
         </control>
 
         <control type="button" id="4000">
@@ -335,14 +318,14 @@
             <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>4005</onup>
+            <onup>4002</onup>
             <ondown>4001</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
-			<visible>false</visible>
+			<visible>true</visible>
         </control>
         <control type="button" id="4001">
             <!-- Choose Stream -->
@@ -352,7 +335,7 @@
             <height>40</height>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
-            <onup>4002</onup>
+            <onup>4000</onup>
             <ondown>4007</ondown>
             <onleft>7004</onleft>
             <align>center</align>
