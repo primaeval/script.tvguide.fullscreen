@@ -1127,6 +1127,9 @@ class TVGuide(xbmcgui.WindowXML):
         if self.mode != MODE_OSD:
             self.osdChannel = self.currentChannel
 
+        if not self.osdChannel:
+            self.osdChannel = self.currentChannel
+
         if self.osdProgram is not None:
             self.setControlLabel(self.C_MAIN_OSD_TITLE, '[B]%s[/B]' % self.osdProgram.title)
             if self.osdProgram.startDate or self.osdProgram.endDate:
