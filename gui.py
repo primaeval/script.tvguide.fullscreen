@@ -1343,13 +1343,14 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setWidth(176)
                 control.setPosition(2,top)
-                try:
-                    if self.currentChannel == channels[idx]:
-                        control.setImage("tvguide-program-grey-focus.png")
-                    else:
+                if SKIN != 'sly':
+                    try:
+                        if self.currentChannel == channels[idx]:
+                            control.setImage("tvguide-program-grey-focus.png")
+                        else:
+                            control.setImage("black-back.png")
+                    except:
                         control.setImage("black-back.png")
-                except:
-                    control.setImage("black-back.png")
             control = self.getControl(4010 + idx)
             if control:
                 control.setHeight(self.epgView.cellHeight-2)
@@ -1362,7 +1363,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setPosition(2,top)
 
         if SKIN == 'sly':
-            focusColor = '0xFF00ff48'
+            focusColor = '0xFF000000'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
         else:
@@ -1389,10 +1390,13 @@ class TVGuide(xbmcgui.WindowXML):
                     focusTexture = 'tvguide-program-red-focus.png'
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
-                    focusTexture = 'tvguide-program-grey-focus.png'
+                    if SKIN == 'sly':
+                        focusTexture = 'tvguide-program-yellow-focus.png'
+                    else:
+                        focusTexture = 'tvguide-program-grey-focus.png'
                 elif SKIN == 'sly':
-                    noFocusTexture = 'tvguide-program-grey.png'
-                    focusTexture = 'tvguide-program-grey-focus.png'
+                    noFocusTexture = 'background2.png'
+                    focusTexture = 'tvguide-program-yellow-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
@@ -1521,13 +1525,14 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.quickEpgView.cellHeight-2)
                 control.setWidth(176)
                 control.setPosition(2,top)
-                try:
-                    if self.currentChannel == channels[idx]:
-                        control.setImage("tvguide-program-grey-focus.png")
-                    else:
+                if SKIN != 'sly':
+                    try:
+                        if self.currentChannel == channels[idx]:
+                            control.setImage("tvguide-program-grey-focus.png")
+                        else:
+                            control.setImage("black-back.png")
+                    except:
                         control.setImage("black-back.png")
-                except:
-                    control.setImage("black-back.png")
             control = self.getControl(14010 + idx)
             if control:
                 control.setHeight(self.quickEpgView.cellHeight-2)
@@ -1540,7 +1545,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setPosition(2,top)
 
         if SKIN == 'sly':
-            focusColor = '0xFF00ff48'
+            focusColor = '0xFF000000'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
         else:
@@ -1567,10 +1572,14 @@ class TVGuide(xbmcgui.WindowXML):
                     focusTexture = 'tvguide-program-red-focus.png'
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
-                    focusTexture = 'tvguide-program-grey-focus.png'
+                    if SKIN == 'sly':
+                        focusTexture = 'tvguide-program-yellow-focus.png'
+                    else:
+                        focusTexture = 'tvguide-program-grey-focus.png'
+
                 elif SKIN == 'sly':
-                    noFocusTexture = 'tvguide-program-grey.png'
-                    focusTexture = 'tvguide-program-grey-focus.png'
+                    noFocusTexture = 'background2.png'
+                    focusTexture = 'tvguide-program-yellow-focus.png'
                 else:
                     noFocusTexture = 'black-back.png'
                     focusTexture = 'black-back.png'
