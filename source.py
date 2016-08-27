@@ -773,6 +773,8 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getCustomStreamUrl, channel)
 
     def _getCustomStreamUrl(self, channel):
+        if not channel:
+            return
         c = self.conn.cursor()
         c.execute("SELECT stream_url FROM custom_stream_url WHERE channel=?", [channel.id])
         stream_url = c.fetchone()
