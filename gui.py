@@ -1678,6 +1678,7 @@ class TVGuide(xbmcgui.WindowXML):
     def onPlayBackStopped(self):
         if not self.player.isPlaying() and not self.isClosing:
             self._hideControl(self.C_MAIN_OSD)
+            self._hideControl(self.C_QUICK_EPG)
             self.currentChannel = None
             self.currentProgram = None
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
