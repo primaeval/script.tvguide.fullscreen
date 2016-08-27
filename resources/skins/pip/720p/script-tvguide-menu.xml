@@ -147,14 +147,6 @@
                     <info>ListItem.Label</info>
                     <visible>Control.HasFocus(7004)</visible>
                 </control>
-                <control type="image">
-                    <width>20</width>
-                    <height>20</height>
-                    <left>30r</left>
-                    <top>10</top>
-                    <visible>Control.HasFocus(7004)</visible>
-                    <texture>tvguide-bullet.png</texture>
-                </control>
             </focusedlayout>
         </control>
 
@@ -233,9 +225,9 @@
         <control type="image" id="4100">
             <description>channel logo</description>
             <posx>275</posx>
-            <posy>185</posy>
+            <posy>195</posy>
             <width>220</width>
-            <height>80</height>
+            <height>60</height>
             <align>center</align>
             <aligny>center</aligny>
             <aspectratio>keep</aspectratio>
