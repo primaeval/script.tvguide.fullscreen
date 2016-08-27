@@ -1411,7 +1411,7 @@ class TVGuide(xbmcgui.WindowXML):
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top-2)
-        self.getControl(self.C_MAIN_BACKGROUND).setHeight(top-3)
+        self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
 
         # add program controls
         if focusFunction is None:
