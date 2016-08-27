@@ -1370,8 +1370,6 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             focusColor = '0xFF00FFFF'
 
-        textColor = '0xFFFFFFFF'
-
         for program in programs:
             idx = channels.index(program.channel)
             if program.channel in channelsWithoutPrograms:
@@ -1395,7 +1393,6 @@ class TVGuide(xbmcgui.WindowXML):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
                     if SKIN == 'sly':
                         focusTexture = 'tvguide-program-yellow-focus.png'
-                        textColor = '0xFF000000'
                     else:
                         focusTexture = 'tvguide-program-grey-focus.png'
                 elif SKIN == 'sly':
@@ -1417,7 +1414,6 @@ class TVGuide(xbmcgui.WindowXML):
                     self.epgView.cellHeight - 2,
                     title,
                     focusedColor=focusColor,
-                    textColor=textColor,
                     noFocusTexture=noFocusTexture,
                     focusTexture=focusTexture
                 )
@@ -1556,8 +1552,6 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             focusColor = '0xFF00FFFF'
 
-        textColor = '0xFFFFFFFF'
-
         for program in programs:
             idx = channels.index(program.channel)
             if program.channel in channelsWithoutPrograms:
@@ -1581,7 +1575,6 @@ class TVGuide(xbmcgui.WindowXML):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
                     if SKIN == 'sly':
                         focusTexture = 'tvguide-program-yellow-focus.png'
-                        textColor = '0xFF000000'
                     else:
                         focusTexture = 'tvguide-program-grey-focus.png'
 
@@ -1604,7 +1597,6 @@ class TVGuide(xbmcgui.WindowXML):
                     self.quickEpgView.cellHeight - 2,
                     title,
                     focusedColor=focusColor,
-                    textColor=textColor,
                     noFocusTexture=noFocusTexture,
                     focusTexture=focusTexture
                 )
