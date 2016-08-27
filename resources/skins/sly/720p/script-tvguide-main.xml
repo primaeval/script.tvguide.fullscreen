@@ -31,6 +31,30 @@
             <height>1</height>
             <texture>tvguide-program-grey.png</texture>
         </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-yellow-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-blue.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>background2.png</texture>
+        </control>
 
         <control type="image">
             <description>background</description>
@@ -66,6 +90,7 @@
             <visible>!Control.IsVisible(5000)</visible>
             <animation time="200" effect="fade">Visible</animation>
             <animation time="200" effect="fade">Hidden</animation>
+
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
@@ -137,7 +162,7 @@
                 <width>-10</width>
                 <height>446</height>
                 <visible>Control.IsVisible(4200)</visible>
-                <texture>aqua.png</texture>
+                <texture>green.png</texture>
             </control>
 
             <control type="image">
@@ -2006,7 +2031,7 @@
                 <posy>0</posy>
                 <width>-10</width>
                 <height>116</height>
-                <texture>aqua.png</texture>
+                <texture>green.png</texture>
             </control>
 
             <control type="image" id="14601">
