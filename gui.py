@@ -1127,10 +1127,6 @@ class TVGuide(xbmcgui.WindowXML):
         if self.mode != MODE_OSD:
             self.osdChannel = self.currentChannel
 
-        # refresh the current program each time it's shown if it's the same channel
-        if self.osdChannel == self.currentChannel:
-            self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
-
         if self.osdProgram is not None:
             self.setControlLabel(self.C_MAIN_OSD_TITLE, '[B]%s[/B]' % self.osdProgram.title)
             if self.osdProgram.startDate or self.osdProgram.endDate:
