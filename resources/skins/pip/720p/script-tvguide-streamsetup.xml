@@ -672,7 +672,7 @@
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>black</textcolor>
+                        <textcolor>white</textcolor>
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
@@ -707,7 +707,7 @@
                         <height>40</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>black</textcolor>
+                        <textcolor>white</textcolor>
                         <focusedcolor>cyan</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
