@@ -178,7 +178,6 @@
             <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
-            <colordiffuse>darkgray</colordiffuse>
         </control>
 
         <control type="label" id="7001">
