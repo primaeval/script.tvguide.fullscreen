@@ -1080,7 +1080,7 @@
                     <posy>-310</posy>
                     <width>1280</width>
                     <height>720</height>
-                    <texture>black.png</texture>
+                    <texture>background.png</texture>
                 </control>
 
                 <control type="image">
