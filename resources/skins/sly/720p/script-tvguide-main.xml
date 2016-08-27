@@ -2038,6 +2038,7 @@
                 <width>-10</width>
                 <height>116</height>
                 <texture>green.png</texture>
+                <visible>!Control.IsVisible(10000)</visible>
             </control>
 
             <control type="image" id="14601">
@@ -2060,7 +2061,7 @@
                 <width>1280</width>
                 <height>58</height>
                 <texture>background.png</texture>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
             </control>
             <control type="image" id="14602">
                 <description>footer</description>
@@ -2123,7 +2124,7 @@
                 <posy>-40</posy>
                 <width>1280</width>
                 <height>40</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
 
                 <control type="image">
                     <description>workaround for texture not being loaded</description>
@@ -2245,7 +2246,7 @@
                 <posy>0</posy>
                 <width>180</width>
                 <height>120</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
 
                 <!-- logo images backgrounds -->
                 <control type="image" id="14210">
