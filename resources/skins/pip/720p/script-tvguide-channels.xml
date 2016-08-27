@@ -76,7 +76,7 @@
                 <height>38</height>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>ffffffff</textcolor>
+                <textcolor>cyan</textcolor>
                 <label>text</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
@@ -87,7 +87,7 @@
                 <width>410</width>
                 <height>60</height>
                 <font>font13</font>
-                <textcolor>ffffffff</textcolor>
+                <textcolor>cyan</textcolor>
 				<visible>false</visible>
                 <label>$ADDON[script.tvguide.fullscreen 30501]</label>
             </control>
