@@ -161,7 +161,7 @@
                 <posy>0</posy>
                 <width>-10</width>
                 <height>446</height>
-                <visible>Control.IsVisible(4200)</visible>
+                <visible>!Control.IsVisible(5000)</visible>
                 <texture>green.png</texture>
             </control>
 
@@ -212,7 +212,7 @@
                 <posy>-40</posy>
                 <width>1280</width>
                 <height>40</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
 
                 <control type="image">
                     <description>workaround for texture not being loaded</description>
@@ -348,7 +348,7 @@
                 <posy>0</posy>
                 <width>180</width>
                 <height>640</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
 
                 <!-- logo images backgrounds -->
                 <control type="image" id="4210">
@@ -945,7 +945,7 @@
                 <font>font14</font>
                 <align>center</align>
                 <aligny>top</aligny>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="label" id="7025">
@@ -959,6 +959,7 @@
                 <align>left</align>
                 <aligny>top</aligny>
                 <visible>!Player.HasMedia | [Player.HasMedia + StringCompare(Control.GetLabel(70244),)]</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image" id="70244">
@@ -983,7 +984,7 @@
                 <font>font13</font>
                 <align>right</align>
                 <aligny>top</aligny>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="textbox" id="7022">
@@ -995,7 +996,7 @@
                 <textcolor>bbffffff</textcolor>
                 <font>font13</font>
                 <wrapmultiline>true</wrapmultiline>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image" id="7023">
@@ -1009,6 +1010,7 @@
                 <fadetime>500</fadetime>
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image">
@@ -1022,6 +1024,7 @@
                 <fadetime>500</fadetime>
                 <texture>tv.jpg</texture>
                 <visible>StringCompare(Control.GetLabel(7023),)</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image" id="7024">
@@ -1034,6 +1037,7 @@
                 <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
                 <visible>!Player.HasMedia</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="progress" id="7026">
@@ -1046,6 +1050,7 @@
                 <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
                 <midtexture border="3" colordiffuse="FF00ff48">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image">
@@ -1055,6 +1060,7 @@
                 <height>10</height>
                 <texture border="3" colordiffuse="">thinborder.png</texture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="label" id="4200">
