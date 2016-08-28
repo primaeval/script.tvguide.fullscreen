@@ -744,6 +744,14 @@ class TVGuide(xbmcgui.WindowXML):
 
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+        elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAY:
+            if program.autoplayScheduled:
+                self.autoplay.removeAutoplay(program)
+            else:
+                self.autoplay.addAutoplay(program)
+
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
@@ -2081,6 +2089,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_PLAY_BEGINNING = 4005
     C_POPUP_SUPER_FAVOURITES = 4006
     C_POPUP_STREAM_SETUP = 4007
+    C_POPUP_AUTOPLAY = 4008
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
@@ -2114,6 +2123,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programImageControl = self.getControl(self.C_POPUP_PROGRAM_IMAGE)
         playControl = self.getControl(self.C_POPUP_PLAY)
         remindControl = self.getControl(self.C_POPUP_REMIND)
+        autoplayControl = self.getControl(self.C_POPUP_AUTOPLAY)
         channelLogoControl = self.getControl(self.C_POPUP_CHANNEL_LOGO)
         channelTitleControl = self.getControl(self.C_POPUP_CHANNEL_TITLE)
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
@@ -2164,12 +2174,18 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
         if self.program.startDate:
             remindControl.setEnabled(True)
+            autoplayControl.setEnabled(True)
             if self.showRemind:
                 remindControl.setLabel(strings(REMIND_PROGRAM))
             else:
                 remindControl.setLabel(strings(DONT_REMIND_PROGRAM))
+            if self.showAutoplay:
+                autoplayControl.setLabel("Autoplay")
+            else:
+                autoplayControl.setLabel("Remove Autoplay")
         else:
             remindControl.setEnabled(False)
+            autoplayControl.setEnabled(False)
 
     def onAction(self, action):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:

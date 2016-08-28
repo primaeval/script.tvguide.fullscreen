@@ -299,6 +299,24 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4005</onup>
+            <ondown>4008</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>black</textcolor>
+			<focusedcolor>cyan</focusedcolor>
+        </control>
+
+        <control type="button" id="4008">
+            <description>autoplay</description>
+            <posx>285</posx>
+            <posy>178</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4002</onup>
             <ondown>4000</ondown>
             <onleft>7004</onleft>
             <align>center</align>
@@ -306,6 +324,7 @@
             <font>font13</font>
             <textcolor>black</textcolor>
 			<focusedcolor>cyan</focusedcolor>
+            <label>Autoplay</label>
         </control>
 
         <control type="button" id="4000">
@@ -316,7 +335,7 @@
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4002</onup>
+            <onup>4008</onup>
             <ondown>4001</ondown>
             <onleft>7004</onleft>
             <align>center</align>
