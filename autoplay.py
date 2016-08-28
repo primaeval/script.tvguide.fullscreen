@@ -46,10 +46,10 @@ class Autoplay(object):
         return 'tvguide-%s-%s' % (programTitle, startTime)
 
     def scheduleAutoplays(self):
-        for channelTitle, programTitle, startTime in self.database.getAutoplays():
-            self._scheduleAutoplay(channelTitle, programTitle, startTime)
+        for channelId, programTitle, startTime, endTime in self.database.getAutoplays():
+            self._scheduleAutoplay(channelId, programTitle, startTime, endTime)
 
-    def _scheduleAutoplay(self, channelTitle, programTitle, startTime):
+    def _scheduleAutoplay(self, channelId, programTitle, startTime, endTime):
         t = startTime - datetime.datetime.now()
         timeToAutoplay = ((t.days * 86400) + t.seconds) / 60
         if timeToAutoplay < 0:
@@ -57,16 +57,16 @@ class Autoplay(object):
 
         name = self.createAlarmClockName(programTitle, startTime)
         #TODO
-        description = strings(NOTIFICATION_5_MINS, channelTitle)
+        description = strings(NOTIFICATION_5_MINS, channelId)
         xbmc.executebuiltin('AlarmClock(%s-5mins,Autoplay(%s,%s,10000,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay - 5))
         #TODO
-        description = strings(NOTIFICATION_NOW, channelTitle)
+        description = strings(NOTIFICATION_NOW, channelId)
         #xbmc.executebuiltin('AlarmClock(%s-now,Autoplay(%s,%s,10000,%s),%d,True)' %
         #                    (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay))
-        start = 0
+        timeToAutoplay = 1
         xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/play.py,%s),%d,True)' %
-        (name.encode('utf-8', 'replace'), channelTitle.encode('utf-8'), timeToAutoplay))
+        (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), timeToAutoplay))
 
 
     def _unscheduleAutoplay(self, programTitle, startTime):
@@ -76,7 +76,7 @@ class Autoplay(object):
 
     def addAutoplay(self, program):
         self.database.addAutoplay(program)
-        self._scheduleAutoplay(program.channel.title, program.title, program.startDate)
+        self._scheduleAutoplay(program.channel.id, program.title, program.startDate, program.endDate)
 
     def removeAutoplay(self, program):
         self.database.removeAutoplay(program)

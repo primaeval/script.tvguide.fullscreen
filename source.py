@@ -1055,7 +1055,7 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         c = self.conn.cursor()
         c.execute(
-            "SELECT DISTINCT c.title, p.title, p.start_date FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
+            "SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
             [self.source.KEY, start, end])
         programs = c.fetchall()
         c.close()
