@@ -67,7 +67,7 @@ class Channel(object):
 
 class Program(object):
     def __init__(self, channel, title, startDate, endDate, description, imageLarge=None, imageSmall=None,
-                 notificationScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
+                 notificationScheduled=None, autoplayScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
         """
 
         @param channel:
@@ -87,6 +87,7 @@ class Program(object):
         self.imageLarge = imageLarge
         self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
+        self.autoplayScheduled = autoplayScheduled
         self.season = season
         self.episode = episode
         self.is_movie = is_movie
@@ -774,12 +775,12 @@ class Database(object):
 
         c = self.conn.cursor()
         c.execute(
-            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled FROM programs p WHERE p.channel IN (\'' + (
+            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, (SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled FROM programs p WHERE p.channel IN (\'' + (
                 '\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
             [self.source.KEY, startTime, endTime])
         for row in c:
             program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'],
+                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'],
                               row['season'], row['episode'], row['is_movie'], row['language'])
             programList.append(program)
 
@@ -912,6 +913,8 @@ class Database(object):
                 # For notifications
                 c.execute(
                     "CREATE TABLE notifications(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+                c.execute(
+                    "CREATE TABLE autoplays(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
             if version < [1, 3, 1]:
                 # Recreate tables with FOREIGN KEYS as DEFERRABLE INITIALLY DEFERRED
                 c.execute('UPDATE version SET major=1, minor=3, patch=1')
@@ -937,14 +940,16 @@ class Database(object):
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
-            c.execute(
-                'CREATE TABLE autoplay(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, mode TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
 
             self.conn.commit()
             c.close()
 
-        except sqlite3.OperationalError, ex:
-            raise DatabaseSchemaException(ex)
+        #except sqlite3.OperationalError, ex:
+        except Exception as detail:
+            xbmc.log("(script.tvguide.fullscreen) %s" % detail, xbmc.LOGERROR)
+            dialog = xbmcgui.Dialog()
+            dialog.notification('script.tvguide.fullscreen', 'database exception %s' % detail, xbmcgui.NOTIFICATION_ERROR , 5000)
+            #raise DatabaseSchemaException(detail)
 
     def addNotification(self, program):
         self._invokeAndBlockForResult(self._addNotification, program)
@@ -1014,6 +1019,75 @@ class Database(object):
         self.conn.commit()
         c.close()
 
+    def addAutoplay(self, program):
+        self._invokeAndBlockForResult(self._addAutoplay, program)
+        # no result, but block until operation is done
+
+    def _addAutoplay(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("INSERT INTO autoplays(channel, program_title, source) VALUES(?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY])
+        self.conn.commit()
+        c.close()
+
+    def removeAutoplay(self, program):
+        self._invokeAndBlockForResult(self._removeAutoplay, program)
+        # no result, but block until operation is done
+
+    def _removeAutoplay(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("DELETE FROM autoplays WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        self.conn.commit()
+        c.close()
+
+    def getAutoplays(self, daysLimit=2):
+        return self._invokeAndBlockForResult(self._getAutoplays, daysLimit)
+
+    def _getAutoplays(self, daysLimit):
+        start = datetime.datetime.now()
+        end = start + datetime.timedelta(days=daysLimit)
+        c = self.conn.cursor()
+        c.execute(
+            "SELECT DISTINCT c.title, p.title, p.start_date FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
+            [self.source.KEY, start, end])
+        programs = c.fetchall()
+        c.close()
+
+        return programs
+
+    def isAutoplayRequiredForProgram(self, program):
+        return self._invokeAndBlockForResult(self._isAutoplayRequiredForProgram, program)
+
+    def _isAutoplayRequiredForProgram(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("SELECT 1 FROM autoplays WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        result = c.fetchone()
+        c.close()
+
+        return result
+
+    def clearAllAutoplays(self):
+        self._invokeAndBlockForResult(self._clearAllAutoplays)
+        # no result, but block until operation is done
+
+    def _clearAllAutoplays(self):
+        c = self.conn.cursor()
+        c.execute('DELETE FROM autoplays')
+        self.conn.commit()
+        c.close()
+        
+        
 
 class Source(object):
     def getDataFromExternal(self, date, progress_callback=None):

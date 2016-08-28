@@ -26,6 +26,7 @@
 #
 import xbmcaddon
 import notification
+import autoplay
 import xbmc
 import source
 
@@ -46,7 +47,9 @@ class Service(object):
         if ADDON.getSetting('notifications.enabled') == 'true':
             n = notification.Notification(self.database, ADDON.getAddonInfo('path'))
             n.scheduleNotifications()
-
+        if ADDON.getSetting('autoplays.enabled') == 'true':
+            n = autoplay.Autoplay(self.database, ADDON.getAddonInfo('path'))
+            n.scheduleAutoplays()
         self.database.close(None)
 
 

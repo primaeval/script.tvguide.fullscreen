@@ -70,6 +70,8 @@
     <category label="30112">
         <setting id="notifications.enabled" label="30106" type="bool" default="true" />
         <setting label="30108" type="action" action="RunScript($CWD/notification.py)" />
+        <setting id="autoplays.enabled" label="Autoplays" type="bool" default="true" />
+        <setting label="Clear Autoplays..." type="action" action="RunScript($CWD/autoplay.py)" />        
     </category>
 
     <category label="30140">
