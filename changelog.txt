@@ -6,6 +6,7 @@ USAGE NOTES:
     Listings view (info,i,1)
     Now view (menu,m,2)
     Next view (last page,end,3)
+    Search Programs (4)
     movement (up,down,left,right,ok)
     close (esc,back)
   TV mode:
@@ -27,6 +28,9 @@ USAGE NOTES:
 - right click to add channels to categories
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.91
+- Search Programs (4)
 
 version 0.0.90
 - libreelec remote keys for Listings/Now/Next (1,2,3)
