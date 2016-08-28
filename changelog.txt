@@ -3,9 +3,9 @@ USAGE NOTES:
 
   EPG mode:
     menu (context,c)
-    Listings view (info,i)
-    Now view (menu,m)
-    Next view (last page, end )
+    Listings view (info,i,1)
+    Now view (menu,m,2)
+    Next view (last page,end,3)
     movement (up,down,left,right,ok)
     close (esc,back)
   TV mode:

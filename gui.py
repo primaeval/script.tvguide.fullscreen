@@ -74,7 +74,16 @@ KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
 KEY_ESC = 61467
 
-REMOTE_ZERO = 58
+REMOTE_0 = 58
+REMOTE_1 = 59
+REMOTE_2 = 60
+REMOTE_3 = 61
+REMOTE_4 = 62
+REMOTE_5 = 63
+REMOTE_6 = 64
+REMOTE_7 = 65
+REMOTE_8 = 66
+REMOTE_9 = 67
 
 CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
@@ -363,7 +372,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() == ACTION_SHOW_INFO:
             self._showOsd()
-        elif action.getId() == REMOTE_ZERO:
+        elif action.getId() == REMOTE_0:
             self._playLastChannel()
         elif action.getId() == ACTION_RIGHT:
             self._showLastPlayedChannel()
@@ -514,12 +523,12 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
-        elif action.getId() in [ACTION_SHOW_INFO]:
+        elif action.getId() in [ACTION_SHOW_INFO,REMOTE_1]:
             program = self._getProgramFromControl(controlInFocus)
             self.showListing(program.channel)
-        elif action.getId() in [ACTION_MENU]:
+        elif action.getId() in [ACTION_MENU,REMOTE_2]:
             self.showNow()
-        elif action.getId() in [ACTION_LAST_PAGE]:
+        elif action.getId() in [ACTION_LAST_PAGE,REMOTE_3]:
             self.showNext()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
