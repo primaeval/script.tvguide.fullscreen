@@ -87,6 +87,12 @@ REMOTE_9 = 67
 
 ACTION_JUMP_SMS2 = 142
 ACTION_JUMP_SMS3 = 143
+ACTION_JUMP_SMS4 = 144
+ACTION_JUMP_SMS5 = 145
+ACTION_JUMP_SMS6 = 146
+ACTION_JUMP_SMS7 = 147
+ACTION_JUMP_SMS8 = 148
+ACTION_JUMP_SMS9 = 149
 
 CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
@@ -533,6 +539,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.showNow()
         elif action.getId() in [ACTION_LAST_PAGE,REMOTE_3, ACTION_JUMP_SMS3]:
             self.showNext()
+        elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
+            self.programSearch()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -687,6 +695,26 @@ class TVGuide(xbmcgui.WindowXML):
         if index > -1:
             program = programList[index]
             self._showContextMenu(program)
+
+    def programSearch(self):
+        d = xbmcgui.Dialog()
+        search = d.input("Program Search")
+        if not search:
+            return
+        programList = self.database.programSearch(search)
+        labels = []
+        for p in programList:
+            start = p.startDate
+            start = start.strftime("%A %H:%M")
+            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
+            labels.append(label)
+        title = "Now"
+
+        index = d.select(title,labels)
+        if index > -1:
+            program = programList[index]
+            self._showContextMenu(program)
+
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)

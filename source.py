@@ -601,6 +601,29 @@ class Database(object):
         c.close()
         return channelList
 
+        
+    def programSearch(self, search):
+        return self._invokeAndBlockForResult(self._programSearch, search)
+
+    def _programSearch(self, search):
+        programList = []
+        now = datetime.datetime.now()
+        c = self.conn.cursor()
+        channelList = self._getChannelList(True)
+        for channel in channelList:
+            search = "%%%s%%" % search
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ?',
+                      [channel.id, self.source.KEY,search])
+            except: return
+            row = c.fetchone()
+            if row:
+                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
+                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                              row['is_movie'], row['language'])
+                programList.append(program)
+        c.close()
+        return programList
+        
     def getChannelListing(self, channel):
         return self._invokeAndBlockForResult(self._getChannelListing, channel)
 
