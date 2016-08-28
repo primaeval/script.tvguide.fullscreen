@@ -674,7 +674,9 @@ class TVGuide(xbmcgui.WindowXML):
         programList = self.database.getNowList()
         labels = []
         for p in programList:
-            label = "%s - %s" % (p.channel.title.encode("utf8"),p.title.encode("utf8"))
+            start = p.startDate
+            start = start.strftime("%H:%M")
+            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
             labels.append(label)
         title = "Now"
         d = xbmcgui.Dialog()
@@ -687,7 +689,9 @@ class TVGuide(xbmcgui.WindowXML):
         programList = self.database.getNextList()
         labels = []
         for p in programList:
-            label = "%s - %s" % (p.channel.title,p.title)
+            start = p.startDate
+            start = start.strftime("%H:%M")
+            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
             labels.append(label)
         title = "Next"
         d = xbmcgui.Dialog()
