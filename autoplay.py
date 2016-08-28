@@ -62,8 +62,12 @@ class Autoplay(object):
             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay - 5))
         #TODO
         description = strings(NOTIFICATION_NOW, channelTitle)
-        xbmc.executebuiltin('AlarmClock(%s-now,Autoplay(%s,%s,10000,%s),%d,True)' %
-                            (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay))
+        #xbmc.executebuiltin('AlarmClock(%s-now,Autoplay(%s,%s,10000,%s),%d,True)' %
+        #                    (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay))
+        start = 0
+        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/play.py,%s),%d,True)' %
+        (name.encode('utf-8', 'replace'), channelTitle.encode('utf-8'), timeToAutoplay))
+
 
     def _unscheduleAutoplay(self, programTitle, startTime):
         name = self.createAlarmClockName(programTitle, startTime)
