@@ -85,6 +85,9 @@ REMOTE_7 = 65
 REMOTE_8 = 66
 REMOTE_9 = 67
 
+ACTION_JUMP_SMS2 = 142
+ACTION_JUMP_SMS3 = 143
+
 CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
 HALF_HOUR = datetime.timedelta(minutes=30)
@@ -526,9 +529,9 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [ACTION_SHOW_INFO,REMOTE_1]:
             program = self._getProgramFromControl(controlInFocus)
             self.showListing(program.channel)
-        elif action.getId() in [ACTION_MENU,REMOTE_2]:
+        elif action.getId() in [ACTION_MENU,REMOTE_2,ACTION_JUMP_SMS2]:
             self.showNow()
-        elif action.getId() in [ACTION_LAST_PAGE,REMOTE_3]:
+        elif action.getId() in [ACTION_LAST_PAGE,REMOTE_3, ACTION_JUMP_SMS3]:
             self.showNext()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
