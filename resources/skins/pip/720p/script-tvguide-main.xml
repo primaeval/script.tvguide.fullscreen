@@ -72,7 +72,7 @@
                 <posy>-2</posy>
                 <width>1280</width>
                 <height>450</height>
-                <texture>grey.png</texture>
+                <texture>tvg-programs-back.png</texture>
                 <visible>true</visible>
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
