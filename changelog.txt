@@ -28,6 +28,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.89
+- sly textures without the sunglasses
+
 version 0.0.88
 - Listings (1), Now (2), Next (3)
 
