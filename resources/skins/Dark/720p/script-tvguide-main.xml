@@ -8,7 +8,14 @@
     </coordinates>
     <controls>
 	<constant name="aquashadow">aa00ffc6</constant>
-
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-programs-back.png</texture>
+        </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
             <posx>-10000</posx>

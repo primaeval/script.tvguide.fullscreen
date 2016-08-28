@@ -13,6 +13,14 @@
             <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
+            <texture>tvg-programs-back.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
@@ -72,7 +80,7 @@
                 <posy>-2</posy>
                 <width>1280</width>
                 <height>450</height>
-                <texture>tvg-programs-back.png</texture>
+                <texture>black.png</texture>
                 <visible>true</visible>
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
