@@ -36,6 +36,7 @@ import xbmcvfs
 
 import source as src
 from notification import Notification
+from autoplay import Autoplay
 from strings import *
 from rpc import RPC
 
@@ -217,6 +218,7 @@ class TVGuide(xbmcgui.WindowXML):
         super(TVGuide, self).__init__()
 
         self.notification = None
+        self.autoplay = None
         self.redrawingEPG = False
         self.redrawingQuickEPG = False
         self.isClosing = False
@@ -728,7 +730,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
-        d = PopupMenu(self.database, program, not program.notificationScheduled, self.category, self.categories)
+        d = PopupMenu(self.database, program, not program.notificationScheduled, not program.autoplayScheduled, self.category, self.categories)
         d.doModal()
         buttonClicked = d.buttonClicked
         self.category = d.category
@@ -1448,6 +1450,9 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
                     focusTexture = 'tvguide-program-red-focus.png'
+                elif program.autoplayScheduled:
+                    noFocusTexture = 'background-cover.png' #TODO
+                    focusTexture = 'background-cover2.png'
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
                     if SKIN == 'sly':
@@ -1630,6 +1635,9 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.notificationScheduled:
                     noFocusTexture = 'tvguide-program-red.png'
                     focusTexture = 'tvguide-program-red-focus.png'
+                elif program.autoplayScheduled:
+                    noFocusTexture = 'background-cover.png' #TODO
+                    focusTexture = 'background-cover2.png'                    
                 elif self.isProgramPlaying(program):
                     noFocusTexture = 'tvguide-program-grey-focus.png'
                     if SKIN == 'sly':
@@ -1751,6 +1759,7 @@ class TVGuide(xbmcgui.WindowXML):
     def onSourceInitialized(self, success):
         if success:
             self.notification = Notification(self.database, ADDON.getAddonInfo('path'))
+            self.autoplay = Autoplay(self.database, ADDON.getAddonInfo('path'))
             self.onRedrawEPG(0, self.viewStartDate)
             self.database.exportChannelList()
 
@@ -2098,10 +2107,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_VIDEOADDONS = 80002
 
 
-    def __new__(cls, database, program, showRemind, category, categories):
+    def __new__(cls, database, program, showRemind, showAutoplay, category, categories):
         return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', ADDON.getAddonInfo('path'), SKIN)
 
-    def __init__(self, database, program, showRemind, category, categories):
+    def __init__(self, database, program, showRemind, showAutoplay, category, categories):
         """
 
         @type database: source.Database
@@ -2113,6 +2122,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         self.database = database
         self.program = program
         self.showRemind = showRemind
+        self.showAutoplay = showAutoplay
         self.buttonClicked = None
         self.category = category
         self.categories = categories
