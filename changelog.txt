@@ -28,6 +28,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.90
+- libreelec remote keys for Listings/Now/Next (1,2,3)
+
 version 0.0.89
 - sly textures without the sunglasses
 
