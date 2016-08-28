@@ -705,10 +705,12 @@ class TVGuide(xbmcgui.WindowXML):
         labels = []
         for p in programList:
             start = p.startDate
-            start = start.strftime("%A %H:%M")
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
             label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
             labels.append(label)
-        title = "Now"
+        title = "Program Search"
 
         index = d.select(title,labels)
         if index > -1:
