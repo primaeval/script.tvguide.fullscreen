@@ -68,7 +68,7 @@
         <control type="button" id="80003">
             <description>add category</description>
             <posx>20</posx>
-            <posy>24</posy>
+            <posy>25</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
@@ -88,7 +88,7 @@
         <control type="list" id="7004">
             <description>categories</description>
             <left>20</left>
-            <top>80</top>
+            <top>125</top>
             <width>1280</width>
             <height>720</height>
             <visible>true</visible>
@@ -99,7 +99,7 @@
             <viewtype label="3D list">list</viewtype>
             <orientation>vertical</orientation>
 
-            <itemlayout width="200" height="44">
+            <itemlayout width="200" height="50">
                 <control type="image">
                     <posx>0</posx>
                     <posy>0</posy>
@@ -122,7 +122,7 @@
                     <info>ListItem.Label</info>
                 </control>
             </itemlayout>
-            <focusedlayout height="44" width="200">
+            <focusedlayout height="50" width="200">
                 <control type="image">
                     <posx>0</posx>
                     <posy>0</posy>
@@ -255,7 +255,7 @@
         <control type="button" id="4006">
             <!-- super favourites -->
             <posx>285</posx>
-            <posy>24</posy>
+            <posy>25</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
@@ -274,7 +274,7 @@
         <control type="button" id="4005">
             <!-- watch from beginning -->
             <posx>285</posx>
-            <posy>76</posy>
+            <posy>75</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
@@ -293,13 +293,13 @@
         <control type="button" id="4002">
             <!-- REMINDER -->
             <posx>285</posx>
-            <posy>128</posy>
+            <posy>125</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4005</onup>
-            <ondown>4000</ondown>
+            <ondown>4008</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -308,15 +308,34 @@
 			<focusedcolor>cyan</focusedcolor>
         </control>
 
-        <control type="button" id="4000">
-            <!-- Watch Stream -->
+        <control type="button" id="4008">
+            <description>autoplay</description>
             <posx>285</posx>
-            <posy>228</posy>
+            <posy>175</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4002</onup>
+            <ondown>4000</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>black</textcolor>
+			<focusedcolor>cyan</focusedcolor>
+            <label>Autoplay</label>
+        </control>
+
+        <control type="button" id="4000">
+            <!-- Watch Stream -->
+            <posx>285</posx>
+            <posy>325</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4008</onup>
             <ondown>4001</ondown>
             <onleft>7004</onleft>
             <align>center</align>
@@ -329,7 +348,7 @@
         <control type="button" id="4001">
             <!-- Choose Stream -->
             <posx>285</posx>
-            <posy>280</posy>
+            <posy>375</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
@@ -347,7 +366,7 @@
         <control type="button" id="4007">
             <!-- Stream Setup -->
             <posx>285</posx>
-            <posy>332</posy>
+            <posy>425</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
@@ -365,7 +384,7 @@
         <control type="label">
             <!-- Choose Stream Text -->
             <posx>20</posx>
-            <posy>260</posy>
+            <posy>475</posy>
             <width>200</width>
             <height>200</height>
             <font>font13</font>
@@ -378,7 +397,7 @@
         <control type="label" id="4102">
             <!-- Show Title -->
             <posx>20</posx>
-            <posy>420</posy>
+            <posy>525</posy>
             <width>200</width>
             <height>40</height>
             <align>center</align>
@@ -391,7 +410,7 @@
         <control type="button" id="4003">
             <!-- CHANNELS -->
             <posx>285</posx>
-            <posy>384</posy>
+            <posy>475</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
