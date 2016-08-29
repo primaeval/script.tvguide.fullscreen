@@ -67,7 +67,7 @@ class Channel(object):
 
 class Program(object):
     def __init__(self, channel, title, startDate, endDate, description, imageLarge=None, imageSmall=None,
-                 notificationScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
+                 notificationScheduled=None, autoplayScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
         """
 
         @param channel:
@@ -87,6 +87,7 @@ class Program(object):
         self.imageLarge = imageLarge
         self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
+        self.autoplayScheduled = autoplayScheduled
         self.season = season
         self.episode = episode
         self.is_movie = is_movie
@@ -180,10 +181,8 @@ class Database(object):
         event.extend(args)
         self.eventQueue.append(event)
         self.event.set()
-
         while not method.__name__ in self.eventResults:
             time.sleep(0.1)
-
         result = self.eventResults.get(method.__name__)
         del self.eventResults[method.__name__]
         return result
@@ -546,13 +545,13 @@ class Database(object):
         f.close()
 
 
+    #TODO hangs on second call from _getNowList. use _getChannelList instead
     def getChannelList(self, onlyVisible=True):
         if not self.channelList or not onlyVisible:
             result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible)
             if not onlyVisible:
                 return result
             self.channelList = result
-
         return self.channelList
 
     def _getChannelList(self, onlyVisible):
@@ -600,9 +599,31 @@ class Database(object):
                         channelList = sorted(new_channels, key=lambda channel: channel.title.lower())
                     else:
                         channelList = new_channels
-
         c.close()
         return channelList
+
+
+    def programSearch(self, search):
+        return self._invokeAndBlockForResult(self._programSearch, search)
+
+    def _programSearch(self, search):
+        programList = []
+        now = datetime.datetime.now()
+        c = self.conn.cursor()
+        channelList = self._getChannelList(True)
+        for channel in channelList:
+            search = "%%%s%%" % search
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ?',
+                      [channel.id, self.source.KEY,search])
+            except: return
+            row = c.fetchone()
+            if row:
+                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
+                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                              row['is_movie'], row['language'])
+                programList.append(program)
+        c.close()
+        return programList
 
     def getChannelListing(self, channel):
         return self._invokeAndBlockForResult(self._getChannelListing, channel)
@@ -620,6 +641,48 @@ class Database(object):
             programList.append(program)
         c.close()
 
+        return programList
+
+    def getNowList(self):
+        return self._invokeAndBlockForResult(self._getNowList)
+
+    def _getNowList(self):
+        programList = []
+        now = datetime.datetime.now()
+        c = self.conn.cursor()
+        channelList = self._getChannelList(True)
+        for channel in channelList:
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
+                      [channel.id, self.source.KEY,now,now])
+            except: return
+            row = c.fetchone()
+            if row:
+                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
+                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                              row['is_movie'], row['language'])
+                programList.append(program)
+        c.close()
+        return programList
+
+    def getNextList(self):
+        return self._invokeAndBlockForResult(self._getNextList)
+
+    def _getNextList(self):
+        programList = []
+        now = datetime.datetime.now()
+        c = self.conn.cursor()
+        channelList = self._getChannelList(True)
+        for channel in channelList:
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date >= ? AND end_date >= ?',
+                      [channel.id, self.source.KEY,now,now])
+            except: return
+            row = c.fetchone()
+            if row:
+                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
+                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
+                              row['is_movie'], row['language'])
+                programList.append(program)
+        c.close()
         return programList
 
     def getCurrentProgram(self, channel):
@@ -712,12 +775,12 @@ class Database(object):
 
         c = self.conn.cursor()
         c.execute(
-            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled FROM programs p WHERE p.channel IN (\'' + (
+            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, (SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled FROM programs p WHERE p.channel IN (\'' + (
                 '\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
             [self.source.KEY, startTime, endTime])
         for row in c:
             program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'],
+                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'],
                               row['season'], row['episode'], row['is_movie'], row['language'])
             programList.append(program)
 
@@ -773,6 +836,8 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getCustomStreamUrl, channel)
 
     def _getCustomStreamUrl(self, channel):
+        if not channel:
+            return
         c = self.conn.cursor()
         c.execute("SELECT stream_url FROM custom_stream_url WHERE channel=?", [channel.id])
         stream_url = c.fetchone()
@@ -871,14 +936,21 @@ class Database(object):
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
 
+            c.execute(
+                "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
 
             self.conn.commit()
             c.close()
 
-        except sqlite3.OperationalError, ex:
-            raise DatabaseSchemaException(ex)
+        #except sqlite3.OperationalError, ex:
+        except Exception as detail:
+            xbmc.log("(script.tvguide.fullscreen) %s" % detail, xbmc.LOGERROR)
+            dialog = xbmcgui.Dialog()
+            dialog.notification('script.tvguide.fullscreen', 'database exception %s' % detail, xbmcgui.NOTIFICATION_ERROR , 5000)
+            #raise DatabaseSchemaException(detail)
 
     def addNotification(self, program):
         self._invokeAndBlockForResult(self._addNotification, program)
@@ -947,6 +1019,75 @@ class Database(object):
         c.execute('DELETE FROM notifications')
         self.conn.commit()
         c.close()
+
+    def addAutoplay(self, program):
+        self._invokeAndBlockForResult(self._addAutoplay, program)
+        # no result, but block until operation is done
+
+    def _addAutoplay(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("INSERT INTO autoplays(channel, program_title, source) VALUES(?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY])
+        self.conn.commit()
+        c.close()
+
+    def removeAutoplay(self, program):
+        self._invokeAndBlockForResult(self._removeAutoplay, program)
+        # no result, but block until operation is done
+
+    def _removeAutoplay(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("DELETE FROM autoplays WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        self.conn.commit()
+        c.close()
+
+    def getAutoplays(self, daysLimit=2):
+        return self._invokeAndBlockForResult(self._getAutoplays, daysLimit)
+
+    def _getAutoplays(self, daysLimit):
+        start = datetime.datetime.now()
+        end = start + datetime.timedelta(days=daysLimit)
+        c = self.conn.cursor()
+        c.execute(
+            "SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
+            [self.source.KEY, start, end])
+        programs = c.fetchall()
+        c.close()
+
+        return programs
+
+    def isAutoplayRequiredForProgram(self, program):
+        return self._invokeAndBlockForResult(self._isAutoplayRequiredForProgram, program)
+
+    def _isAutoplayRequiredForProgram(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("SELECT 1 FROM autoplays WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        result = c.fetchone()
+        c.close()
+
+        return result
+
+    def clearAllAutoplays(self):
+        self._invokeAndBlockForResult(self._clearAllAutoplays)
+        # no result, but block until operation is done
+
+    def _clearAllAutoplays(self):
+        c = self.conn.cursor()
+        c.execute('DELETE FROM autoplays')
+        self.conn.commit()
+        c.close()
+
 
 
 class Source(object):

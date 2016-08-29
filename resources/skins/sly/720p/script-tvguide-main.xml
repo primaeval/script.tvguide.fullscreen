@@ -13,6 +13,70 @@
             <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
+            <texture>tvg-program-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-program-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-playing-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-playing-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-remind-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-remind-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplay-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplay-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
@@ -31,6 +95,30 @@
             <height>1</height>
             <texture>tvguide-program-grey.png</texture>
         </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-yellow-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvguide-program-blue.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>background2.png</texture>
+        </control>
 
         <control type="image">
             <description>background</description>
@@ -48,7 +136,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture colordiffuse="FF02A5DB">skyq/Backgrounds/loading.jpg</texture>
+            <texture>background.png</texture>
             <visible>Control.IsVisible(5000)</visible>
         </control>
         <!-- Background -->
@@ -66,6 +154,7 @@
             <visible>!Control.IsVisible(5000)</visible>
             <animation time="200" effect="fade">Visible</animation>
             <animation time="200" effect="fade">Hidden</animation>
+
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
@@ -78,10 +167,11 @@
             <control type="image" id="4600">
                 <description>epg background image when playing media</description>
                 <posx>180</posx>
-                <posy>0</posy>
+                <posy>-2</posy>
                 <width>1100</width>
                 <height>420</height>
                 <visible>Player.HasMedia</visible>
+                <texture>tvg-programs-back.png</texture>
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -136,8 +226,8 @@
                 <posy>0</posy>
                 <width>-10</width>
                 <height>446</height>
-                <visible>Control.IsVisible(4200)</visible>
-                <texture>aqua.png</texture>
+                <visible>!Control.IsVisible(5000)</visible>
+                <texture>green.png</texture>
             </control>
 
             <control type="image">
@@ -187,7 +277,7 @@
                 <posy>-40</posy>
                 <width>1280</width>
                 <height>40</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
 
                 <control type="image">
                     <description>workaround for texture not being loaded</description>
@@ -323,7 +413,7 @@
                 <posy>0</posy>
                 <width>180</width>
                 <height>640</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
 
                 <!-- logo images backgrounds -->
                 <control type="image" id="4210">
@@ -920,7 +1010,7 @@
                 <font>font14</font>
                 <align>center</align>
                 <aligny>top</aligny>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="label" id="7025">
@@ -934,6 +1024,7 @@
                 <align>left</align>
                 <aligny>top</aligny>
                 <visible>!Player.HasMedia | [Player.HasMedia + StringCompare(Control.GetLabel(70244),)]</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image" id="70244">
@@ -958,7 +1049,7 @@
                 <font>font13</font>
                 <align>right</align>
                 <aligny>top</aligny>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="textbox" id="7022">
@@ -970,7 +1061,7 @@
                 <textcolor>bbffffff</textcolor>
                 <font>font13</font>
                 <wrapmultiline>true</wrapmultiline>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image" id="7023">
@@ -984,6 +1075,7 @@
                 <fadetime>500</fadetime>
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image">
@@ -997,6 +1089,7 @@
                 <fadetime>500</fadetime>
                 <texture>tv.jpg</texture>
                 <visible>StringCompare(Control.GetLabel(7023),)</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image" id="7024">
@@ -1009,6 +1102,7 @@
                 <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
                 <visible>!Player.HasMedia</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="progress" id="7026">
@@ -1021,6 +1115,7 @@
                 <texturebg border="3" colordiffuse="">panel_trans.png</texturebg>
                 <midtexture border="3" colordiffuse="FF00ff48">panel.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="image">
@@ -1030,6 +1125,7 @@
                 <height>10</height>
                 <texture border="3" colordiffuse="">thinborder.png</texture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
+                <visible>!Control.IsVisible(5000)</visible>
             </control>
 
             <control type="label" id="4200">
@@ -1049,7 +1145,7 @@
                     <posy>-310</posy>
                     <width>1280</width>
                     <height>720</height>
-                    <texture>black.png</texture>
+                    <texture>background.png</texture>
                 </control>
 
                 <control type="image">
@@ -2006,7 +2102,8 @@
                 <posy>0</posy>
                 <width>-10</width>
                 <height>116</height>
-                <texture>aqua.png</texture>
+                <texture>green.png</texture>
+                <visible>!Control.IsVisible(10000)</visible>
             </control>
 
             <control type="image" id="14601">
@@ -2029,7 +2126,7 @@
                 <width>1280</width>
                 <height>58</height>
                 <texture>background.png</texture>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
             </control>
             <control type="image" id="14602">
                 <description>footer</description>
@@ -2092,7 +2189,7 @@
                 <posy>-40</posy>
                 <width>1280</width>
                 <height>40</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
 
                 <control type="image">
                     <description>workaround for texture not being loaded</description>
@@ -2214,7 +2311,7 @@
                 <posy>0</posy>
                 <width>180</width>
                 <height>120</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
 
                 <!-- logo images backgrounds -->
                 <control type="image" id="14210">

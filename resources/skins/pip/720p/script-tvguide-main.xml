@@ -13,6 +13,94 @@
             <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
+            <texture>tvg-program-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-program-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-playing-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-playing-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-remind-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-remind-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplay-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplay-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>background-cover.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>background-cover2.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-programs-back.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
@@ -72,7 +160,7 @@
                 <posy>-2</posy>
                 <width>1280</width>
                 <height>450</height>
-                <texture>grey.png</texture>
+                <texture>black.png</texture>
                 <visible>true</visible>
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
@@ -283,7 +371,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>grey</textcolor>
+                    <textcolor>white</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -303,7 +391,7 @@
                     <posy>0</posy>
                     <width>270</width>
                     <height>50</height>
-                    <textcolor>grey</textcolor>
+                    <textcolor>white</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                 </control>
@@ -952,12 +1040,23 @@
 
                 <visible>true</visible>
             </control>
+            <control type="progress" id="7026">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
+            </control>
             <control type="textbox" id="7022">
                 <description>Program description</description>
                 <posx>360</posx>
                 <posy>505</posy>
                 <width>920</width>
-                <height>150</height>
+                <height>142</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
                 <align>left</align>
@@ -978,19 +1077,6 @@
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>
             </control>
-
-            <control type="progress" id="7026">
-                <posx>0</posx>
-                <posy>10r</posy>
-                <width>1280</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>true</visible>
-            </control>
-
             <control type="label" id="4200">
                 <description>visibility marker for loading group</description>
             </control>
@@ -1292,12 +1378,23 @@
                 <aspectratio>keep</aspectratio>
                 <colordiffuse>white</colordiffuse>
             </control>
+            <control type="progress" id="6011">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
+            </control>
             <control type="textbox" id="6003">
                 <description>Program description</description>
                 <posx>30</posx>
                 <posy>60</posy>
                 <width>1230</width>
-                <height>150</height>
+                <height>142</height>
                 <label>Description</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
@@ -1381,19 +1478,6 @@
                 <texture>-</texture>
                 <visible>false</visible>
             </control>
-
-            <control type="progress" id="6011">
-                <posx>0</posx>
-                <posy>10r</posy>
-                <width>1280</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(6011),0)</visible>
-            </control>
-
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
@@ -1477,12 +1561,24 @@
                 <aspectratio>keep</aspectratio>
                 <colordiffuse>white</colordiffuse>
             </control>
+
+            <control type="progress" id="8011">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
+            </control>
             <control type="textbox" id="8003">
                 <description>Program description</description>
                 <posx>30</posx>
                 <posy>60</posy>
                 <width>1230</width>
-                <height>150</height>
+                <height>142</height>
                 <label>Description</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
@@ -1579,18 +1675,6 @@
                 <visible>false</visible>
             </control>
 
-            <control type="progress" id="8011">
-                <posx>0</posx>
-                <posy>10r</posy>
-                <width>1280</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
-            </control>
-
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
@@ -1665,6 +1749,17 @@
                 <align>right</align>
 
             </control>
+            <control type="progress" id="9011">
+                <posx>0</posx>
+                <posy>10r</posy>
+                <width>1280</width>
+                <height>5</height>
+                <lefttexture />
+                <righttexture />
+                <texturebg  colordiffuse="white">black.png</texturebg>
+                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <visible>IntegerGreaterThan(Control.GetLabel(9011),0)</visible>
+            </control>
             <control type="image" id="9004">
                 <description>Program channel logo</description>
                 <posx>5</posx>
@@ -1679,7 +1774,7 @@
                 <posx>30</posx>
                 <posy>60</posy>
                 <width>1230</width>
-                <height>150</height>
+                <height>142</height>
                 <label>Description</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
