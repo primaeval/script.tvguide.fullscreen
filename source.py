@@ -1063,6 +1063,28 @@ class Database(object):
 
         return programs
 
+    def getFullAutoplays(self, daysLimit=2):
+        return self._invokeAndBlockForResult(self._getFullAutoplays, daysLimit)
+
+    def _getFullAutoplays(self, daysLimit):
+        start = datetime.datetime.now()
+        end = start + datetime.timedelta(days=daysLimit)
+        programList = list()
+        c = self.conn.cursor()
+        c.execute(
+            "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
+            "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled " +
+            "FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
+            [self.source.KEY, start, end])
+        for row in c:
+            channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
+            program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
+            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplayScheduled=row[21])
+            xbmc.log(repr(row.keys()))
+            programList.append(program)
+        c.close()
+        return programList
+
     def isAutoplayRequiredForProgram(self, program):
         return self._invokeAndBlockForResult(self._isAutoplayRequiredForProgram, program)
 

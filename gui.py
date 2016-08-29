@@ -546,7 +546,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
             self.showReminders()
         elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
-            self.showAutoplays()
+            self.showFullAutoplays()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -755,6 +755,24 @@ class TVGuide(xbmcgui.WindowXML):
             start = start.strftime("%H:%M")
             start = "%s %s" % (day,start)
             label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
+            labels.append(label)
+        title = "Autoplays"
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            program = programList[index]
+            self._showContextMenu(program)
+
+    def showFullAutoplays(self):
+        programList = self.database.getFullAutoplays()
+        labels = []
+        for program in programList:
+            xbmc.log(repr(program))
+            start = program.startDate
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
+            label = "%s - %s - %s" % (program.channel.title.encode("utf8"),start,program.title.encode("utf8"))
             labels.append(label)
         title = "Autoplays"
         d = xbmcgui.Dialog()
