@@ -382,6 +382,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SHOW_INFO:
+            self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
         elif action.getId() == REMOTE_0:
             self._playLastChannel()
