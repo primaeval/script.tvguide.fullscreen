@@ -544,7 +544,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
             self.programSearch()
         elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
-            self.showReminders()
+            self.showFullReminders()
         elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
             self.showFullAutoplays()
         else:
@@ -739,6 +739,23 @@ class TVGuide(xbmcgui.WindowXML):
             start = start.strftime("%H:%M")
             start = "%s %s" % (day,start)
             label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
+            labels.append(label)
+        title = "Reminders"
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            program = programList[index]
+            self._showContextMenu(program)
+
+    def showFullReminders(self):
+        programList = self.database.getFullNotifications()
+        labels = []
+        for program in programList:
+            start = program.startDate
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
+            label = "%s - %s - %s" % (program.channel.title.encode("utf8"),start,program.title.encode("utf8"))
             labels.append(label)
         title = "Reminders"
         d = xbmcgui.Dialog()
