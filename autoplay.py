@@ -62,10 +62,6 @@ class Autoplay(object):
         description = strings(NOTIFICATION_5_MINS, channelId)
         xbmc.executebuiltin('AlarmClock(%s-5mins,Autoplay(%s,%s,10000,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay - 5))
-        #TODO
-        #description = strings(NOTIFICATION_NOW, channelId)
-        #xbmc.executebuiltin('AlarmClock(%s-now,Autoplay(%s,%s,10000,%s),%d,True)' %
-        #                    (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay))
         xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/play.py,%s,%s),%d,True)' %
         (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplay - int(ADDON.getSetting('autoplays.before'))))
         if ADDON.getSetting('autoplays.stop') == 'true':
@@ -98,6 +94,8 @@ if __name__ == '__main__':
         if success:
             database.clearAllAutoplays()
             database.close(onAutoplaysCleared)
+            ADDON.setSetting('playing.channel','')
+            ADDON.setSetting('playing.start','')
         else:
             database.close()
 
