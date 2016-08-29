@@ -572,7 +572,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control = self.quickControlAndProgramList[0].control
             if control is not None:
                 self.setQuickFocus(control)
-                xbmc.log("exception in onActionQuickEPGMode")
+                xbmc.log("exception in onActionQuickEPGMode", xbmc.LOGERROR)
                 return
         if action.getId() == ACTION_LEFT:
             self._quickLeft(currentFocus)

@@ -4,10 +4,8 @@ import sqlite3
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
-xbmc.log(repr(sys.argv))
 channel = sys.argv[1]
 start = sys.argv[2]
-
 
 path = xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/source.db')
 try:
