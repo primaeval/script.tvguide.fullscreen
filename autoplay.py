@@ -27,10 +27,12 @@
 import datetime
 import os
 import xbmc
-import xbmcgui
+import xbmcgui, xbmcaddon
 import source as src
 
 from strings import *
+
+ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
 
 class Autoplay(object):
@@ -61,18 +63,21 @@ class Autoplay(object):
         xbmc.executebuiltin('AlarmClock(%s-5mins,Autoplay(%s,%s,10000,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay - 5))
         #TODO
-        description = strings(NOTIFICATION_NOW, channelId)
+        #description = strings(NOTIFICATION_NOW, channelId)
         #xbmc.executebuiltin('AlarmClock(%s-now,Autoplay(%s,%s,10000,%s),%d,True)' %
         #                    (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay))
-        timeToAutoplay = 1
-        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/play.py,%s),%d,True)' %
-        (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), timeToAutoplay))
+        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/play.py,%s,%s),%d,True)' %
+        (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplay - int(ADDON.getSetting('autoplays.before'))))
+        if ADDON.getSetting('autoplays.stop') == 'true':
+            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stop.py,%s,%s),%d,True)' %
+            (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplay - int(ADDON.getSetting('autoplays.after'))))
 
 
     def _unscheduleAutoplay(self, programTitle, startTime):
         name = self.createAlarmClockName(programTitle, startTime)
         xbmc.executebuiltin('CancelAlarm(%s-5mins,True)' % name.encode('utf-8', 'replace'))
-        xbmc.executebuiltin('CancelAlarm(%s-now,True)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-start,True)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-stop,True)' % name.encode('utf-8', 'replace'))
 
     def addAutoplay(self, program):
         self.database.addAutoplay(program)

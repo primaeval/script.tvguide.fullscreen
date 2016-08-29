@@ -70,7 +70,11 @@
     <category label="30112">
         <setting id="notifications.enabled" label="30106" type="bool" default="true" />
         <setting label="30108" type="action" action="RunScript($CWD/notification.py)" />
+        <setting type="lsep" label="Autoplay: OSD will not be available"/>
         <setting id="autoplays.enabled" label="Autoplays" type="bool" default="true" />
+        <setting id="autoplays.stop" label="Stop After Play" type="bool" default="true" />
+        <setting label="Minutes before" type="enum" id="autoplays.before" values="0|1|2|3|4|5|10" default="0"/>
+        <setting label="Minutes after" type="enum" id="autoplays.after" values="0|1|2|3|4|5|10" default="0"/>
         <setting label="Clear Autoplays..." type="action" action="RunScript($CWD/autoplay.py)" />        
     </category>
 
