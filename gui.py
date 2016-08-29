@@ -543,6 +543,10 @@ class TVGuide(xbmcgui.WindowXML):
             self.showNext()
         elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
             self.programSearch()
+        elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
+            self.showReminders()
+        elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
+            self.showAutoplays()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -727,6 +731,37 @@ class TVGuide(xbmcgui.WindowXML):
             program = programList[index]
             self._showContextMenu(program)
 
+    def showReminders(self):
+        programList = self.database.getNotifications()
+        labels = []
+        for channelTitle, programTitle, start in programList:
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
+            label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
+            labels.append(label)
+        title = "Reminders"
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            program = programList[index]
+            self._showContextMenu(program)
+
+    def showAutoplays(self):
+        programList = self.database.getAutoplays()
+        labels = []
+        for channelTitle, programTitle, start, end in programList:
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
+            label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
+            labels.append(label)
+        title = "Autoplays"
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            program = programList[index]
+            self._showContextMenu(program)
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)

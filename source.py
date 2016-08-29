@@ -602,7 +602,7 @@ class Database(object):
         c.close()
         return channelList
 
-        
+
     def programSearch(self, search):
         return self._invokeAndBlockForResult(self._programSearch, search)
 
@@ -624,7 +624,7 @@ class Database(object):
                 programList.append(program)
         c.close()
         return programList
-        
+
     def getChannelListing(self, channel):
         return self._invokeAndBlockForResult(self._getChannelListing, channel)
 
@@ -1086,8 +1086,8 @@ class Database(object):
         c.execute('DELETE FROM autoplays')
         self.conn.commit()
         c.close()
-        
-        
+
+
 
 class Source(object):
     def getDataFromExternal(self, date, progress_callback=None):
