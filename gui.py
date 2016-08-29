@@ -382,6 +382,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() == ACTION_SHOW_INFO:
+            self.osdChannel = self.currentChannel
+            self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
         elif action.getId() == REMOTE_0:
             self._playLastChannel()
@@ -469,7 +471,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._hideLastPlayed()
 
 
-
+    # epg mode
     def onActionEPGMode(self, action):
         if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK]:
             self.close()
@@ -536,7 +538,8 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(program)
         elif action.getId() in [ACTION_SHOW_INFO,REMOTE_1]:
             program = self._getProgramFromControl(controlInFocus)
-            self.showListing(program.channel)
+            if program is not None:
+                self.showListing(program.channel)
         elif action.getId() in [ACTION_MENU,REMOTE_2,ACTION_JUMP_SMS2]:
             self.showNow()
         elif action.getId() in [ACTION_LAST_PAGE,REMOTE_3, ACTION_JUMP_SMS3]:
