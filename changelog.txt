@@ -31,6 +31,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.96
+- missing date
+
 version 0.0.95
 - autoplay/reminders views links to main menu
 
