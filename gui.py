@@ -2138,6 +2138,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_LABEL = 7000
     C_POPUP_PROGRAM_LABEL = 7001
     C_POPUP_PROGRAM_IMAGE = 7002
+    C_POPUP_PROGRAM_DATE = 7003
     C_POPUP_CATEGORY = 7004
     C_POPUP_SET_CATEGORY = 7005
     C_POPUP_PLAY = 4000
@@ -2180,6 +2181,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     def onInit(self):
         labelControl = self.getControl(self.C_POPUP_LABEL)
         programLabelControl = self.getControl(self.C_POPUP_PROGRAM_LABEL)
+        programDateControl = self.getControl(self.C_POPUP_PROGRAM_DATE)
         programImageControl = self.getControl(self.C_POPUP_PROGRAM_IMAGE)
         playControl = self.getControl(self.C_POPUP_PLAY)
         remindControl = self.getControl(self.C_POPUP_REMIND)
@@ -2226,6 +2228,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         except:
             pass
         programLabelControl.setLabel(self.program.title+label)
+        start = self.program.startDate
+        day = self.formatDateTodayTomorrow(start)
+        start = start.strftime("%H:%M")
+        start = "%s %s" % (day,start)
+        programDateControl.setLabel(start)
         if self.program.imageSmall:
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:
@@ -2246,6 +2253,20 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         else:
             remindControl.setEnabled(False)
             autoplayControl.setEnabled(False)
+
+    def formatDateTodayTomorrow(self, timestamp):
+        if timestamp:
+            today = datetime.datetime.today()
+            tomorrow = today + datetime.timedelta(days=1)
+            yesterday = today - datetime.timedelta(days=1)
+            if today.date() == timestamp.date():
+                return 'Today'
+            elif tomorrow.date() == timestamp.date():
+                return 'Tomorrow'
+            elif yesterday.date() == timestamp.date():
+                return 'Yesterday'
+            else:
+                return timestamp.strftime("%A")
 
     def onAction(self, action):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
