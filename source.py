@@ -616,8 +616,7 @@ class Database(object):
             try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ?',
                       [channel.id, self.source.KEY,search])
             except: return
-            row = c.fetchone()
-            if row:
+            for row in c:
                 program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
                               row['image_large'], row['image_small'], None, row['season'], row['episode'],
                               row['is_movie'], row['language'])
