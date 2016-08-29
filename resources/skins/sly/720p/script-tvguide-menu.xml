@@ -79,7 +79,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>Add Category</label>
             <visible>true</visible>
@@ -116,7 +116,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>black</textcolor>
+                    <textcolor>white</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -147,7 +147,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>black</textcolor>
+                    <textcolor>white</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -266,7 +266,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>iSearch</label>
         </control>
@@ -285,7 +285,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>Meta Search</label>
         </control>
@@ -304,7 +304,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
         </control>
 
@@ -322,7 +322,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>Autoplay</label>
         </control>
@@ -341,7 +341,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <focusedcolor>cyan</focusedcolor>
 			<visible>true</visible>
         </control>
@@ -359,7 +359,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>Choose Stream</label>
         </control>
@@ -377,7 +377,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>Stream Setup</label>
         </control>
@@ -388,7 +388,7 @@
             <width>200</width>
             <height>200</height>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30305]</label>
             <wrapmultiline>true</wrapmultiline>
             <visible>false</visible>
@@ -403,7 +403,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <visible>false</visible>
         </control>
 
@@ -421,7 +421,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
@@ -443,7 +443,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 80000]</label>
 			<visible>false</visible>
         </control>
@@ -462,7 +462,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80001]</label>
 			<visible>false</visible>
@@ -482,7 +482,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80002]</label>
 			<visible>false</visible>
@@ -502,7 +502,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30308]</label>
             <visible>false</visible>
@@ -524,7 +524,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
 			<focusedcolor>cyan</focusedcolor>
             <label>Remove Category</label>
             <visible>false</visible>
