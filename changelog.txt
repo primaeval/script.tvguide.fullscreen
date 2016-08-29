@@ -7,6 +7,8 @@ USAGE NOTES:
     Now view (menu,m,2)
     Next view (last page,end,3)
     Search Programs (4)
+    Show Reminders (5)
+    Show Autoplays (6)
     movement (up,down,left,right,ok)
     close (esc,back)
   TV mode:
@@ -28,6 +30,11 @@ USAGE NOTES:
 - right click to add channels to categories
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
+
+version 0.0.94
+- db possible fix if addon won't open
+- Show Reminders (5)
+- Show Autoplays (6)
 
 version 0.0.93
 - Autoplay
