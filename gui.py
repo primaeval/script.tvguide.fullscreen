@@ -1423,15 +1423,9 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setPosition(2,top)
 
-        if SKIN == 'sly':
-            focusColor = '0xFF000000'
-            noFocusColor = '0xFFFFFFFF'
-        elif SKIN == 'Dark':
-            focusColor = '0xFF00FFC6'
-            noFocusColor = '0xFFFFFFFF'
-        else:
-            focusColor = '0xFF000000'
-            noFocusColor = '0xFFFFFFFF'
+        #TODO read from xml
+        focusColor = '0xFF000000'
+        noFocusColor = '0xFFFFFFFF'
 
         for program in programs:
             idx = channels.index(program.channel)
@@ -1605,15 +1599,9 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.quickEpgView.cellHeight-2)
                 control.setPosition(2,top)
 
-        if SKIN == 'sly':
-            focusColor = '0xFF000000'
-            noFocusColor = '0xFFFFFFFF'
-        elif SKIN == 'Dark':
-            focusColor = '0xFF00FFC6'
-            noFocusColor = '0xFFFFFFFF'
-        else:
-            focusColor = '0xFF000000'
-            noFocusColor = '0xFFFFFFFF'
+        #TODO read from xml
+        focusColor = '0xFF000000'
+        noFocusColor = '0xFFFFFFFF'
 
         for program in programs:
             idx = channels.index(program.channel)
