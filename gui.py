@@ -1405,14 +1405,13 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setWidth(176)
                 control.setPosition(2,top)
-                if SKIN != 'sly':
-                    try:
-                        if self.currentChannel == channels[idx]:
-                            control.setImage("tvguide-program-grey-focus.png")
-                        else:
-                            control.setImage("black-back.png")
-                    except:
-                        control.setImage("black-back.png")
+                try:
+                    if self.currentChannel == channels[idx]:
+                        control.setImage("tvg-playing-nofocus.png")
+                    else:
+                        control.setImage("tvg-program-nofocus.png")
+                except:
+                    control.setImage("tvg-program-nofocus.png")
             control = self.getControl(4010 + idx)
             if control:
                 control.setHeight(self.epgView.cellHeight-2)
@@ -1426,10 +1425,13 @@ class TVGuide(xbmcgui.WindowXML):
 
         if SKIN == 'sly':
             focusColor = '0xFF000000'
+            noFocusColor = '0xFFFFFFFF'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
+            noFocusColor = '0xFFFFFFFF'
         else:
-            focusColor = '0xFF00FFFF'
+            focusColor = '0xFF000000'
+            noFocusColor = '0xFFFFFFFF'
 
         for program in programs:
             idx = channels.index(program.channel)
@@ -1447,24 +1449,18 @@ class TVGuide(xbmcgui.WindowXML):
                 cellWidth = self.epgView.right - cellStart
 
             if cellWidth > 1:
-                if program.notificationScheduled:
-                    noFocusTexture = 'tvguide-program-red.png'
-                    focusTexture = 'tvguide-program-red-focus.png'
+                if self.isProgramPlaying(program):
+                    noFocusTexture = 'tvg-playing-nofocus.png'
+                    focusTexture = 'tvg-playing-focus.png'
                 elif program.autoplayScheduled:
-                    noFocusTexture = 'background-cover.png' #TODO
-                    focusTexture = 'background-cover2.png'
-                elif self.isProgramPlaying(program):
-                    noFocusTexture = 'tvguide-program-grey-focus.png'
-                    if SKIN == 'sly':
-                        focusTexture = 'tvguide-program-yellow-focus.png'
-                    else:
-                        focusTexture = 'tvguide-program-grey-focus.png'
-                elif SKIN == 'sly':
-                    noFocusTexture = 'background2.png'
-                    focusTexture = 'tvguide-program-yellow-focus.png'
+                    noFocusTexture = 'tvg-autoplay-nofocus.png'
+                    focusTexture = 'tvg-autoplay-focus.png'
+                elif program.notificationScheduled:
+                    noFocusTexture = 'tvg-remind-nofocus.png'
+                    focusTexture = 'tvg-remind-focus.png'
                 else:
-                    noFocusTexture = 'black-back.png'
-                    focusTexture = 'black-back.png'
+                    noFocusTexture = 'tvg-program-nofocus.png'
+                    focusTexture = 'tvg-program-focus.png'
 
                 if cellWidth < 25:
                     title = ''  # Text will overflow outside the button if it is too narrow
@@ -1478,6 +1474,7 @@ class TVGuide(xbmcgui.WindowXML):
                     self.epgView.cellHeight - 2,
                     title,
                     focusedColor=focusColor,
+                    textColor=noFocusColor,
                     noFocusTexture=noFocusTexture,
                     focusTexture=focusTexture
                 )
@@ -1590,14 +1587,13 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.quickEpgView.cellHeight-2)
                 control.setWidth(176)
                 control.setPosition(2,top)
-                if SKIN != 'sly':
-                    try:
-                        if self.currentChannel == channels[idx]:
-                            control.setImage("tvguide-program-grey-focus.png")
-                        else:
-                            control.setImage("black-back.png")
-                    except:
-                        control.setImage("black-back.png")
+                try:
+                    if self.currentChannel == channels[idx]:
+                        control.setImage("tvg-playing-nofocus.png")
+                    else:
+                        control.setImage("tvg-program-nofocus.png")
+                except:
+                    control.setImage("tvg-program-nofocus.png")
             control = self.getControl(14010 + idx)
             if control:
                 control.setHeight(self.quickEpgView.cellHeight-2)
@@ -1611,10 +1607,13 @@ class TVGuide(xbmcgui.WindowXML):
 
         if SKIN == 'sly':
             focusColor = '0xFF000000'
+            noFocusColor = '0xFFFFFFFF'
         elif SKIN == 'Dark':
             focusColor = '0xFF00FFC6'
+            noFocusColor = '0xFFFFFFFF'
         else:
-            focusColor = '0xFF00FFFF'
+            focusColor = '0xFF000000'
+            noFocusColor = '0xFFFFFFFF'
 
         for program in programs:
             idx = channels.index(program.channel)
@@ -1632,25 +1631,18 @@ class TVGuide(xbmcgui.WindowXML):
                 cellWidth = self.quickEpgView.right - cellStart
 
             if cellWidth > 1:
-                if program.notificationScheduled:
-                    noFocusTexture = 'tvguide-program-red.png'
-                    focusTexture = 'tvguide-program-red-focus.png'
+                if self.isProgramPlaying(program):
+                    noFocusTexture = 'tvg-playing-nofocus.png'
+                    focusTexture = 'tvg-playing-focus.png'
                 elif program.autoplayScheduled:
-                    noFocusTexture = 'background-cover.png' #TODO
-                    focusTexture = 'background-cover2.png'                    
-                elif self.isProgramPlaying(program):
-                    noFocusTexture = 'tvguide-program-grey-focus.png'
-                    if SKIN == 'sly':
-                        focusTexture = 'tvguide-program-yellow-focus.png'
-                    else:
-                        focusTexture = 'tvguide-program-grey-focus.png'
-
-                elif SKIN == 'sly':
-                    noFocusTexture = 'background2.png'
-                    focusTexture = 'tvguide-program-yellow-focus.png'
+                    noFocusTexture = 'tvg-autoplay-nofocus.png'
+                    focusTexture = 'tvg-autoplay-focus.png'
+                elif program.notificationScheduled:
+                    noFocusTexture = 'tvg-remind-nofocus.png'
+                    focusTexture = 'tvg-remind-focus.png'
                 else:
-                    noFocusTexture = 'black-back.png'
-                    focusTexture = 'black-back.png'
+                    noFocusTexture = 'tvg-program-nofocus.png'
+                    focusTexture = 'tvg-program-focus.png'
 
                 if cellWidth < 25:
                     title = ''  # Text will overflow outside the button if it is too narrow
@@ -1664,6 +1656,7 @@ class TVGuide(xbmcgui.WindowXML):
                     self.quickEpgView.cellHeight - 2,
                     title,
                     focusedColor=focusColor,
+                    textColor=noFocusColor,
                     noFocusTexture=noFocusTexture,
                     focusTexture=focusTexture
                 )
