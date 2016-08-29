@@ -767,7 +767,6 @@ class TVGuide(xbmcgui.WindowXML):
         programList = self.database.getFullAutoplays()
         labels = []
         for program in programList:
-            xbmc.log(repr(program))
             start = program.startDate
             day = self.formatDateTodayTomorrow(start)
             start = start.strftime("%H:%M")
