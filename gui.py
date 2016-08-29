@@ -538,7 +538,8 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(program)
         elif action.getId() in [ACTION_SHOW_INFO,REMOTE_1]:
             program = self._getProgramFromControl(controlInFocus)
-            self.showListing(program.channel)
+            if program is not None:
+                self.showListing(program.channel)
         elif action.getId() in [ACTION_MENU,REMOTE_2,ACTION_JUMP_SMS2]:
             self.showNow()
         elif action.getId() in [ACTION_LAST_PAGE,REMOTE_3, ACTION_JUMP_SMS3]:
