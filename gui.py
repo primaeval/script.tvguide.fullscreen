@@ -216,6 +216,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def __init__(self):
         super(TVGuide, self).__init__()
+        xbmc.log(repr(("XXXXXX","INIT")))
 
         self.notification = None
         self.autoplay = None
@@ -350,9 +351,20 @@ class TVGuide(xbmcgui.WindowXML):
         self.updateTimebar()
 
     def onAction(self, action):
+        xbmc.log(repr(("XXXXXX","onAction",self.mode,action.getId())))
         debug('Mode is: %s' % self.mode)
 
         self._hideControl(self.C_UP_NEXT)
+
+        if action.getId() in [ACTION_STOP]:
+            self._hideOsd()
+            self._hideQuickEpg()
+
+            self.currentChannel = None
+            self.viewStartDate = datetime.datetime.today()
+            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
+                                                     seconds=self.viewStartDate.second)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         if self.mode == MODE_TV:
             self.onActionTVMode(action)
@@ -375,7 +387,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif not self.osdEnabled:
             pass  # skip the rest of the actions
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
@@ -408,7 +420,7 @@ class TVGuide(xbmcgui.WindowXML):
         if action.getId() == ACTION_SHOW_INFO:
             self._hideOsd()
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
             self._hideOsd()
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
@@ -453,7 +465,7 @@ class TVGuide(xbmcgui.WindowXML):
         if action.getId() == ACTION_SHOW_INFO:
             self._hideLastPlayed()
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU, ACTION_STOP]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
             self._hideLastPlayed()
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
@@ -554,7 +566,7 @@ class TVGuide(xbmcgui.WindowXML):
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
     def onActionQuickEPGMode(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_STOP]:
+        if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK]:
             self._hideQuickEpg()
 
         # catch the ESC key
@@ -608,6 +620,7 @@ class TVGuide(xbmcgui.WindowXML):
             xbmc.log('[script.tvguide.fullscreen] quick epg Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
     def onClick(self, controlId):
+        xbmc.log(repr(("XXXXXX","onClick",self.mode,controlId)))
         if controlId in [self.C_MAIN_LOADING_CANCEL, self.C_MAIN_MOUSE_EXIT]:
             self.close()
             return
@@ -932,6 +945,7 @@ class TVGuide(xbmcgui.WindowXML):
         super(TVGuide, self).setFocus(control)
 
     def onFocus(self, controlId):
+        xbmc.log(repr(("XXXXXX","onFocus",controlId)))
         try:
             controlInFocus = self.getControl(controlId)
         except Exception:
@@ -1162,8 +1176,9 @@ class TVGuide(xbmcgui.WindowXML):
     def playChannel(self, channel, program = None):
         if self.currentChannel:
             self.lastChannel = self.currentChannel
-
+        xbmc.log(repr(("XXXXXX","playChannel",self.currentChannel)))
         self.currentChannel = channel
+        xbmc.log(repr(("XXXXXX","playChannel after",self.currentChannel)))
         self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
@@ -1185,19 +1200,23 @@ class TVGuide(xbmcgui.WindowXML):
             self._hideEpg()
             self._hideQuickEpg()
 
-        threading.Timer(1, self.waitForPlayBackStopped).start()
+        #threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
 
     def waitForPlayBackStopped(self):
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped")))
         for retry in range(0, 100):
             time.sleep(0.1)
             if self.player.isPlaying():
                 break
-
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped for break")))
         while self.player.isPlaying() and not xbmc.abortRequested and not self.isClosing:
+            xbmc.log(repr(("XXXXXX","waitForPlayBackStopped while")))
+            '''
             if self.upNextEnabled and self.mode == MODE_TV:
+                xbmc.log(repr(("XXXXXX","waitForPlayBackStopped if self.upNextEnabled and self.mode == MODE_TV:")))
                 if not self.currentProgram:
                     self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
                 if self.currentProgram and self.currentProgram.endDate:
@@ -1209,20 +1228,22 @@ class TVGuide(xbmcgui.WindowXML):
                         self._showControl(self.C_UP_NEXT)
                         count = 0
                         while remainingseconds < self.upNextTime and remainingseconds > 1 and self.mode == MODE_TV:
+                            xbmc.log(repr(("XXXXXX","waitForPlayBackStopped while 2")))
                             self._updateNextUpInfo(firstTime)
                             try: remainingseconds = int(timedelta_total_seconds((self.currentProgram.endDate - datetime.datetime.now())))
                             except: pass
                             count = count + 1
                             time.sleep(1)
                             if not self.player.isPlaying() or xbmc.abortRequested or self.isClosing:
+                                xbmc.log(repr(("XXXXXX","waitForPlayBackStopped while 2 break")))
                                 break
                             if self.upNextShowTimeEnabled and count >= self.upNextShowTime:
                                 self._hideControl(self.C_UP_NEXT)
                         self._hideControl(self.C_UP_NEXT)
                         self.currentProgram = None
-
+            '''
             time.sleep(1)
-
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped end")))
         self.onPlayBackStopped()
 
     def _updateNextUpInfo(self,firstTime):
@@ -1294,7 +1315,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.osdChannel = self.currentChannel
         if not self.osdChannel:
             return #TODO this should not happen
-
+        xbmc.log(repr(("XXXXXX","_showOsd osdChannel",self.osdChannel)))
         if self.osdProgram is not None:
             self.setControlLabel(self.C_MAIN_OSD_TITLE, '[B]%s[/B]' % self.osdProgram.title)
             if self.osdProgram.startDate or self.osdProgram.endDate:
@@ -1415,6 +1436,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._clearQuickEpg()
 
     def onRedrawEPG(self, channelStart, startTime, focusFunction=None):
+        xbmc.log(repr(("XXXXXX","ONREDRAWEPG",channelStart,self.currentChannel)))
         if self.redrawingEPG or (self.database is not None and self.database.updateInProgress) or self.isClosing:
             debug('onRedrawEPG - already redrawing')
             return  # ignore redraw request while redrawing
@@ -1478,11 +1500,14 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setWidth(176)
                 control.setPosition(2,top)
                 try:
-                    if self.currentChannel == channels[idx]:
+                    xbmc.log(repr(("XXXXXX","try",self.currentChannel,idx,channels[idx])))
+                    if self.player.isPlaying() and (self.currentChannel == channels[idx]):
+                        xbmc.log(repr(("XXXXXX","if self.currentChannel == channels[idx]")))
                         control.setImage("tvg-playing-nofocus.png")
                     else:
                         control.setImage("tvg-program-nofocus.png")
                 except:
+                    xbmc.log(repr(("XXXXXX","if self.currentChannel == channels[idx] except")))
                     control.setImage("tvg-program-nofocus.png")
             control = self.getControl(4010 + idx)
             if control:
@@ -1578,6 +1603,7 @@ class TVGuide(xbmcgui.WindowXML):
         # add program controls
         if focusFunction is None:
             focusFunction = self._findControlAt
+        xbmc.log(repr(("XXXXXX","focusPoint",self.focusPoint)))
         focusControl = focusFunction(self.focusPoint)
         controls = [elem.control for elem in self.controlAndProgramList]
         try:
@@ -1586,11 +1612,14 @@ class TVGuide(xbmcgui.WindowXML):
             pass
         if focusControl is not None:
             debug('onRedrawEPG - setFocus %d' % focusControl.getId())
+            xbmc.log(repr(("XXXXXX","setFocus",focusControl.getId())))
+            #TODO persistent focus after playback in non-osd mode
             self.setFocus(focusControl)
 
         self.ignoreMissingControlIds.extend([elem.control.getId() for elem in self.controlAndProgramList])
 
         if focusControl is None and len(self.controlAndProgramList) > 0:
+            xbmc.log(repr(("XXXXXX","setFocus 0")))
             self.setFocus(self.controlAndProgramList[0].control)
 
         self._hideControl(self.C_MAIN_LOADING)
@@ -1840,9 +1869,11 @@ class TVGuide(xbmcgui.WindowXML):
         return not xbmc.abortRequested and not self.isClosing
 
     def onPlayBackStopped(self):
+        xbmc.log(repr(("XXXXXX","onPlayBackStopped",self.currentChannel)))
         if not self.player.isPlaying() and not self.isClosing:
             self._hideControl(self.C_MAIN_OSD)
             self._hideControl(self.C_QUICK_EPG)
+            xbmc.log(repr(("XXXXXX","onPlayBackStopped if not playing",self.currentChannel)))
             self.currentChannel = None
             self.currentProgram = None
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
@@ -2075,6 +2106,8 @@ class TVGuide(xbmcgui.WindowXML):
                 return timestamp.strftime("%A")
 
     def isProgramPlaying(self, program):
+        if not self.player.isPlaying():
+            return False
         if self.currentChannel and self.currentProgram:
             currentTitle = self.currentProgram.title
             currentStartDate = self.currentProgram.startDate
