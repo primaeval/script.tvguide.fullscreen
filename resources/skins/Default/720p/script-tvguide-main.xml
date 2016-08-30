@@ -313,7 +313,7 @@
                     <posy>-20</posy>
                     <width>280</width>
                     <height>20</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <font>font13</font>
                     <align>right</align>
@@ -327,7 +327,7 @@
                     <posy>-15</posy>
                     <width>280</width>
                     <height>20</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <font>font13</font>
                     <align>right</align>
@@ -1360,6 +1360,18 @@
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
 
+            </control>
+            <control type="label">
+                <description>ERROR PLAYING STREAM</description>
+                <posx>1255</posx>
+                <posy>0</posy>
+                <width>240</width>
+                <height>50</height>
+                <label>ERROR PLAYING STREAM</label>
+                <textcolor>red</textcolor>
+                <font>font13_title</font>
+                <align>right</align>
+                <visible>!Player.HasMedia</visible>
             </control>
             <control type="label" id="6002">
                 <description>Program time</description>
