@@ -217,6 +217,7 @@ class TVGuide(xbmcgui.WindowXML):
     def __init__(self):
         super(TVGuide, self).__init__()
 
+        self.restart = False
         self.notification = None
         self.autoplay = None
         self.redrawingEPG = False
@@ -1191,6 +1192,7 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.player.play(item=url, windowed=self.osdEnabled)
 
+            self.restart = True
             self._hideEpg()
             self._hideQuickEpg()
 
@@ -1208,6 +1210,10 @@ class TVGuide(xbmcgui.WindowXML):
         while countdown:
             time.sleep(1)
             countdown = countdown - 1
+            if self.restart == True:
+                self.restart = False
+                self._hideOsd()
+                return
             if self.player.isPlaying():
                 if self.mode == MODE_OSD:
                     self._hideOsd()
@@ -1841,13 +1847,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         return not xbmc.abortRequested and not self.isClosing
 
-    def onPlayBackStopped(self):
-        if not self.player.isPlaying() and not self.isClosing:
-            self._hideControl(self.C_MAIN_OSD)
-            self._hideControl(self.C_QUICK_EPG)
-            self.currentChannel = None
-            self.currentProgram = None
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
 
     def _secondsToXposition(self, seconds):
         return self.epgView.left + (seconds * self.epgView.width / 7200)
