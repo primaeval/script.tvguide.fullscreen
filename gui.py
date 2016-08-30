@@ -1202,18 +1202,20 @@ class TVGuide(xbmcgui.WindowXML):
     def waitForPlayBackStopped(self):
         time.sleep(1)
         self._showOsd()
+        time.sleep(3)
 
-        #TODO time might need to be a Setting
-        time.sleep(int(ADDON.getSetting('playback.timeout')))
-        if self.player.isPlaying():
-            if self.mode == MODE_OSD:
-                self._hideOsd()
-        else:
-            #TODO find a way to compare requested channel to playing channel
-            self.currentChannel = None
-            self.currentProgram = None
-            self._hideOsd()
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+        countdown = int(ADDON.getSetting('playback.timeout'))
+        while countdown:
+            time.sleep(1)
+            countdown = countdown - 1
+            if self.player.isPlaying():
+                if self.mode == MODE_OSD:
+                    self._hideOsd()
+                return
+
+        #TODO find a way to compare requested channel to playing channel
+        self._hideOsd()
+        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
 
     def _updateNextUpInfo(self,firstTime):
