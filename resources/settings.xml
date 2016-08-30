@@ -41,6 +41,8 @@
         <setting id="enable.osd" label="30118" type="bool" default="true"  enable="eq(1,false)"/>
         <setting id="alternative.playback" label="30120" type="bool" default="false" />
         <setting type="sep"/>
+        <setting id="playback.timeout" label="Playback Timeout (seconds)" type="labelenum" default="5" values="0|1|2|3|4|5|10|15|20|30"/>
+        <setting type="sep"/>
         <!--TODO REMOVED UNTIL STABLE
         <setting id="enable.nextup" label="Show Up Next" type="bool" default="true" />
         <setting id="nextup.time" type="number" label="  - Time before end in seconds to show" default="20" visible="eq(-1,true)" enable="true"/>
