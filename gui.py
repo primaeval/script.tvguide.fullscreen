@@ -217,6 +217,7 @@ class TVGuide(xbmcgui.WindowXML):
     def __init__(self):
         super(TVGuide, self).__init__()
         #xbmc.log(repr(("XXXXXX","INIT")))
+        self.count = 0
 
         self.notification = None
         self.autoplay = None
@@ -361,7 +362,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._hideControl(self.C_UP_NEXT)
 
         if action.getId() in [ACTION_STOP]:
-            self._hideOsd()
+            self._hideOsdOnly()
             self._hideQuickEpg()
 
             self.currentChannel = None
@@ -1208,13 +1209,44 @@ class TVGuide(xbmcgui.WindowXML):
 
             self._hideEpg()
             self._hideQuickEpg()
+            #self._showOsd()
 
-        #threading.Timer(1, self.waitForPlayBackStopped).start()
+        self.count = self.count + 1
+        threading.Timer(1, self.waitForPlayBackStopped).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
 
     def waitForPlayBackStopped(self):
+        time.sleep(1)
+        self._showOsd()
+        thread = self.count
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped start",thread,self.player.isPlaying())))
+        time.sleep(3)
+        if self.player.isPlaying():
+            if self.mode == MODE_OSD:
+                self._hideOsd() #TODO maybe Only
+
+
+    def waitForPlayBackStopped3(self):
+        thread = self.count
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped start",thread,self.player.isPlaying())))
+        time.sleep(5)
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped timeout",thread,self.player.isPlaying())))
+        while self.player.isPlaying() and not xbmc.abortRequested and not self.isClosing:
+            xbmc.log(repr(("XXXXXX","waitForPlayBackStopped loop",thread,self.player.isPlaying())))
+            time.sleep(1)
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped end",thread,self.player.isPlaying())))
+        self._hideOsd()
+        self._hideQuickEpg()
+
+        self.currentChannel = None
+        self.viewStartDate = datetime.datetime.today()
+        self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
+                                                 seconds=self.viewStartDate.second)
+        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+    def waitForPlayBackStopped2(self):
         #xbmc.log(repr(("XXXXXX","waitForPlayBackStopped")))
         for retry in range(0, 100):
             time.sleep(0.1)
@@ -1425,6 +1457,9 @@ class TVGuide(xbmcgui.WindowXML):
             program = self.database.getCurrentProgram(channel)
             self.lastChannel = self.currentChannel
             self.playChannel(channel, program)
+
+    def _hideOsdOnly(self):
+        self._hideControl(self.C_MAIN_OSD)
 
     def _hideOsd(self):
         self.mode = MODE_TV

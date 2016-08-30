@@ -1361,6 +1361,18 @@
                 <font>font13</font>
 
             </control>
+            <control type="label">
+                <description>ERROR PLAYING STREAM</description>
+                <posx>1255</posx>
+                <posy>0</posy>
+                <width>240</width>
+                <height>50</height>
+                <label>ERROR PLAYING STREAM</label>
+                <textcolor>red</textcolor>
+                <font>font13_title</font>
+                <align>right</align>
+                <visible>!Player.HasMedia</visible>
+            </control>
             <control type="label" id="6002">
                 <description>Program time</description>
                 <posx>1255</posx>
