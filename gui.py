@@ -1221,12 +1221,11 @@ class TVGuide(xbmcgui.WindowXML):
         time.sleep(1)
         self._showOsd()
         #thread = self.count
-        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped start",self.player.isPlaying())))
+        #xbmc.log(repr(("XXXXXX","waitForPlayBackStopped start",self.player.isPlaying())))
         time.sleep(5)
         if self.player.isPlaying():
-
             playing = xbmc.Player().getPlayingFile()
-            xbmc.log(repr(("XXXXXX","waitForPlayBackStopped playing",playing,self.player.isPlaying())))            
+            #xbmc.log(repr(("XXXXXX","waitForPlayBackStopped playing",playing,self.player.isPlaying())))            
             if self.mode == MODE_OSD:
                 self._hideOsd() 
         else:
