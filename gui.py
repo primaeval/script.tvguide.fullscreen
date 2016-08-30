@@ -1221,11 +1221,18 @@ class TVGuide(xbmcgui.WindowXML):
         time.sleep(1)
         self._showOsd()
         #thread = self.count
-        #xbmc.log(repr(("XXXXXX","waitForPlayBackStopped start",thread,self.player.isPlaying())))
-        time.sleep(3)
+        xbmc.log(repr(("XXXXXX","waitForPlayBackStopped start",self.player.isPlaying())))
+        time.sleep(5)
         if self.player.isPlaying():
+
+            playing = xbmc.Player().getPlayingFile()
+            xbmc.log(repr(("XXXXXX","waitForPlayBackStopped playing",playing,self.player.isPlaying())))            
             if self.mode == MODE_OSD:
                 self._hideOsd() 
+        else:
+            #TODO find a way to compare requested channel to playing channel
+            self.currentChannel = None
+            self.currentProgram = None
 
 
     def waitForPlayBackStopped_original(self):
