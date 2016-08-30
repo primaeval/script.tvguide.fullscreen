@@ -65,6 +65,9 @@ ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
 ACTION_MENU = 163
 ACTION_LAST_PAGE = 160
+ACTION_PLAY = 68
+ACTION_PLAYER_PLAY = 79
+ACTION_PLAYER_PLAYPAUSE = 229
 
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
@@ -484,7 +487,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     # epg mode
     def onActionEPGMode(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK]:
+        if action.getId() in [ACTION_PARENT_DIR]:
             self.close()
             return
 
@@ -497,7 +500,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._showControl(self.C_MAIN_MOUSE_CONTROLS)
             return
 
-        elif action.getId() in [KEY_CONTEXT_MENU]:
+        elif action.getId() in [KEY_NAV_BACK]:
             if self.player.isPlaying():
                 self._hideEpg()
 
@@ -1212,11 +1215,11 @@ class TVGuide(xbmcgui.WindowXML):
             countdown = countdown - 1
             if self.restart == True:
                 self.restart = False
-                self._hideOsd()
+                self._hideOsdOnly()
                 return
             if self.player.isPlaying():
                 if self.mode == MODE_OSD:
-                    self._hideOsd()
+                    self._hideOsdOnly()
                 return
 
         #TODO find a way to compare requested channel to playing channel
