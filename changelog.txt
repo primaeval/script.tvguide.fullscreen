@@ -31,6 +31,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.97
+- highlight correct playing program and channel
+- Playback Timeout setting in Appearance
+- Up Next is disabled until playback is solid
+
 version 0.0.96
 - missing date
 
