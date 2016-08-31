@@ -1,0 +1,51 @@
+Commands
+
+EPG Window
+- exit (escape, back if not playing)
+- back to tv window (info, i, back if playing)
+- movement (up,down,left,right,page up, page down)
+- play channel (select,ok,enter)
+- main menu (c, context)
+- channel listings view (1)
+- programs on now view (2)
+- programs on next view (3)
+- search programs (4)
+- reminders list (5)
+- autoplays (6)
+
+Main Menu
+- exit to epg (esc, back)
+- add channels to categories (c, context)
+
+TV Window
+- back to epg (back, escape)
+- show osd (info, i)
+- show last channel (left, right)
+- show quick epg (up, down)
+- change to next/prev channel (page up, page down)
+- change to last channel (0)
+
+OSD Window
+- back to epg (back, escape)
+- close osd window (info,i)
+- next/prev channel (up,down)
+- next/prev program (left,right)
+- change channel (ok, select, enter)
+- change to next/prev channel (page up, page down)
+- change to last channel (0)
+
+Quick EPG Window
+- close (esc, back, info)
+- next/prev channel (up,down)
+- next/prev program (left,right)
+- change channel (ok, select, enter)
+- change to next/prev channel (page up, page down)
+- change to last channel (0)
+
+Last Channel Window
+- back to epg (back, escape)
+- close osd window (info,i, left, right)
+- change channel (ok, select, enter)
+- change to last channel (0)
+
+*context menu key is saved for future menus

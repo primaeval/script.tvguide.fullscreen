@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
+    <category label="Help">
+        <setting label="Command Keys" type="action" action="RunScript($CWD/help.py)" />
+    </category>
     <category label="30101">
-
         <setting id="xmltv.type" label="XMLTV Source" type="enum" enable="true" visible="true" default="0" values="File|Url" />
         <setting id="xmltv.file" label="XMLTV File" type="file" visible="eq(-1,0)" />
         <setting id="xmltv.url" label="XMLTV Url" type="text" visible="eq(-2,1)" />
