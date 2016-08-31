@@ -1213,8 +1213,8 @@ class TVGuide(xbmcgui.WindowXML):
 
     def waitForPlayBackStopped(self):
         time.sleep(1)
-        self._showOsd()
-        time.sleep(3)
+        #self._showOsd()
+        #time.sleep(3)
 
         countdown = int(ADDON.getSetting('playback.timeout'))
         while countdown:
@@ -1222,11 +1222,11 @@ class TVGuide(xbmcgui.WindowXML):
             countdown = countdown - 1
             if self.restart == True:
                 self.restart = False
-                self._hideOsd()
+                #self._hideOsd()
                 return
             if self.player.isPlaying():
-                if self.mode == MODE_OSD:
-                    self._hideOsd()
+                #if self.mode == MODE_OSD:
+                #    self._hideOsd()
                 return
 
         #TODO find a way to compare requested channel to playing channel
@@ -2561,8 +2561,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         self.streamingService = streaming.StreamsService(ADDON)
 
     def close(self):
-        if self.player.isPlaying():
-            self.player.stop()
+        #if self.player.isPlaying():
+        #    self.player.stop()
         super(StreamSetupDialog, self).close()
 
     def onInit(self):
