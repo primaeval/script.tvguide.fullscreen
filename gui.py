@@ -389,7 +389,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif not self.osdEnabled:
             pass  # skip the rest of the actions
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
@@ -422,7 +422,7 @@ class TVGuide(xbmcgui.WindowXML):
         if action.getId() == ACTION_SHOW_INFO:
             self._hideOsd()
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self._hideOsd()
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
@@ -467,7 +467,7 @@ class TVGuide(xbmcgui.WindowXML):
         if action.getId() == ACTION_SHOW_INFO:
             self._hideLastPlayed()
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self._hideLastPlayed()
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
@@ -501,6 +501,13 @@ class TVGuide(xbmcgui.WindowXML):
             return
 
         elif action.getId() in [KEY_NAV_BACK]:
+            if self.player.isPlaying():
+                self._hideEpg()
+            else:
+                self.close()
+                return
+
+        elif action.getId() in [ACTION_SHOW_INFO]:
             if self.player.isPlaying():
                 self._hideEpg()
 
@@ -550,13 +557,13 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
-        elif action.getId() in [ACTION_SHOW_INFO,REMOTE_1]:
+        elif action.getId() in [REMOTE_1]:
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
-        elif action.getId() in [ACTION_MENU,REMOTE_2,ACTION_JUMP_SMS2]:
+        elif action.getId() in [REMOTE_2,ACTION_JUMP_SMS2]:
             self.showNow()
-        elif action.getId() in [ACTION_LAST_PAGE,REMOTE_3, ACTION_JUMP_SMS3]:
+        elif action.getId() in [REMOTE_3, ACTION_JUMP_SMS3]:
             self.showNext()
         elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
             self.programSearch()
@@ -575,7 +582,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_PREVIOUS_MENU and action.getButtonCode() == KEY_ESC:
             self._hideQuickEpg()
 
-        elif action.getId() in [KEY_CONTEXT_MENU,ACTION_SHOW_INFO]:
+        elif action.getId() in [ACTION_SHOW_INFO]:
             self._hideQuickEpg()
 
         controlInFocus = None
@@ -1215,11 +1222,11 @@ class TVGuide(xbmcgui.WindowXML):
             countdown = countdown - 1
             if self.restart == True:
                 self.restart = False
-                self._hideOsdOnly()
+                self._hideOsd()
                 return
             if self.player.isPlaying():
                 if self.mode == MODE_OSD:
-                    self._hideOsdOnly()
+                    self._hideOsd()
                 return
 
         #TODO find a way to compare requested channel to playing channel
