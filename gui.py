@@ -1225,7 +1225,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if self.mode == MODE_OSD:
                     self._hideOsd()
                 return
-            if tryingToPlay == False:
+            if self.tryingToPlay == False:
                 return
 
         #TODO find a way to compare requested channel to playing channel
