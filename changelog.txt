@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.99
+- keep playing on Stream Setup exit
+- no osd on channel change
+
 version 0.0.98
 - Help in Settings
 
