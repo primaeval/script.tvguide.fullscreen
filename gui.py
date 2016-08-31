@@ -1202,37 +1202,33 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.player.play(item=url, windowed=self.osdEnabled)
 
-            self.restart = True
             self._hideEpg()
             self._hideQuickEpg()
 
-        threading.Timer(1, self.waitForPlayBackStopped).start()
+        threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
 
-    def waitForPlayBackStopped(self):
+    def waitForPlayBackStopped(self,title):
         time.sleep(1)
-        #self._showOsd()
-        #time.sleep(3)
+        self._showOsd()
+        time.sleep(3)
 
         countdown = int(ADDON.getSetting('playback.timeout'))
         while countdown:
             time.sleep(1)
             countdown = countdown - 1
-            if self.restart == True:
-                self.restart = False
-                #self._hideOsd()
-                return
             if self.player.isPlaying():
-                #if self.mode == MODE_OSD:
-                #    self._hideOsd()
+                if self.mode == MODE_OSD:
+                    self._hideOsd()
                 return
 
         #TODO find a way to compare requested channel to playing channel
         self._hideOsd()
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-
+        dialog = xbmcgui.Dialog()
+        dialog.notification('Stream Failed', title, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
 
     def _updateNextUpInfo(self,firstTime):
         if self.currentProgram and self.lastOsdProgram and self.currentProgram != self.lastOsdProgram:
