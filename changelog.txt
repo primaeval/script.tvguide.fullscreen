@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.101
+- don't fail if stop pressed early
+
 version 0.0.100
 - stream failed notification
 
