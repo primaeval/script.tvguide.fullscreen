@@ -220,7 +220,7 @@ class TVGuide(xbmcgui.WindowXML):
     def __init__(self):
         super(TVGuide, self).__init__()
 
-        self.restart = False
+        self.tryingToPlay = False
         self.notification = None
         self.autoplay = None
         self.redrawingEPG = False
@@ -359,6 +359,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._hideControl(self.C_UP_NEXT)
 
         if action.getId() in [ACTION_STOP]:
+            self.tryingToPlay = False
             self._hideOsdOnly()
             self._hideQuickEpg()
 
@@ -1202,6 +1203,7 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.player.play(item=url, windowed=self.osdEnabled)
 
+            self.tryingToPlay = True
             self._hideEpg()
             self._hideQuickEpg()
 
@@ -1222,6 +1224,8 @@ class TVGuide(xbmcgui.WindowXML):
             if self.player.isPlaying():
                 if self.mode == MODE_OSD:
                     self._hideOsd()
+                return
+            if tryingToPlay == False:
                 return
 
         #TODO find a way to compare requested channel to playing channel
