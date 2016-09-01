@@ -446,23 +446,27 @@ class TVGuide(xbmcgui.WindowXML):
             self.osdChannel = self.database.getPreviousChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
+            self.osdActive = True
 
         elif action.getId() == ACTION_DOWN:
             self.osdChannel = self.database.getNextChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
+            self.osdActive = True
 
         elif action.getId() == ACTION_LEFT:
             previousProgram = self.database.getPreviousProgram(self.osdProgram)
             if previousProgram:
                 self.osdProgram = previousProgram
                 self._showOsd()
+            self.osdActive = True
 
         elif action.getId() == ACTION_RIGHT:
             nextProgram = self.database.getNextProgram(self.osdProgram)
             if nextProgram:
                 self.osdProgram = nextProgram
                 self._showOsd()
+            self.osdActive = True
 
     def onActionLastPlayedMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
@@ -1215,6 +1219,7 @@ class TVGuide(xbmcgui.WindowXML):
     def waitForPlayBackStopped(self,title):
         time.sleep(1)
         self._showOsd()
+        self.osdActive = False
         time.sleep(3)
 
         countdown = int(ADDON.getSetting('playback.timeout'))
@@ -1222,14 +1227,15 @@ class TVGuide(xbmcgui.WindowXML):
             time.sleep(1)
             countdown = countdown - 1
             if self.player.isPlaying():
-                if self.mode == MODE_OSD:
+                if self.mode == MODE_OSD and not self.osdActive:
                     self._hideOsd()
                 return
             if self.tryingToPlay == False:
                 return
 
         #TODO find a way to compare requested channel to playing channel
-        self._hideOsd()
+        if not self.osdActive:
+            self._hideOsd()
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
         dialog = xbmcgui.Dialog()
         dialog.notification('Stream Failed', title, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
