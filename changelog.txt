@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.105
+- show Listing/Now/Next/Search in other views
+
 version 0.0.104
 - leave osd open on channel change if direction button pressed
 
