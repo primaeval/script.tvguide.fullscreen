@@ -336,7 +336,7 @@
 
                 <control type="label">
                     <description>time label</description>
-                    <right>5</right>
+                    <posx>5r</posx>
                     <top>5</top>
                     <width>200</width>
                     <height>30</height>
@@ -2234,7 +2234,7 @@
 
                 <control type="label">
                     <description>time label</description>
-                    <right>5</right>
+                    <posx>5r</posx>
                     <top>5</top>
                     <width>200</width>
                     <height>30</height>
