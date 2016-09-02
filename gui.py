@@ -220,7 +220,7 @@ class TVGuide(xbmcgui.WindowXML):
     def __init__(self):
         super(TVGuide, self).__init__()
 
-        self.restart = False
+        self.tryingToPlay = False
         self.notification = None
         self.autoplay = None
         self.redrawingEPG = False
@@ -359,6 +359,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._hideControl(self.C_UP_NEXT)
 
         if action.getId() in [ACTION_STOP]:
+            self.tryingToPlay = False
             self._hideOsdOnly()
             self._hideQuickEpg()
 
@@ -367,6 +368,17 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                      seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+        if action.getId() in [REMOTE_2,ACTION_JUMP_SMS2]:
+            self.showNow()
+        elif action.getId() in [REMOTE_3, ACTION_JUMP_SMS3]:
+            self.showNext()
+        elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
+            self.programSearch()
+        elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
+            self.showFullReminders()
+        elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
+            self.showFullAutoplays()
 
         if self.mode == MODE_TV:
             self.onActionTVMode(action)
@@ -445,23 +457,31 @@ class TVGuide(xbmcgui.WindowXML):
             self.osdChannel = self.database.getPreviousChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
+            self.osdActive = True
 
         elif action.getId() == ACTION_DOWN:
             self.osdChannel = self.database.getNextChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
+            self.osdActive = True
 
         elif action.getId() == ACTION_LEFT:
             previousProgram = self.database.getPreviousProgram(self.osdProgram)
             if previousProgram:
                 self.osdProgram = previousProgram
                 self._showOsd()
+            self.osdActive = True
 
         elif action.getId() == ACTION_RIGHT:
             nextProgram = self.database.getNextProgram(self.osdProgram)
             if nextProgram:
                 self.osdProgram = nextProgram
                 self._showOsd()
+            self.osdActive = True
+
+        elif action.getId() in [REMOTE_1]:
+            self.showListing(self.osdChannel)
+
 
     def onActionLastPlayedMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
@@ -561,16 +581,6 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
-        elif action.getId() in [REMOTE_2,ACTION_JUMP_SMS2]:
-            self.showNow()
-        elif action.getId() in [REMOTE_3, ACTION_JUMP_SMS3]:
-            self.showNext()
-        elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
-            self.programSearch()
-        elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
-            self.showFullReminders()
-        elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
-            self.showFullAutoplays()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -625,6 +635,10 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideQuickEpg()
             self.playChannel(self.osdChannel, self.osdProgram)
+        elif action.getId() in [REMOTE_1]:
+            program = self._getQuickProgramFromControl(controlInFocus)
+            if program is not None:
+                self.showListing(program.channel)
         else:
             xbmc.log('[script.tvguide.fullscreen] quick epg Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -1202,37 +1216,38 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.player.play(item=url, windowed=self.osdEnabled)
 
-            self.restart = True
+            self.tryingToPlay = True
             self._hideEpg()
             self._hideQuickEpg()
 
-        threading.Timer(1, self.waitForPlayBackStopped).start()
+        threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
         self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
 
-    def waitForPlayBackStopped(self):
+    def waitForPlayBackStopped(self,title):
         time.sleep(1)
         self._showOsd()
+        self.osdActive = False
         time.sleep(3)
 
         countdown = int(ADDON.getSetting('playback.timeout'))
         while countdown:
             time.sleep(1)
             countdown = countdown - 1
-            if self.restart == True:
-                self.restart = False
-                self._hideOsd()
-                return
             if self.player.isPlaying():
-                if self.mode == MODE_OSD:
+                if self.mode == MODE_OSD and not self.osdActive:
                     self._hideOsd()
+                return
+            if self.tryingToPlay == False:
                 return
 
         #TODO find a way to compare requested channel to playing channel
-        self._hideOsd()
+        if not self.osdActive:
+            self._hideOsd()
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-
+        dialog = xbmcgui.Dialog()
+        dialog.notification('Stream Failed', title, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
 
     def _updateNextUpInfo(self,firstTime):
         if self.currentProgram and self.lastOsdProgram and self.currentProgram != self.lastOsdProgram:
@@ -2561,8 +2576,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         self.streamingService = streaming.StreamsService(ADDON)
 
     def close(self):
-        if self.player.isPlaying():
-            self.player.stop()
+        #if self.player.isPlaying():
+        #    self.player.stop()
         super(StreamSetupDialog, self).close()
 
     def onInit(self):

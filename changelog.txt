@@ -7,6 +7,28 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.105
+- show Listing/Now/Next/Search in other views
+
+version 0.0.104
+- leave osd open on channel change if direction button pressed
+
+version 0.0.103
+- fix
+
+version 0.0.102
+- fix
+
+version 0.0.101
+- don't fail if stop pressed early
+
+version 0.0.100
+- stream failed notification
+
+version 0.0.99
+- keep playing on Stream Setup exit
+- no osd on channel change
+
 version 0.0.98
 - Help in Settings
 
