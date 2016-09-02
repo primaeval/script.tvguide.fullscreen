@@ -105,9 +105,9 @@
 		<control type="videowindow">
             <description>Preview/Current Video</description>
 			<left>12</left>
-            <top>502</top>
-            <width>320</width>
-            <height>180</height>
+            <top>318</top>
+            <width>640</width>
+            <height>360</height>
         </control>
 
 		<!-- Header Buttons -->
