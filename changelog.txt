@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.106
+- Import Playlist (to addon script.tvguide.fullscreen)
+
 version 0.0.105
 - show Listing/Now/Next/Search in other views
 
