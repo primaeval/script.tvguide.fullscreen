@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.107
+- Listing in TV Mode
+
 version 0.0.106
 - Import Playlist (to addon script.tvguide.fullscreen)
 
