@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.108
+- Import Playlist from anywhere
+
 version 0.0.107
 - Listing in TV Mode
 
