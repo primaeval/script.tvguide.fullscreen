@@ -429,6 +429,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideQuickEpg()
+        elif action.getId() in [REMOTE_1]:
+            self.showListing(self.currentChannel)
 
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
