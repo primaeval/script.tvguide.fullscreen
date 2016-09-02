@@ -2526,6 +2526,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_STRM_PREVIEW = 1002
     C_STREAM_STRM_OK = 1003
     C_STREAM_STRM_CANCEL = 1004
+    C_STREAM_STRM_IMPORT = 1005
     C_STREAM_FAVOURITES = 2001
     C_STREAM_FAVOURITES_PREVIEW = 2002
     C_STREAM_FAVOURITES_OK = 2003
@@ -2675,6 +2676,65 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 self.database.setCustomStreamUrl(self.channel, stream)
                 self.getControl(self.C_STREAM_STRM_FILE_LABEL).setText(stream_name)
                 self.strmFile = stream
+
+        elif controlId == self.C_STREAM_STRM_IMPORT:
+            dialog = xbmcgui.Dialog()
+            stream = dialog.browseSingle(1, ADDON.getLocalizedString(30304), 'video', '.strm|.m3u|.m3u8')
+            if stream:
+                stream_name = stream
+                f = xbmcvfs.File(stream,"rb")
+                data = f.read()
+                lines = data.splitlines()
+                if len(lines) > 1:
+                    matches = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
+                    playlist_streams = {}
+                    for name,url in matches:
+                        playlist_streams[name.strip()] = url.strip()
+
+                    #TODO make this a function
+                    file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
+                    f = xbmcvfs.File(file_name)
+                    items = f.read().splitlines()
+                    f.close()
+                    streams = {}
+                    addonId = 'nothing'
+                    for item in items:
+                        if item.startswith('['):
+                            addonId = item.strip('[] \t')
+                            streams[addonId] = {}
+                        elif item.startswith('#'):
+                            pass
+                        else:
+                            name_url = item.split('=',1)
+                            if len(name_url) == 2:
+                                name = name_url[0]
+                                url = name_url[1]
+                                if url:
+                                    streams[addonId][name] = url
+
+                    addonId = "script.tvguide.fullscreen"
+                    if addonId not in streams:
+                        streams[addonId] = {}
+                    for name in playlist_streams:
+                        streams[addonId][name] = playlist_streams[name]
+
+                    f = xbmcvfs.File(file_name,'w')
+                    write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"
+                    f.write(write_str.encode("utf8"))
+                    for addonId in sorted(streams):
+                        write_str = "[%s]\n" % (addonId)
+                        f.write(write_str)
+                        addonStreams = streams[addonId]
+                        for name in sorted(addonStreams):
+                            stream = addonStreams[name]
+                            if name.startswith(' '):
+                                continue
+                            name = re.sub(r'[:=]',' ',name)
+                            if not stream:
+                                stream = 'nothing'
+                            write_str = "%s=%s\n" % (name,stream)
+                            f.write(write_str)
+                    f.close()
 
         elif controlId == self.C_STREAM_ADDONS_OK:
             listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
