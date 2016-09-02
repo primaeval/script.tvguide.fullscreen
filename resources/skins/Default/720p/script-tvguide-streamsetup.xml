@@ -187,11 +187,11 @@
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>101</onup>
-                <onright>1005</onright>
+                <onright>1006</onright>
                 <ondown>1002</ondown>
             </control>
 
-            <control type="button" id="1005">
+            <control type="button" id="1006">
                 <description>Import Playlist</description>
                 <posx>500</posx>
                 <posy>160</posy>
@@ -235,7 +235,7 @@
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>101</onup>
-                <onleft>1001</onleft>
+                <onleft>1006</onleft>
                 <onright>1003</onright>
             </control>
             <control type="button" id="1003">

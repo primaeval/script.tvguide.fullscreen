@@ -181,23 +181,43 @@
             </control>
 
             <control type="button" id="1001">
-                <posx>140</posx>
+                <description>Single Stream From Playlist</description>
+                <posx>300</posx>
                 <posy>160</posy>
-                <width>200</width>
+                <width>170</width>
                 <height>50</height>
                 <label>strm|m3u File</label>
                 <align>center</align>
                 <aligny>center</aligny>
-                <font>font12</font>
+                <font>font13</font>
                 <textcolor>white</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+                <focusedcolor>cyan</focusedcolor>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
-                <onright>1002</onright>
+                <onright>1006</onright>
                 <ondown>1002</ondown>
             </control>
 
+            <control type="button" id="1006">
+                <description>Import Playlist</description>
+                <posx>500</posx>
+                <posy>160</posy>
+                <width>170</width>
+                <height>50</height>
+                <label>Import Playlist</label>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>white</textcolor>
+                <focusedcolor>cyan</focusedcolor>
+                <texturefocus>menu-grey-focus.png</texturefocus>
+                <texturenofocus>menu-grey.png</texturenofocus>
+                <onup>101</onup>
+                <onleft>1001</onleft>
+                <onright>1002</onright>
+                <ondown>1002</ondown>
+            </control>
             <control type="textbox" id="1005">
                 <posx>140</posx>
                 <posy>240</posy>
@@ -222,7 +242,7 @@
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
-                <onleft>1001</onleft>
+                <onleft>1006</onleft>
                 <onright>1003</onright>
             </control>
             <control type="button" id="1003">
