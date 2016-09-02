@@ -192,21 +192,21 @@
             <height>498</height>
             <visible>StringCompare(Control.GetLabel(100),strm)</visible>
             <control type="textbox">
-                <left>40</left>
-                <top>60</top>
+                <left>100</left>
+                <top>100</top>
                 <width>200</width>
                 <height>30</height>
                 <align>left</align>
-                <label>Browse to stream file:</label>
+                <label>Chosen stream file:</label>
                 <wrapmultiline>true</wrapmultiline>
             </control>
             <control type="button" id="1001">
                 <description>Single Stream From Playlist</description>
-                <posx>300</posx>
-                <posy>160</posy>
+                <left>40</left>
+                <top>60</top>
                 <width>170</width>
-                <height>50</height>
-                <label>strm|m3u File</label>
+                <height>30</height>
+                <label>Browse File...</label>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
@@ -221,10 +221,10 @@
 
             <control type="button" id="1006">
                 <description>Import Playlist</description>
-                <posx>500</posx>
-                <posy>160</posy>
+                <left>210</left>
+                <top>60</top>
                 <width>170</width>
-                <height>50</height>
+                <height>30</height>
                 <label>Import Playlist</label>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -241,8 +241,8 @@
 
             <control type="textbox" id="1005">
                 <description>Stream location</description>
-				<left>240</left>
-                <top>60</top>
+				<left>300</left>
+                <top>100</top>
                 <width>1000</width>
                 <height>30</height>
                 <wrapmultiline>true</wrapmultiline>
@@ -310,7 +310,7 @@
             <visible>StringCompare(Control.GetLabel(100),favourites)</visible>
             <control type="textbox">
                 <description>Favorite description</description>
-				<left>40</left>
+				<left>60</left>
                 <top>10</top>
                 <width>350</width>
                 <height>80</height>
@@ -320,7 +320,7 @@
             </control>
             <control type="list" id="2001">
                 <description>Favorite list</description>
-				<left>668</left>
+				<left>800</left>
                 <top>10</top>
                 <width>300</width>
                 <height>480</height>
