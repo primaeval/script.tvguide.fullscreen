@@ -2080,7 +2080,7 @@
                 <width>1280</width>
                 <height>126</height>
                 <texture>black-back.png</texture>
-                <visible>!Control.IsVisible(14200)</visible>
+                <visible>!Control.IsVisible(10000)</visible>
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -2094,7 +2094,7 @@
                 <width>1280</width>
                 <height>126</height>
                 <texture>background.png</texture>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
             </control>
             <control type="image" id="14100">
                 <description>time bar</description>
@@ -2429,33 +2429,6 @@
 
             </control>
 
-            <control type="label" id="17020">
-                <description>Program title</description>
-                <posx>500</posx>
-                <posy>460</posy>
-                <width>620</width>
-                <height>50</height>
-                <textcolor>eeffffff</textcolor>
-                <shadowcolor>22000000</shadowcolor>
-                <font>font14</font>
-                <align>center</align>
-                <aligny>top</aligny>
-                <visible>false</visible>
-            </control>
-
-            <control type="label" id="17025">
-                <description>Channel name</description>
-                <posx>360</posx>
-                <posy>460</posy>
-                <width>160</width>
-                <height>50</height>
-                <textcolor>ccffffff</textcolor>
-                <font>font13</font>
-                <align>left</align>
-                <aligny>top</aligny>
-                <visible>false</visible>
-            </control>
-
             <control type="image" id="170244">
                 <description>Channel logo</description>
                 <posx>360</posx>
@@ -2466,30 +2439,6 @@
                 <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
                 <texture>$INFO[Control.GetLabel(7024)]</texture>
-                <visible>false</visible>
-            </control>
-            <control type="label" id="17021">
-                <description>Program time</description>
-                <posx>1260</posx>
-                <posy>460</posy>
-                <width>1090</width>
-                <height>50</height>
-                <textcolor>ccffffff</textcolor>
-                <font>font13</font>
-                <align>right</align>
-                <aligny>top</aligny>
-                <visible>false</visible>
-            </control>
-
-            <control type="textbox" id="17022">
-                <description>Program description</description>
-                <posx>360</posx>
-                <posy>519</posy>
-                <width>898</width>
-                <height>142</height>
-                <textcolor>bbffffff</textcolor>
-                <font>font13</font>
-                <wrapmultiline>true</wrapmultiline>
                 <visible>false</visible>
             </control>
 
@@ -2517,6 +2466,78 @@
                 <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
                 <visible>false</visible>
+            </control>
+
+
+            <control type="image">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>-160</posy>
+                <width>1280</width>
+                <height>30</height>
+                <texture>tvg-program-focus.png</texture>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="label" id="17020">
+                <description>Program title</description>
+                <posx>20</posx>
+                <posy>-160</posy>
+                <width>1240</width>
+                <height>30</height>
+                <textcolor>ee000000</textcolor>
+                <shadowcolor>22000000</shadowcolor>
+                <font>font14</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="label" id="17021">
+                <description>Program time</description>
+                <posx>1262</posx>
+                <posy>-160</posy>
+                <width>200</width>
+                <height>30</height>
+                <textcolor>cc000000</textcolor>
+                <font>font13</font>
+                <align>right</align>
+                <aligny>center</aligny>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="label" id="17025">
+                <description>Channel name</description>
+                <posx>20</posx>
+                <posy>-160</posy>
+                <width>1240</width>
+                <height>30</height>
+                <textcolor>cc000000</textcolor>
+                <font>font13</font>
+                <align>left</align>
+                <aligny>center</aligny>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="image">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>-130</posy>
+                <width>1280</width>
+                <height>66</height>
+                <texture>background.png</texture>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="textbox" id="17022">
+                <description>Program description</description>
+                <posx>20</posx>
+                <posy>-123</posy>
+                <width>1240</width>
+                <height>50</height>
+                <textcolor>bbffffff</textcolor>
+                <font>font13</font>
+                <wrapmultiline>true</wrapmultiline>
             </control>
 
         </control>
