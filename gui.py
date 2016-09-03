@@ -702,59 +702,31 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showListing(self, channel):
         programList = self.database.getChannelListing(channel)
-        labels = []
-        now = datetime.datetime.now()
-        for p in programList:
-            if p.endDate < now:
-                color = "grey"
-            else:
-                color = "white"
-            start = p.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "[COLOR %s] %s - %s[/COLOR]" % (color,start,p.title)
-            labels.append(label)
         title = channel.title
-        #d = xbmcgui.Dialog()
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
-        xbmc.log(repr(index))
-        #index = d.select(title,labels)
         if index > -1:
             self._showContextMenu(programList[index])
 
 
     def showNow(self):
         programList = self.database.getNowList()
-        labels = []
-        for p in programList:
-            start = p.startDate
-            start = start.strftime("%H:%M")
-            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
-            labels.append(label)
         title = "Now"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showNext(self):
         programList = self.database.getNextList()
-        labels = []
-        for p in programList:
-            start = p.startDate
-            start = start.strftime("%H:%M")
-            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
-            labels.append(label)
         title = "Next"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def programSearch(self):
         d = xbmcgui.Dialog()
@@ -762,53 +734,30 @@ class TVGuide(xbmcgui.WindowXML):
         if not search:
             return
         programList = self.database.programSearch(search)
-        labels = []
-        for p in programList:
-            start = p.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
-            labels.append(label)
         title = "Program Search"
-
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showReminders(self):
         programList = self.database.getNotifications()
-        labels = []
-        for channelTitle, programTitle, start in programList:
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
-            labels.append(label)
         title = "Reminders"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showFullReminders(self):
         programList = self.database.getFullNotifications()
-        labels = []
-        for program in programList:
-            start = program.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (program.channel.title.encode("utf8"),start,program.title.encode("utf8"))
-            labels.append(label)
         title = "Reminders"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showAutoplays(self):
         programList = self.database.getAutoplays()
@@ -828,20 +777,12 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showFullAutoplays(self):
         programList = self.database.getFullAutoplays()
-        labels = []
-        for program in programList:
-            start = program.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (program.channel.title.encode("utf8"),start,program.title.encode("utf8"))
-            labels.append(label)
         title = "Autoplays"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
