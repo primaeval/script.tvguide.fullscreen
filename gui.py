@@ -950,6 +950,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.setQuickFocus(control)
 
     def setFocus(self, control):
+        if not control:
+            return
         debug('setFocus %d' % control.getId())
         if control in [elem.control for elem in self.controlAndProgramList]:
             debug('Focus before %s' % self.focusPoint)
