@@ -1232,10 +1232,10 @@ class TVGuide(xbmcgui.WindowXML):
         return url is not None
 
     def waitForPlayBackStopped(self,title):
-        time.sleep(1)
+        time.sleep(0.5)
         self._showOsd()
         self.osdActive = False
-        time.sleep(3)
+        time.sleep(2)
 
         countdown = int(ADDON.getSetting('playback.timeout'))
         while countdown:
