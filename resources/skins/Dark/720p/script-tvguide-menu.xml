@@ -8,7 +8,18 @@
         <top>0</top>
     </coordinates>
     <controls>
-	
+
+
+		<!-- Backing -->
+		<control type="image">
+			<description>Background</description>
+            <left>0</left>
+            <top>0</top>
+            <width>1280</width>
+            <height>720</height>
+            <texture>black.png</texture>
+            <visible>true</visible>
+        </control>
         <!-- Header Background-->
 		<control type="image">
 			<description>Header</description>
@@ -21,17 +32,7 @@
 			<bordersize>2</bordersize>
             <visible>true</visible>
         </control>
-		<!-- Backing -->
-		<control type="image">
-			<description>Background</description>
-            <left>0</left>
-            <top>59</top>
-            <width>1280</width>
-            <height>720</height>
-            <texture>black.png</texture>
-            <visible>true</visible>
-        </control>
-		
+
 		<!-- Header - Date and time display -->
 		<control type="group">
 			<left>0</left>
@@ -77,7 +78,7 @@
 			<bordersize>2</bordersize>
             <visible>true</visible>
         </control>
-		
+
 		<!-- Programme Details -->
 		<control type="group">
 			<left>20</left>
@@ -132,11 +133,11 @@
 				<label>-</label>
 			</control>
         </control>
-		
+
 		<!-- Category Group -->
 		<control type="group">
             <left>715</left>
-            <top>60</top>	
+            <top>60</top>
 			<control type="button" id="80003">
 				<description>Add category</description>
 				<left>30</left>
@@ -194,7 +195,7 @@
 				<label>$ADDON[script.tvguide.fullscreen 30308]</label>
 				<visible>true</visible>
 			</control>
-			
+
 			<control type="image">
 				<left>278</left>
 				<top>22</top>
@@ -307,11 +308,11 @@
 				</focusedlayout>
 			</control>
 		</control>
-		
+
 		<!-- Button Group -->
 		<control type="group">
             <left>715</left>
-            <top>550</top>			
+            <top>550</top>
 			<control type="button" id="4006">
 				<!-- super favourites -->
 				<left>280</left>
@@ -555,7 +556,7 @@
 				<visible>false</visible>
 			</control>
 		</control>
-		
+
 		<!-- Video Preview -->
 		<control type="image">
             <description>Current/Preview background</description>
