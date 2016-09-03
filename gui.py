@@ -3060,6 +3060,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         super(ProgramListDialog, self).__init__()
         self.title = title
         self.programs = programs
+        self.index = -1
 
     def onInit(self):
         control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
@@ -3083,14 +3084,49 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             start = program.startDate
             end = program.endDate
             duration = end - start
+            now = datetime.datetime.now()
+
+            if now > start:
+                when = datetime.timedelta(-1)
+                elapsed = now - start
+            else:
+                when = start - now
+                elapsed = datetime.timedelta(0)
 
             day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (start,day)
-            item.setProperty('StartTime', start)
+            start_str = start.strftime("%H:%M")
+            start_str = "%s %s" % (start_str,day)
+            item.setProperty('StartTime', start_str)
 
-            duration = "%d mins" % (duration.seconds / 60)
-            item.setProperty('Duration', duration)
+            duration_str = "%d mins" % (duration.seconds / 60)
+            item.setProperty('Duration', duration_str)
+
+            days = when.days
+            hours, remainder = divmod(when.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            xbmc.log(repr((when.seconds,days,hours,minutes)))
+            if days > 1:
+                when_str = "in %d days" % (days)
+                item.setProperty('When', when_str)
+            elif days > 0:
+                when_str = "in %d day" % (days)
+                item.setProperty('When', when_str)
+            elif hours > 0:
+                when_str = "in %d:%02d" % (hours,minutes)
+                item.setProperty('When', when_str)
+            elif seconds > 0:
+                when_str = "in %d mins" % (seconds)
+                item.setProperty('When', when_str)
+
+            if elapsed.seconds > 0:
+                progress = 100.0 * float(elapsed.seconds) / float(duration.seconds)
+                progress = str(int(progress))
+            else:
+                #TODO hack for progress bar with 0 time
+                progress = "0"
+
+            if progress:
+                item.setProperty('Completed', progress)
 
             item.setProperty('ProgramImage', program.imageSmall if program.imageSmall else program.imageLarge)
 

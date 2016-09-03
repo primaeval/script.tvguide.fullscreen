@@ -21,10 +21,10 @@
         </control>
 
         <control type="label" id="1001">
-            <description>Channel label</description>
+            <description>Title</description>
             <left>0</left>
             <top>20</top>
-            <width>1260</width>
+            <width>950</width>
             <height>20</height>
             <font>font13_title</font>
             <textcolor>orange</textcolor>
@@ -32,6 +32,35 @@
             <align>right</align>
             <aligny>center</aligny>
             <label>Title</label>
+        </control>
+
+        <control type="label">
+            <description>Displays todays date</description>
+            <posx>5r</posx>
+            <posy>0</posy>
+            <width>280</width>
+            <height>20</height>
+            <textcolor>bbffffff</textcolor>
+            <shadowcolor>black</shadowcolor>
+            <font>font13</font>
+            <align>right</align>
+            <aligny>center</aligny>
+            <visible>true</visible>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]</label>
+        </control>
+
+        <control type="label">
+            <description>time label</description>
+            <right>5</right>
+            <top>20</top>
+            <width>200</width>
+            <height>30</height>
+            <align>right</align>
+            <aligny>center</aligny>
+            <font>font28_title</font>
+            <textcolor>white</textcolor>
+            <shadowcolor>black</shadowcolor>
+            <label>$INFO[System.Time(hh:mm)]</label>
         </control>
 
         <control type="group">
@@ -79,7 +108,6 @@
                     <aligny>center</aligny>
                     <label>Length</label>
                 </control>
-
                 <control type="label">
                     <description>Title</description>
                     <left>700</left>
@@ -153,6 +181,29 @@
                             <aligny>center</aligny>
                             <info>ListItem.Property(Duration)</info>
                         </control>
+                        <control type="progress">
+                            <left>610</left>
+                            <top>15</top>
+                            <width>80</width>
+                            <height>10</height>
+                            <lefttexture />
+                            <righttexture />
+                            <texturebg border="0" colordiffuse="grey90">grey.png</texturebg>
+                            <midtexture border="0" colordiffuse="white">white.png</midtexture>
+                            <info>ListItem.Property(Completed)</info>
+                            <visible>ListItem.Property(Completed)</visible>
+                        </control>
+                        <control type="label">
+                            <left>610</left>
+                            <top>0</top>
+                            <width>100</width>
+                            <height>40</height>
+                            <font>font12</font>
+                            <textcolor>grey</textcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <info>ListItem.Property(When)</info>
+                        </control>
                         <control type="label">
                             <description>Program Title</description>
                             <left>700</left>
@@ -214,6 +265,29 @@
                             <aligny>center</aligny>
                             <info>ListItem.Property(Duration)</info>
                         </control>
+                        <control type="progress">
+                            <left>610</left>
+                            <top>15</top>
+                            <width>80</width>
+                            <height>10</height>
+                            <lefttexture />
+                            <righttexture />
+                            <texturebg border="0" colordiffuse="grey90">grey.png</texturebg>
+                            <midtexture border="0" colordiffuse="white">white.png</midtexture>
+                            <info>ListItem.Property(Completed)</info>
+                            <visible>ListItem.Property(Completed)</visible>
+                        </control>
+                        <control type="label">
+                            <left>610</left>
+                            <top>0</top>
+                            <width>100</width>
+                            <height>40</height>
+                            <font>font12</font>
+                            <textcolor>grey</textcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <info>ListItem.Property(When)</info>
+                        </control>                        
                         <control type="label">
                             <description>Program Title</description>
                             <left>700</left>
