@@ -594,6 +594,14 @@
                         <texture>menu-grey-focus.png</texture>
                         <visible>Control.HasFocus(3002)</visible>
                     </control>
+					<control type="image">
+                        <left>0</left>
+                        <top>0</top>
+                        <width>300</width>
+                        <height>38</height>
+                        <texture>menu-grey.png</texture>
+                        <visible>!Control.HasFocus(4002)</visible>
+                    </control>
                     <control type="label">
                         <left>16</left>
                         <top>0</top>
@@ -876,7 +884,7 @@
 			<!-- Browse Addon list items 2nd half-->
             <control type="list" id="4002">
                 <left>968</left>
-                <top>20</top>
+                <top>10</top>
                 <width>300</width>
                 <height>480</height>
                 <viewtype label="list">list</viewtype>
