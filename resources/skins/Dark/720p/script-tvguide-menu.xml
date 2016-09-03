@@ -146,7 +146,7 @@
 				<texturefocus>menu-grey-focus.png</texturefocus>
 				<texturenofocus>menu-grey.png</texturenofocus>
 				<onup>-</onup>
-				<ondown>80004</ondown>
+				<ondown>4004</ondown>
 				<onright>7004</onright>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -173,7 +173,7 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>cyan</focusedcolor>
 				<label>Remove Category</label>
-				<visible>true</visible>
+				<visible>fales</visible>
 			</control>
 			<control type="button" id="4004">
 				<description>Quit</description>
@@ -183,7 +183,7 @@
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
 				<texturenofocus>menu-grey.png</texturenofocus>
-				<onup>80004</onup>
+				<onup>80003</onup>
 				<ondown>4000</ondown>
 				<onleft>7004</onleft>
 				<align>center</align>
@@ -194,13 +194,42 @@
 				<label>$ADDON[script.tvguide.fullscreen 30308]</label>
 				<visible>true</visible>
 			</control>
+			
+			<control type="image">
+				<left>278</left>
+				<top>22</top>
+				<width>204</width>
+				<height>424</height>
+				<texture>menu-grey.png</texture>
+				<bordertexture>aqua.png</bordertexture>
+				<bordersize>2</bordersize>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+                <description>Up arrow</description>
+				<left>278</left>
+                <top>4</top>
+                <width>204</width>
+                <height>12</height>
+				<aspectratio>keep</aspectratio>
+                <texture>tvguide-channel-arrow.png</texture>
+            </control>
+            <control type="image">
+				<description>Down arrow</description>
+                <left>278</left>
+                <top>465</top>
+                <top>465</top>
+                <width>204</width>
+                <height>-12</height>
+				<aspectratio>keep</aspectratio>
+                <texture>tvguide-channel-arrow.png</texture>
+            </control>
 			<control type="list" id="7004">
 				<description>Categories</description>
 				<left>280</left>
-				<left>280</left>
 				<top>25</top>
-				<width>1280</width>
-				<height>720</height>
+				<width>200</width>
+				<height>420</height>
 				<visible>true</visible>
 				<onup>80003</onup>
 				<ondown>4006</ondown>
@@ -208,7 +237,6 @@
 				<onright>80004</onright>
 				<viewtype label="3D list">list</viewtype>
 				<orientation>vertical</orientation>
-
 				<itemlayout width="200" height="50">
 					<control type="image">
 						<left>0</left>
@@ -238,7 +266,7 @@
 						<top>0</top>
 						<width>200</width>
 						<height>30</height>
-						<texture>menu-grey.png</texture>
+						<texture>menu-grey-focus.png</texture>
 						<visible>true</visible>
 					</control>
 					<control type="image">
@@ -549,7 +577,7 @@
             <aspectratio>keep</aspectratio>
 			<align>center</align>
             <texture>tv.png</texture>
-            <visible>!Player.HasMedia</visible>
+            <visible>!Control.IsVisible(7002)</visible>
 		</control>
 		<control type="image" id="7002">
             <description>Programme image</description>
