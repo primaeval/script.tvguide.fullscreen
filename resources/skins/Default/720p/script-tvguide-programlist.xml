@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+    <allowoverlay>no</allowoverlay>
+    <defaultcontrol always="false">1000</defaultcontrol>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+
+    <controls>
+
+        <control type="image">
+            <description>background</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>black.png</texture>
+            <visible>true</visible>
+        </control>
+
+        <control type="group">
+            <description>Program List</description>
+            <visible>true</visible>
+            <include>VisibleFadeEffect</include>
+            <control type="group">
+                <left>0</left>
+                <top>0</top>
+                <control type="label">
+                    <description>Channel label</description>
+                    <left>100</left>
+                    <top>20</top>
+                    <width>180</width>
+                    <height>20</height>
+                    <font>font13_title</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <label>19148</label>
+                </control>                
+                <control type="label">
+                    <description>Time label</description>
+                    <left>300</left>
+                    <top>20</top>
+                    <width>200</width>
+                    <height>20</height>
+                    <font>font13_title</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <label>Start</label>
+                </control>
+                <control type="label">
+                    <description>Length</description>
+                    <left>500</left>
+                    <top>20</top>
+                    <width>100</width>
+                    <height>20</height>
+                    <font>font13_title</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <align>right</align>
+                    <aligny>center</aligny>
+                    <label>Length</label>
+                </control>
+
+                <control type="label">
+                    <description>Title</description>
+                    <left>700</left>
+                    <top>20</top>
+                    <width>550</width>
+                    <height>20</height>
+                    <font>font13_title</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <label>369</label>
+                </control>
+                <control type="image">
+                    <description>separator image</description>
+                    <left>0</left>
+                    <top>50</top>
+                    <width>1280</width>
+                    <height>1</height>
+                    <colordiffuse>88FFFFFF</colordiffuse>
+                    <texture>separator2.png</texture>
+                </control>
+                <control type="list" id="1000">
+                    <viewtype label="19030">list</viewtype>
+                    <left>0</left>
+                    <top>60</top>
+                    <width>1280</width>
+                    <height>680</height>
+                    <onup>1000</onup>
+                    <ondown>1000</ondown>
+                    <onleft>1000</onleft>
+                    <onright>1001</onright>
+                    <pagecontrol>1001</pagecontrol>
+                    <scrolltime>200</scrolltime>
+                    <itemlayout height="40">
+                        <control type="image">
+                            <left>0</left>
+                            <top>0</top>
+                            <width>100</width>
+                            <height>40</height>
+                            <info>ListItem.Icon</info>
+                            <aspectratio>keep</aspectratio>
+                        </control>                    
+                        <control type="label">
+                            <left>100</left>
+                            <top>0</top>
+                            <width>200</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Property(ChannelName)</info>
+                        </control>              
+                        <control type="label">
+                            <left>300</left>
+                            <top>0</top>
+                            <width>200</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Property(StartTime)</info>
+                        </control>
+                        <control type="label">
+                            <left>500</left>
+                            <top>0</top>
+                            <width>100</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <align>right</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Property(Duration)</info>
+                        </control>
+                        <control type="label">
+                            <description>Program Title</description>
+                            <left>700</left>
+                            <top>0</top>
+                            <width>550</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Label</info>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout height="100">
+                        <control type="image">
+                            <left>0</left>
+                            <top>0</top>
+                            <width>1280</width>
+                            <height>100</height>
+                            <texture>tvg-button-focus.png</texture>
+                        </control>
+                        <control type="label">
+                            <left>10</left>
+                            <top>0</top>
+                            <width>190</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Property(StartTime)</info>
+                        </control>
+                        <control type="label">
+                            <left>200</left>
+                            <top>0</top>
+                            <width>100</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Property(StartTime)</info>
+                        </control>
+                        <control type="image">
+                            <left>300</left>
+                            <top>0</top>
+                            <width>100</width>
+                            <height>35</height>
+                            <info>ListItem.Icon</info>
+                            <aspectratio>keep</aspectratio>
+                        </control>
+                        <control type="label">
+                            <left>400</left>
+                            <top>0</top>
+                            <width>250</width>
+                            <height>35</height>
+                            <font>font13</font>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Property(ChannelName)</info>
+                        </control>
+                        <control type="label">
+                            <left>650</left>
+                            <top>0</top>
+                            <width>550</width>
+                            <height>35</height>
+                            <font>font13</font>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <info>ListItem.Label</info>
+                        </control>
+                        <control type="textbox">
+                            <description>Plot Value for TVShow</description>
+                            <left>10</left>
+                            <top>37</top>
+                            <width>1280</width>
+                            <height>58</height>
+                            <font>font12</font>
+                            <align>left</align>
+                            <textcolor>grey2</textcolor>
+                            <shadowcolor>black</shadowcolor>
+                            <pagecontrol>-</pagecontrol>
+                            <info>ListItem.Property(Plot)</info>
+                        </control>
+                    </focusedlayout>
+                </control>
+                <control type="scrollbar" id="1001">
+                    <left>25r</left>
+                    <top>60</top>
+                    <width>25</width>
+                    <height>660</height>
+                    <texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+                    <texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+                    <texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+                    <textureslidernib>ScrollBarNib.png</textureslidernib>
+                    <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+                    <onleft>1000</onleft>
+                    <onright>1001</onright>
+                    <showonepage>false</showonepage>
+                    <orientation>vertical</orientation>
+                </control>
+            </control>
+        </control>
+    </controls>
+</window>

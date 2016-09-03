@@ -716,7 +716,9 @@ class TVGuide(xbmcgui.WindowXML):
             label = "[COLOR %s] %s - %s[/COLOR]" % (color,start,p.title)
             labels.append(label)
         title = channel.title
-        d = xbmcgui.Dialog()
+        #d = xbmcgui.Dialog()
+        d = ProgramListDialog(programList)
+        d.doModal()
         index = d.select(title,labels)
         if index > -1:
             self._showContextMenu(programList[index])
@@ -3103,3 +3105,78 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
 
     def onFocus(self, controlId):
         pass
+
+class ProgramListDialog(xbmcgui.WindowXMLDialog):
+    C_PROGRAM_LIST = 1000
+
+    def __new__(cls,programs):
+        return super(ProgramListDialog, cls).__new__(cls, 'script-tvguide-programlist.xml', ADDON.getAddonInfo('path'), SKIN)
+
+    def __init__(self,programs):
+        super(ProgramListDialog, self).__init__()
+        self.programs = programs
+        #self.selection = None
+
+    def onInit(self):
+        items = list()
+        for program in self.programs:
+            xbmc.log(repr((program)))
+            label = program.title
+            name = "name"
+            icon = program.channel.logo
+            item = xbmcgui.ListItem(label, name, icon)
+            #Program(channel=Channel(id=BBC Radio 1Xtra, title=BBC Radio 1Xtra, logo=X:\logodb\BBC Radio 1Xtra.png, streamUrl=None), title=DJ Edu: Destination Africa,
+            #startDate=2016-09-04 23:00:00, endDate=2016-09-05 02:00:00,
+            #description=Edu has DJ Creejay in the mix, plus First Play from AKA, Patoranking, Mr Eazi and more(n),
+            #imageLarge=None, imageSmall=None, episode=None, season=None, is_movie=en)
+            item.setProperty('EpisodeName', "S%sE%s" % (program.episode,program.season))
+
+            item.setProperty('ChannelName', program.channel.title)
+            item.setProperty('Plot', program.description)
+
+            start = program.startDate
+            end = program.endDate
+            duration = end - start
+
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (start,day)
+            item.setProperty('StartTime', start)
+
+            duration = "%d mins" % (duration.seconds / 60)
+            item.setProperty('Duration', duration)
+
+            items.append(item)
+
+        listControl = self.getControl(ProgramListDialog.C_PROGRAM_LIST)
+        listControl.addItems(items)
+
+        self.setFocus(listControl)
+
+
+    def onAction(self, action):
+        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
+            self.close()
+
+    def onClick(self, controlId):
+        if controlId == ProgramListDialog.C_PROGRAM_LIST:
+            listControl = self.getControl(ProgramListDialog.C_SELECTION_LIST)
+            #self.selection = listControl.getSelectedItem().getProperty('stream')
+            self.close()
+
+    def onFocus(self, controlId):
+        pass
+
+    def formatDateTodayTomorrow(self, timestamp):
+        if timestamp:
+            today = datetime.datetime.today()
+            tomorrow = today + datetime.timedelta(days=1)
+            yesterday = today - datetime.timedelta(days=1)
+            if today.date() == timestamp.date():
+                return 'Today'
+            elif tomorrow.date() == timestamp.date():
+                return 'Tomorrow'
+            elif yesterday.date() == timestamp.date():
+                return 'Yesterday'
+            else:
+                return timestamp.strftime("%A")
