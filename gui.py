@@ -3092,6 +3092,8 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             duration = "%d mins" % (duration.seconds / 60)
             item.setProperty('Duration', duration)
 
+            item.setProperty('ProgramImage', program.imageSmall if program.imageSmall else program.imageLarge)
+
             items.append(item)
 
         listControl = self.getControl(ProgramListDialog.C_PROGRAM_LIST)

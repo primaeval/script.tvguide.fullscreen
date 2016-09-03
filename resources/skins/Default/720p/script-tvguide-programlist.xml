@@ -229,13 +229,23 @@
                         <control type="textbox">
                             <description>Plot Value for TVShow</description>
                             <left>100</left>
-                            <top>37</top>
-                            <width>1280</width>
+                            <top>30</top>
+                            <width>960</width>
                             <height>58</height>
                             <font>font12</font>
                             <align>left</align>
+                            <wrapmultiline>true</wrapmultiline>
+                            <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
                             <pagecontrol>-</pagecontrol>
                             <info>ListItem.Property(Plot)</info>
+                        </control>
+                        <control type="image">
+                            <left>1080</left>
+                            <top>0</top>
+                            <width>200</width>
+                            <height>100</height>
+                            <info>ListItem.Property(ProgramImage)</info>
+                            <aspectratio>keep</aspectratio>
                         </control>
                     </focusedlayout>
                 </control>
