@@ -3111,11 +3111,11 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             elif days > 0:
                 when_str = "in %d day" % (days)
                 item.setProperty('When', when_str)
-            elif hours > 0:
-                when_str = "in %d:%02d" % (hours,minutes)
+            elif hours > 1:
+                when_str = "in %d hours" % (hours)
                 item.setProperty('When', when_str)
             elif seconds > 0:
-                when_str = "in %d mins" % (seconds)
+                when_str = "in %d mins" % (when.seconds / 60)
                 item.setProperty('When', when_str)
 
             if elapsed.seconds > 0:

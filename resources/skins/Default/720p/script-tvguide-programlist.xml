@@ -141,7 +141,6 @@
                     <onleft>-</onleft>
                     <onright>-</onright>
                     <pagecontrol>-</pagecontrol>
-                    <scrolltime>200</scrolltime>
                     <itemlayout height="40">
                         <control type="image">
                             <left>10</left>
@@ -188,8 +187,8 @@
                             <height>10</height>
                             <lefttexture />
                             <righttexture />
-                            <texturebg border="0" colordiffuse="grey90">grey.png</texturebg>
-                            <midtexture border="0" colordiffuse="white">white.png</midtexture>
+                            <texturebg >tvg-progress-bg.png</texturebg>
+                            <midtexture >tvg-progress-mid.png</midtexture>
                             <info>ListItem.Property(Completed)</info>
                             <visible>ListItem.Property(Completed)</visible>
                         </control>
@@ -272,8 +271,8 @@
                             <height>10</height>
                             <lefttexture />
                             <righttexture />
-                            <texturebg border="0" colordiffuse="grey90">grey.png</texturebg>
-                            <midtexture border="0" colordiffuse="white">white.png</midtexture>
+                            <texturebg >tvg-progress-bg.png</texturebg>
+                            <midtexture >tvg-progress-mid.png</midtexture>
                             <info>ListItem.Property(Completed)</info>
                             <visible>ListItem.Property(Completed)</visible>
                         </control>
