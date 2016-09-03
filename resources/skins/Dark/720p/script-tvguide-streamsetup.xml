@@ -44,14 +44,15 @@
         </control>
         <control type="label" id="4024">
             <description>Channel Name</description>
-            <left>185</left>
+            <left>180</left>
             <top>10</top>
-            <width>500</width>
+            <width>350</width>
             <height>40</height>
             <font>font13_title</font>
             <textcolor>white</textcolor>
             <label></label>
             <align>left</align>
+			<scroll>true</scroll>
         </control>
         <control type="label">
 			<description>Setup stream</description>
@@ -94,18 +95,27 @@
             <texture>tv.png</texture>
             <visible>true</visible>
 		</control>
+		<!-- Programme image doesn't exist in stream setup -->
+		<control type="image" id="4025">
+            <description>Programme image</description>
+            <left>14</left>
+            <top>320</top>
+            <width>640</width>
+            <height>360</height>
+            <aspectratio>keep</aspectratio>
+            <texture>-</texture>
+        </control>
 		<control type="image" id="4023">
             <description>Channel Logo</description>
-            <left>92</left>
-            <top>396</top>
-            <width>480</width>
-            <height>160</height>
-            <aspectratio>keep</aspectratio>
+            <left>592</left>
+            <top>618</top>
+            <width>60</width>
+            <height>60</height>
         </control>
 		<control type="videowindow">
             <description>Preview/Current Video</description>
-			<left>12</left>
-            <top>318</top>
+			<left>14</left>
+            <top>320</top>
             <width>640</width>
             <height>360</height>
         </control>
