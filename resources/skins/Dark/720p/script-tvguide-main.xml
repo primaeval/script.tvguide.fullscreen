@@ -10,104 +10,104 @@
 	<constant name="aquashadow">aa00ffc6</constant>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-program-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-program-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-playing-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-playing-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-remind-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-remind-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-autoplay-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvg-autoplay-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-grey.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <posx>-10000</posx>
-            <posy>-10000</posy>
+            <left>-10000</left>
+            <top>-10000</top>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-grey-focus.png</texture>
@@ -254,7 +254,7 @@
                     <align>center</align>
                     <visible>true</visible>
                 </control>
-                <control type="label" id="3999">
+				<control type="label">
                     <description>Displays todays date</description>
                     <left>1000</left>
 					<top>25</top>
@@ -265,6 +265,19 @@
 					<font>font12</font>
 					<align>right</align>
 					<visible>true</visible>
+					<label>$INFO[System.Date]</label>
+                </control>
+                <control type="label" id="3999">
+                    <description>Displays todays date</description>
+                    <left>1000</left>
+					<top>25</top>
+					<width>270</width>
+					<height>20</height>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<font>font12</font>
+					<align>right</align>
+					<visible>false</visible>
                 </control>
                 <control type="label">
 					<description>Display current time</description>
@@ -984,7 +997,7 @@
                 <height>100</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
-                <wrapmultiline>true</wrapmultiline>
+				<wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
 			<control type="progress" id="7026">
@@ -2206,8 +2219,8 @@
 
             <control type="image">
                 <description>background</description>
-                <posx>0</posx>
-                <posy>-160</posy>
+                <left>0</left>
+                <top>-160</top>
                 <width>1280</width>
                 <height>30</height>
                 <texture>background.png</texture>
@@ -2216,8 +2229,8 @@
 
             <control type="label" id="17020">
                 <description>Program title</description>
-                <posx>20</posx>
-                <posy>-160</posy>
+                <left>20</left>
+                <top>-160</top>
                 <width>1240</width>
                 <height>30</height>
                 <textcolor>eeffffff</textcolor>
@@ -2230,8 +2243,8 @@
 
             <control type="label" id="17021">
                 <description>Program time</description>
-                <posx>1262</posx>
-                <posy>-160</posy>
+                <left>1262</left>
+                <top>-160</top>
                 <width>200</width>
                 <height>30</height>
                 <textcolor>ccffffff</textcolor>
@@ -2243,8 +2256,8 @@
 
             <control type="label" id="17025">
                 <description>Channel name</description>
-                <posx>20</posx>
-                <posy>-160</posy>
+                <left>20</left>
+                <top>-160</top>
                 <width>1240</width>
                 <height>30</height>
                 <textcolor>ccffffff</textcolor>
@@ -2256,8 +2269,8 @@
 
             <control type="image">
                 <description>background</description>
-                <posx>0</posx>
-                <posy>-130</posy>
+                <left>0</left>
+                <top>-130</top>
                 <width>1280</width>
                 <height>70</height>
                 <texture>background.png</texture>
@@ -2266,8 +2279,8 @@
 
             <control type="textbox" id="17022">
                 <description>Program description</description>
-                <posx>20</posx>
-                <posy>-123</posy>
+                <left>20</left>
+                <top>-123</top>
                 <width>1240</width>
                 <height>50</height>
                 <textcolor>bbffffff</textcolor>
