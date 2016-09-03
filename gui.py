@@ -702,55 +702,31 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showListing(self, channel):
         programList = self.database.getChannelListing(channel)
-        labels = []
-        now = datetime.datetime.now()
-        for p in programList:
-            if p.endDate < now:
-                color = "grey"
-            else:
-                color = "white"
-            start = p.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "[COLOR %s] %s - %s[/COLOR]" % (color,start,p.title)
-            labels.append(label)
         title = channel.title
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
 
 
     def showNow(self):
         programList = self.database.getNowList()
-        labels = []
-        for p in programList:
-            start = p.startDate
-            start = start.strftime("%H:%M")
-            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
-            labels.append(label)
         title = "Now"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showNext(self):
         programList = self.database.getNextList()
-        labels = []
-        for p in programList:
-            start = p.startDate
-            start = start.strftime("%H:%M")
-            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
-            labels.append(label)
         title = "Next"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def programSearch(self):
         d = xbmcgui.Dialog()
@@ -758,53 +734,30 @@ class TVGuide(xbmcgui.WindowXML):
         if not search:
             return
         programList = self.database.programSearch(search)
-        labels = []
-        for p in programList:
-            start = p.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (p.channel.title.encode("utf8"),start,p.title.encode("utf8"))
-            labels.append(label)
         title = "Program Search"
-
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showReminders(self):
         programList = self.database.getNotifications()
-        labels = []
-        for channelTitle, programTitle, start in programList:
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
-            labels.append(label)
         title = "Reminders"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showFullReminders(self):
         programList = self.database.getFullNotifications()
-        labels = []
-        for program in programList:
-            start = program.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (program.channel.title.encode("utf8"),start,program.title.encode("utf8"))
-            labels.append(label)
         title = "Reminders"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def showAutoplays(self):
         programList = self.database.getAutoplays()
@@ -824,20 +777,12 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showFullAutoplays(self):
         programList = self.database.getFullAutoplays()
-        labels = []
-        for program in programList:
-            start = program.startDate
-            day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            label = "%s - %s - %s" % (program.channel.title.encode("utf8"),start,program.title.encode("utf8"))
-            labels.append(label)
         title = "Autoplays"
-        d = xbmcgui.Dialog()
-        index = d.select(title,labels)
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
         if index > -1:
-            program = programList[index]
-            self._showContextMenu(program)
+            self._showContextMenu(programList[index])
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
@@ -3103,3 +3048,125 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
 
     def onFocus(self, controlId):
         pass
+
+class ProgramListDialog(xbmcgui.WindowXMLDialog):
+    C_PROGRAM_LIST = 1000
+    C_PROGRAM_LIST_TITLE = 1001
+
+    def __new__(cls,title,programs):
+        return super(ProgramListDialog, cls).__new__(cls, 'script-tvguide-programlist.xml', ADDON.getAddonInfo('path'), SKIN)
+
+    def __init__(self,title,programs):
+        super(ProgramListDialog, self).__init__()
+        self.title = title
+        self.programs = programs
+        self.index = -1
+
+    def onInit(self):
+        control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
+        control.setLabel(self.title)
+
+        items = list()
+        index = 0
+        for program in self.programs:
+
+            label = program.title
+            name = ""
+            icon = program.channel.logo
+            item = xbmcgui.ListItem(label, name, icon)
+
+            item.setProperty('index', str(index))
+            index = index + 1
+
+            item.setProperty('ChannelName', program.channel.title)
+            item.setProperty('Plot', program.description)
+
+            start = program.startDate
+            end = program.endDate
+            duration = end - start
+            now = datetime.datetime.now()
+
+            if now > start:
+                when = datetime.timedelta(-1)
+                elapsed = now - start
+            else:
+                when = start - now
+                elapsed = datetime.timedelta(0)
+
+            day = self.formatDateTodayTomorrow(start)
+            start_str = start.strftime("%H:%M")
+            start_str = "%s %s" % (start_str,day)
+            item.setProperty('StartTime', start_str)
+
+            duration_str = "%d mins" % (duration.seconds / 60)
+            item.setProperty('Duration', duration_str)
+
+            days = when.days
+            hours, remainder = divmod(when.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            xbmc.log(repr((when.seconds,days,hours,minutes)))
+            if days > 1:
+                when_str = "in %d days" % (days)
+                item.setProperty('When', when_str)
+            elif days > 0:
+                when_str = "in %d day" % (days)
+                item.setProperty('When', when_str)
+            elif hours > 1:
+                when_str = "in %d hours" % (hours)
+                item.setProperty('When', when_str)
+            elif seconds > 0:
+                when_str = "in %d mins" % (when.seconds / 60)
+                item.setProperty('When', when_str)
+
+            if elapsed.seconds > 0:
+                progress = 100.0 * float(elapsed.seconds) / float(duration.seconds)
+                progress = str(int(progress))
+            else:
+                #TODO hack for progress bar with 0 time
+                progress = "0"
+
+            if progress:
+                item.setProperty('Completed', progress)
+
+            item.setProperty('ProgramImage', program.imageSmall if program.imageSmall else program.imageLarge)
+
+            items.append(item)
+
+        listControl = self.getControl(ProgramListDialog.C_PROGRAM_LIST)
+        listControl.addItems(items)
+
+        self.setFocus(listControl)
+
+
+    def onAction(self, action):
+        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
+            self.close()
+
+    def onClick(self, controlId):
+        if controlId == self.C_PROGRAM_LIST:
+            listControl = self.getControl(self.C_PROGRAM_LIST)
+            self.id = self.getFocusId(self.C_PROGRAM_LIST)
+            item = listControl.getSelectedItem()
+            if item:
+                self.index = int(item.getProperty('index'))
+            else:
+                self.index = -1
+            self.close()
+
+    def onFocus(self, controlId):
+        pass
+
+    #TODO make global function
+    def formatDateTodayTomorrow(self, timestamp):
+        if timestamp:
+            today = datetime.datetime.today()
+            tomorrow = today + datetime.timedelta(days=1)
+            yesterday = today - datetime.timedelta(days=1)
+            if today.date() == timestamp.date():
+                return 'Today'
+            elif tomorrow.date() == timestamp.date():
+                return 'Tomorrow'
+            elif yesterday.date() == timestamp.date():
+                return 'Yesterday'
+            else:
+                return timestamp.strftime("%A")
