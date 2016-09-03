@@ -950,6 +950,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.setQuickFocus(control)
 
     def setFocus(self, control):
+        if not control:
+            return
         debug('setFocus %d' % control.getId())
         if control in [elem.control for elem in self.controlAndProgramList]:
             debug('Focus before %s' % self.focusPoint)
@@ -1230,10 +1232,10 @@ class TVGuide(xbmcgui.WindowXML):
         return url is not None
 
     def waitForPlayBackStopped(self,title):
-        time.sleep(1)
+        time.sleep(0.5)
         self._showOsd()
         self.osdActive = False
-        time.sleep(3)
+        time.sleep(2)
 
         countdown = int(ADDON.getSetting('playback.timeout'))
         while countdown:

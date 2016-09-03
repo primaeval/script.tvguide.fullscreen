@@ -197,6 +197,17 @@
             <aligny>top</aligny>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
+            <visible>!Player.HasMedia</visible>
+        </control>
+        <control type="videowindow">
+            <description>program image</description>
+            <posx>555</posx>
+            <posy>428</posy>
+            <width>700</width>
+            <height>260</height>
+            <align>left</align>
+            <aligny>top</aligny>
+            <aspectratio>keep</aspectratio>
         </control>
         <control type="label" id="7001">
             <description>program title</description>
