@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.109
+- sly skin removed
+
 version 0.0.108
 - Import Playlist from anywhere
 
