@@ -10,104 +10,104 @@
 	<constant name="aquashadow">aa00ffc6</constant>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-program-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-program-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-playing-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-playing-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-remind-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-remind-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-autoplay-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvg-autoplay-nofocus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-red-focus.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-grey.png</texture>
         </control>
         <control type="image">
             <description>workaround for texture not being loaded</description>
-            <left>-10000</left>
-            <top>-10000</top>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
             <texture>tvguide-program-grey-focus.png</texture>
@@ -254,19 +254,6 @@
                     <align>center</align>
                     <visible>true</visible>
                 </control>
-				<control type="label">
-                    <description>Displays todays date</description>
-                    <left>1000</left>
-					<top>25</top>
-					<width>270</width>
-					<height>20</height>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<font>font12</font>
-					<align>right</align>
-					<visible>true</visible>
-					<label>$INFO[System.Date]</label>
-                </control>
                 <control type="label" id="3999">
                     <description>Displays todays date</description>
                     <left>1000</left>
@@ -277,7 +264,7 @@
 					<shadowcolor>black</shadowcolor>
 					<font>font12</font>
 					<align>right</align>
-					<visible>false</visible>
+					<visible>true</visible>
                 </control>
                 <control type="label">
 					<description>Display current time</description>
@@ -997,7 +984,7 @@
                 <height>100</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
-				<wrapmultiline>true</wrapmultiline>
+                <wrapmultiline>true</wrapmultiline>
                 <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             </control>
 			<control type="progress" id="7026">
@@ -1922,7 +1909,7 @@
                 <top>-40</top>
                 <width>1280</width>
                 <height>40</height>
-                <visible>!Control.IsVisible(10000)</visible>
+                <visible>true</visible>
                 <control type="label" id="14000">
                     <description>Quick EPG - Displays EPG day</description>
                     <left>0</left>
@@ -2010,7 +1997,7 @@
                 <top>0</top>
                 <width>180</width>
                 <height>120</height>
-                <visible>!Control.IsVisible(10000)</visible>
+                <visible>true</visible>
 
                 <!-- logo images backgrounds -->
                 <control type="image" id="14210">
@@ -2215,77 +2202,6 @@
                 <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
                 <visible>false</visible>
-            </control>
-
-            <control type="image">
-                <description>background</description>
-                <left>0</left>
-                <top>-160</top>
-                <width>1280</width>
-                <height>30</height>
-                <texture>background.png</texture>
-                <visible>Control.IsVisible(17022)</visible>
-            </control>
-
-            <control type="label" id="17020">
-                <description>Program title</description>
-                <left>20</left>
-                <top>-160</top>
-                <width>1240</width>
-                <height>30</height>
-                <textcolor>eeffffff</textcolor>
-                <shadowcolor>22ffffff</shadowcolor>
-                <font>font14</font>
-                <align>center</align>
-                <aligny>center</aligny>
-                <visible>Control.IsVisible(17022)</visible>
-            </control>
-
-            <control type="label" id="17021">
-                <description>Program time</description>
-                <left>1262</left>
-                <top>-160</top>
-                <width>200</width>
-                <height>30</height>
-                <textcolor>ccffffff</textcolor>
-                <font>font13</font>
-                <align>right</align>
-                <aligny>center</aligny>
-                <visible>Control.IsVisible(17022)</visible>
-            </control>
-
-            <control type="label" id="17025">
-                <description>Channel name</description>
-                <left>20</left>
-                <top>-160</top>
-                <width>1240</width>
-                <height>30</height>
-                <textcolor>ccffffff</textcolor>
-                <font>font13</font>
-                <align>left</align>
-                <aligny>center</aligny>
-                <visible>Control.IsVisible(17022)</visible>
-            </control>
-
-            <control type="image">
-                <description>background</description>
-                <left>0</left>
-                <top>-130</top>
-                <width>1280</width>
-                <height>70</height>
-                <texture>background.png</texture>
-                <visible>Control.IsVisible(17022)</visible>
-            </control>
-
-            <control type="textbox" id="17022">
-                <description>Program description</description>
-                <left>20</left>
-                <top>-123</top>
-                <width>1240</width>
-                <height>50</height>
-                <textcolor>bbffffff</textcolor>
-                <font>font13</font>
-                <wrapmultiline>true</wrapmultiline>
             </control>
 
         </control>
