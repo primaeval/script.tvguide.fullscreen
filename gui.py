@@ -717,9 +717,11 @@ class TVGuide(xbmcgui.WindowXML):
             labels.append(label)
         title = channel.title
         #d = xbmcgui.Dialog()
-        d = ProgramListDialog(programList)
+        d = ProgramListDialog(title,programList)
         d.doModal()
-        index = d.select(title,labels)
+        index = d.index
+        xbmc.log(repr(index))
+        #index = d.select(title,labels)
         if index > -1:
             self._showContextMenu(programList[index])
 
@@ -3108,28 +3110,31 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
 
 class ProgramListDialog(xbmcgui.WindowXMLDialog):
     C_PROGRAM_LIST = 1000
+    C_PROGRAM_LIST_TITLE = 1001
 
-    def __new__(cls,programs):
+    def __new__(cls,title,programs):
         return super(ProgramListDialog, cls).__new__(cls, 'script-tvguide-programlist.xml', ADDON.getAddonInfo('path'), SKIN)
 
-    def __init__(self,programs):
+    def __init__(self,title,programs):
         super(ProgramListDialog, self).__init__()
+        self.title = title
         self.programs = programs
-        #self.selection = None
 
     def onInit(self):
+        control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
+        control.setLabel(self.title)
+
         items = list()
+        index = 0
         for program in self.programs:
-            #xbmc.log(repr((program)))
+
             label = program.title
-            name = "name"
+            name = ""
             icon = program.channel.logo
             item = xbmcgui.ListItem(label, name, icon)
-            #Program(channel=Channel(id=BBC Radio 1Xtra, title=BBC Radio 1Xtra, logo=X:\logodb\BBC Radio 1Xtra.png, streamUrl=None), title=DJ Edu: Destination Africa,
-            #startDate=2016-09-04 23:00:00, endDate=2016-09-05 02:00:00,
-            #description=Edu has DJ Creejay in the mix, plus First Play from AKA, Patoranking, Mr Eazi and more(n),
-            #imageLarge=None, imageSmall=None, episode=None, season=None, is_movie=en)
-            item.setProperty('EpisodeName', "S%sE%s" % (program.episode,program.season))
+
+            item.setProperty('index', str(index))
+            index = index + 1
 
             item.setProperty('ChannelName', program.channel.title)
             item.setProperty('Plot', program.description)
@@ -3159,14 +3164,20 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             self.close()
 
     def onClick(self, controlId):
-        if controlId == ProgramListDialog.C_PROGRAM_LIST:
-            listControl = self.getControl(ProgramListDialog.C_SELECTION_LIST)
-            #self.selection = listControl.getSelectedItem().getProperty('stream')
+        if controlId == self.C_PROGRAM_LIST:
+            listControl = self.getControl(self.C_PROGRAM_LIST)
+            self.id = self.getFocusId(self.C_PROGRAM_LIST)
+            item = listControl.getSelectedItem()
+            if item:
+                self.index = int(item.getProperty('index'))
+            else:
+                self.index = -1
             self.close()
 
     def onFocus(self, controlId):
         pass
 
+    #TODO make global function
     def formatDateTodayTomorrow(self, timestamp):
         if timestamp:
             today = datetime.datetime.today()

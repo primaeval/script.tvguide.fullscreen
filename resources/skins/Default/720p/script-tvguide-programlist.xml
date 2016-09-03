@@ -20,10 +20,23 @@
             <visible>true</visible>
         </control>
 
+        <control type="label" id="1001">
+            <description>Channel label</description>
+            <left>0</left>
+            <top>20</top>
+            <width>1260</width>
+            <height>20</height>
+            <font>font13_title</font>
+            <textcolor>orange</textcolor>
+            <shadowcolor>black</shadowcolor>
+            <align>right</align>
+            <aligny>center</aligny>
+            <label>Title</label>
+        </control>
+
         <control type="group">
             <description>Program List</description>
             <visible>true</visible>
-            <include>VisibleFadeEffect</include>
             <control type="group">
                 <left>0</left>
                 <top>0</top>
@@ -94,7 +107,7 @@
                     <left>0</left>
                     <top>60</top>
                     <width>1280</width>
-                    <height>680</height>
+                    <height>660</height>
                     <onup>1000</onup>
                     <ondown>1000</ondown>
                     <onleft>-</onleft>
