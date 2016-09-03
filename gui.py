@@ -246,7 +246,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.lastChannel = None
         self.lastProgram = None
         self.currentProgram = None
-
+        self.quickEpgShowInfo = False
         self.category = None
 
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
@@ -595,7 +595,9 @@ class TVGuide(xbmcgui.WindowXML):
             self._hideQuickEpg()
 
         elif action.getId() in [ACTION_SHOW_INFO]:
-            self._hideQuickEpg()
+            control = self.getControl(self.C_QUICK_EPG_DESCRIPTION)
+            self.quickEpgShowInfo = not self.quickEpgShowInfo
+            control.setVisible(self.quickEpgShowInfo)
 
         controlInFocus = None
         currentFocus = self.quickFocusPoint
@@ -1644,6 +1646,9 @@ class TVGuide(xbmcgui.WindowXML):
 
         # remove existing controls
         self._clearQuickEpg()
+
+        control = self.getControl(self.C_QUICK_EPG_DESCRIPTION)
+        control.setVisible(self.quickEpgShowInfo)
 
         try:
             self.quickChannelIdx, channels, programs = self.database.getQuickEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False, category=self.category)

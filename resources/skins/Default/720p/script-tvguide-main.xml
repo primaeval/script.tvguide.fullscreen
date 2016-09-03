@@ -1949,7 +1949,7 @@
                 <width>1280</width>
                 <height>126</height>
                 <texture>black-back.png</texture>
-                <visible>!Control.IsVisible(14200)</visible>
+                <visible>!Control.IsVisible(10000)</visible>
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -1962,7 +1962,7 @@
                 <width>1280</width>
                 <height>126</height>
                 <texture colordiffuse="FF00BFFF">white50.png</texture>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
             </control>
 
 
@@ -1986,7 +1986,7 @@
                 <width>1280</width>
                 <height>58</height>
                 <texture colordiffuse="FF00BFFF">white50.png</texture>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
             </control>
             <control type="image" id="14602">
                 <description>footer</description>
@@ -2058,7 +2058,7 @@
                 <posy>-40</posy>
                 <width>1280</width>
                 <height>40</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
 
                 <control type="image">
                     <description>workaround for texture not being loaded</description>
@@ -2180,7 +2180,7 @@
                 <posy>0</posy>
                 <width>180</width>
                 <height>120</height>
-                <visible>true</visible>
+                <visible>!Control.IsVisible(10000)</visible>
 
                 <!-- logo images backgrounds -->
                 <control type="image" id="14210">
@@ -2386,6 +2386,77 @@
                 <aspectratio align="left">keep</aspectratio>
                 <fadetime>500</fadetime>
                 <visible>false</visible>
+            </control>
+
+            <control type="image">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>-160</posy>
+                <width>1280</width>
+                <height>30</height>
+                <texture>background.png</texture>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="label" id="17020">
+                <description>Program title</description>
+                <posx>20</posx>
+                <posy>-160</posy>
+                <width>1240</width>
+                <height>30</height>
+                <textcolor>eeffffff</textcolor>
+                <shadowcolor>22ffffff</shadowcolor>
+                <font>font14</font>
+                <align>center</align>
+                <aligny>center</aligny>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="label" id="17021">
+                <description>Program time</description>
+                <posx>1262</posx>
+                <posy>-160</posy>
+                <width>200</width>
+                <height>30</height>
+                <textcolor>ccffffff</textcolor>
+                <font>font13</font>
+                <align>right</align>
+                <aligny>center</aligny>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="label" id="17025">
+                <description>Channel name</description>
+                <posx>20</posx>
+                <posy>-160</posy>
+                <width>1240</width>
+                <height>30</height>
+                <textcolor>ccffffff</textcolor>
+                <font>font13</font>
+                <align>left</align>
+                <aligny>center</aligny>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="image">
+                <description>background</description>
+                <posx>0</posx>
+                <posy>-130</posy>
+                <width>1280</width>
+                <height>70</height>
+                <texture>background.png</texture>
+                <visible>Control.IsVisible(17022)</visible>
+            </control>
+
+            <control type="textbox" id="17022">
+                <description>Program description</description>
+                <posx>20</posx>
+                <posy>-123</posy>
+                <width>1240</width>
+                <height>50</height>
+                <textcolor>bbffffff</textcolor>
+                <font>font13</font>
+                <wrapmultiline>true</wrapmultiline>
             </control>
 
         </control>
