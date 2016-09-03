@@ -3120,7 +3120,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
     def onInit(self):
         items = list()
         for program in self.programs:
-            xbmc.log(repr((program)))
+            #xbmc.log(repr((program)))
             label = program.title
             name = "name"
             icon = program.channel.logo
