@@ -3104,7 +3104,6 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             days = when.days
             hours, remainder = divmod(when.seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
-            xbmc.log(repr((when.seconds,days,hours,minutes)))
             if days > 1:
                 when_str = "in %d days" % (days)
                 item.setProperty('When', when_str)
@@ -3125,7 +3124,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
                 #TODO hack for progress bar with 0 time
                 progress = "0"
 
-            if progress:
+            if progress and (int(progress) < 100):
                 item.setProperty('Completed', progress)
 
             item.setProperty('ProgramImage', program.imageSmall if program.imageSmall else program.imageLarge)
