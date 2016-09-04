@@ -29,7 +29,7 @@ import time
 import re
 import os
 import urllib
-
+import subprocess
 import xbmc
 import xbmcgui
 import xbmcvfs
@@ -584,6 +584,10 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
+        elif action.getId() in [REMOTE_8]:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                self.stopWithChannel(program.channel)
         elif action.getId() in [REMOTE_9]:
             program = self._getProgramFromControl(controlInFocus)
             if program:
@@ -1189,29 +1193,22 @@ class TVGuide(xbmcgui.WindowXML):
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:
-            xbmc.executebuiltin('PlayWith(record)')
-            if str.startswith(url,"plugin://plugin.video.meta") and program is not None:
-                import urllib
-                title = urllib.quote(program.title)
-                url += "/%s/%s" % (title, program.language)
-            if url[0:9] == 'plugin://':
-                if self.alternativePlayback:
-                    xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
-                elif self.osdEnabled:
-                    xbmc.executebuiltin('PlayMedia(%s,1)' % url)
-                else:
-                    xbmc.executebuiltin('PlayMedia(%s)' % url)
-            else:
-                self.player.play(item=url, windowed=self.osdEnabled)
+            command = ADDON.getSetting('external.play')
+            if command:
+                retcode = subprocess.call([command, url])
+            core = ADDON.getSetting('external.player')
+            if core:
+                xbmc.executebuiltin('PlayWith(%s)' % core)
+            xbmc.executebuiltin('PlayMedia(%s)' % url)
+            time.sleep(5)
+            self.player.stop()
 
-            self.tryingToPlay = True
-            self._hideEpg()
-            self._hideQuickEpg()
 
-        threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
-        self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
-
-        return url is not None
+    def stopWithChannel(self, channel, program = None):
+        command = ADDON.getSetting('external.stop')
+        if command:
+            retcode = subprocess.call([command])
+        self.player.stop()
 
     def waitForPlayBackStopped(self,title):
         time.sleep(0.5)

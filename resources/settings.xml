@@ -95,5 +95,9 @@
     <category label="Lab">
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
+        <setting type="lsep" label="External Player"/>
+        <setting id="external.player" label="External Player" type="text" default="" />
+        <setting id="external.play" label="Play Command" type="text" default="" />    
+        <setting id="external.stop" label="Stop Command" type="text" default="" />    
     </category>
 </settings>

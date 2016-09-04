@@ -1,0 +1,18 @@
+<playercorefactory>
+<players>
+<player name="record" type="ExternalPlayer" audio="false" video="true">
+<filename>c:\windows\system32\cmd.exe</filename>
+<args>/c c:\Kodi16.1\portable_data\userdata\record.cmd "{1}"</args>
+<hidexbmc>false</hidexbmc>
+<hideconsole>false</hideconsole>
+<warpcursor>none</warpcursor>
+<playonestackitem>true</playonestackitem>
+</player>
+
+</players>
+<!--
+<rules action="append">
+<rule filename="*" player="ffmpeg"/>
+</rules>
+-->
+</playercorefactory> 
