@@ -68,6 +68,7 @@ ACTION_LAST_PAGE = 160
 ACTION_PLAY = 68
 ACTION_PLAYER_PLAY = 79
 ACTION_PLAYER_PLAYPAUSE = 229
+ACTION_RECORD = 170
 
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
@@ -583,6 +584,10 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
+        elif action.getId() in [REMOTE_9]:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                self.playWithChannel(program.channel)
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -1153,6 +1158,38 @@ class TVGuide(xbmcgui.WindowXML):
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:
+            if str.startswith(url,"plugin://plugin.video.meta") and program is not None:
+                import urllib
+                title = urllib.quote(program.title)
+                url += "/%s/%s" % (title, program.language)
+            if url[0:9] == 'plugin://':
+                if self.alternativePlayback:
+                    xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
+                elif self.osdEnabled:
+                    xbmc.executebuiltin('PlayMedia(%s,1)' % url)
+                else:
+                    xbmc.executebuiltin('PlayMedia(%s)' % url)
+            else:
+                self.player.play(item=url, windowed=self.osdEnabled)
+
+            self.tryingToPlay = True
+            self._hideEpg()
+            self._hideQuickEpg()
+
+        threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
+        self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
+
+        return url is not None
+
+    def playWithChannel(self, channel, program = None):
+        if self.currentChannel:
+            self.lastChannel = self.currentChannel
+        self.currentChannel = channel
+        self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+        wasPlaying = self.player.isPlaying()
+        url = self.database.getStreamUrl(channel)
+        if url:
+            xbmc.executebuiltin('PlayWith(record)')
             if str.startswith(url,"plugin://plugin.video.meta") and program is not None:
                 import urllib
                 title = urllib.quote(program.title)
