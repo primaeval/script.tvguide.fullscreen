@@ -56,19 +56,20 @@ class Autoplay(object):
         timeToAutoplay = ((t.days * 86400) + t.seconds) / 60
         if timeToAutoplay < 0:
             return
-
+        #timeToAutoplay = 1
         name = self.createAlarmClockName(programTitle, startTime)
         #TODO
         description = strings(NOTIFICATION_5_MINS, channelId)
         xbmc.executebuiltin('AlarmClock(%s-5mins,Autoplay(%s,%s,10000,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplay - 5))
-        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/play.py,%s,%s),%d,True)' %
+        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,True)' %
         (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplay - int(ADDON.getSetting('autoplays.before'))))
 
         t = endTime - datetime.datetime.now()
         timeToAutoplay = ((t.days * 86400) + t.seconds) / 60
+        #timeToAutoplay = 0
         if ADDON.getSetting('autoplays.stop') == 'true':
-            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stop.py,%s,%s),%d,True)' %
+            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stopwith.py,%s,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplay + int(ADDON.getSetting('autoplays.after'))))
 
 
