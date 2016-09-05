@@ -585,9 +585,7 @@ class TVGuide(xbmcgui.WindowXML):
             if program is not None:
                 self.showListing(program.channel)
         elif action.getId() in [REMOTE_8]:
-            program = self._getProgramFromControl(controlInFocus)
-            if program:
-                self.stopWithChannel(program.channel)
+            self.stopWith()
         elif action.getId() in [REMOTE_9]:
             program = self._getProgramFromControl(controlInFocus)
             if program:
@@ -1185,6 +1183,16 @@ class TVGuide(xbmcgui.WindowXML):
 
         return url is not None
 
+    def startProgram(self,cmd):
+        SW_MINIMIZE = 6
+        info = subprocess.STARTUPINFO()
+        info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        info.wShowWindow = SW_MINIMIZE
+        #CREATE_NO_WINDOW = 0x08000000
+        #subprocess.call(cmd, creationflags=CREATE_NO_WINDOW)
+        subprocess.Popen(cmd, startupinfo=info)
+
+
     def playWithChannel(self, channel, program = None):
         if self.currentChannel:
             self.lastChannel = self.currentChannel
@@ -1193,9 +1201,47 @@ class TVGuide(xbmcgui.WindowXML):
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:
+            now = datetime.datetime.now()
+            timestamp = str(time.mktime(now.timetuple()))
+            folder = ADDON.getSetting('external.folder')
+            if folder:
+                f = xbmcvfs.File('%s/%s.nfo' % (folder,timestamp), "wb")
+                f.write(u'\ufeff'.encode("utf8"))
+                s = "url=%s\n" % url
+                f.write(s.encode("utf8"))
+                s = "channel.id=%s\n" % self.currentProgram.channel.id
+                f.write(s.encode("utf8"))
+                s = "channel.title=%s\n" % self.currentProgram.channel.title
+                f.write(s.encode("utf8"))
+                s = "channel.logo=%s\n" % self.currentProgram.channel.logo
+                f.write(s.encode("utf8"))
+                s = "program.title=%s\n" % self.currentProgram.title
+                f.write(s.encode("utf8"))
+                s = "program.startDate=%s\n" % self.currentProgram.startDate
+                f.write(s.encode("utf8"))
+                s = "program.endDate=%s\n" % self.currentProgram.endDate
+                f.write(s.encode("utf8"))
+                s = "program.description=%s\n" % self.currentProgram.description
+                f.write(s.encode("utf8"))
+                s = "program.imageLarge=%s\n" % self.currentProgram.imageLarge
+                f.write(s.encode("utf8"))
+                s = "program.imageSmall=%s\n" % self.currentProgram.imageSmall
+                f.write(s.encode("utf8"))
+                s = "program.episode=%s\n" % self.currentProgram.episode
+                f.write(s.encode("utf8"))
+                s = "program.season=%s\n" % self.currentProgram.season
+                f.write(s.encode("utf8"))
+                s = "program.is_movie=%s\n" % self.currentProgram.is_movie
+                f.write(s.encode("utf8"))
+                s = "autoplays.before=%s\n" % ADDON.getSetting('autoplays.before')
+                f.write(s.encode("utf8"))
+                s = "autoplays.after=%s\n" % ADDON.getSetting('autoplays.after')
+                f.write(s.encode("utf8"))
             command = ADDON.getSetting('external.play')
             if command:
-                retcode = subprocess.call([command, url])
+                c = r'%s %s' % (command,timestamp)
+                #self.startProgram(c)
+                retcode = subprocess.call([command, timestamp])
             core = ADDON.getSetting('external.player')
             if core:
                 xbmc.executebuiltin('PlayWith(%s)' % core)
@@ -1204,9 +1250,11 @@ class TVGuide(xbmcgui.WindowXML):
             self.player.stop()
 
 
-    def stopWithChannel(self, channel, program = None):
+    def stopWith(self):
         command = ADDON.getSetting('external.stop')
         if command:
+            cmd = '"%s"' % (command)
+            #self.startProgram(cmd)
             retcode = subprocess.call([command])
         self.player.stop()
 

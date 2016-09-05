@@ -97,6 +97,7 @@
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
         <setting type="lsep" label="External Player"/>
         <setting id="external.player" label="External Player" type="text" default="" />
+        <setting id="external.folder" label="Program Info Folder" type="folder" default="" />
         <setting id="external.play" label="Play Command" type="text" default="" />    
         <setting id="external.stop" label="Stop Command" type="text" default="" />    
     </category>
