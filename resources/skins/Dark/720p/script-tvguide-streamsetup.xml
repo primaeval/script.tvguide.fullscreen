@@ -13,35 +13,47 @@
             <description>tabs visibility marker</description>
             <visible>false</visible>
         </control>
-		<!-- Background Images -->
-        <control type="image">
-            <description>Background</description>
-			<left>0</left>
+		<!-- Backing -->
+		<control type="image">
+			<description>Background</description>
+            <left>0</left>
             <top>0</top>
             <width>1280</width>
             <height>720</height>
-            <texture>-</texture>
+            <texture>highlight.png</texture>
             <visible>true</visible>
         </control>
+        <!-- Header Background-->
 		<control type="image">
-			<description>Main area background</description>
-			<left>0</left>
-			<top>60</top>
-			<width>1280</width>
-			<height>498</height>
-			<texture>black.png</texture>
-			<visible>true</visible>
-		</control>
-		<!--Header Information-->
-		<control type="image">
-            <description>Header</description>
-			<left>0</left>
+			<description>Header</description>
+            <left>0</left>
             <top>0</top>
             <width>1280</width>
             <height>58</height>
-            <texture>black.png</texture>
+            <texture>black-back.png</texture>
             <visible>true</visible>
         </control>
+		<!-- Footer Image -->
+		<control type="image">
+            <description>Footer</description>
+			<left>0</left>
+            <top>560</top>
+            <width>1280</width>
+            <height>160</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+		<!-- Main Image -->
+		<control type="image">
+            <description>main</description>
+			<left>0</left>
+            <top>60</top>
+            <width>1280</width>
+            <height>498</height>
+            <texture>black-back.png</texture>
+			<visible>true</visible>
+        </control>
+		
         <control type="label" id="4024">
             <description>Channel Name</description>
             <left>180</left>
@@ -63,16 +75,7 @@
             <label>$ADDON[script.tvguide.fullscreen 30600]:</label>
             <align>left</align>
         </control>
-		<!-- Footer Information -->
-		<control type="image">
-            <description>Footer</description>
-			<left>0</left>
-            <top>560</top>
-            <width>1280</width>
-            <height>160</height>
-            <texture>black.png</texture>
-            <visible>true</visible>
-        </control>
+		
 		<!-- Video Preview -->
 		<control type="image">
             <description>Current/Preview background</description>

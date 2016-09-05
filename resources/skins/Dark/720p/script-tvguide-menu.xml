@@ -8,30 +8,47 @@
         <top>0</top>
     </coordinates>
     <controls>
-	
-        <!-- Header Background-->
-		<control type="image">
-			<description>Header</description>
-            <left>-2</left>
-            <top>-2</top>
-            <width>1284</width>
-            <height>60</height>
-            <texture>black.png</texture>
-			<bordertexture>aqua.png</bordertexture>
-			<bordersize>2</bordersize>
-            <visible>true</visible>
-        </control>
 		<!-- Backing -->
 		<control type="image">
 			<description>Background</description>
             <left>0</left>
-            <top>59</top>
+            <top>0</top>
             <width>1280</width>
             <height>720</height>
-            <texture>black.png</texture>
+            <texture>highlight.png</texture>
             <visible>true</visible>
         </control>
-		
+        <!-- Header Background-->
+		<control type="image">
+			<description>Header</description>
+            <left>0</left>
+            <top>0</top>
+            <width>1280</width>
+            <height>58</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+		<!-- Footer Image -->
+		<control type="image">
+            <description>Footer</description>
+			<left>0</left>
+            <top>560</top>
+            <width>1280</width>
+            <height>160</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+		<!-- Main Image -->
+		<control type="image">
+            <description>main</description>
+			<left>0</left>
+            <top>60</top>
+            <width>1280</width>
+            <height>498</height>
+            <texture>black-back.png</texture>
+			<visible>true</visible>
+        </control>			
+
 		<!-- Header - Date and time display -->
 		<control type="group">
 			<left>0</left>
@@ -65,18 +82,6 @@
 				<label>$INFO[System.Time]</label>
 			</control>
 		</control>
-		<!-- Footer Image -->
-		<control type="image">
-            <description>Footer</description>
-			<left>-2</left>
-            <top>558</top>
-            <width>1284</width>
-            <height>162</height>
-            <texture>black.png</texture>
-			<bordertexture>aqua.png</bordertexture>
-			<bordersize>2</bordersize>
-            <visible>true</visible>
-        </control>
 		
 		<!-- Programme Details -->
 		<control type="group">
@@ -132,11 +137,11 @@
 				<label>-</label>
 			</control>
         </control>
-		
+
 		<!-- Category Group -->
 		<control type="group">
             <left>715</left>
-            <top>60</top>	
+            <top>60</top>
 			<control type="button" id="80003">
 				<description>Add category</description>
 				<left>30</left>
@@ -194,7 +199,7 @@
 				<label>$ADDON[script.tvguide.fullscreen 30308]</label>
 				<visible>true</visible>
 			</control>
-			
+
 			<control type="image">
 				<left>278</left>
 				<top>22</top>
@@ -307,11 +312,11 @@
 				</focusedlayout>
 			</control>
 		</control>
-		
+
 		<!-- Button Group -->
 		<control type="group">
             <left>715</left>
-            <top>550</top>			
+            <top>550</top>
 			<control type="button" id="4006">
 				<!-- super favourites -->
 				<left>280</left>
@@ -555,7 +560,7 @@
 				<visible>false</visible>
 			</control>
 		</control>
-		
+
 		<!-- Video Preview -->
 		<control type="image">
             <description>Current/Preview background</description>
