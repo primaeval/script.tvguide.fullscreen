@@ -22,7 +22,7 @@ if row:
     url = row[0]
     ADDON.setSetting('playing.with.channel',channel)
     ADDON.setSetting('playing.with.start',start)
-    folder = ADDON.getSetting('external.folder')
+    folder = ADDON.getSetting('autoplaywith.folder')
     now = datetime.datetime.now()
     timestamp = str(time.mktime(now.timetuple()))
     '''
@@ -61,11 +61,11 @@ if row:
         s = "autoplays.after=%s\n" % ADDON.getSetting('autoplays.after')
         f.write(s.encode("utf8"))
     '''
-    command = ADDON.getSetting('external.play')
+    command = ADDON.getSetting('autoplaywith.play')
     xbmc.log(repr(command))
     if command:
         retcode = subprocess.call([command, timestamp])
-    core = ADDON.getSetting('external.player')
+    core = ADDON.getSetting('autoplaywith.player')
     xbmc.log(repr(core))
     if core:
         xbmc.executebuiltin('PlayWith(%s)' % core)

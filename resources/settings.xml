@@ -85,11 +85,6 @@
         <setting label="Minutes before" type="enum" id="autoplays.before" values="0|1|2|3|4|5|10" default="1"/>
         <setting label="Minutes after" type="enum" id="autoplays.after" values="0|1|2|3|4|5|10" default="1"/>
         <setting label="Clear Autoplays..." type="action" action="RunScript($CWD/autoplay.py)" />
-        <setting id="autoplaywiths.enabled" label="Autoplaywiths" type="bool" default="true" />
-        <setting id="autoplaywiths.stop" label="Stop After Play" type="bool" default="true" />
-        <setting label="Minutes before" type="enum" id="autoplaywiths.before" values="0|1|2|3|4|5|10" default="1"/>
-        <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1"/>
-        <setting label="Clear Autoplaywiths..." type="action" action="RunScript($CWD/autoplaywith.py)" />
     </category>
 
     <category label="30140">
@@ -101,9 +96,14 @@
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
         <setting type="lsep" label="External Player"/>
-        <setting id="external.player" label="External Player" type="text" default="" />
-        <setting id="external.folder" label="Program Info Folder" type="folder" default="" />
-        <setting id="external.play" label="Play Command" type="text" default="" />
-        <setting id="external.stop" label="Stop Command" type="text" default="" />
+        <setting id="autoplaywith.player" label="AutoPlayWith Player" type="text" default="" />
+        <setting id="autoplaywith.folder" label="Program Info Folder" type="folder" default="" />
+        <setting id="autoplaywith.play" label="Play Command" type="text" default="" />
+        <setting id="autoplaywith.stop" label="Stop Command" type="text" default="" />
+        <setting id="autoplaywiths.enabled" label="Autoplaywiths" type="bool" default="true" />
+        <setting id="autoplaywiths.stop" label="Stop After Play" type="bool" default="true" />
+        <setting label="Minutes before" type="enum" id="autoplaywiths.before" values="0|1|2|3|4|5|10" default="1"/>
+        <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1"/>
+        <setting label="Clear Autoplaywiths..." type="action" action="RunScript($CWD/autoplaywith.py)" />        
     </category>
 </settings>

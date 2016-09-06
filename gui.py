@@ -1238,7 +1238,7 @@ class TVGuide(xbmcgui.WindowXML):
         if url:
             now = datetime.datetime.now()
             timestamp = str(time.mktime(now.timetuple()))
-            folder = ADDON.getSetting('external.folder')
+            folder = ADDON.getSetting('autoplaywith.folder')
             if folder:
                 f = xbmcvfs.File('%s/%s.nfo' % (folder,timestamp), "wb")
                 f.write(u'\ufeff'.encode("utf8"))
@@ -1272,12 +1272,12 @@ class TVGuide(xbmcgui.WindowXML):
                 f.write(s.encode("utf8"))
                 s = "autoplaywiths.after=%s\n" % ADDON.getSetting('autoplaywiths.after')
                 f.write(s.encode("utf8"))
-            command = ADDON.getSetting('external.play')
+            command = ADDON.getSetting('autoplaywith.play')
             if command:
                 c = r'%s %s' % (command,timestamp)
                 #self.startProgram(c)
                 retcode = subprocess.call([command, timestamp])
-            core = ADDON.getSetting('external.player')
+            core = ADDON.getSetting('autoplaywith.player')
             if core:
                 xbmc.executebuiltin('PlayWith(%s)' % core)
             xbmc.executebuiltin('PlayMedia(%s)' % url)
@@ -1286,7 +1286,7 @@ class TVGuide(xbmcgui.WindowXML):
 
 
     def stopWith(self):
-        command = ADDON.getSetting('external.stop')
+        command = ADDON.getSetting('autoplaywith.stop')
         if command:
             cmd = '"%s"' % (command)
             #self.startProgram(cmd)

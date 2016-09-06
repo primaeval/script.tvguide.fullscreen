@@ -15,9 +15,7 @@ elif ADDON.getSetting('playing.with.start') != start:
 ADDON.setSetting('playing.with.channel','')
 ADDON.setSetting('playing.with.start','')
 '''
-command = ADDON.getSetting('external.stop')
+command = ADDON.getSetting('autoplaywith.stop')
 if command:
-    cmd = '"%s"' % (command)
-    #self.startProgram(cmd)
     retcode = subprocess.call([command])
 xbmc.executebuiltin('PlayerControl(Stop)')
