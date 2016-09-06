@@ -1008,7 +1008,7 @@ class Database(object):
         #TODO autoplays wrong
         c.execute(
             "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
-            "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled " +
+            "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled ," +
             "(SELECT 1 FROM autoplaywiths n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplaywith_scheduled " +
             "FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
             [self.source.KEY, start, end])
