@@ -67,7 +67,7 @@ class Channel(object):
 
 class Program(object):
     def __init__(self, channel, title, startDate, endDate, description, imageLarge=None, imageSmall=None,
-                 notificationScheduled=None, autoplayScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
+                 notificationScheduled=None, autoplayScheduled=None, autoplaywithScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
         """
 
         @param channel:
@@ -88,6 +88,7 @@ class Program(object):
         self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
         self.autoplayScheduled = autoplayScheduled
+        self.autoplaywithScheduled = autoplaywithScheduled
         self.season = season
         self.episode = episode
         self.is_movie = is_movie
@@ -774,12 +775,12 @@ class Database(object):
 
         c = self.conn.cursor()
         c.execute(
-            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, (SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled FROM programs p WHERE p.channel IN (\'' + (
+            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, (SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled, (SELECT 1 FROM autoplaywiths n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplaywith_scheduled FROM programs p WHERE p.channel IN (\'' + (
                 '\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
             [self.source.KEY, startTime, endTime])
         for row in c:
             program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'],
+                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'], row['autoplaywith_scheduled'],
                               row['season'], row['episode'], row['is_movie'], row['language'])
             programList.append(program)
 
@@ -937,6 +938,8 @@ class Database(object):
 
             c.execute(
                 "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+            c.execute(
+                "CREATE TABLE IF NOT EXISTS autoplaywiths(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -1002,15 +1005,17 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
+        #TODO autoplays wrong
         c.execute(
             "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
             "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled " +
+            "(SELECT 1 FROM autoplaywiths n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplaywith_scheduled " +
             "FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
             [self.source.KEY, start, end])
         for row in c:
             channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
             program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
-            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplayScheduled=row[21])
+            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplayScheduled=row[21],autoplaywithScheduled=row[22])
             xbmc.log(repr(row.keys()))
             programList.append(program)
         c.close()
@@ -1105,6 +1110,72 @@ class Database(object):
             programList.append(program)
         c.close()
         return programList
+
+    def addAutoplaywith(self, program):
+        self._invokeAndBlockForResult(self._addAutoplaywith, program)
+        # no result, but block until operation is done
+
+    def _addAutoplaywith(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("INSERT INTO autoplaywiths(channel, program_title, source) VALUES(?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY])
+        self.conn.commit()
+        c.close()
+
+    def removeAutoplaywith(self, program):
+        self._invokeAndBlockForResult(self._removeAutoplaywith, program)
+        # no result, but block until operation is done
+
+    def _removeAutoplaywith(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("DELETE FROM autoplaywiths WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        self.conn.commit()
+        c.close()
+
+    def getAutoplaywiths(self, daysLimit=2):
+        return self._invokeAndBlockForResult(self._getAutoplaywiths, daysLimit)
+
+    def _getAutoplaywiths(self, daysLimit):
+        start = datetime.datetime.now()
+        end = start + datetime.timedelta(days=daysLimit)
+        c = self.conn.cursor()
+        c.execute(
+            "SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM autoplaywiths n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
+            [self.source.KEY, start, end])
+        programs = c.fetchall()
+        c.close()
+
+        return programs
+
+    def getFullAutoplaywiths(self, daysLimit=2):
+        return self._invokeAndBlockForResult(self._getFullAutoplaywiths, daysLimit)
+
+    def _getFullAutoplaywiths(self, daysLimit):
+        start = datetime.datetime.now()
+        end = start + datetime.timedelta(days=daysLimit)
+        programList = list()
+        c = self.conn.cursor()
+        c.execute(
+            "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
+            "(SELECT 1 FROM autoplaywiths n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplaywith_scheduled " +
+            "FROM autoplaywiths n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
+            [self.source.KEY, start, end])
+        for row in c:
+            channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
+            program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
+            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplaywithScheduled=row[21])
+            xbmc.log(repr(row.keys()))
+            programList.append(program)
+        c.close()
+        return programList
+
 
     def isAutoplayRequiredForProgram(self, program):
         return self._invokeAndBlockForResult(self._isAutoplayRequiredForProgram, program)

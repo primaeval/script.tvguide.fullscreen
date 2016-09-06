@@ -27,6 +27,7 @@
 import xbmcaddon
 import notification
 import autoplay
+import autoplaywith
 import xbmc
 import source
 
@@ -50,6 +51,9 @@ class Service(object):
         if ADDON.getSetting('autoplays.enabled') == 'true':
             n = autoplay.Autoplay(self.database, ADDON.getAddonInfo('path'))
             n.scheduleAutoplays()
+        if ADDON.getSetting('autoplaywiths.enabled') == 'true':
+            n = autoplay.Autoplaywith(self.database, ADDON.getAddonInfo('path'))
+            n.scheduleAutoplaywiths()
         self.database.close(None)
 
 

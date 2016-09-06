@@ -9,5 +9,5 @@ echo %dt%
 echo %dt% %url% >> C:\Kodi16.1\portable_data\userdata\recordings.txt 
 
 rem c:\utils\ffmpeg.exe -i %* -map 0:p:1 -c copy C:\Kodi16.1\portable_data\userdata\out.ts
-c:\utils\ffmpeg.exe -y -i %*  -c copy  -t 04:00:00 C:\Kodi16.1\portable_data\userdata\%dt%.ts
+c:\utils\ffmpeg.exe -y -i %*  -c copy  -t 04:00:00 C:\Kodi16.1\portable_data\userdata\%dt%.avi
 rem set /p DUMMY=Hit ENTER to continue...

@@ -70,3 +70,5 @@ if row:
     if core:
         xbmc.executebuiltin('PlayWith(%s)' % core)
     xbmc.executebuiltin('PlayMedia(%s)' % url)
+    time.sleep(5)
+    xbmc.Player().stop()
