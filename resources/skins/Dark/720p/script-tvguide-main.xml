@@ -2221,13 +2221,14 @@
                 <visible>false</visible>
             </control>
 
+			<!-- Quick EPG Programme description -->
             <control type="image">
                 <description>background</description>
                 <left>0</left>
                 <top>-160</top>
                 <width>1280</width>
                 <height>30</height>
-                <texture>background.png</texture>
+                <texture>menu-grey.png</texture>
                 <visible>Control.IsVisible(17022)</visible>
             </control>
 
@@ -2237,21 +2238,20 @@
                 <top>-160</top>
                 <width>1240</width>
                 <height>30</height>
-                <textcolor>eeffffff</textcolor>
-                <shadowcolor>22ffffff</shadowcolor>
+                <textcolor>white</textcolor>
                 <font>font14</font>
-                <align>center</align>
+                <align>left</align>
                 <aligny>center</aligny>
                 <visible>Control.IsVisible(17022)</visible>
             </control>
 
             <control type="label" id="17021">
                 <description>Program time</description>
-                <left>1262</left>
+                <left>0</left>
                 <top>-160</top>
-                <width>200</width>
+                <width>1260</width>
                 <height>30</height>
-                <textcolor>ccffffff</textcolor>
+                <textcolor>white</textcolor>
                 <font>font13</font>
                 <align>right</align>
                 <aligny>center</aligny>
@@ -2264,11 +2264,11 @@
                 <top>-160</top>
                 <width>1240</width>
                 <height>30</height>
-                <textcolor>ccffffff</textcolor>
+                <textcolor>white</textcolor>
                 <font>font13</font>
                 <align>left</align>
                 <aligny>center</aligny>
-                <visible>Control.IsVisible(17022)</visible>
+                <visible>false</visible>
             </control>
 
             <control type="image">
@@ -2277,7 +2277,7 @@
                 <top>-130</top>
                 <width>1280</width>
                 <height>70</height>
-                <texture>background.png</texture>
+                <texture>menu-grey.png</texture>
                 <visible>Control.IsVisible(17022)</visible>
             </control>
 
@@ -2287,7 +2287,7 @@
                 <top>-123</top>
                 <width>1240</width>
                 <height>50</height>
-                <textcolor>bbffffff</textcolor>
+                <textcolor>white</textcolor>
                 <font>font13</font>
                 <wrapmultiline>true</wrapmultiline>
             </control>
