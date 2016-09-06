@@ -935,11 +935,14 @@ class Database(object):
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
-
-            c.execute(
-                "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
-            c.execute(
-                "CREATE TABLE IF NOT EXISTS autoplaywiths(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+            if version < [1, 3, 3]:
+                c.execute('UPDATE version SET major=1, minor=3, patch=3')
+                c.execute('DROP TABLE autoplays')
+                c.execute('DROP TABLE autoplaywiths')
+                c.execute(
+                    "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+                c.execute(
+                    "CREATE TABLE IF NOT EXISTS autoplaywiths(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -1111,17 +1114,17 @@ class Database(object):
         c.close()
         return programList
 
-    def addAutoplaywith(self, program):
-        self._invokeAndBlockForResult(self._addAutoplaywith, program)
+    def addAutoplaywith(self, program, type):
+        self._invokeAndBlockForResult(self._addAutoplaywith, program, type)
         # no result, but block until operation is done
 
-    def _addAutoplaywith(self, program):
+    def _addAutoplaywith(self, program, type):
         """
         @type program: source.program
         """
         c = self.conn.cursor()
-        c.execute("INSERT INTO autoplaywiths(channel, program_title, source) VALUES(?, ?, ?)",
-                  [program.channel.id, program.title, self.source.KEY])
+        c.execute("INSERT INTO autoplaywiths(channel, program_title, source, start_date, type) VALUES(?, ?, ?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])
         self.conn.commit()
         c.close()
 
@@ -1146,12 +1149,12 @@ class Database(object):
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days=daysLimit)
         c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM autoplaywiths n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
+        #once
+        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND a.start_date = p.start_date")
         programs = c.fetchall()
-        c.close()
-
+        #always
+        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        programs.append(c.fetchall())
         return programs
 
     def getFullAutoplaywiths(self, daysLimit=2):
@@ -1162,16 +1165,23 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
-            "(SELECT 1 FROM autoplaywiths n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplaywith_scheduled " +
-            "FROM autoplaywiths n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
+        #once
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
-            program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
-            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplaywithScheduled=row[21])
             xbmc.log(repr(row.keys()))
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
+            programList.append(program)
+        #always
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        for row in c:
+            xbmc.log(repr(row.keys()))
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         c.close()
         return programList

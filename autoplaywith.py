@@ -79,8 +79,8 @@ class Autoplaywith(object):
         xbmc.executebuiltin('CancelAlarm(%s-start,True)' % name.encode('utf-8', 'replace'))
         xbmc.executebuiltin('CancelAlarm(%s-stop,True)' % name.encode('utf-8', 'replace'))
 
-    def addAutoplaywith(self, program):
-        self.database.addAutoplaywith(program)
+    def addAutoplaywith(self, program,type):
+        self.database.addAutoplaywith(program,type)
         self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
 
     def removeAutoplaywith(self, program):
