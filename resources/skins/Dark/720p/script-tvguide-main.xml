@@ -2228,7 +2228,7 @@
                 <top>-160</top>
                 <width>1280</width>
                 <height>30</height>
-                <texture>menu-grey.png</texture>
+                <texture>black-back.png</texture>
                 <visible>Control.IsVisible(17022)</visible>
             </control>
 
@@ -2277,7 +2277,7 @@
                 <top>-130</top>
                 <width>1280</width>
                 <height>70</height>
-                <texture>menu-grey.png</texture>
+                <texture>black-back.png</texture>
                 <visible>Control.IsVisible(17022)</visible>
             </control>
 
