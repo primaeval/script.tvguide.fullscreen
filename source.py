@@ -1431,12 +1431,16 @@ class XMLTVSource(Source):
                             if str.find(episode_num, ".") != -1:
                                 splitted = str.split(episode_num, ".")
                                 if splitted[0] != "":
-                                    season = int(splitted[0]) + 1
-                                    is_movie = None # fix for misclassification
-                                    if str.find(splitted[1], "/") != -1:
-                                        episode = int(splitted[1].split("/")[0]) + 1
-                                    elif splitted[1] != "":
-                                        episode = int(splitted[1]) + 1
+                                    try:
+                                        season = int(splitted[0]) + 1
+                                        is_movie = None # fix for misclassification
+                                        if str.find(splitted[1], "/") != -1:
+                                            episode = int(splitted[1].split("/")[0]) + 1
+                                        elif splitted[1] != "":
+                                            episode = int(splitted[1]) + 1
+                                    except:
+                                        episode = ""
+                                        season = ""
 
                             elif str.find(episode_num.lower(), "season") != -1 and episode_num != "Season ,Episode ":
                                 pattern = re.compile(r"Season\s(\d+).*?Episode\s+(\d+).*",re.I|re.U)
