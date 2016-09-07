@@ -1230,6 +1230,43 @@ class TVGuide(xbmcgui.WindowXML):
         #subprocess.call(cmd, creationflags=CREATE_NO_WINDOW)
         subprocess.Popen(cmd, startupinfo=info)
 
+    def writeNfoFile(self,dt,program):
+        folder = ADDON.getSetting('autoplaywith.folder')
+        if folder:
+            timestamp = dt.strftime("%Y%m%d%H%M")
+            filename = "%s - %s - %s" % (timestamp,program.channel.title,program.title)
+            f = xbmcvfs.File('%s/%s.nfo' % (folder,filename), "wb")
+            f.write(u'\ufeff'.encode("utf8"))
+            #s = "url=%s\n" % url
+            #f.write(s.encode("utf8"))
+            s = "channel.id=%s\n" % program.channel.id
+            f.write(s.encode("utf8"))
+            s = "channel.title=%s\n" % program.channel.title
+            f.write(s.encode("utf8"))
+            s = "channel.logo=%s\n" % program.channel.logo
+            f.write(s.encode("utf8"))
+            s = "program.title=%s\n" % program.title
+            f.write(s.encode("utf8"))
+            s = "program.startDate=%s\n" % program.startDate
+            f.write(s.encode("utf8"))
+            s = "program.endDate=%s\n" % program.endDate
+            f.write(s.encode("utf8"))
+            s = "program.description=%s\n" % program.description
+            f.write(s.encode("utf8"))
+            s = "program.imageLarge=%s\n" % program.imageLarge
+            f.write(s.encode("utf8"))
+            s = "program.imageSmall=%s\n" % program.imageSmall
+            f.write(s.encode("utf8"))
+            s = "program.episode=%s\n" % program.episode
+            f.write(s.encode("utf8"))
+            s = "program.season=%s\n" % program.season
+            f.write(s.encode("utf8"))
+            s = "program.is_movie=%s\n" % program.is_movie
+            f.write(s.encode("utf8"))
+            s = "autoplays.before=%s\n" % ADDON.getSetting('autoplays.before')
+            f.write(s.encode("utf8"))
+            s = "autoplays.after=%s\n" % ADDON.getSetting('autoplays.after')
+            f.write(s.encode("utf8"))
 
     def playWithChannel(self, channel, program = None):
         if self.currentChannel:
@@ -1243,40 +1280,7 @@ class TVGuide(xbmcgui.WindowXML):
         if url:
             now = datetime.datetime.now()
             timestamp = str(time.mktime(now.timetuple()))
-            folder = ADDON.getSetting('autoplaywith.folder')
-            if folder:
-                f = xbmcvfs.File('%s/%s.nfo' % (folder,timestamp), "wb")
-                f.write(u'\ufeff'.encode("utf8"))
-                s = "url=%s\n" % url
-                f.write(s.encode("utf8"))
-                s = "channel.id=%s\n" % self.currentProgram.channel.id
-                f.write(s.encode("utf8"))
-                s = "channel.title=%s\n" % self.currentProgram.channel.title
-                f.write(s.encode("utf8"))
-                s = "channel.logo=%s\n" % self.currentProgram.channel.logo
-                f.write(s.encode("utf8"))
-                s = "program.title=%s\n" % self.currentProgram.title
-                f.write(s.encode("utf8"))
-                s = "program.startDate=%s\n" % self.currentProgram.startDate
-                f.write(s.encode("utf8"))
-                s = "program.endDate=%s\n" % self.currentProgram.endDate
-                f.write(s.encode("utf8"))
-                s = "program.description=%s\n" % self.currentProgram.description
-                f.write(s.encode("utf8"))
-                s = "program.imageLarge=%s\n" % self.currentProgram.imageLarge
-                f.write(s.encode("utf8"))
-                s = "program.imageSmall=%s\n" % self.currentProgram.imageSmall
-                f.write(s.encode("utf8"))
-                s = "program.episode=%s\n" % self.currentProgram.episode
-                f.write(s.encode("utf8"))
-                s = "program.season=%s\n" % self.currentProgram.season
-                f.write(s.encode("utf8"))
-                s = "program.is_movie=%s\n" % self.currentProgram.is_movie
-                f.write(s.encode("utf8"))
-                s = "autoplaywiths.before=%s\n" % ADDON.getSetting('autoplaywiths.before')
-                f.write(s.encode("utf8"))
-                s = "autoplaywiths.after=%s\n" % ADDON.getSetting('autoplaywiths.after')
-                f.write(s.encode("utf8"))
+            self.writeNfoFile(now,self.currentProgram)
             command = ADDON.getSetting('autoplaywith.play')
             if command:
                 c = r'%s %s' % (command,timestamp)
