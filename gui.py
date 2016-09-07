@@ -1236,6 +1236,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.lastChannel = self.currentChannel
         self.currentChannel = channel
         self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+        if not self.currentProgram:
+            return
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:

@@ -775,6 +775,7 @@ class Database(object):
 
         c = self.conn.cursor()
         #once
+        #TODO always, notifications,autoplays
         c.execute(
             'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled,' + 
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source) AS autoplay_scheduled, '+
