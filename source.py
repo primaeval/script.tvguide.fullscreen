@@ -774,15 +774,21 @@ class Database(object):
             return []
 
         c = self.conn.cursor()
+        #once
         c.execute(
-            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, (SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled, (SELECT 1 FROM autoplaywiths n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplaywith_scheduled FROM programs p WHERE p.channel IN (\'' + (
-                '\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
+            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled,' + 
+            '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source) AS autoplay_scheduled, '+
+            '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=0 AND w.start_date=p.start_date) AS autoplaywith_scheduled_once, '+
+            '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=1 ) AS autoplaywith_scheduled_always '+
+            'FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
             [self.source.KEY, startTime, endTime])
         for row in c:
+            autoplaywith_scheduled = row['autoplaywith_scheduled_once'] or row['autoplaywith_scheduled_always']
             program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'], row['autoplaywith_scheduled'],
+                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'], autoplaywith_scheduled ,
                               row['season'], row['episode'], row['is_movie'], row['language'])
             programList.append(program)
+
 
         return programList
 
