@@ -842,7 +842,10 @@ class TVGuide(xbmcgui.WindowXML):
             if program.autoplayScheduled:
                 self.autoplay.removeAutoplay(program)
             else:
-                self.autoplay.addAutoplay(program)
+                d = xbmcgui.Dialog()
+                type = d.select("AutoPlay Type", ["once","always"]) #TODO ,"same time","same day"
+                if type > -1:
+                    self.autoplay.addAutoplay(program, type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAYWITH:

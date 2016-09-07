@@ -777,16 +777,18 @@ class Database(object):
         #once
         #TODO always, notifications,autoplays
         c.execute(
-            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled,' + 
-            '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source) AS autoplay_scheduled, '+
+            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled,' +
+            '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=0 AND a.start_date=p.start_date) AS autoplay_scheduled_once, '+
+            '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=1 ) AS autoplay_scheduled_always, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=0 AND w.start_date=p.start_date) AS autoplaywith_scheduled_once, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=1 ) AS autoplaywith_scheduled_always '+
             'FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
             [self.source.KEY, startTime, endTime])
         for row in c:
+            autoplay_scheduled = row['autoplay_scheduled_once'] or row['autoplay_scheduled_always']
             autoplaywith_scheduled = row['autoplaywith_scheduled_once'] or row['autoplaywith_scheduled_always']
             program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'], autoplaywith_scheduled ,
+                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], autoplay_scheduled, autoplaywith_scheduled ,
                               row['season'], row['episode'], row['is_movie'], row['language'])
             programList.append(program)
 
@@ -1056,17 +1058,17 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    def addAutoplay(self, program):
-        self._invokeAndBlockForResult(self._addAutoplay, program)
+    def addAutoplay(self, program, type):
+        self._invokeAndBlockForResult(self._addAutoplay, program, type)
         # no result, but block until operation is done
 
-    def _addAutoplay(self, program):
+    def _addAutoplay(self, program, type):
         """
         @type program: source.program
         """
         c = self.conn.cursor()
-        c.execute("INSERT INTO autoplays(channel, program_title, source) VALUES(?, ?, ?)",
-                  [program.channel.id, program.title, self.source.KEY])
+        c.execute("INSERT INTO autoplays(channel, program_title, source, start_date, type) VALUES(?, ?, ?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])
         self.conn.commit()
         c.close()
 
@@ -1091,12 +1093,12 @@ class Database(object):
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days=daysLimit)
         c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
+        #once
+        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         programs = c.fetchall()
-        c.close()
-
+        #always
+        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        programs.append(c.fetchall())
         return programs
 
     def getFullAutoplays(self, daysLimit=2):
@@ -1107,16 +1109,21 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
-            "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled " +
-            "FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
+        #once
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
-            program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
-            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplayScheduled=row[21])
-            xbmc.log(repr(row.keys()))
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
+            programList.append(program)
+        #always
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
             programList.append(program)
         c.close()
         return programList
