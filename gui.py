@@ -850,7 +850,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.autoplaywith.removeAutoplaywith(program)
             else:
                 d = xbmcgui.Dialog()
-                type = d.select("AutoPlayWith Type", ["always","once","same time","same day"])
+                type = d.select("AutoPlayWith Type", ["once","always"]) #TODO ,"same time","same day"
                 if type > -1:
                     self.autoplaywith.addAutoplaywith(program, type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)

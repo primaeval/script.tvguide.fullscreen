@@ -1150,10 +1150,10 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         c = self.conn.cursor()
         #once
-        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND a.start_date = p.start_date")
+        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         programs = c.fetchall()
         #always
-        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         programs.append(c.fetchall())
         return programs
 
@@ -1166,7 +1166,7 @@ class Database(object):
         programList = list()
         c = self.conn.cursor()
         #once
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND a.start_date = p.start_date")
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
             xbmc.log(repr(row.keys()))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
@@ -1175,7 +1175,7 @@ class Database(object):
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         #always
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
             xbmc.log(repr(row.keys()))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
