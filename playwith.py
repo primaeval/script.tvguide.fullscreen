@@ -28,7 +28,7 @@ if row:
     command = ADDON.getSetting('autoplaywith.play')
     xbmc.log(repr(command))
     if command:
-        retcode = subprocess.call([command, timestamp])
+        retcode = subprocess.call([command, timestamp],creationflags=subprocess.SW_HIDE, shell=True)
     core = ADDON.getSetting('autoplaywith.player')
     xbmc.log(repr(core))
     if core:

@@ -1284,8 +1284,7 @@ class TVGuide(xbmcgui.WindowXML):
             command = ADDON.getSetting('autoplaywith.play')
             if command:
                 c = r'%s %s' % (command,timestamp)
-                #self.startProgram(c)
-                retcode = subprocess.call([command, timestamp])
+                retcode = subprocess.call([command, timestamp],creationflags=subprocess.SW_HIDE, shell=True)
             core = ADDON.getSetting('autoplaywith.player')
             if core:
                 xbmc.executebuiltin('PlayWith(%s)' % core)
