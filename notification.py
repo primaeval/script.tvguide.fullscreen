@@ -59,17 +59,17 @@ class Notification(object):
         name = self.createAlarmClockName(programTitle, startTime)
 
         description = strings(NOTIFICATION_5_MINS, channelTitle)
-        xbmc.executebuiltin('AlarmClock(%s-5mins,Notification(%s,%s,10000,%s),%d,False)' %
+        xbmc.executebuiltin('AlarmClock(%s-5mins,Notification(%s,%s,10000,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToNotification - 5))
 
         description = strings(NOTIFICATION_NOW, channelTitle)
-        xbmc.executebuiltin('AlarmClock(%s-now,Notification(%s,%s,10000,%s),%d,False)' %
+        xbmc.executebuiltin('AlarmClock(%s-now,Notification(%s,%s,10000,%s),%d,True)' %
                             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToNotification))
 
     def _unscheduleNotification(self, programTitle, startTime):
         name = self.createAlarmClockName(programTitle, startTime)
-        xbmc.executebuiltin('CancelAlarm(%s-5mins,False)' % name.encode('utf-8', 'replace'))
-        xbmc.executebuiltin('CancelAlarm(%s-now,False)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-5mins,True)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-now,True)' % name.encode('utf-8', 'replace'))
 
     def addNotification(self, program, type):
         self.database.addNotification(program, type)

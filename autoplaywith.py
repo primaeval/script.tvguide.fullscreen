@@ -60,7 +60,7 @@ class Autoplaywith(object):
             return
         #timeToAutoplaywith = 1
         name = self.createAlarmClockName(programTitle, startTime)
-        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,False)' %
+        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,True)' %
         (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith - int(ADDON.getSetting('autoplaywiths.before'))))
 
         t = endTime - datetime.datetime.now()
@@ -73,8 +73,8 @@ class Autoplaywith(object):
 
     def _unscheduleAutoplaywith(self, programTitle, startTime):
         name = self.createAlarmClockName(programTitle, startTime)
-        xbmc.executebuiltin('CancelAlarm(%s-start,False)' % name.encode('utf-8', 'replace'))
-        xbmc.executebuiltin('CancelAlarm(%s-stop,False)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-start,True)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-stop,True)' % name.encode('utf-8', 'replace'))
 
     def addAutoplaywith(self, program,type):
         self.database.addAutoplaywith(program,type)
