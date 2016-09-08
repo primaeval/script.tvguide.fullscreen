@@ -952,7 +952,7 @@ class Database(object):
                 #c.execute('DROP TABLE autoplays')
                 #c.execute('DROP TABLE autoplaywiths')
                 c.execute(
-                    "CREATE TABLE IF NOT EXISTS notifications(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")                
+                    "CREATE TABLE IF NOT EXISTS notifications(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
                 c.execute(
                     "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
                 c.execute(
@@ -981,7 +981,7 @@ class Database(object):
         """
         c = self.conn.cursor()
         c.execute("INSERT INTO notifications(channel, program_title, source, start_date, type) VALUES(?, ?, ?, ?, ?)",
-                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])        
+                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])
         self.conn.commit()
         c.close()
 
@@ -1026,7 +1026,7 @@ class Database(object):
             programList.append(program)
         c.close()
         return programList
-        
+
     def isNotificationRequiredForProgram(self, program):
         return self._invokeAndBlockForResult(self._isNotificationRequiredForProgram, program)
 
@@ -1447,13 +1447,14 @@ class XMLTVSource(Source):
                         #    logo = logoFile
                         else:
                             #TODO use hash or db
+                            t = re.sub(r' ','',title.lower())
+                            #t = re.sub(r'\+','\\+',t)
+                            #t = re.sub(r'[\(\)]',' ',t)
+                            t = re.escape(t)
+                            titleRe = "^%s" % t
+                            xbmc.log(titleRe)
                             for l in sorted(logos):
                                 logox = re.sub(r' ','',l.lower())
-                                t = re.sub(r' ','',title.lower())
-                                #t = re.sub(r'\+','\\+',t)
-                                #t = re.sub(r'[\(\)]',' ',t)
-                                t = re.escape(t)
-                                titleRe = "^%s" % t
                                 if re.match(titleRe,logox):
                                     logo = os.path.join(logoFolder, l + '.png')
                                     break
