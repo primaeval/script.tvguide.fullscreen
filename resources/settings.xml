@@ -97,7 +97,7 @@
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
         <setting type="lsep" label="External Player"/>
         <setting id="autoplaywith.player" label="AutoPlayWith Player" type="text" default="" />
-        <setting id="autoplaywith.folder" label="Program Info Folder" type="folder" default="" />
+        <!--<setting id="autoplaywith.folder" label="Program Info Folder" type="folder" default="" />-->
         <setting id="autoplaywith.play" label="Play Command" type="text" default="" />
         <setting id="autoplaywith.stop" label="Stop Command" type="text" default="" />
         <setting id="autoplaywiths.enabled" label="Autoplaywiths" type="bool" default="true" />

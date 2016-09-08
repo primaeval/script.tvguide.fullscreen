@@ -1234,42 +1234,41 @@ class TVGuide(xbmcgui.WindowXML):
         subprocess.Popen(cmd, startupinfo=info)
 
     def writeNfoFile(self,dt,program):
-        folder = ADDON.getSetting('autoplaywith.folder')
-        if folder:
-            timestamp = dt.strftime("%Y%m%d%H%M")
-            filename = "%s - %s - %s" % (timestamp,program.channel.title,program.title)
-            f = xbmcvfs.File('%s/%s.nfo' % (folder,filename), "wb")
-            f.write(u'\ufeff'.encode("utf8"))
-            #s = "url=%s\n" % url
-            #f.write(s.encode("utf8"))
-            s = "channel.id=%s\n" % program.channel.id
-            f.write(s.encode("utf8"))
-            s = "channel.title=%s\n" % program.channel.title
-            f.write(s.encode("utf8"))
-            s = "channel.logo=%s\n" % program.channel.logo
-            f.write(s.encode("utf8"))
-            s = "program.title=%s\n" % program.title
-            f.write(s.encode("utf8"))
-            s = "program.startDate=%s\n" % program.startDate
-            f.write(s.encode("utf8"))
-            s = "program.endDate=%s\n" % program.endDate
-            f.write(s.encode("utf8"))
-            s = "program.description=%s\n" % program.description
-            f.write(s.encode("utf8"))
-            s = "program.imageLarge=%s\n" % program.imageLarge
-            f.write(s.encode("utf8"))
-            s = "program.imageSmall=%s\n" % program.imageSmall
-            f.write(s.encode("utf8"))
-            s = "program.episode=%s\n" % program.episode
-            f.write(s.encode("utf8"))
-            s = "program.season=%s\n" % program.season
-            f.write(s.encode("utf8"))
-            s = "program.is_movie=%s\n" % program.is_movie
-            f.write(s.encode("utf8"))
-            s = "autoplays.before=%s\n" % ADDON.getSetting('autoplays.before')
-            f.write(s.encode("utf8"))
-            s = "autoplays.after=%s\n" % ADDON.getSetting('autoplays.after')
-            f.write(s.encode("utf8"))
+        folder = "special://profile/addon_data/script.tvguide.fullscreen/programs"
+        xbmcvfs.mkdirs(folder)
+        timestamp = dt.strftime("%Y%m%d%H%M")
+        title = re.sub(r'[/\\:*?"<>|]', '', program.title)
+        filename = "%s - %s - %s" % (timestamp,program.channel.title,title)
+        f = xbmcvfs.File('%s/%s.ini' % (folder,filename), "wb")
+        f.write(u'\ufeff'.encode("utf8"))
+        s = "channel.id=%s\n" % program.channel.id
+        f.write(s.encode("utf8"))
+        s = "channel.title=%s\n" % program.channel.title
+        f.write(s.encode("utf8"))
+        s = "channel.logo=%s\n" % program.channel.logo
+        f.write(s.encode("utf8"))
+        s = "program.title=%s\n" % program.title
+        f.write(s.encode("utf8"))
+        s = "program.startDate=%s\n" % program.startDate
+        f.write(s.encode("utf8"))
+        s = "program.endDate=%s\n" % program.endDate
+        f.write(s.encode("utf8"))
+        s = "program.description=%s\n" % program.description
+        f.write(s.encode("utf8"))
+        s = "program.imageLarge=%s\n" % program.imageLarge
+        f.write(s.encode("utf8"))
+        s = "program.imageSmall=%s\n" % program.imageSmall
+        f.write(s.encode("utf8"))
+        s = "program.episode=%s\n" % program.episode
+        f.write(s.encode("utf8"))
+        s = "program.season=%s\n" % program.season
+        f.write(s.encode("utf8"))
+        s = "program.is_movie=%s\n" % program.is_movie
+        f.write(s.encode("utf8"))
+        s = "autoplays.before=%s\n" % ADDON.getSetting('autoplays.before')
+        f.write(s.encode("utf8"))
+        s = "autoplays.after=%s\n" % ADDON.getSetting('autoplays.after')
+        f.write(s.encode("utf8"))
 
     def playWithChannel(self, channel, program = None):
         if self.currentChannel:
@@ -1292,8 +1291,8 @@ class TVGuide(xbmcgui.WindowXML):
             if core:
                 xbmc.executebuiltin('PlayWith(%s)' % core)
             xbmc.executebuiltin('PlayMedia(%s)' % url)
-            time.sleep(5)
-            self.player.stop()
+            #time.sleep(5)
+            #self.player.stop()
 
 
     def stopWith(self):
@@ -1301,7 +1300,7 @@ class TVGuide(xbmcgui.WindowXML):
         if command:
             cmd = '"%s"' % (command)
             #self.startProgram(cmd)
-            retcode = subprocess.call([command])
+            retcode = subprocess.call([command],creationflags=subprocess.SW_HIDE, shell=True)
         self.player.stop()
 
     def waitForPlayBackStopped(self,title):

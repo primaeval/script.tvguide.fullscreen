@@ -618,9 +618,9 @@ class Database(object):
                       [channel.id, self.source.KEY,search])
             except: return
             for row in c:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
                 programList.append(program)
         c.close()
         return programList
@@ -635,9 +635,9 @@ class Database(object):
                   [channel.id])
         except: return
         for row in c:
-            program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                          row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                          row['is_movie'], row['language'])
+            program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                          imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                          is_movie=row['is_movie'], language=row['language'])
             programList.append(program)
         c.close()
 
@@ -657,9 +657,9 @@ class Database(object):
             except: return
             row = c.fetchone()
             if row:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
                 programList.append(program)
         c.close()
         return programList
@@ -678,9 +678,9 @@ class Database(object):
             except: return
             row = c.fetchone()
             if row:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
                 programList.append(program)
         c.close()
         return programList
@@ -704,9 +704,9 @@ class Database(object):
         row = c.fetchone()
         if row:
             try:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
             except:
                 return
         c.close()
@@ -725,9 +725,9 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.endDate])
             row = c.fetchone()
             if row:
-                    nextProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                                      row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                                      row['is_movie'], row['language'])
+                nextProgram = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
             c.close()
             return nextProgram
         except:
@@ -745,9 +745,9 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.startDate])
             row = c.fetchone()
             if row:
-                previousProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'],
-                                          row['description'], row['image_large'], row['image_small'], None, row['season'],
-                                          row['episode'], row['is_movie'], row['language'])
+                previousProgram = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
             c.close()
             return previousProgram
         except:
@@ -787,9 +787,10 @@ class Database(object):
         for row in c:
             autoplay_scheduled = row['autoplay_scheduled_once'] or row['autoplay_scheduled_always']
             autoplaywith_scheduled = row['autoplaywith_scheduled_once'] or row['autoplaywith_scheduled_always']
-            program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], autoplay_scheduled, autoplaywith_scheduled ,
-                              row['season'], row['episode'], row['is_movie'], row['language'])
+            program = Program(channelMap[row['channel']], title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'],
+                              notificationScheduled=row['notification_scheduled'], autoplayScheduled=autoplay_scheduled, autoplaywithScheduled=autoplaywith_scheduled)
             programList.append(program)
 
 
@@ -1019,16 +1020,16 @@ class Database(object):
         c = self.conn.cursor()
         #TODO autoplays wrong
         c.execute(
-            "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
-            "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled ," +
-            "(SELECT 1 FROM autoplaywiths n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplaywith_scheduled " +
+            "SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* ,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
+            "(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source) AS autoplay_scheduled ," +
+            "(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source) AS autoplaywith_scheduled " +
             "FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
             [self.source.KEY, start, end])
         for row in c:
-            channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
-            program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
-            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplayScheduled=row[21],autoplaywithScheduled=row[22])
-            xbmc.log(repr(row.keys()))
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
             programList.append(program)
         c.close()
         return programList

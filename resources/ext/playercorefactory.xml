@@ -1,14 +1,35 @@
 <playercorefactory>
 <players>
-<player name="record" type="ExternalPlayer" audio="false" video="true">
-<filename>c:\windows\system32\cmd.exe</filename>
-<args>/c c:\Kodi16.1\portable_data\userdata\record.cmd "{1}"</args>
+<player name="record_doesnt_work" type="ExternalPlayer" audio="false" video="true">
+<filename>c:\utils\ffmpeg</filename>
+<args>-i "{1}" -y -i -c copy  -t 04:00:00 C:\Kodi16.1\portable_data\userdata\out.avi 2>NUL</args>
 <hidexbmc>false</hidexbmc>
 <hideconsole>false</hideconsole>
 <warpcursor>none</warpcursor>
 <playonestackitem>true</playonestackitem>
 </player>
-
+<player name="record" type="ExternalPlayer" audio="false" video="true">
+<filename>c:\windows\system32\cmd.exe</filename>
+<args>/c c:\Kodi16.1\portable_data\userdata\record.cmd "{1}"</args>
+<hidexbmc>false</hidexbmc>
+<hideconsole>true</hideconsole>
+<warpcursor>none</warpcursor>
+<playonestackitem>true</playonestackitem>
+</player>
+<player name="vlc" type="ExternalPlayer" audio="false" video="true">
+<filename>c:\program files\Videolan\VLC\VLC.exe</filename>
+<args>--play-and-exit --video-on-top --fullscreen "{1}"</args>
+<hidexbmc>false</hidexbmc>
+<hideconsole>false</hideconsole>
+<hidecursor>false</hidecursor>
+</player>
+<player name="mpc-hc" type="ExternalPlayer" audio="false" video="true">
+<filename>C:\Program Files\MPC-HC\mpc-hc.exe</filename>
+<args>"{1}" /fullscreen /close</args>
+<hidexbmc>true</hidexbmc>
+<hideconsole>true</hideconsole>
+<warpcursor>none</warpcursor>
+</player>
 </players>
 <!--
 <rules action="append">
