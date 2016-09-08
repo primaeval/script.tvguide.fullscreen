@@ -172,7 +172,7 @@ class Database(object):
                     break
 
             except Exception as detail:
-                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s = %s' % (detail,command.__name__))
+                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s = %s' % (detail,command.__name__), xbmc.LOGERROR)
                 xbmc.executebuiltin("ActivateWindow(Home)")
 
         print 'Database.eventLoop() >>>>>>>>>> exiting...'
@@ -439,7 +439,6 @@ class Database(object):
         finally:
             self.updateInProgress = False
             c.close()
-        xbmc.log("FINISHED")
 
 
     def setCategory(self,category):
@@ -1000,22 +999,6 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    '''
-    def getNotifications(self, daysLimit=2):
-        return self._invokeAndBlockForResult(self._getNotifications, daysLimit)
-
-    def _getNotifications(self, daysLimit):
-        start = datetime.datetime.now()
-        end = start + datetime.timedelta(days=daysLimit)
-        c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.title, p.title, p.start_date FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
-        programs = c.fetchall()
-        c.close()
-
-        return programs
-    '''
     def getFullNotifications(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullNotifications, daysLimit)
 
@@ -1027,7 +1010,6 @@ class Database(object):
         #once
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            xbmc.log(repr(row))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
@@ -1037,7 +1019,6 @@ class Database(object):
 #        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
         for row in c:
-            xbmc.log(repr(row))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
@@ -1098,57 +1079,34 @@ class Database(object):
                   [program.channel.id, program.title, self.source.KEY])
         self.conn.commit()
         c.close()
-    '''
-    def getAutoplays(self, daysLimit=2):
-        return self._invokeAndBlockForResult(self._getAutoplays, daysLimit)
 
-    def _getAutoplays(self, daysLimit):
-        start = datetime.datetime.now()
-        end = start + datetime.timedelta(days=daysLimit)
-        c = self.conn.cursor()
-        #once
-        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
-        programs = c.fetchall()
-        #always
-        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
-        programs.append(c.fetchall())
-        return programs
-    '''
     def getFullAutoplays(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullAutoplays, daysLimit)
 
     def _getFullAutoplays(self, daysLimit):
-        xbmc.log("XXX _getFullAutoplays")
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
         if not c:
             return
-        xbmc.log("XXX _getFullAutoplays once")
         #once
-        xbmc.log(repr(c))
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
-        xbmc.log("XXX _getFullAutoplays for")
         for row in c:
-            xbmc.log(row["title"])
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
             programList.append(program)
         #always
-        xbmc.log("XXX _getFullAutoplays always")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
-            xbmc.log(row["title"])
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
             programList.append(program)
         c.close()
-        xbmc.log("XXX _getFullAutoplays close")
         return programList
 
     def addAutoplaywith(self, program, type):
@@ -1178,57 +1136,32 @@ class Database(object):
                   [program.channel.id, program.title, self.source.KEY])
         self.conn.commit()
         c.close()
-    '''
-    def getAutoplaywiths(self, daysLimit=2):
-        return self._invokeAndBlockForResult(self._getAutoplaywiths, daysLimit)
 
-    def _getAutoplaywiths(self, daysLimit):
-        start = datetime.datetime.now()
-        end = start + datetime.timedelta(days=daysLimit)
-        c = self.conn.cursor()
-        programs = []
-        #once
-        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
-        programs = c.fetchall()
-        #always
-        #c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
-        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
-        programs.append(c.fetchall())
-        #xbmc.log(repr((programs)))
-        return programs
-    '''
     def getFullAutoplaywiths(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullAutoplaywiths, daysLimit)
 
     def _getFullAutoplaywiths(self, daysLimit):
-        xbmc.log("XXX _getFullAutoplaywiths")
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
         #once
-        xbmc.log("XXX _getFullAutoplaywiths once")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
-        xbmc.log("XXX _getFullAutoplaywiths for")
         for row in c:
-            xbmc.log(repr((row["title"],row["start_date"])))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         #always
-        xbmc.log("XXX _getFullAutoplaywiths always")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
-            xbmc.log(repr((row["title"],row["start_date"])))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         c.close()
-        xbmc.log("XXX _getFullAutoplaywiths done")
         return programList
 
     def isAutoplayRequiredForProgram(self, program):

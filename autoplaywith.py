@@ -49,26 +49,17 @@ class Autoplaywith(object):
         return 'tvguide-%s-%s' % (programTitle, startTime)
 
     def scheduleAutoplaywiths(self):
-        xbmc.log("xxx SCHEDULEAUTOPLAYWITHS")
-        #for channelId, programTitle, startTime, endTime in self.database.getAutoplaywiths():
-        #    self.writeNfoFile(program)
-        #    self._scheduleAutoplaywith(channelId, programTitle, startTime, endTime)
         for program in self.database.getFullAutoplaywiths():
             self.writeNfoFile(program)
             self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
 
     def _scheduleAutoplaywith(self, channelId, programTitle, startTime, endTime):
-        xbmc.log(repr(("xxx _scheduleAutoplaywith",channelId, programTitle, startTime, endTime)))
         t = startTime - datetime.datetime.now()
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
         if timeToAutoplaywith < 0:
             return
         #timeToAutoplaywith = 1
         name = self.createAlarmClockName(programTitle, startTime)
-        #TODO
-        description = strings(NOTIFICATION_5_MINS, channelId)
-        #xbmc.executebuiltin('AlarmClock(%s-5mins,Autoplaywith(%s,%s,10000,%s),%d,False)' %
-        #    (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplaywith - 5))
         xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,False)' %
         (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith - int(ADDON.getSetting('autoplaywiths.before'))))
 
@@ -82,7 +73,6 @@ class Autoplaywith(object):
 
     def _unscheduleAutoplaywith(self, programTitle, startTime):
         name = self.createAlarmClockName(programTitle, startTime)
-        #xbmc.executebuiltin('CancelAlarm(%s-5mins,False)' % name.encode('utf-8', 'replace'))
         xbmc.executebuiltin('CancelAlarm(%s-start,False)' % name.encode('utf-8', 'replace'))
         xbmc.executebuiltin('CancelAlarm(%s-stop,False)' % name.encode('utf-8', 'replace'))
 
