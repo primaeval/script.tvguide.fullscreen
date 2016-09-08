@@ -54,7 +54,6 @@ class Autoplaywith(object):
             self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
 
     def _scheduleAutoplaywith(self, channelId, programTitle, startTime, endTime):
-        xbmc.log(repr(("XXX_scheduleAutoplaywith",channelId, programTitle, startTime, endTime)))
         t = startTime - datetime.datetime.now()
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
         if timeToAutoplaywith < 0:
@@ -68,7 +67,7 @@ class Autoplaywith(object):
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
         #timeToAutoplaywith = 0
         if ADDON.getSetting('autoplaywiths.stop') == 'true':
-            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stopwith.py,%s,%s),%d,False)' %
+            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stopwith.py,%s,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith + int(ADDON.getSetting('autoplaywiths.after'))))
 
 

@@ -70,7 +70,7 @@ class Autoplay(object):
         timeToAutoplay = ((t.days * 86400) + t.seconds) / 60
         #timeToAutoplay = 0
         if ADDON.getSetting('autoplays.stop') == 'true':
-            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stop.py,%s,%s),%d,False)' %
+            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stop.py,%s,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplay + int(ADDON.getSetting('autoplays.after'))))
 
 

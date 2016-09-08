@@ -1934,15 +1934,15 @@ class TVGuide(xbmcgui.WindowXML):
 
     def onSourceInitialized(self, success):
         if success:
+            #TODO test if schedules should go here
             self.notification = Notification(self.database, ADDON.getAddonInfo('path'))
-            self.notification.scheduleNotifications()
             self.autoplay = Autoplay(self.database, ADDON.getAddonInfo('path'))
-            self.autoplay.scheduleAutoplays()
             self.autoplaywith = Autoplaywith(self.database, ADDON.getAddonInfo('path'))
-            self.autoplaywith.scheduleAutoplaywiths()
             self.onRedrawEPG(0, self.viewStartDate)
             self.database.exportChannelList()
-
+            self.notification.scheduleNotifications()
+            self.autoplay.scheduleAutoplays()
+            self.autoplaywith.scheduleAutoplaywiths()
 
     def onSourceProgressUpdate(self, percentageComplete):
         control = self.getControl(self.C_MAIN_LOADING_PROGRESS)
