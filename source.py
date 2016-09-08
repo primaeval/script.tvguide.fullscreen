@@ -397,7 +397,7 @@ class Database(object):
                         channel = program.channel
 
                     c.execute(
-                        'INSERT INTO programs(channel, title, start_date, end_date, description, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        'INSERT OR REPLACE INTO programs(channel, title, start_date, end_date, description, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         [channel, program.title, program.startDate, program.endDate, program.description,
                          program.imageLarge, program.imageSmall, program.season, program.episode, program.is_movie,
                          program.language, self.source.KEY, updatesId])
@@ -440,6 +440,7 @@ class Database(object):
             self.updateInProgress = False
             c.close()
         xbmc.log("FINISHED")
+
 
     def setCategory(self,category):
         self.category = category
@@ -949,8 +950,8 @@ class Database(object):
             if version < [1, 3, 3]:
                 c.execute('UPDATE version SET major=1, minor=3, patch=3')
                 c.execute('DROP TABLE notifications')
-                c.execute('DROP TABLE autoplays')
-                c.execute('DROP TABLE autoplaywiths')
+                #c.execute('DROP TABLE autoplays')
+                #c.execute('DROP TABLE autoplaywiths')
                 c.execute(
                     "CREATE TABLE IF NOT EXISTS notifications(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")                
                 c.execute(
@@ -1026,14 +1027,17 @@ class Database(object):
         #once
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
+            xbmc.log(repr(row))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
             programList.append(program)
         #always
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+#        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
         for row in c:
+            xbmc.log(repr(row))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
@@ -1114,27 +1118,37 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getFullAutoplays, daysLimit)
 
     def _getFullAutoplays(self, daysLimit):
+        xbmc.log("XXX _getFullAutoplays")
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
+        if not c:
+            return
+        xbmc.log("XXX _getFullAutoplays once")
         #once
+        xbmc.log(repr(c))
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
+        xbmc.log("XXX _getFullAutoplays for")
         for row in c:
+            xbmc.log(row["title"])
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
             programList.append(program)
         #always
+        xbmc.log("XXX _getFullAutoplays always")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
+            xbmc.log(row["title"])
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
             programList.append(program)
         c.close()
+        xbmc.log("XXX _getFullAutoplays close")
         return programList
 
     def addAutoplaywith(self, program, type):
@@ -1195,7 +1209,9 @@ class Database(object):
         #once
         xbmc.log("XXX _getFullAutoplaywiths once")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
+        xbmc.log("XXX _getFullAutoplaywiths for")
         for row in c:
+            xbmc.log(repr((row["title"],row["start_date"])))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
@@ -1205,6 +1221,7 @@ class Database(object):
         xbmc.log("XXX _getFullAutoplaywiths always")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
+            xbmc.log(repr((row["title"],row["start_date"])))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],

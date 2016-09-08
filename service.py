@@ -30,7 +30,7 @@ import autoplay
 import autoplaywith
 import xbmc
 import source
-
+import time
 
 class Service(object):
     def __init__(self):
@@ -50,9 +50,11 @@ class Service(object):
         if ADDON.getSetting('notifications.enabled') == 'true':
             n = notification.Notification(self.database, ADDON.getAddonInfo('path'))
             n.scheduleNotifications()
+        #time.sleep(1)
         if ADDON.getSetting('autoplays.enabled') == 'true':
             n = autoplay.Autoplay(self.database, ADDON.getAddonInfo('path'))
             n.scheduleAutoplays()
+        #time.sleep(1)
         if ADDON.getSetting('autoplaywiths.enabled') == 'true':
             n = autoplaywith.Autoplaywith(self.database, ADDON.getAddonInfo('path'))
             n.scheduleAutoplaywiths()
