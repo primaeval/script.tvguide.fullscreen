@@ -184,12 +184,12 @@
             <left>720</left>
             <top>550</top>
             <width>200</width>
-            <height>40</height>
+            <height>30</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+			<focusedcolor>white</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30502]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
@@ -198,15 +198,15 @@
             <onup>6000</onup>
         </control>
         <control type="button" id="6004">
-            <left>920</left>
+            <left>921</left>
             <top>550</top>
             <width>200</width>
-            <height>40</height>
+            <height>30</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+			<focusedcolor>white</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30503]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>

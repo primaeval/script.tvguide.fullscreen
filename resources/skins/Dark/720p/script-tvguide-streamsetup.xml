@@ -59,7 +59,7 @@
             <left>180</left>
             <top>10</top>
             <width>350</width>
-            <height>40</height>
+            <height>30</height>
             <font>font13_title</font>
             <textcolor>white</textcolor>
             <label></label>
@@ -71,7 +71,7 @@
             <left>40</left>
             <top>10</top>
             <width>500</width>
-            <height>40</height>
+            <height>30</height>
             <label>$ADDON[script.tvguide.fullscreen 30600]:</label>
             <align>left</align>
         </control>
@@ -126,15 +126,15 @@
 		<!-- Header Buttons -->
         <control type="button" id="101">
             <description>STRM|M3U</description>
-			<left>732r</left>
-            <top>10</top>
-            <width>173</width>
-            <height>40</height>
+			<left>467</left>
+            <top>12</top>
+            <width>200</width>
+            <height>30</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+			<focusedcolor>white</focusedcolor>
             <label>STRM|M3U</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
@@ -144,15 +144,15 @@
         </control>
         <control type="button" id="102">
 			<description>Favorites</description>
-            <left>559r</left>
-            <top>10</top>
-            <width>173</width>
-            <height>40</height>
+            <left>668</left>
+            <top>12</top>
+            <width>200</width>
+            <height>30</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+			<focusedcolor>white</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30602]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
@@ -162,15 +162,15 @@
         </control>
         <control type="button" id="103">
 			<description>Addons</description>
-            <left>386r</left>
-            <top>10</top>
-            <width>173</width>
-            <height>40</height>
+            <left>867</left>
+            <top>12</top>
+            <width>200</width>
+            <height>30</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+			<focusedcolor>white</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30603]</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
@@ -180,15 +180,15 @@
         </control>
         <control type="button" id="104">
 			<description>Browse</description>
-            <left>213r</left>
-            <top>10</top>
-            <width>173</width>
-            <height>40</height>
+            <left>1068</left>
+            <top>12</top>
+            <width>200</width>
+            <height>30</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+			<focusedcolor>white</focusedcolor>
             <label>Browse</label>
             <texturefocus>menu-grey-focus.png</texturefocus>
             <texturenofocus>menu-grey.png</texturenofocus>
@@ -217,14 +217,14 @@
                 <description>Single Stream From Playlist</description>
                 <left>40</left>
                 <top>60</top>
-                <width>170</width>
+                <width>200</width>
                 <height>30</height>
                 <label>Browse File...</label>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-                <focusedcolor>cyan</focusedcolor>
+                <focusedcolor>white</focusedcolor>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
@@ -234,16 +234,16 @@
 
             <control type="button" id="1006">
                 <description>Import Playlist</description>
-                <left>210</left>
+                <left>241</left>
                 <top>60</top>
-                <width>170</width>
+                <width>200</width>
                 <height>30</height>
                 <label>Import Playlist</label>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-                <focusedcolor>cyan</focusedcolor>
+                <focusedcolor>white</focusedcolor>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
@@ -262,15 +262,15 @@
             </control>
 			<!--Preview, Save, Cancel Buttons when Stream selected-->
             <control type="button" id="1002">
-                <left>680</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+                <left>668</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -279,15 +279,15 @@
                 <onright>1003</onright>
             </control>
             <control type="button" id="1003">
-                <left>853</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+                <left>869</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -296,15 +296,15 @@
                 <onright>1004</onright>
             </control>
             <control type="button" id="1004">
-                <left>1026</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+                <left>1070</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -386,7 +386,7 @@
                         <height>38</height>
                         <aligny>center</aligny>
                         <font>font13</font>
-                        <textcolor>cyan</textcolor>
+                        <textcolor>white</textcolor>
                         <info>ListItem.Label</info>
                     </control>
                     <control type="image">
@@ -400,15 +400,15 @@
             </control>
 			<!-- Preview, Save, Cancel buttons -->
             <control type="button" id="2002">
-                <left>680</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+                <left>668</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -417,15 +417,15 @@
                 <onright>2003</onright>
             </control>
             <control type="button" id="2003">
-                <left>853</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+                <left>869</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -434,15 +434,15 @@
                 <onright>2004</onright>
             </control>
             <control type="button" id="2004">
-                <left>1026</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+                <left>1070</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -541,9 +541,9 @@
                 <left>210</left>
                 <top>40</top>
                 <width>300</width>
-                <height>40</height>
+                <height>30</height>
                 <label>[B][/B]</label>
-                <textcolor>cyan</textcolor>
+                <textcolor>white</textcolor>
             </control>
             <control type="textbox" id="3004">
                 <left>210</left>
@@ -584,7 +584,7 @@
                         <aligny>center</aligny>
                         <font>font13</font>
                         <textcolor>white</textcolor>
-						<focusedcolor>cyan</focusedcolor>
+						<focusedcolor>white</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
@@ -613,7 +613,7 @@
                         <aligny>center</aligny>
                         <font>font13</font>
                         <textcolor>white</textcolor>
-						<focusedcolor>cyan</focusedcolor>
+						<focusedcolor>white</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
                     <control type="image">
@@ -628,15 +628,15 @@
 
             <control type="button" id="3005">
 				<description>Preview</description>
-                <left>680</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+                <left>668</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -646,15 +646,15 @@
             </control>
             <control type="button" id="3006">
                 <description>Save</description>
-				<left>853</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+				<left>869</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -664,15 +664,15 @@
             </control>
             <control type="button" id="3007">
                 <description>Cancel</description>
-				<left>1026</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+				<left>1070</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -775,16 +775,16 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>SELECT ADDON AND WAIT UNTIL LOADED</label>
             </control>
 			<control type="label" id="4003">
                 <left>210</left>
                 <top>70</top>
                 <width>450</width>
-                <height>40</height>
+                <height>30</height>
                 <label>[B][/B]</label>
-                <textcolor>cyan</textcolor>
+                <textcolor>white</textcolor>
             </control>
             <control type="textbox" id="4004">
                 <left>210</left>
@@ -799,13 +799,13 @@
 			<control type="button" id="4009">
                 <left>210</left>
                 <top>190</top>
-                <width>173</width>
-                <height>40</height>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>Add Folder</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -843,7 +843,7 @@
                         <aligny>center</aligny>
                         <font>font13</font>
                         <textcolor>white</textcolor>
-						<focusedcolor>cyan</focusedcolor>
+						<focusedcolor>white</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
@@ -872,7 +872,7 @@
                         <aligny>center</aligny>
                         <font>font13</font>
                         <textcolor>white</textcolor>
-						<focusedcolor>cyan</focusedcolor>
+						<focusedcolor>white</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
                     <control type="image">
@@ -912,7 +912,7 @@
                         <aligny>center</aligny>
                         <font>font13</font>
                         <textcolor>white</textcolor>
-						<focusedcolor>cyan</focusedcolor>
+						<focusedcolor>white</focusedcolor>
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
@@ -956,15 +956,15 @@
 			<!--Browse button list-->
             <control type="button" id="4005">
                 <description>Preview stream</description>
-				<left>680</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+				<left>668</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -974,15 +974,15 @@
             </control>
             <control type="button" id="4006">
 				<description>Save</description>
-				<left>853</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+				<left>869</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
@@ -992,15 +992,15 @@
             </control>
             <control type="button" id="4007">
                 <description>Cancel</description>
-				<left>1026</left>
-                <top>530</top>
-                <width>173</width>
-                <height>40</height>
+				<left>1070</left>
+                <top>560</top>
+                <width>200</width>
+                <height>30</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>menu-grey-focus.png</texturefocus>
                 <texturenofocus>menu-grey.png</texturenofocus>
