@@ -38,23 +38,19 @@ class Service(object):
         self.database.initialize(self.onInit)
 
     def onInit(self, success):
-        xbmc.log("XXX onInit")
         if success:
-            xbmc.log("XXX updateChannelAndProgramListCaches")
             self.database.updateChannelAndProgramListCaches(self.onCachesUpdated)
         else:
             self.database.close()
 
     def onCachesUpdated(self):
-        xbmc.log("XXX onCachesUpdated")
+        #BUG doesn't work on login (maybe always?)
         if ADDON.getSetting('notifications.enabled') == 'true':
             n = notification.Notification(self.database, ADDON.getAddonInfo('path'))
             n.scheduleNotifications()
-        #time.sleep(1)
         if ADDON.getSetting('autoplays.enabled') == 'true':
             n = autoplay.Autoplay(self.database, ADDON.getAddonInfo('path'))
             n.scheduleAutoplays()
-        #time.sleep(1)
         if ADDON.getSetting('autoplaywiths.enabled') == 'true':
             n = autoplaywith.Autoplaywith(self.database, ADDON.getAddonInfo('path'))
             n.scheduleAutoplaywiths()

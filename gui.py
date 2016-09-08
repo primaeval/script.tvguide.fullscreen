@@ -352,6 +352,7 @@ class TVGuide(xbmcgui.WindowXML):
                 return
             self.database.initialize(self.onSourceInitialized, self.isSourceInitializationCancelled)
 
+
         self.streamingService = streaming.StreamsService(ADDON)
 
         self.updateTimebar()
@@ -779,7 +780,7 @@ class TVGuide(xbmcgui.WindowXML):
             start = "%s %s" % (day,start)
             label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
             labels.append(label)
-        title = "Autoplays"
+        title = "AutoPlays"
         d = xbmcgui.Dialog()
         index = d.select(title,labels)
         if index > -1:
@@ -788,7 +789,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showFullAutoplays(self):
         programList = self.database.getFullAutoplays()
-        title = "Autoplays"
+        title = "AutoPlays"
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
@@ -804,7 +805,7 @@ class TVGuide(xbmcgui.WindowXML):
             start = "%s %s" % (day,start)
             label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
             labels.append(label)
-        title = "Autoplaywiths"
+        title = "AutoPlayWiths"
         d = xbmcgui.Dialog()
         index = d.select(title,labels)
         if index > -1:
@@ -813,7 +814,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showFullAutoplaywiths(self):
         programList = self.database.getFullAutoplaywiths()
-        title = "Autoplaywiths"
+        title = "AutoPlayWiths"
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
@@ -1934,10 +1935,14 @@ class TVGuide(xbmcgui.WindowXML):
     def onSourceInitialized(self, success):
         if success:
             self.notification = Notification(self.database, ADDON.getAddonInfo('path'))
+            self.notification.scheduleNotifications()
             self.autoplay = Autoplay(self.database, ADDON.getAddonInfo('path'))
+            self.autoplay.scheduleAutoplays()
             self.autoplaywith = Autoplaywith(self.database, ADDON.getAddonInfo('path'))
+            self.autoplaywith.scheduleAutoplaywiths()
             self.onRedrawEPG(0, self.viewStartDate)
             self.database.exportChannelList()
+
 
     def onSourceProgressUpdate(self, percentageComplete):
         control = self.getControl(self.C_MAIN_LOADING_PROGRESS)

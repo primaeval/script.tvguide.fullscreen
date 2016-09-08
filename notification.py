@@ -46,7 +46,6 @@ class Notification(object):
         return 'tvguide-%s-%s' % (programTitle, startTime)
        
     def scheduleNotifications(self):
-        xbmc.log("xxx scheduleNotifications")
         for program in self.database.getFullNotifications():
             self._scheduleNotification(program.channel.id, program.title, program.startDate, program.endDate)
 

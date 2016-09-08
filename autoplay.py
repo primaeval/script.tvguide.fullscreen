@@ -48,7 +48,6 @@ class Autoplay(object):
         return 'tvguide-%s-%s' % (programTitle, startTime)
         
     def scheduleAutoplays(self):
-        xbmc.log("xxx SCHEDULEAUTOPLAYS")
         for program in self.database.getFullAutoplays():
             self._scheduleAutoplay(program.channel.id, program.title, program.startDate, program.endDate)
 

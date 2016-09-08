@@ -26,11 +26,9 @@ if row:
     now = datetime.datetime.now()
     timestamp = str(time.mktime(now.timetuple()))
     command = ADDON.getSetting('autoplaywith.play')
-    xbmc.log(repr(command))
     if command:
         retcode = subprocess.call([command, timestamp],creationflags=subprocess.SW_HIDE, shell=True)
     core = ADDON.getSetting('autoplaywith.player')
-    xbmc.log(repr(core))
     if core:
         xbmc.executebuiltin('PlayWith(%s)' % core)
     xbmc.executebuiltin('PlayMedia(%s)' % url)

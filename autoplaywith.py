@@ -54,6 +54,7 @@ class Autoplaywith(object):
             self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
 
     def _scheduleAutoplaywith(self, channelId, programTitle, startTime, endTime):
+        xbmc.log(repr(("XXX_scheduleAutoplaywith",channelId, programTitle, startTime, endTime)))
         t = startTime - datetime.datetime.now()
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
         if timeToAutoplaywith < 0:
