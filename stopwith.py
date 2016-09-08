@@ -17,5 +17,5 @@ ADDON.setSetting('playing.with.start','')
 '''
 command = ADDON.getSetting('autoplaywith.stop')
 if command:
-    retcode = subprocess.call([command])
-xbmc.executebuiltin('PlayerControl(Stop)')
+    retcode = subprocess.call([command],creationflags=subprocess.SW_HIDE, shell=True)
+#xbmc.executebuiltin('PlayerControl(Stop)')

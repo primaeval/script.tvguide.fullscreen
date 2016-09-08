@@ -439,6 +439,7 @@ class Database(object):
         finally:
             self.updateInProgress = False
             c.close()
+        xbmc.log("FINISHED")
 
     def setCategory(self,category):
         self.category = category
@@ -947,8 +948,11 @@ class Database(object):
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
             if version < [1, 3, 3]:
                 c.execute('UPDATE version SET major=1, minor=3, patch=3')
+                c.execute('DROP TABLE notifications')
                 c.execute('DROP TABLE autoplays')
                 c.execute('DROP TABLE autoplaywiths')
+                c.execute(
+                    "CREATE TABLE IF NOT EXISTS notifications(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")                
                 c.execute(
                     "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
                 c.execute(
@@ -967,17 +971,17 @@ class Database(object):
             dialog.notification('script.tvguide.fullscreen', 'database exception %s' % detail, xbmcgui.NOTIFICATION_ERROR , 5000)
             #raise DatabaseSchemaException(detail)
 
-    def addNotification(self, program):
-        self._invokeAndBlockForResult(self._addNotification, program)
+    def addNotification(self, program,type):
+        self._invokeAndBlockForResult(self._addNotification, program,type)
         # no result, but block until operation is done
 
-    def _addNotification(self, program):
+    def _addNotification(self, program,type):
         """
         @type program: source.program
         """
         c = self.conn.cursor()
-        c.execute("INSERT INTO notifications(channel, program_title, source) VALUES(?, ?, ?)",
-                  [program.channel.id, program.title, self.source.KEY])
+        c.execute("INSERT INTO notifications(channel, program_title, source, start_date, type) VALUES(?, ?, ?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])        
         self.conn.commit()
         c.close()
 
@@ -995,6 +999,7 @@ class Database(object):
         self.conn.commit()
         c.close()
 
+    '''
     def getNotifications(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getNotifications, daysLimit)
 
@@ -1009,7 +1014,7 @@ class Database(object):
         c.close()
 
         return programs
-
+    '''
     def getFullNotifications(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullNotifications, daysLimit)
 
@@ -1018,13 +1023,16 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
-        #TODO autoplays wrong
-        c.execute(
-            "SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* ,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
-            "(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source) AS autoplay_scheduled ," +
-            "(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source) AS autoplaywith_scheduled " +
-            "FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
+        #once
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
+            programList.append(program)
+        #always
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
@@ -1033,7 +1041,7 @@ class Database(object):
             programList.append(program)
         c.close()
         return programList
-
+        
     def isNotificationRequiredForProgram(self, program):
         return self._invokeAndBlockForResult(self._isNotificationRequiredForProgram, program)
 
@@ -1086,7 +1094,7 @@ class Database(object):
                   [program.channel.id, program.title, self.source.KEY])
         self.conn.commit()
         c.close()
-
+    '''
     def getAutoplays(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getAutoplays, daysLimit)
 
@@ -1101,7 +1109,7 @@ class Database(object):
         c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         programs.append(c.fetchall())
         return programs
-
+    '''
     def getFullAutoplays(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullAutoplays, daysLimit)
 
@@ -1156,7 +1164,7 @@ class Database(object):
                   [program.channel.id, program.title, self.source.KEY])
         self.conn.commit()
         c.close()
-
+    '''
     def getAutoplaywiths(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getAutoplaywiths, daysLimit)
 
@@ -1164,43 +1172,47 @@ class Database(object):
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days=daysLimit)
         c = self.conn.cursor()
+        programs = []
         #once
         c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         programs = c.fetchall()
         #always
-        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        #c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
         programs.append(c.fetchall())
+        #xbmc.log(repr((programs)))
         return programs
-
+    '''
     def getFullAutoplaywiths(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullAutoplaywiths, daysLimit)
 
     def _getFullAutoplaywiths(self, daysLimit):
+        xbmc.log("XXX _getFullAutoplaywiths")
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
         #once
+        xbmc.log("XXX _getFullAutoplaywiths once")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            xbmc.log(repr(row.keys()))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         #always
+        xbmc.log("XXX _getFullAutoplaywiths always")
         c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
-            xbmc.log(repr(row.keys()))
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         c.close()
+        xbmc.log("XXX _getFullAutoplaywiths done")
         return programList
-
 
     def isAutoplayRequiredForProgram(self, program):
         return self._invokeAndBlockForResult(self._isAutoplayRequiredForProgram, program)

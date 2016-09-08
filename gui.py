@@ -834,8 +834,10 @@ class TVGuide(xbmcgui.WindowXML):
             if program.notificationScheduled:
                 self.notification.removeNotification(program)
             else:
-                self.notification.addNotification(program)
-
+                d = xbmcgui.Dialog()
+                type = d.select("Notification Type", ["once","always"]) #TODO ,"same time","same day"
+                if type > -1:
+                    self.notification.addNotification(program, type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAY:
@@ -1236,7 +1238,7 @@ class TVGuide(xbmcgui.WindowXML):
     def writeNfoFile(self,dt,program):
         folder = "special://profile/addon_data/script.tvguide.fullscreen/programs"
         xbmcvfs.mkdirs(folder)
-        timestamp = dt.strftime("%Y%m%d%H%M")
+        timestamp = dt.strftime("%Y%m%d%H%M%S")
         title = re.sub(r'[/\\:*?"<>|]', '', program.title)
         filename = "%s - %s - %s" % (timestamp,program.channel.title,title)
         f = xbmcvfs.File('%s/%s.ini' % (folder,filename), "wb")
@@ -2371,13 +2373,13 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             else:
                 remindControl.setLabel(strings(DONT_REMIND_PROGRAM))
             if self.showAutoplay:
-                autoplayControl.setLabel("Autoplay")
+                autoplayControl.setLabel("AutoPlay")
             else:
-                autoplayControl.setLabel("Remove Autoplay")
+                autoplayControl.setLabel("Don't AutoPlay")
             if self.showAutoplaywith:
-                autoplaywithControl.setLabel("Autoplaywith")
+                autoplaywithControl.setLabel("AutoPlayWith")
             else:
-                autoplaywithControl.setLabel("Remove Autoplaywith")
+                autoplaywithControl.setLabel("Don't AutoPlayWith")
         else:
             remindControl.setEnabled(False)
             autoplayControl.setEnabled(False)

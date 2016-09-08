@@ -29,6 +29,7 @@ import os
 import xbmc
 import xbmcgui, xbmcaddon, xbmcvfs
 import source as src
+import re
 
 from strings import *
 
@@ -48,9 +49,13 @@ class Autoplaywith(object):
         return 'tvguide-%s-%s' % (programTitle, startTime)
 
     def scheduleAutoplaywiths(self):
-        for channelId, programTitle, startTime, endTime in self.database.getAutoplaywiths():
+        xbmc.log("xxx SCHEDULEAUTOPLAYWITHS")
+        #for channelId, programTitle, startTime, endTime in self.database.getAutoplaywiths():
+        #    self.writeNfoFile(program)
+        #    self._scheduleAutoplaywith(channelId, programTitle, startTime, endTime)
+        for program in self.database.getFullAutoplaywiths():
             self.writeNfoFile(program)
-            self._scheduleAutoplaywith(channelId, programTitle, startTime, endTime)
+            self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
 
     def _scheduleAutoplaywith(self, channelId, programTitle, startTime, endTime):
         t = startTime - datetime.datetime.now()
@@ -61,29 +66,32 @@ class Autoplaywith(object):
         name = self.createAlarmClockName(programTitle, startTime)
         #TODO
         description = strings(NOTIFICATION_5_MINS, channelId)
-        xbmc.executebuiltin('AlarmClock(%s-5mins,Autoplaywith(%s,%s,10000,%s),%d,True)' %
+        xbmc.executebuiltin('AlarmClock(%s-5mins,Autoplaywith(%s,%s,10000,%s),%d,False)' %
             (name.encode('utf-8', 'replace'), programTitle.encode('utf-8', 'replace'), description.encode('utf-8', 'replace'), self.icon, timeToAutoplaywith - 5))
-        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,True)' %
+        xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,False)' %
         (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith - int(ADDON.getSetting('autoplaywiths.before'))))
 
         t = endTime - datetime.datetime.now()
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
         #timeToAutoplaywith = 0
         if ADDON.getSetting('autoplaywiths.stop') == 'true':
-            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stopwith.py,%s,%s),%d,True)' %
+            xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stopwith.py,%s,%s),%d,False)' %
             (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith + int(ADDON.getSetting('autoplaywiths.after'))))
 
 
     def _unscheduleAutoplaywith(self, programTitle, startTime):
         name = self.createAlarmClockName(programTitle, startTime)
-        xbmc.executebuiltin('CancelAlarm(%s-5mins,True)' % name.encode('utf-8', 'replace'))
-        xbmc.executebuiltin('CancelAlarm(%s-start,True)' % name.encode('utf-8', 'replace'))
-        xbmc.executebuiltin('CancelAlarm(%s-stop,True)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-5mins,False)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-start,False)' % name.encode('utf-8', 'replace'))
+        xbmc.executebuiltin('CancelAlarm(%s-stop,False)' % name.encode('utf-8', 'replace'))
 
     def addAutoplaywith(self, program,type):
         self.database.addAutoplaywith(program,type)
         self.writeNfoFile(program)
-        self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
+        if type == 0:
+            self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
+        else:
+            self.scheduleAutoplaywiths()
 
     def removeAutoplaywith(self, program):
         self.database.removeAutoplaywith(program)
@@ -92,8 +100,9 @@ class Autoplaywith(object):
     def writeNfoFile(self,program):
         folder = "special://profile/addon_data/script.tvguide.fullscreen/programs"
         xbmcvfs.mkdirs(folder)
-        timestamp = program.startDate.strftime("%Y%m%d%H%M")
-        filename = "%s - %s - %s" % (timestamp,program.channel.title,program.title)
+        timestamp = program.startDate.strftime("%Y%m%d%H%M%S")
+        title = re.sub(r'[/\\:*?"<>|]', '', program.title)
+        filename = "%s - %s - %s" % (timestamp,program.channel.title,title)
         f = xbmcvfs.File('%s/%s.ini' % (folder,filename), "wb")
         f.write(u'\ufeff'.encode("utf8"))
         s = "channel.id=%s\n" % program.channel.id
