@@ -1016,8 +1016,8 @@ class Database(object):
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
             programList.append(program)
         #always
-#        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        #c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
         for row in c:
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
@@ -1450,8 +1450,9 @@ class XMLTVSource(Source):
                             for l in sorted(logos):
                                 logox = re.sub(r' ','',l.lower())
                                 t = re.sub(r' ','',title.lower())
-                                t = re.sub(r'\+','\\+',t)
-                                t = re.sub(r'[\(\)]',' ',t)
+                                #t = re.sub(r'\+','\\+',t)
+                                #t = re.sub(r'[\(\)]',' ',t)
+                                t = re.escape(t)
                                 titleRe = "^%s" % t
                                 if re.match(titleRe,logox):
                                     logo = os.path.join(logoFolder, l + '.png')
