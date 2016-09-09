@@ -114,9 +114,8 @@
 			<font>font13_title</font>
 			<textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
-			<label>$INFO[Weather.temperature]</label>
-			<include condition="Skin.HasSetting(show_weatherinfo) | Window.IsActive(skinsettings)">TopWeatherIcon</include>
-			<visible>true</visible>
+			<label>$INFO[Window(Weather).Property(Current.Temperature)]$INFO[System.TemperatureUnits]</label>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
 		</control>
 		<control type="image">
 			<description>Display current weather icon</description>
