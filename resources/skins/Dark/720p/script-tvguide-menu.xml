@@ -157,14 +157,14 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>Add Category...</label>
 				<visible>true</visible>
 			</control>
 			<control type="button" id="80004">
 				<!-- Remove Category -->
 				<left>30</left>
-				<top>55</top>
+				<top>87</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -176,14 +176,14 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>Remove Category</label>
 				<visible>fales</visible>
 			</control>
 			<control type="button" id="4004">
 				<description>Quit</description>
 				<left>30</left>
-				<top>85</top>
+				<top>56</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -195,7 +195,7 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>$ADDON[script.tvguide.fullscreen 30308]</label>
 				<visible>true</visible>
 			</control>
@@ -303,7 +303,7 @@
 						<font>font13</font>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>cyan</textcolor>
+						<textcolor>white</textcolor>
 						<selectedcolor>red</selectedcolor>
 						<align>left</align>
 						<info>ListItem.Label</info>
@@ -332,13 +332,13 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>iSearch</label>
 			</control>
 			<control type="button" id="4005">
 				<!-- watch from beginning -->
 				<left>280</left>
-				<top>55</top>
+				<top>56</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -350,13 +350,13 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>Meta Search</label>
 			</control>
 			<control type="button" id="4002">
 				<!-- REMINDER -->
 				<left>280</left>
-				<top>85</top>
+				<top>87</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -368,12 +368,12 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 			</control>
 			<control type="button" id="4008">
 				<description>autoplay</description>
 				<left>280</left>
-				<top>115</top>
+				<top>118</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -385,7 +385,7 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>Autoplay</label>
 			</control>
 			<control type="button" id="4000">
@@ -403,13 +403,13 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<visible>true</visible>
 			</control>
 			<control type="button" id="4001">
 				<!-- Choose Stream -->
 				<left>30</left>
-				<top>55</top>
+				<top>56</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -421,13 +421,13 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>Choose Stream</label>
 			</control>
 			<control type="button" id="4007">
 				<!-- Stream Setup -->
 				<left>30</left>
-				<top>85</top>
+				<top>87</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -439,13 +439,13 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>Stream Setup</label>
 			</control>
 			<control type="button" id="4003">
 				<!-- CHANNELS -->
 				<left>30</left>
-				<top>115</top>
+				<top>118</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
@@ -457,7 +457,7 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>$ADDON[script.tvguide.fullscreen 30307]</label>
 			</control>
 			<control type="label">
@@ -517,7 +517,7 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>$ADDON[script.tvguide.fullscreen 80001]</label>
 				<visible>false</visible>
 			</control>
@@ -536,7 +536,7 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>$ADDON[script.tvguide.fullscreen 80002]</label>
 				<visible>false</visible>
 			</control>
@@ -555,7 +555,7 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>cyan</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<label>$ADDON[script.tvguide.fullscreen 30308]</label>
 				<visible>false</visible>
 			</control>
@@ -582,7 +582,7 @@
             <aspectratio>keep</aspectratio>
 			<align>center</align>
             <texture>tv.png</texture>
-            <visible>!Control.IsVisible(7002)</visible>
+            <visible>!Player.HasMedia</visible>
 		</control>
 		<control type="image" id="7002">
             <description>Programme image</description>
@@ -590,7 +590,7 @@
             <top>320</top>
             <width>640</width>
             <height>360</height>
-            <aspectratio>keep</aspectratio>
+            <aspectratio>scale</aspectratio>
             <texture>-</texture>
 			<visible>!Player.HasMedia</visible>
         </control>

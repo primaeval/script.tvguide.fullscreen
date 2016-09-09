@@ -2938,7 +2938,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
             item = xbmcgui.ListItem(label)
-            item.setProperty('stream', stream)
+            item.setProperty('stream', stream[0])
             items.append(item)
         listControl = self.getControl(StreamSetupDialog.C_STREAM_ADDONS_STREAMS)
         listControl.reset()
