@@ -50,7 +50,6 @@ class Autoplaywith(object):
 
     def scheduleAutoplaywiths(self):
         for program in self.database.getFullAutoplaywiths():
-            self.writeNfoFile(program)
             self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
 
     def _scheduleAutoplaywith(self, channelId, programTitle, startTime, endTime):
@@ -58,7 +57,7 @@ class Autoplaywith(object):
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
         if timeToAutoplaywith < 0:
             return
-        timeToAutoplaywith = 1
+        #timeToAutoplaywith = 1
         name = self.createAlarmClockName(programTitle, startTime)
         timestamp = time.mktime(startTime.timetuple())
         xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,True)' %
@@ -79,7 +78,6 @@ class Autoplaywith(object):
 
     def addAutoplaywith(self, program,type):
         self.database.addAutoplaywith(program,type)
-        self.writeNfoFile(program)
         if type == 0:
             self._scheduleAutoplaywith(program.channel.id, program.title, program.startDate, program.endDate)
         else:
@@ -88,44 +86,6 @@ class Autoplaywith(object):
     def removeAutoplaywith(self, program):
         self.database.removeAutoplaywith(program)
         self._unscheduleAutoplaywith(program.title, program.startDate)
-
-    def writeNfoFile(self,program):
-        folder = "special://profile/addon_data/script.tvguide.fullscreen/programs"
-        xbmcvfs.mkdirs(folder)
-        timestamp = program.startDate.strftime("%Y%m%d%H%M%S")
-        title = re.sub(r'[/\\:*?"<>|]', '', program.title)
-        filename = "%s - %s - %s" % (timestamp,program.channel.title,title)
-        f = xbmcvfs.File('%s/%s.ini' % (folder,filename), "wb")
-        f.write(u'\ufeff'.encode("utf8"))
-        s = "channel.id=%s\n" % program.channel.id
-        f.write(s.encode("utf8"))
-        s = "channel.title=%s\n" % program.channel.title
-        f.write(s.encode("utf8"))
-        s = "channel.logo=%s\n" % program.channel.logo
-        f.write(s.encode("utf8"))
-        s = "program.title=%s\n" % program.title
-        f.write(s.encode("utf8"))
-        s = "program.startDate=%s\n" % program.startDate
-        f.write(s.encode("utf8"))
-        s = "program.endDate=%s\n" % program.endDate
-        f.write(s.encode("utf8"))
-        s = "program.description=%s\n" % program.description
-        f.write(s.encode("utf8"))
-        s = "program.imageLarge=%s\n" % program.imageLarge
-        f.write(s.encode("utf8"))
-        s = "program.imageSmall=%s\n" % program.imageSmall
-        f.write(s.encode("utf8"))
-        s = "program.episode=%s\n" % program.episode
-        f.write(s.encode("utf8"))
-        s = "program.season=%s\n" % program.season
-        f.write(s.encode("utf8"))
-        s = "program.is_movie=%s\n" % program.is_movie
-        f.write(s.encode("utf8"))
-        s = "autoplays.before=%s\n" % ADDON.getSetting('autoplays.before')
-        f.write(s.encode("utf8"))
-        s = "autoplays.after=%s\n" % ADDON.getSetting('autoplays.after')
-        f.write(s.encode("utf8"))
-
 
 if __name__ == '__main__':
     database = src.Database()

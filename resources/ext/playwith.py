@@ -3,19 +3,15 @@ import xbmc,xbmcaddon,xbmcvfs
 import sqlite3
 from subprocess import Popen, CREATE_NEW_CONSOLE
 import datetime,time
-xbmc.log("XXX started")
+
 channel = sys.argv[1]
 start = sys.argv[2]
-xbmc.log(repr(sys.argv))
-#core = "record"
-core = "dummy"
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
 def adapt_datetime(ts):
     # http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
     return time.mktime(ts.timetuple())
-
 
 def convert_datetime(ts):
     try:
@@ -25,23 +21,16 @@ def convert_datetime(ts):
 
 sqlite3.register_adapter(datetime.datetime, adapt_datetime)
 sqlite3.register_converter('timestamp', convert_datetime)  
-
 path = xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/source.db')
 try:
     conn = sqlite3.connect(path, detect_types=sqlite3.PARSE_DECLTYPES)
     conn.row_factory = sqlite3.Row
 except Exception as detail:
     xbmc.log("EXCEPTION: (script.tvguide.fullscreen)  %s" % detail, xbmc.LOGERROR)
-    
-  
 
 c = conn.cursor()
-
 startDate = datetime.datetime.fromtimestamp(float(start))
-xbmc.log(repr(startDate))
-#c.execute('SELECT * FROM programs')
 c.execute('SELECT DISTINCT * FROM programs WHERE channel=? AND start_date = ?', [channel,startDate])
-#row = c.fetchone()
 for row in c:
     title = row["title"]
     endDate = row["end_date"]
@@ -52,52 +41,32 @@ for row in c:
     seconds = duration.seconds + extra
     if seconds > (3600*4):
         seconds = 3600*4
-    xbmc.log(repr(duration.seconds))
-xbmc.log(repr(("row",row)))
-
-
+    break
 
 c.execute('SELECT stream_url FROM custom_stream_url WHERE channel=?', [channel])
 row = c.fetchone()
+url = ""
 if row:
     url = row[0]
+if not url:
+    quit()
 
-class MyPlayer(xbmc.Player):
-    def onPlayBackStarted():
-        xbmc.log("XXX onPlayBackStarted")
-        
-    def onPlayBackStopped():
-        xbmc.log("XXX onPlayBackStopped")
-
-f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/test.txt","wb")
-#f.write(repr(sys.argv))
+core = "dummy"
 xbmc.executebuiltin('PlayWith(%s)' % core)
-#xbmc.executebuiltin('PlayMedia(%s)' % url)
-myPlayer = MyPlayer()
-myPlayer.play(url)
-#cmd = [r"c:\utils\ffmpeg.exe", "-i", sys.argv[1], r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\out.ts"]
-#p = Popen(cmd,shell=True)
-#time.sleep(2)
-count = 10
+player = xbmc.Player()
+player.play(url)
+count = 30
 url = ""
 while count:
     count = count - 1
-    xbmc.log(repr(count))
     time.sleep(1)
-    #xbmc.log(repr(myPlayer.isPlaying()))
     if myPlayer.isPlaying():
-        url = myPlayer.getPlayingFile()
-        xbmc.log(repr(myPlayer.getPlayingFile()))    
+        url = myPlayer.getPlayingFile() 
         break
+player.stop()
 
-myPlayer.stop()
-#xbmc.log("XXX finished")
-#time.sleep(10)
 if url:
-    name = "%s - %s - %s" % (start,channel,title)
-    xbmc.log(repr(name))
+    name = "%s = %s = %s" % (start,channel,title)
     name = name.encode("cp1252")
     cmd = [r"c:\utils\ffmpeg.exe", "-y", "-i", url, "-t", str(seconds), r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\%s.ts" % name]
-    xbmc.log(repr(cmd))
-    f.write(repr(cmd))
     p = Popen(cmd,shell=True)

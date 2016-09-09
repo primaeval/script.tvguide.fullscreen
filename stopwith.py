@@ -4,7 +4,7 @@ import sqlite3
 import subprocess
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
-'''
+
 channel = sys.argv[1]
 start = sys.argv[2]
 
@@ -14,8 +14,7 @@ elif ADDON.getSetting('playing.with.start') != start:
     quit()
 ADDON.setSetting('playing.with.channel','')
 ADDON.setSetting('playing.with.start','')
-'''
-command = ADDON.getSetting('autoplaywith.stop')
-if command:
-    retcode = subprocess.call([command],creationflags=subprocess.SW_HIDE, shell=True)
-#xbmc.executebuiltin('PlayerControl(Stop)')
+
+script = "special://profile/addon_data/script.tvguide.fullscreen/stopwith.py"
+if xbmcvfs.exists(script):
+    xbmc.executebuiltin('RunScript(%s,%s,%s)' % (script,channel,start))

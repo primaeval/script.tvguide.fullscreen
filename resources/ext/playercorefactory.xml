@@ -1,14 +1,14 @@
 <playercorefactory>
 <players>
-<player name="record_doesnt_work" type="ExternalPlayer" audio="false" video="true">
-<filename>c:\utils\ffmpeg</filename>
-<args>-i "{1}" -y -i -c copy  -t 04:00:00 C:\Kodi16.1\portable_data\userdata\out.avi 2>NUL</args>
+<player name="dummy" type="ExternalPlayer" audio="false" video="true">
+<filename>c:\windows\system32\cmd.exe</filename>
+<args>echo "{1}"</args>
 <hidexbmc>false</hidexbmc>
-<hideconsole>false</hideconsole>
+<hideconsole>true</hideconsole>
 <warpcursor>none</warpcursor>
 <playonestackitem>true</playonestackitem>
 </player>
-<player name="record" type="ExternalPlayer" audio="false" video="true">
+<player name="ffmpeg" type="ExternalPlayer" audio="false" video="true">
 <filename>c:\windows\system32\cmd.exe</filename>
 <args>/c c:\Kodi16.1\portable_data\userdata\record.cmd "{1}"</args>
 <hidexbmc>false</hidexbmc>
