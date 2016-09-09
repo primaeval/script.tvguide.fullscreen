@@ -16,7 +16,7 @@
 </player>
 <player name="test" type="ExternalPlayer" audio="false" video="true">
 <filename>c:\utils\ffmpeg.exe</filename>
-<args>-i "{1}" -y -c copy -t 4:00:00 c:\Kodi16.1\portable_data\userdata\test.ts</args>
+<args>-i "{1}" -y -c copy -t 4:00:00 c:\temp\test.ts</args>
 <hidexbmc>false</hidexbmc>
 <hideconsole>true</hideconsole>
 <warpcursor>none</warpcursor>
