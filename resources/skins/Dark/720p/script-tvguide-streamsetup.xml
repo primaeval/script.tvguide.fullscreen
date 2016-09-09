@@ -54,26 +54,80 @@
 			<visible>true</visible>
         </control>
 		
+		<!-- Header details -->
         <control type="label" id="4024">
             <description>Channel Name</description>
-            <left>180</left>
-            <top>10</top>
-            <width>350</width>
-            <height>30</height>
+            <left>20</left>
+            <top>0</top>
+            <width>270</width>
+            <height>60</height>
             <font>font13_title</font>
             <textcolor>white</textcolor>
             <label></label>
             <align>left</align>
+			<aligny>center</aligny>
 			<scroll>true</scroll>
         </control>
         <control type="label">
-			<description>Setup stream</description>
-            <left>40</left>
-            <top>10</top>
+			<description>Setup Stream</description>
+            <left>20</left>
+            <top>0</top>
             <width>500</width>
-            <height>30</height>
+            <height>60</height>
             <label>$ADDON[script.tvguide.fullscreen 30600]:</label>
             <align>left</align>
+			<aligny>center</aligny>
+			<visible>false</visible>
+        </control>
+		<control type="label">
+			<description>Display current time</description>
+			<left>1030</left>
+			<top>5</top>
+			<width>240</width>
+			<height>20</height>
+			<align>right</align>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$INFO[System.Time]</label>
+		</control>
+		<control type="label">
+            <description>Displays todays date</description>
+            <left>1000</left>
+			<top>25</top>
+			<width>270</width>
+			<height>20</height>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<font>font12</font>
+			<align>right</align>
+			<visible>true</visible>
+			<label>$INFO[System.Date]</label>
+        </control>
+		<control type="label">
+			<description>Display current temperature</description>
+			<left>1095</left>
+			<top>5</top>
+			<width>60</width>
+			<height>20</height>
+			<align>right</align>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$INFO[Weather.temperature]</label>
+			<include condition="Skin.HasSetting(show_weatherinfo) | Window.IsActive(skinsettings)">TopWeatherIcon</include>
+			<visible>true</visible>
+		</control>
+		<control type="image">
+			<description>Display current weather icon</description>
+            <left>1128</left>
+			<top>4</top>
+			<width>60</width>
+			<height>35</height>
+            <fadetime>300</fadetime>
+            <aspectratio align="right">keep</aspectratio>
+            <texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
         </control>
 		
 		<!-- Video Preview -->
@@ -98,7 +152,7 @@
             <texture>tv.png</texture>
             <visible>true</visible>
 		</control>
-		<!-- Programme image doesn't exist in stream setup -->
+		<!-- Programme image doesn't exist in stream setup
 		<control type="image" id="4025">
             <description>Programme image</description>
             <left>14</left>
@@ -107,14 +161,15 @@
             <height>360</height>
             <aspectratio>keep</aspectratio>
             <texture>-</texture>
-        </control>
+        </control>-->
 		<control type="image" id="4023">
             <description>Channel Logo</description>
-            <left>592</left>
+            <left>594</left>
             <top>618</top>
             <width>60</width>
             <height>60</height>
-        </control>
+            <aspectratio>keep</aspectratio>
+       </control>
 		<control type="videowindow">
             <description>Preview/Current Video</description>
 			<left>14</left>
@@ -124,78 +179,84 @@
         </control>
 
 		<!-- Header Buttons -->
-        <control type="button" id="101">
-            <description>STRM|M3U</description>
-			<left>467</left>
+        <control type="group">
+            <left>298</left>
             <top>12</top>
-            <width>200</width>
-            <height>30</height>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>white</textcolor>
-			<focusedcolor>white</focusedcolor>
-            <label>STRM|M3U</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onleft>104</onleft>
-            <onright>102</onright>
-            <ondown>1001</ondown>
-        </control>
-        <control type="button" id="102">
-			<description>Favorites</description>
-            <left>668</left>
-            <top>12</top>
-            <width>200</width>
-            <height>30</height>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>white</textcolor>
-			<focusedcolor>white</focusedcolor>
-            <label>$ADDON[script.tvguide.fullscreen 30602]</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onleft>101</onleft>
-            <onright>103</onright>
-            <ondown>2001</ondown>
-        </control>
-        <control type="button" id="103">
-			<description>Addons</description>
-            <left>867</left>
-            <top>12</top>
-            <width>200</width>
-            <height>30</height>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>white</textcolor>
-			<focusedcolor>white</focusedcolor>
-            <label>$ADDON[script.tvguide.fullscreen 30603]</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onleft>102</onleft>
-            <onright>104</onright>
-            <ondown>3001</ondown>
-        </control>
-        <control type="button" id="104">
-			<description>Browse</description>
-            <left>1068</left>
-            <top>12</top>
-            <width>200</width>
-            <height>30</height>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>white</textcolor>
-			<focusedcolor>white</focusedcolor>
-            <label>Browse</label>
-            <texturefocus>menu-grey-focus.png</texturefocus>
-            <texturenofocus>menu-grey.png</texturenofocus>
-            <onleft>103</onleft>
-            <onright>101</onright>
-            <ondown>4001</ondown>
-        </control>
+            <width>1280</width>
+            <height>498</height>
+			<control type="button" id="101">
+				<description>STRM|M3U</description>
+				<left>0</left>
+				<top>0</top>
+				<width>170</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<label>STRM|M3U</label>
+				<texturefocus>menu-grey-focus.png</texturefocus>
+				<texturenofocus>menu-grey.png</texturenofocus>
+				<onleft>104</onleft>
+				<onright>102</onright>
+				<ondown>1001</ondown>
+			</control>
+			<control type="button" id="102">
+				<description>Favorites</description>
+				<left>171</left>
+				<top>0</top>
+				<width>170</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<label>$ADDON[script.tvguide.fullscreen 30602]</label>
+				<texturefocus>menu-grey-focus.png</texturefocus>
+				<texturenofocus>menu-grey.png</texturenofocus>
+				<onleft>101</onleft>
+				<onright>103</onright>
+				<ondown>2001</ondown>
+			</control>
+			<control type="button" id="103">
+				<description>Addons</description>
+				<left>342</left>
+				<top>0</top>
+				<width>170</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<label>$ADDON[script.tvguide.fullscreen 30603]</label>
+				<texturefocus>menu-grey-focus.png</texturefocus>
+				<texturenofocus>menu-grey.png</texturenofocus>
+				<onleft>102</onleft>
+				<onright>104</onright>
+				<ondown>3001</ondown>
+			</control>
+			<control type="button" id="104">
+				<description>Browse</description>
+				<left>513</left>
+				<top>0</top>
+				<width>170</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<label>Browse</label>
+				<texturefocus>menu-grey-focus.png</texturefocus>
+				<texturenofocus>menu-grey.png</texturenofocus>
+				<onleft>103</onleft>
+				<onright>101</onright>
+				<ondown>4001</ondown>
+			</control>
+		</control>
 
 		<!-- STRM|M3U Layout -->
         <control type="group" id="1000">
@@ -204,19 +265,10 @@
             <width>1280</width>
             <height>498</height>
             <visible>StringCompare(Control.GetLabel(100),strm)</visible>
-            <control type="textbox">
-                <left>100</left>
-                <top>100</top>
-                <width>200</width>
-                <height>30</height>
-                <align>left</align>
-                <label>Chosen stream file:</label>
-                <wrapmultiline>true</wrapmultiline>
-            </control>
             <control type="button" id="1001">
                 <description>Single Stream From Playlist</description>
                 <left>40</left>
-                <top>60</top>
+                <top>100</top>
                 <width>200</width>
                 <height>30</height>
                 <label>Browse File...</label>
@@ -231,11 +283,10 @@
                 <onright>1006</onright>
                 <ondown>1002</ondown>
             </control>
-
             <control type="button" id="1006">
                 <description>Import Playlist</description>
                 <left>241</left>
-                <top>60</top>
+                <top>100</top>
                 <width>200</width>
                 <height>30</height>
                 <label>Import Playlist</label>
@@ -251,15 +302,24 @@
                 <onright>1002</onright>
                 <ondown>1002</ondown>
             </control>
-
+			<control type="textbox">
+                <left>50</left>
+                <top>150</top>
+                <width>200</width>
+                <height>30</height>
+                <align>left</align>
+                <label>Chosen stream file:</label>
+                <wrapmultiline>true</wrapmultiline>
+            </control>
             <control type="textbox" id="1005">
                 <description>Stream location</description>
-				<left>300</left>
-                <top>100</top>
+				<left>240</left>
+                <top>150</top>
                 <width>1000</width>
                 <height>30</height>
                 <wrapmultiline>true</wrapmultiline>
             </control>
+			
 			<!--Preview, Save, Cancel Buttons when Stream selected-->
             <control type="button" id="1002">
                 <left>668</left>
@@ -324,7 +384,7 @@
             <control type="textbox">
                 <description>Favorite description</description>
 				<left>60</left>
-                <top>10</top>
+                <top>100</top>
                 <width>350</width>
                 <height>80</height>
                 <align>left</align>
