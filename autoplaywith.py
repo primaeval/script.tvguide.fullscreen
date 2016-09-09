@@ -24,7 +24,7 @@
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 #
-import datetime
+import datetime,time
 import os
 import xbmc
 import xbmcgui, xbmcaddon, xbmcvfs
@@ -58,14 +58,15 @@ class Autoplaywith(object):
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
         if timeToAutoplaywith < 0:
             return
-        #timeToAutoplaywith = 1
+        timeToAutoplaywith = 1
         name = self.createAlarmClockName(programTitle, startTime)
+        timestamp = time.mktime(startTime.timetuple())
         xbmc.executebuiltin('AlarmClock(%s-start,RunScript(special://home/addons/script.tvguide.fullscreen/playwith.py,%s,%s),%d,True)' %
-        (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith - int(ADDON.getSetting('autoplaywiths.before'))))
+        (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), timestamp, timeToAutoplaywith - int(ADDON.getSetting('autoplaywiths.before'))))
 
         t = endTime - datetime.datetime.now()
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
-        #timeToAutoplaywith = 0
+        timeToAutoplaywith = 0
         if ADDON.getSetting('autoplaywiths.stop') == 'true':
             xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stopwith.py,%s,%s),%d,True)' %
             (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith + int(ADDON.getSetting('autoplaywiths.after'))))

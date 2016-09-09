@@ -948,9 +948,9 @@ class Database(object):
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
             if version < [1, 3, 3]:
                 c.execute('UPDATE version SET major=1, minor=3, patch=3')
-                c.execute('DROP TABLE notifications')
-                #c.execute('DROP TABLE autoplays')
-                #c.execute('DROP TABLE autoplaywiths')
+                c.execute('DROP TABLE IF EXISTS notifications')
+                c.execute('DROP TABLE IF EXISTS autoplays')
+                c.execute('DROP TABLE IF EXISTS autoplaywiths')
                 c.execute(
                     "CREATE TABLE IF NOT EXISTS notifications(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
                 c.execute(
