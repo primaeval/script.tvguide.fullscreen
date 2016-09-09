@@ -1,29 +1,5 @@
 <playercorefactory>
 <players>
-<player name="test" type="ExternalPlayer" audio="false" video="true">
-<filename>c:\utils\ffmpeg.exe</filename>
-<args>-i "{1}" -y -c copy -t 4:00:00 c:\Kodi16.1\portable_data\userdata\test.ts</args>
-<hidexbmc>false</hidexbmc>
-<hideconsole>true</hideconsole>
-<warpcursor>none</warpcursor>
-<playonestackitem>true</playonestackitem>
-</player>
-<player name="dummy" type="ExternalPlayer" audio="false" video="true">
-<filename>c:\windows\system32\cmd.exe</filename>
-<args>echo "{1}"</args>
-<hidexbmc>false</hidexbmc>
-<hideconsole>true</hideconsole>
-<warpcursor>none</warpcursor>
-<playonestackitem>true</playonestackitem>
-</player>
-<player name="record" type="ExternalPlayer" audio="false" video="true">
-<filename>c:\windows\system32\cmd.exe</filename>
-<args>/c c:\Kodi16.1\portable_data\userdata\record.cmd "{1}"</args>
-<hidexbmc>false</hidexbmc>
-<hideconsole>true</hideconsole>
-<warpcursor>none</warpcursor>
-<playonestackitem>true</playonestackitem>
-</player>
 <player name="vlc" type="ExternalPlayer" audio="false" video="true">
 <filename>c:\program files\Videolan\VLC\VLC.exe</filename>
 <args>--play-and-exit --video-on-top --fullscreen "{1}"</args>
@@ -38,10 +14,13 @@
 <hideconsole>true</hideconsole>
 <warpcursor>none</warpcursor>
 </player>
+<player name="test" type="ExternalPlayer" audio="false" video="true">
+<filename>c:\utils\ffmpeg.exe</filename>
+<args>-i "{1}" -y -c copy -t 4:00:00 c:\Kodi16.1\portable_data\userdata\test.ts</args>
+<hidexbmc>false</hidexbmc>
+<hideconsole>true</hideconsole>
+<warpcursor>none</warpcursor>
+<playonestackitem>true</playonestackitem>
+</player>
 </players>
-<!--
-<rules action="append">
-<rule filename="*" player="ffmpeg"/>
-</rules>
--->
 </playercorefactory> 
