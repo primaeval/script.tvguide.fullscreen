@@ -65,10 +65,10 @@ class Autoplaywith(object):
 
         t = endTime - datetime.datetime.now()
         timeToAutoplaywith = ((t.days * 86400) + t.seconds) / 60
-        timeToAutoplaywith = 0
+        #timeToAutoplaywith = 0
         if ADDON.getSetting('autoplaywiths.stop') == 'true':
             xbmc.executebuiltin('AlarmClock(%s-stop,RunScript(special://home/addons/script.tvguide.fullscreen/stopwith.py,%s,%s),%d,True)' %
-            (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), startTime, timeToAutoplaywith + int(ADDON.getSetting('autoplaywiths.after'))))
+            (name.encode('utf-8', 'replace'), channelId.encode('utf-8'), timestamp, timeToAutoplaywith + int(ADDON.getSetting('autoplaywiths.after'))))
 
 
     def _unscheduleAutoplaywith(self, programTitle, startTime):
