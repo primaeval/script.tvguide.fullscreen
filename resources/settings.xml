@@ -76,15 +76,23 @@
         <setting id="service.addon.folders" label="Update Addon Folders Too" type="bool" default="false" visible="eq(-2,true)"/>
     </category>
 
-    <category label="30112">
-        <setting id="notifications.enabled" label="30106" type="bool" default="true" />
-        <setting label="30108" type="action" action="RunScript($CWD/notification.py)" />
+    <category label="Program Scheduler">
+        <setting type="lsep" label="Reminders (5 Minutes Before)"/>
+        <setting id="notifications.enabled" label="Reminders" type="bool" default="true" />
+        <setting label="Clear Reminders..." type="action" action="RunScript($CWD/notification.py)" />
         <setting type="lsep" label="Autoplay: OSD will not be available"/>
         <setting id="autoplays.enabled" label="Autoplays" type="bool" default="true" />
-        <setting id="autoplays.stop" label="Stop After Play" type="bool" default="true" />
-        <setting label="Minutes before" type="enum" id="autoplays.before" values="0|1|2|3|4|5|10" default="1"/>
-        <setting label="Minutes after" type="enum" id="autoplays.after" values="0|1|2|3|4|5|10" default="1"/>
+        <setting id="autoplays.stop" label="Stop After Play" type="bool" default="true" visible="eq(-1,true)"/>
+        <setting label="Minutes before" type="enum" id="autoplays.before" values="0|1|2|3|4|5|10" default="1" visible="eq(-2,true)"/>
+        <setting label="Minutes after" type="enum" id="autoplays.after" values="0|1|2|3|4|5|10" default="1" visible="eq(-3,true)"/>
         <setting label="Clear Autoplays..." type="action" action="RunScript($CWD/autoplay.py)" />
+        <setting type="lsep" label="AutoPlayWith (External Player)"/>
+        <setting id="autoplaywiths.enabled" label="AutoPlayWiths" type="bool" default="true" />
+        <setting id="autoplaywith.player" label="PlayerCoreFactory.xml Player" type="text" default="" visible="eq(-1,true)"/>
+        <setting id="autoplaywiths.stop" label="Stop After Play" type="bool" default="true" visible="eq(-2,true)"/>
+        <setting label="Minutes before" type="enum" id="autoplaywiths.before" values="0|1|2|3|4|5|10" default="1" visible="eq(-3,true)"/>
+        <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1" visible="eq(-4,true)"/>
+        <setting label="Clear Autoplaywiths..." type="action" action="RunScript($CWD/autoplaywith.py)" />        
     </category>
 
     <category label="30140">
@@ -95,15 +103,6 @@
     <category label="Lab">
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
-        <setting type="lsep" label="External Player"/>
-        <setting id="autoplaywith.player" label="AutoPlayWith Player" type="text" default="" />
-        <!--<setting id="autoplaywith.folder" label="Program Info Folder" type="folder" default="" />-->
-        <setting id="autoplaywith.play" label="Play Command" type="text" default="" />
-        <setting id="autoplaywith.stop" label="Stop Command" type="text" default="" />
-        <setting id="autoplaywiths.enabled" label="Autoplaywiths" type="bool" default="true" />
-        <setting id="autoplaywiths.stop" label="Stop After Play" type="bool" default="true" />
-        <setting label="Minutes before" type="enum" id="autoplaywiths.before" values="0|1|2|3|4|5|10" default="1"/>
-        <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1"/>
-        <setting label="Clear Autoplaywiths..." type="action" action="RunScript($CWD/autoplaywith.py)" />        
+
     </category>
 </settings>

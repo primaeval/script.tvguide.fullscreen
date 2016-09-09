@@ -10,7 +10,7 @@ xbmc.log(repr(sys.argv))
 #core = "record"
 core = "dummy"
 
-
+ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
 def adapt_datetime(ts):
     # http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
@@ -44,6 +44,15 @@ c.execute('SELECT DISTINCT * FROM programs WHERE channel=? AND start_date = ?', 
 #row = c.fetchone()
 for row in c:
     title = row["title"]
+    endDate = row["end_date"]
+    duration = endDate - startDate
+    before = int(ADDON.getSetting('autoplaywiths.before'))
+    after = int(ADDON.getSetting('autoplaywiths.after'))
+    extra = (before + after) * 60
+    seconds = duration.seconds + extra
+    if seconds > (3600*4):
+        seconds = 3600*4
+    xbmc.log(repr(duration.seconds))
 xbmc.log(repr(("row",row)))
 
 
@@ -88,7 +97,7 @@ if url:
     name = "%s - %s - %s" % (start,channel,title)
     xbmc.log(repr(name))
     name = name.encode("cp1252")
-    cmd = [r"c:\utils\ffmpeg.exe", "-y", "-i", url, r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\%s.ts" % name]
+    cmd = [r"c:\utils\ffmpeg.exe", "-y", "-i", url, "-t", str(seconds), r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\%s.ts" % name]
     xbmc.log(repr(cmd))
     f.write(repr(cmd))
-    p = Popen(cmd,shell=False)
+    p = Popen(cmd,shell=True)
