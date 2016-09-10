@@ -1227,16 +1227,6 @@ class TVGuide(xbmcgui.WindowXML):
 
         return url is not None
 
-    def startProgram(self,cmd):
-        SW_MINIMIZE = 6
-        info = subprocess.STARTUPINFO()
-        info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        info.wShowWindow = SW_MINIMIZE
-        #CREATE_NO_WINDOW = 0x08000000
-        #subprocess.call(cmd, creationflags=CREATE_NO_WINDOW)
-        subprocess.Popen(cmd, startupinfo=info)
-
-
     def playWithChannel(self, channel, program = None):
         if self.currentChannel:
             self.lastChannel = self.currentChannel
