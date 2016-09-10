@@ -97,8 +97,8 @@ if __name__ == '__main__':
         if success:
             database.clearAllAutoplaywiths()
             database.close(onAutoplaywithsCleared)
-            ADDON.setSetting('playing.channel','')
-            ADDON.setSetting('playing.start','')
+            ADDON.setSetting('playing.with.channel','')
+            ADDON.setSetting('playing.with.start','')
         else:
             database.close()
 
