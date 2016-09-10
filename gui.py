@@ -1608,16 +1608,18 @@ class TVGuide(xbmcgui.WindowXML):
 
         for channel in channelsWithoutPrograms:
             idx = channels.index(channel)
-
+            noFocusTexture = 'tvg-program-nofocus.png'
+            focusTexture = 'tvg-program-focus.png'
             control = xbmcgui.ControlButton(
                 self.epgView.left,
                 self.epgView.top + self.epgView.cellHeight * idx,
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
-                u"\u2014",
+                'nothing scheduled',
                 focusedColor=focusColor,
-                noFocusTexture='black-back.png',
-                focusTexture='black-back.png'
+                textColor=noFocusColor,
+                noFocusTexture=noFocusTexture,
+                focusTexture=focusTexture
             )
 
             program = src.Program(channel, "", None, None, None)
@@ -1797,16 +1799,18 @@ class TVGuide(xbmcgui.WindowXML):
 
         for channel in channelsWithoutPrograms:
             idx = channels.index(channel)
-
+            noFocusTexture = 'tvg-program-nofocus.png'
+            focusTexture = 'tvg-program-focus.png'
             control = xbmcgui.ControlButton(
                 self.quickEpgView.left,
                 self.quickEpgView.top + self.quickEpgView.cellHeight * idx,
                 (self.quickEpgView.right - self.quickEpgView.left) - 2,
                 self.quickEpgView.cellHeight - 2,
-                u"\u2014",
+                'nothing scheduled',
                 focusedColor=focusColor,
-                noFocusTexture='black-back.png',
-                focusTexture='black-back.png'
+                textColor=noFocusColor,
+                noFocusTexture=noFocusTexture,
+                focusTexture=focusTexture
             )
 
             program = src.Program(channel, "", None, None, None)
