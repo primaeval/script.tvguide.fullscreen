@@ -67,7 +67,7 @@ class Channel(object):
 
 class Program(object):
     def __init__(self, channel, title, startDate, endDate, description, imageLarge=None, imageSmall=None,
-                 notificationScheduled=None, autoplayScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
+                 notificationScheduled=None, autoplayScheduled=None, autoplaywithScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
         """
 
         @param channel:
@@ -88,6 +88,7 @@ class Program(object):
         self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
         self.autoplayScheduled = autoplayScheduled
+        self.autoplaywithScheduled = autoplaywithScheduled
         self.season = season
         self.episode = episode
         self.is_movie = is_movie
@@ -171,12 +172,14 @@ class Database(object):
                     break
 
             except Exception as detail:
-                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s = %s' % (detail,command.__name__))
+                xbmc.log('Database.eventLoop() >>>>>>>>>> exception! %s = %s' % (detail,command.__name__), xbmc.LOGERROR)
                 xbmc.executebuiltin("ActivateWindow(Home)")
 
         print 'Database.eventLoop() >>>>>>>>>> exiting...'
 
     def _invokeAndBlockForResult(self, method, *args):
+        sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
+        sqlite3.register_converter('timestamp', self.convert_datetime)
         event = [method, None]
         event.extend(args)
         self.eventQueue.append(event)
@@ -396,7 +399,7 @@ class Database(object):
                         channel = program.channel
 
                     c.execute(
-                        'INSERT INTO programs(channel, title, start_date, end_date, description, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        'INSERT OR REPLACE INTO programs(channel, title, start_date, end_date, description, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         [channel, program.title, program.startDate, program.endDate, program.description,
                          program.imageLarge, program.imageSmall, program.season, program.episode, program.is_movie,
                          program.language, self.source.KEY, updatesId])
@@ -438,6 +441,7 @@ class Database(object):
         finally:
             self.updateInProgress = False
             c.close()
+
 
     def setCategory(self,category):
         self.category = category
@@ -617,9 +621,9 @@ class Database(object):
                       [channel.id, self.source.KEY,search])
             except: return
             for row in c:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
                 programList.append(program)
         c.close()
         return programList
@@ -634,9 +638,9 @@ class Database(object):
                   [channel.id])
         except: return
         for row in c:
-            program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                          row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                          row['is_movie'], row['language'])
+            program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                          imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                          is_movie=row['is_movie'], language=row['language'])
             programList.append(program)
         c.close()
 
@@ -656,9 +660,9 @@ class Database(object):
             except: return
             row = c.fetchone()
             if row:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
                 programList.append(program)
         c.close()
         return programList
@@ -677,9 +681,9 @@ class Database(object):
             except: return
             row = c.fetchone()
             if row:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
                 programList.append(program)
         c.close()
         return programList
@@ -699,14 +703,15 @@ class Database(object):
         c = self.conn.cursor()
         try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
                   [channel.id, self.source.KEY, now, now])
-        except: return
+        except Exception as detail:
+            return
         row = c.fetchone()
         if row:
             try:
-                program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                              row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                              row['is_movie'], row['language'])
-            except:
+                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
+            except Exception as detail:
                 return
         c.close()
 
@@ -724,9 +729,9 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.endDate])
             row = c.fetchone()
             if row:
-                    nextProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'], row['description'],
-                                      row['image_large'], row['image_small'], None, row['season'], row['episode'],
-                                      row['is_movie'], row['language'])
+                nextProgram = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
             c.close()
             return nextProgram
         except:
@@ -744,9 +749,9 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.startDate])
             row = c.fetchone()
             if row:
-                previousProgram = Program(program.channel, row['title'], row['start_date'], row['end_date'],
-                                          row['description'], row['image_large'], row['image_small'], None, row['season'],
-                                          row['episode'], row['is_movie'], row['language'])
+                previousProgram = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'])
             c.close()
             return previousProgram
         except:
@@ -773,16 +778,24 @@ class Database(object):
             return []
 
         c = self.conn.cursor()
+        #once
+        #TODO always, notifications,autoplays
         c.execute(
-            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, (SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled FROM programs p WHERE p.channel IN (\'' + (
-                '\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
+            'SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled,' +
+            '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=0 AND a.start_date=p.start_date) AS autoplay_scheduled_once, '+
+            '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=1 ) AS autoplay_scheduled_always, '+
+            '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=0 AND w.start_date=p.start_date) AS autoplaywith_scheduled_once, '+
+            '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=1 ) AS autoplaywith_scheduled_always '+
+            'FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
             [self.source.KEY, startTime, endTime])
         for row in c:
-            program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'],
-                              row['description'], row['image_large'], row['image_small'], row['notification_scheduled'], row['autoplay_scheduled'],
-                              row['season'], row['episode'], row['is_movie'], row['language'])
+            autoplay_scheduled = row['autoplay_scheduled_once'] or row['autoplay_scheduled_always']
+            autoplaywith_scheduled = row['autoplaywith_scheduled_once'] or row['autoplaywith_scheduled_always']
+            program = Program(channelMap[row['channel']], title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                              imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                              is_movie=row['is_movie'], language=row['language'],
+                              notificationScheduled=row['notification_scheduled'], autoplayScheduled=autoplay_scheduled, autoplaywithScheduled=autoplaywith_scheduled)
             programList.append(program)
-
         return programList
 
     def _isProgramListCacheExpired(self, date=datetime.datetime.now()):
@@ -934,9 +947,17 @@ class Database(object):
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
-
-            c.execute(
-                "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+            if version < [1, 3, 3]:
+                c.execute('UPDATE version SET major=1, minor=3, patch=3')
+                c.execute('DROP TABLE IF EXISTS notifications')
+                c.execute('DROP TABLE IF EXISTS autoplays')
+                c.execute('DROP TABLE IF EXISTS autoplaywiths')
+                c.execute(
+                    "CREATE TABLE IF NOT EXISTS notifications(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+                c.execute(
+                    "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+                c.execute(
+                    "CREATE TABLE IF NOT EXISTS autoplaywiths(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -951,17 +972,17 @@ class Database(object):
             dialog.notification('script.tvguide.fullscreen', 'database exception %s' % detail, xbmcgui.NOTIFICATION_ERROR , 5000)
             #raise DatabaseSchemaException(detail)
 
-    def addNotification(self, program):
-        self._invokeAndBlockForResult(self._addNotification, program)
+    def addNotification(self, program,type):
+        self._invokeAndBlockForResult(self._addNotification, program,type)
         # no result, but block until operation is done
 
-    def _addNotification(self, program):
+    def _addNotification(self, program,type):
         """
         @type program: source.program
         """
         c = self.conn.cursor()
-        c.execute("INSERT INTO notifications(channel, program_title, source) VALUES(?, ?, ?)",
-                  [program.channel.id, program.title, self.source.KEY])
+        c.execute("INSERT INTO notifications(channel, program_title, source, start_date, type) VALUES(?, ?, ?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])
         self.conn.commit()
         c.close()
 
@@ -979,21 +1000,6 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    def getNotifications(self, daysLimit=2):
-        return self._invokeAndBlockForResult(self._getNotifications, daysLimit)
-
-    def _getNotifications(self, daysLimit):
-        start = datetime.datetime.now()
-        end = start + datetime.timedelta(days=daysLimit)
-        c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.title, p.title, p.start_date FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
-        programs = c.fetchall()
-        c.close()
-
-        return programs
-
     def getFullNotifications(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullNotifications, daysLimit)
 
@@ -1002,16 +1008,22 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
-            "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled " +
-            "FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
+        #once
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
-            program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
-            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplayScheduled=row[21])
-            xbmc.log(repr(row.keys()))
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
+            programList.append(program)
+        #always
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        #c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
             programList.append(program)
         c.close()
         return programList
@@ -1041,17 +1053,17 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    def addAutoplay(self, program):
-        self._invokeAndBlockForResult(self._addAutoplay, program)
+    def addAutoplay(self, program, type):
+        self._invokeAndBlockForResult(self._addAutoplay, program, type)
         # no result, but block until operation is done
 
-    def _addAutoplay(self, program):
+    def _addAutoplay(self, program, type):
         """
         @type program: source.program
         """
         c = self.conn.cursor()
-        c.execute("INSERT INTO autoplays(channel, program_title, source) VALUES(?, ?, ?)",
-                  [program.channel.id, program.title, self.source.KEY])
+        c.execute("INSERT INTO autoplays(channel, program_title, source, start_date, type) VALUES(?, ?, ?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])
         self.conn.commit()
         c.close()
 
@@ -1069,21 +1081,6 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    def getAutoplays(self, daysLimit=2):
-        return self._invokeAndBlockForResult(self._getAutoplays, daysLimit)
-
-    def _getAutoplays(self, daysLimit):
-        start = datetime.datetime.now()
-        end = start + datetime.timedelta(days=daysLimit)
-        c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.id, p.title, p.start_date, p.end_date FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
-        programs = c.fetchall()
-        c.close()
-
-        return programs
-
     def getFullAutoplays(self, daysLimit=2):
         return self._invokeAndBlockForResult(self._getFullAutoplays, daysLimit)
 
@@ -1092,16 +1089,78 @@ class Database(object):
         end = start + datetime.timedelta(days=daysLimit)
         programList = list()
         c = self.conn.cursor()
-        c.execute(
-            "SELECT DISTINCT c.*, p.*,(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled, " +
-            "(SELECT 1 FROM autoplays n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS autoplay_scheduled " +
-            "FROM autoplays n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?",
-            [self.source.KEY, start, end])
+        if not c:
+            return
+        #once
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            channel = Channel(row[0],row[1],row[2],row[3],row[5],row[6])
-            program = Program(channel,title=row[8],startDate=row[9],endDate=row[10],description=row[11],imageLarge=row[12],imageSmall=row[13],
-            season=row[14],episode=row[15],is_movie=row[16],language=row[17],notificationScheduled=row[20],autoplayScheduled=row[21])
-            xbmc.log(repr(row.keys()))
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
+            programList.append(program)
+        #always
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
+            programList.append(program)
+        c.close()
+        return programList
+
+    def addAutoplaywith(self, program, type):
+        self._invokeAndBlockForResult(self._addAutoplaywith, program, type)
+        # no result, but block until operation is done
+
+    def _addAutoplaywith(self, program, type):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("INSERT INTO autoplaywiths(channel, program_title, source, start_date, type) VALUES(?, ?, ?, ?, ?)",
+                  [program.channel.id, program.title, self.source.KEY, program.startDate, type])
+        self.conn.commit()
+        c.close()
+
+    def removeAutoplaywith(self, program):
+        self._invokeAndBlockForResult(self._removeAutoplaywith, program)
+        # no result, but block until operation is done
+
+    def _removeAutoplaywith(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("DELETE FROM autoplaywiths WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        self.conn.commit()
+        c.close()
+
+    def getFullAutoplaywiths(self, daysLimit=2):
+        return self._invokeAndBlockForResult(self._getFullAutoplaywiths, daysLimit)
+
+    def _getFullAutoplaywiths(self, daysLimit):
+        start = datetime.datetime.now()
+        end = start + datetime.timedelta(days=daysLimit)
+        programList = list()
+        c = self.conn.cursor()
+        #once
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
+            programList.append(program)
+        #always
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
+            imageLarge=row["image_large"],imageSmall=row["image_small"],
+            season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         c.close()
         return programList
@@ -1350,12 +1409,17 @@ class XMLTVSource(Source):
                             if str.find(episode_num, ".") != -1:
                                 splitted = str.split(episode_num, ".")
                                 if splitted[0] != "":
-                                    season = int(splitted[0]) + 1
-                                    is_movie = None # fix for misclassification
-                                    if str.find(splitted[1], "/") != -1:
-                                        episode = int(splitted[1].split("/")[0]) + 1
-                                    elif splitted[1] != "":
-                                        episode = int(splitted[1]) + 1
+                                    #TODO fix dk format
+                                    try:
+                                        season = int(splitted[0]) + 1
+                                        is_movie = None # fix for misclassification
+                                        if str.find(splitted[1], "/") != -1:
+                                            episode = int(splitted[1].split("/")[0]) + 1
+                                        elif splitted[1] != "":
+                                            episode = int(splitted[1]) + 1
+                                    except:
+                                        episode = ""
+                                        season = ""
 
                             elif str.find(episode_num.lower(), "season") != -1 and episode_num != "Season ,Episode ":
                                 pattern = re.compile(r"Season\s(\d+).*?Episode\s+(\d+).*",re.I|re.U)
