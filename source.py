@@ -178,6 +178,8 @@ class Database(object):
         print 'Database.eventLoop() >>>>>>>>>> exiting...'
 
     def _invokeAndBlockForResult(self, method, *args):
+        sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
+        sqlite3.register_converter('timestamp', self.convert_datetime)
         event = [method, None]
         event.extend(args)
         self.eventQueue.append(event)
@@ -701,14 +703,15 @@ class Database(object):
         c = self.conn.cursor()
         try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
                   [channel.id, self.source.KEY, now, now])
-        except: return
+        except Exception as detail:
+            return
         row = c.fetchone()
         if row:
             try:
                 program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
                               is_movie=row['is_movie'], language=row['language'])
-            except:
+            except Exception as detail:
                 return
         c.close()
 
@@ -793,8 +796,6 @@ class Database(object):
                               is_movie=row['is_movie'], language=row['language'],
                               notificationScheduled=row['notification_scheduled'], autoplayScheduled=autoplay_scheduled, autoplaywithScheduled=autoplaywith_scheduled)
             programList.append(program)
-
-
         return programList
 
     def _isProgramListCacheExpired(self, date=datetime.datetime.now()):

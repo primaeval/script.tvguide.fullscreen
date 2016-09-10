@@ -22,5 +22,13 @@
 <warpcursor>none</warpcursor>
 <playonestackitem>true</playonestackitem>
 </player>
+<player name="dummy" type="ExternalPlayer" audio="false" video="true">
+<filename>c:\windows\system32\cmd.exe</filename>
+<args>echo "{1}"</args>
+<hidexbmc>false</hidexbmc>
+<hideconsole>true</hideconsole>
+<warpcursor>none</warpcursor>
+<playonestackitem>true</playonestackitem>
+</player>
 </players>
 </playercorefactory> 

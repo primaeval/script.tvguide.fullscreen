@@ -38,6 +38,7 @@ for row in c:
     before = int(ADDON.getSetting('autoplaywiths.before'))
     after = int(ADDON.getSetting('autoplaywiths.after'))
     extra = (before + after) * 60
+    #TODO start from now
     seconds = duration.seconds + extra
     if seconds > (3600*4):
         seconds = 3600*4
@@ -60,8 +61,8 @@ url = ""
 while count:
     count = count - 1
     time.sleep(1)
-    if myPlayer.isPlaying():
-        url = myPlayer.getPlayingFile() 
+    if player.isPlaying():
+        url = player.getPlayingFile() 
         break
 player.stop()
 
