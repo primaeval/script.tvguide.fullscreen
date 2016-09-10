@@ -49,7 +49,6 @@ row = c.fetchone()
 url = ""
 if row:
     url = row[0]
-    xbmc.log(repr((url)))
 if not url:
     quit()
 
@@ -72,5 +71,4 @@ if url:
     name = name.encode("cp1252")
     cmd = [r"c:\utils\ffmpeg.exe", "-y", "-i", url, "-t", str(seconds), r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\%s.ts" % name]
     p = Popen(cmd,shell=True)
-xbmc.log("XXX end")    
-xbmc.log("XXX end")    
+ 
