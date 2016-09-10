@@ -22,8 +22,8 @@ def convert_datetime(ts):
 sqlite3.register_adapter(datetime.datetime, adapt_datetime)
 sqlite3.register_converter('timestamp', convert_datetime)
 
-ADDON.setSetting('playing.with.channel',channel)
-ADDON.setSetting('playing.with.start',start)
+ADDON.setSetting('playing.channel',channel)
+ADDON.setSetting('playing.start',start)
 
 script = "special://profile/addon_data/script.tvguide.fullscreen/playwith.py"
 if xbmcvfs.exists(script):

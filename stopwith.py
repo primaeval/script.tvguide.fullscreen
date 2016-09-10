@@ -8,14 +8,14 @@ ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 channel = sys.argv[1]
 start = sys.argv[2]
 
-if ADDON.getSetting('playing.with.channel') != channel:
+if ADDON.getSetting('playing.channel') != channel:
     quit()
 
-if ADDON.getSetting('playing.with.start') != start:
+if ADDON.getSetting('playing.start') != start:
     quit()
 
-ADDON.setSetting('playing.with.channel','')
-ADDON.setSetting('playing.with.start','')
+ADDON.setSetting('playing.channel','')
+ADDON.setSetting('playing.start','')
 
 script = "special://profile/addon_data/script.tvguide.fullscreen/stopwith.py"
 if xbmcvfs.exists(script):
