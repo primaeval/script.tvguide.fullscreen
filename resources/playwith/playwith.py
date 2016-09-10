@@ -20,7 +20,7 @@ def convert_datetime(ts):
         return None
 
 sqlite3.register_adapter(datetime.datetime, adapt_datetime)
-sqlite3.register_converter('timestamp', convert_datetime)  
+sqlite3.register_converter('timestamp', convert_datetime)
 path = xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/source.db')
 try:
     conn = sqlite3.connect(path, detect_types=sqlite3.PARSE_DECLTYPES)
@@ -28,6 +28,7 @@ try:
 except Exception as detail:
     xbmc.log("EXCEPTION: (script.tvguide.fullscreen)  %s" % detail, xbmc.LOGERROR)
 
+# Get the Program Info from the database
 c = conn.cursor()
 startDate = datetime.datetime.fromtimestamp(float(start))
 c.execute('SELECT DISTINCT * FROM programs WHERE channel=? AND start_date = ?', [channel,startDate])
@@ -44,6 +45,7 @@ for row in c:
         seconds = 3600*4
     break
 
+# Find the channel's stream url
 c.execute('SELECT stream_url FROM custom_stream_url WHERE channel=?', [channel])
 row = c.fetchone()
 url = ""
@@ -52,6 +54,7 @@ if row:
 if not url:
     quit()
 
+# Find the actual url used to play the stream
 core = "dummy"
 xbmc.executebuiltin('PlayWith(%s)' % core)
 player = xbmc.Player()
@@ -62,10 +65,11 @@ while count:
     count = count - 1
     time.sleep(1)
     if player.isPlaying():
-        url = player.getPlayingFile() 
+        url = player.getPlayingFile()
         break
 player.stop()
 
+# Play with your own preferred player and paths
 if url:
     name = "%s = %s = %s" % (start,channel,title)
     name = name.encode("cp1252")

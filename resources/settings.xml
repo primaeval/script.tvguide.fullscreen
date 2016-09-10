@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
     <category label="Help">
-        <setting label="Command Keys" type="action" action="RunScript($CWD/help.py)" />
+        <setting label="Command Keys" type="action" action="RunScript($CWD/help.py,commands)" />
+        <setting label="AutoPlayWith" type="action" action="RunScript($CWD/help.py,autoplaywith)" />
     </category>
     <category label="30101">
         <setting id="xmltv.type" label="XMLTV Source" type="enum" enable="true" visible="true" default="0" values="File|Url" />
