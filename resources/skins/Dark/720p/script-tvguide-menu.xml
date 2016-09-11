@@ -47,7 +47,7 @@
             <height>498</height>
             <texture>black-back.png</texture>
 			<visible>true</visible>
-        </control>			
+        </control>
 
 		<!-- Header - Date and time display -->
 		<control type="group">
@@ -344,7 +344,7 @@
 		<!-- Button Group -->
 		<control type="group">
             <left>715</left>
-            <top>550</top>
+            <top>540</top>
 			<control type="button" id="4006">
 				<!-- super favourites -->
 				<left>280</left>
@@ -407,6 +407,24 @@
 				<texturefocus>menu-grey-focus.png</texturefocus>
 				<texturenofocus>menu-grey.png</texturenofocus>
 				<onup>4002</onup>
+				<ondown>4009</ondown>
+				<onleft>4003</onleft>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<label>AutoPlay</label>
+			</control>
+			<control type="button" id="4009">
+				<description>autoplaywith</description>
+				<left>280</left>
+				<top>149</top>
+				<width>200</width>
+				<height>30</height>
+				<texturefocus>menu-grey-focus.png</texturefocus>
+				<texturenofocus>menu-grey.png</texturenofocus>
+				<onup>4008</onup>
 				<ondown>4000</ondown>
 				<onleft>4003</onleft>
 				<align>center</align>
@@ -414,7 +432,7 @@
 				<font>font13</font>
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
-				<label>Autoplay</label>
+				<label>AutoPlayWith</label>
 			</control>
 			<control type="button" id="4000">
 				<!-- Watch Stream -->

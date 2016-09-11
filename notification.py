@@ -27,7 +27,7 @@
 import datetime
 import os
 import xbmc
-import xbmcgui
+import xbmcgui, xbmcaddon
 import source as src
 
 from strings import *
@@ -44,11 +44,12 @@ class Notification(object):
 
     def createAlarmClockName(self, programTitle, startTime):
         return 'tvguide-%s-%s' % (programTitle, startTime)
-
+       
     def scheduleNotifications(self):
-        for channelTitle, programTitle, startTime in self.database.getNotifications():
-            self._scheduleNotification(channelTitle, programTitle, startTime)
+        for program in self.database.getFullNotifications():
+            self._scheduleNotification(program.channel.id, program.title, program.startDate, program.endDate)
 
+            
     def _scheduleNotification(self, channelTitle, programTitle, startTime):
         t = startTime - datetime.datetime.now()
         timeToNotification = ((t.days * 86400) + t.seconds) / 60
@@ -70,8 +71,8 @@ class Notification(object):
         xbmc.executebuiltin('CancelAlarm(%s-5mins,True)' % name.encode('utf-8', 'replace'))
         xbmc.executebuiltin('CancelAlarm(%s-now,True)' % name.encode('utf-8', 'replace'))
 
-    def addNotification(self, program):
-        self.database.addNotification(program)
+    def addNotification(self, program, type):
+        self.database.addNotification(program, type)
         self._scheduleNotification(program.channel.title, program.title, program.startDate)
 
     def removeNotification(self, program):

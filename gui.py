@@ -29,7 +29,7 @@ import time
 import re
 import os
 import urllib
-
+import subprocess
 import xbmc
 import xbmcgui
 import xbmcvfs
@@ -37,6 +37,7 @@ import xbmcvfs
 import source as src
 from notification import Notification
 from autoplay import Autoplay
+from autoplaywith import Autoplaywith
 from strings import *
 from rpc import RPC
 
@@ -68,6 +69,7 @@ ACTION_LAST_PAGE = 160
 ACTION_PLAY = 68
 ACTION_PLAYER_PLAY = 79
 ACTION_PLAYER_PLAYPAUSE = 229
+ACTION_RECORD = 170
 
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
@@ -223,6 +225,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.tryingToPlay = False
         self.notification = None
         self.autoplay = None
+        self.autoplaywith = None
         self.redrawingEPG = False
         self.redrawingQuickEPG = False
         self.isClosing = False
@@ -349,6 +352,7 @@ class TVGuide(xbmcgui.WindowXML):
                 return
             self.database.initialize(self.onSourceInitialized, self.isSourceInitializationCancelled)
 
+
         self.streamingService = streaming.StreamsService(ADDON)
 
         self.updateTimebar()
@@ -379,6 +383,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.showFullReminders()
         elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
             self.showFullAutoplays()
+        elif action.getId() in [REMOTE_7, ACTION_JUMP_SMS6]:
+            self.showFullAutoplaywiths()
 
         if self.mode == MODE_TV:
             self.onActionTVMode(action)
@@ -583,6 +589,12 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
+        elif action.getId() in [REMOTE_8]:
+            self.stopWith()
+        elif action.getId() in [REMOTE_9]:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                self.playWithChannel(program.channel)
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -768,7 +780,7 @@ class TVGuide(xbmcgui.WindowXML):
             start = "%s %s" % (day,start)
             label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
             labels.append(label)
-        title = "Autoplays"
+        title = "AutoPlays"
         d = xbmcgui.Dialog()
         index = d.select(title,labels)
         if index > -1:
@@ -777,7 +789,32 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showFullAutoplays(self):
         programList = self.database.getFullAutoplays()
-        title = "Autoplays"
+        title = "AutoPlays"
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
+        if index > -1:
+            self._showContextMenu(programList[index])
+
+    def showAutoplaywiths(self):
+        programList = self.database.getAutoplaywiths()
+        labels = []
+        for channelTitle, programTitle, start, end in programList:
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
+            label = "%s - %s - %s" % (channelTitle.encode("utf8"),start,programTitle.encode("utf8"))
+            labels.append(label)
+        title = "AutoPlayWiths"
+        d = xbmcgui.Dialog()
+        index = d.select(title,labels)
+        if index > -1:
+            program = programList[index]
+            self._showContextMenu(program)
+
+    def showFullAutoplaywiths(self):
+        programList = self.database.getFullAutoplaywiths()
+        title = "AutoPlayWiths"
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
@@ -786,7 +823,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
-        d = PopupMenu(self.database, program, not program.notificationScheduled, not program.autoplayScheduled, self.category, self.categories)
+        d = PopupMenu(self.database, program, not program.notificationScheduled, not program.autoplayScheduled, not program.autoplaywithScheduled, self.category, self.categories)
         d.doModal()
         buttonClicked = d.buttonClicked
         self.category = d.category
@@ -798,16 +835,30 @@ class TVGuide(xbmcgui.WindowXML):
             if program.notificationScheduled:
                 self.notification.removeNotification(program)
             else:
-                self.notification.addNotification(program)
-
+                d = xbmcgui.Dialog()
+                play_type = d.select("Notification play_type", ["once","always"]) #TODO ,"same time","same day"
+                if play_type > -1:
+                    self.notification.addNotification(program, play_type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAY:
             if program.autoplayScheduled:
                 self.autoplay.removeAutoplay(program)
             else:
-                self.autoplay.addAutoplay(program)
+                d = xbmcgui.Dialog()
+                play_type = d.select("AutoPlay play_type", ["once","always"]) #TODO ,"same time","same day"
+                if play_type > -1:
+                    self.autoplay.addAutoplay(program, play_type)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+        elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAYWITH:
+            if program.autoplaywithScheduled:
+                self.autoplaywith.removeAutoplaywith(program)
+            else:
+                d = xbmcgui.Dialog()
+                play_type = d.select("AutoPlayWith play_type", ["once","always"]) #TODO ,"same time","same day"
+                if play_type > -1:
+                    self.autoplaywith.addAutoplaywith(program, play_type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
@@ -1176,6 +1227,34 @@ class TVGuide(xbmcgui.WindowXML):
 
         return url is not None
 
+    def playWithChannel(self, channel, program = None):
+        if self.currentChannel:
+            self.lastChannel = self.currentChannel
+        self.currentChannel = channel
+        self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+        if not self.currentProgram:
+            return
+        wasPlaying = self.player.isPlaying()
+        url = self.database.getStreamUrl(channel)
+        if url:
+            now = datetime.datetime.now()
+            timestamp = time.mktime(self.currentProgram.startDate.timetuple())
+            script = "special://profile/addon_data/script.tvguide.fullscreen/playwithchannel.py"
+            if xbmcvfs.exists(script):
+                xbmc.executebuiltin('RunScript(%s,%s,%s)' % (script,channel.id,timestamp))
+            core = ADDON.getSetting('autoplaywith.player')
+            if core:
+                xbmc.executebuiltin('PlayWith(%s)' % core)
+                xbmc.executebuiltin('PlayMedia(%s)' % url)
+
+
+    def stopWith(self):
+        script = "special://profile/addon_data/script.tvguide.fullscreen/stopwithchannel.py"
+        if xbmcvfs.exists(script):
+            xbmc.executebuiltin('RunScript(%s)' % (script))
+        xbmc.Player().stop()
+
+
     def waitForPlayBackStopped(self,title):
         time.sleep(0.5)
         self._showOsd()
@@ -1495,6 +1574,9 @@ class TVGuide(xbmcgui.WindowXML):
                 if self.isProgramPlaying(program):
                     noFocusTexture = 'tvg-playing-nofocus.png'
                     focusTexture = 'tvg-playing-focus.png'
+                elif program.autoplaywithScheduled:
+                    noFocusTexture = 'tvg-autoplaywith-nofocus.png'
+                    focusTexture = 'tvg-autoplaywith-focus.png'
                 elif program.autoplayScheduled:
                     noFocusTexture = 'tvg-autoplay-nofocus.png'
                     focusTexture = 'tvg-autoplay-focus.png'
@@ -1526,16 +1608,18 @@ class TVGuide(xbmcgui.WindowXML):
 
         for channel in channelsWithoutPrograms:
             idx = channels.index(channel)
-
+            noFocusTexture = 'tvg-program-nofocus.png'
+            focusTexture = 'tvg-program-focus.png'
             control = xbmcgui.ControlButton(
                 self.epgView.left,
                 self.epgView.top + self.epgView.cellHeight * idx,
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
-                u"\u2014",
+                'nothing scheduled',
                 focusedColor=focusColor,
-                noFocusTexture='black-back.png',
-                focusTexture='black-back.png'
+                textColor=noFocusColor,
+                noFocusTexture=noFocusTexture,
+                focusTexture=focusTexture
             )
 
             program = src.Program(channel, "", None, None, None)
@@ -1681,6 +1765,9 @@ class TVGuide(xbmcgui.WindowXML):
                 if self.isProgramPlaying(program):
                     noFocusTexture = 'tvg-playing-nofocus.png'
                     focusTexture = 'tvg-playing-focus.png'
+                elif program.autoplaywithScheduled:
+                    noFocusTexture = 'tvg-autoplaywith-nofocus.png'
+                    focusTexture = 'tvg-autoplaywith-focus.png'
                 elif program.autoplayScheduled:
                     noFocusTexture = 'tvg-autoplay-nofocus.png'
                     focusTexture = 'tvg-autoplay-focus.png'
@@ -1712,16 +1799,18 @@ class TVGuide(xbmcgui.WindowXML):
 
         for channel in channelsWithoutPrograms:
             idx = channels.index(channel)
-
+            noFocusTexture = 'tvg-program-nofocus.png'
+            focusTexture = 'tvg-program-focus.png'
             control = xbmcgui.ControlButton(
                 self.quickEpgView.left,
                 self.quickEpgView.top + self.quickEpgView.cellHeight * idx,
                 (self.quickEpgView.right - self.quickEpgView.left) - 2,
                 self.quickEpgView.cellHeight - 2,
-                u"\u2014",
+                'nothing scheduled',
                 focusedColor=focusColor,
-                noFocusTexture='black-back.png',
-                focusTexture='black-back.png'
+                textColor=noFocusColor,
+                noFocusTexture=noFocusTexture,
+                focusTexture=focusTexture
             )
 
             program = src.Program(channel, "", None, None, None)
@@ -1798,10 +1887,15 @@ class TVGuide(xbmcgui.WindowXML):
 
     def onSourceInitialized(self, success):
         if success:
+            #TODO test if schedules should go here
             self.notification = Notification(self.database, ADDON.getAddonInfo('path'))
             self.autoplay = Autoplay(self.database, ADDON.getAddonInfo('path'))
+            self.autoplaywith = Autoplaywith(self.database, ADDON.getAddonInfo('path'))
             self.onRedrawEPG(0, self.viewStartDate)
             self.database.exportChannelList()
+            self.notification.scheduleNotifications()
+            self.autoplay.scheduleAutoplays()
+            self.autoplaywith.scheduleAutoplaywiths()
 
     def onSourceProgressUpdate(self, percentageComplete):
         control = self.getControl(self.C_MAIN_LOADING_PROGRESS)
@@ -2136,6 +2230,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_SUPER_FAVOURITES = 4006
     C_POPUP_STREAM_SETUP = 4007
     C_POPUP_AUTOPLAY = 4008
+    C_POPUP_AUTOPLAYWITH = 4009
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
@@ -2144,10 +2239,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_VIDEOADDONS = 80002
 
 
-    def __new__(cls, database, program, showRemind, showAutoplay, category, categories):
+    def __new__(cls, database, program, showRemind, showAutoplay, showAutoplaywith, category, categories):
         return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', ADDON.getAddonInfo('path'), SKIN)
 
-    def __init__(self, database, program, showRemind, showAutoplay, category, categories):
+    def __init__(self, database, program, showRemind, showAutoplay, showAutoplaywith, category, categories):
         """
 
         @type database: source.Database
@@ -2160,6 +2255,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         self.program = program
         self.showRemind = showRemind
         self.showAutoplay = showAutoplay
+        self.showAutoplaywith = showAutoplaywith
         self.buttonClicked = None
         self.category = category
         self.categories = categories
@@ -2172,6 +2268,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         playControl = self.getControl(self.C_POPUP_PLAY)
         remindControl = self.getControl(self.C_POPUP_REMIND)
         autoplayControl = self.getControl(self.C_POPUP_AUTOPLAY)
+        autoplaywithControl = self.getControl(self.C_POPUP_AUTOPLAYWITH)
         channelLogoControl = self.getControl(self.C_POPUP_CHANNEL_LOGO)
         channelTitleControl = self.getControl(self.C_POPUP_CHANNEL_TITLE)
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
@@ -2228,17 +2325,23 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         if self.program.startDate:
             remindControl.setEnabled(True)
             autoplayControl.setEnabled(True)
+            autoplaywithControl.setEnabled(True)
             if self.showRemind:
                 remindControl.setLabel(strings(REMIND_PROGRAM))
             else:
                 remindControl.setLabel(strings(DONT_REMIND_PROGRAM))
             if self.showAutoplay:
-                autoplayControl.setLabel("Autoplay")
+                autoplayControl.setLabel("AutoPlay")
             else:
-                autoplayControl.setLabel("Remove Autoplay")
+                autoplayControl.setLabel("Don't AutoPlay")
+            if self.showAutoplaywith:
+                autoplaywithControl.setLabel("AutoPlayWith")
+            else:
+                autoplaywithControl.setLabel("Don't AutoPlayWith")
         else:
             remindControl.setEnabled(False)
             autoplayControl.setEnabled(False)
+            autoplaywithControl.setEnabled(False)
 
     def formatDateTodayTomorrow(self, timestamp):
         if timestamp:
@@ -2788,7 +2891,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
             item = xbmcgui.ListItem(label)
-            item.setProperty('stream', stream[0])
+            if type(stream) is list:
+                stream = stream[0]
+            item.setProperty('stream', stream)
             items.append(item)
         listControl = self.getControl(StreamSetupDialog.C_STREAM_ADDONS_STREAMS)
         listControl.reset()
