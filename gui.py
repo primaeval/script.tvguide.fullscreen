@@ -836,9 +836,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.notification.removeNotification(program)
             else:
                 d = xbmcgui.Dialog()
-                type = d.select("Notification Type", ["once","always"]) #TODO ,"same time","same day"
-                if type > -1:
-                    self.notification.addNotification(program, type)
+                play_type = d.select("Notification play_type", ["once","always"]) #TODO ,"same time","same day"
+                if play_type > -1:
+                    self.notification.addNotification(program, play_type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAY:
@@ -846,9 +846,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.autoplay.removeAutoplay(program)
             else:
                 d = xbmcgui.Dialog()
-                type = d.select("AutoPlay Type", ["once","always"]) #TODO ,"same time","same day"
-                if type > -1:
-                    self.autoplay.addAutoplay(program, type)
+                play_type = d.select("AutoPlay play_type", ["once","always"]) #TODO ,"same time","same day"
+                if play_type > -1:
+                    self.autoplay.addAutoplay(program, play_type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAYWITH:
@@ -856,9 +856,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.autoplaywith.removeAutoplaywith(program)
             else:
                 d = xbmcgui.Dialog()
-                type = d.select("AutoPlayWith Type", ["once","always"]) #TODO ,"same time","same day"
-                if type > -1:
-                    self.autoplaywith.addAutoplaywith(program, type)
+                play_type = d.select("AutoPlayWith play_type", ["once","always"]) #TODO ,"same time","same day"
+                if play_type > -1:
+                    self.autoplaywith.addAutoplaywith(program, play_type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
