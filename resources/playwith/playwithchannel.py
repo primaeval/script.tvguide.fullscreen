@@ -71,5 +71,5 @@ player.stop()
 if url:
     name = "%s = %s = %s" % (start,channel,title)
     name = name.encode("cp1252")
-    cmd = [r"c:\utils\ffmpeg.exe", "-y", "-i", url, "-t", str(seconds), r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\%s.ts" % name]
+    cmd = [r"c:\utils\ffmpeg.exe", "-y", "-i", url, "-c", "copy", "-t", str(seconds), r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\%s.ts" % name]
     p = Popen(cmd,shell=True)
