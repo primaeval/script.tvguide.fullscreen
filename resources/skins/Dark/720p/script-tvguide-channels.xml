@@ -150,6 +150,14 @@
                     <top>0</top>
                     <width>520</width>
                     <height>38</height>
+                    <texture>menu-grey.png</texture>
+                    <visible>!Control.HasFocus(6000)</visible>
+                </control>
+				<control type="image">
+                    <left>0</left>
+                    <top>0</top>
+                    <width>520</width>
+                    <height>38</height>
                     <texture>menu-grey-focus.png</texture>
                     <visible>Control.HasFocus(6000)</visible>
                 </control>
