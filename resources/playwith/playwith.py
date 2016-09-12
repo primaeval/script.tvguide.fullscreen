@@ -1,7 +1,7 @@
 import sys
 import xbmc,xbmcaddon,xbmcvfs
 import sqlite3
-from subprocess import Popen, CREATE_NEW_CONSOLE
+from subprocess import Popen
 import datetime,time
 
 channel = sys.argv[1]
@@ -73,5 +73,10 @@ player.stop()
 if url:
     name = "%s = %s = %s" % (start,channel,title)
     name = name.encode("cp1252")
-    cmd = [r"c:\utils\ffmpeg.exe", "-y", "-i", url, "-c", "copy", "-t", str(seconds), r"C:\Kodi16.1\portable_data\userdata\addon_data\script.tvguide.fullscreen\%s.ts" % name]
+    filename = xbmc.translatePath("special://temp/%s.ts" % name)
+    #filename = "/storage/recordings/%s.ts" % name
+    ffmpeg = r"c:\utils\ffmpeg.exe"
+    ffmpeg = r"/usr/bin/ffmpeg"
+    cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
     p = Popen(cmd,shell=True)
+    #p = Popen(cmd,shell=False)
