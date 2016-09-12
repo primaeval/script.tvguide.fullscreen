@@ -54,7 +54,7 @@
 			<left>0</left>
 			<top>0</top>
 			<width>1280</width>
-			<height>58</height>
+			<height>60</height>
 			<visible>true</visible>
 			<control type="label">
 				<description>Displays todays date</description>
@@ -82,39 +82,80 @@
 				<label>$INFO[System.Time]</label>
 			</control>
 		</control>
-		
+		<control type="label">
+			<description>Display current temperature</description>
+			<left>1095</left>
+			<top>5</top>
+			<width>60</width>
+			<height>20</height>
+			<align>right</align>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$INFO[Window(Weather).Property(Current.Temperature)]$INFO[System.TemperatureUnits]</label>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+		</control>
+		<control type="image">
+			<description>Display current weather icon</description>
+            <left>1128</left>
+			<top>4</top>
+			<width>60</width>
+			<height>35</height>
+            <fadetime>300</fadetime>
+            <aspectratio align="right">keep</aspectratio>
+            <texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+        </control>
 		<!-- Programme Details -->
+		<control type="label" id="4101">
+			<description>Channel name</description>
+			<left>20</left>
+            <top>0</top>
+            <width>400</width>
+            <height>60</height>
+			<align>left</align>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<visible>true</visible>
+			<scroll>true</scroll>
+			<aligny>center</aligny>
+			<label>-</label>
+		</control>
+		<control type="label" id="7001">
+			<description>Programme title</description>
+			<left>440</left>
+			<top>0</top>
+			<width>400</width>
+			<height>60</height>
+			<align>center</align>
+			<textcolor>white</textcolor>
+			<font>font13_title</font>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label/>
+		</control>
+		<control type="label" id="7003">
+			<description>Programme date and time</description>
+			<left>340</left>
+			<top>0</top>
+			<width>300</width>
+			<height>60</height>
+			<textcolor>white</textcolor>
+			<font>font13_title</font>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label></label>
+			<visible>false</visible>
+		</control>
 		<control type="group">
 			<left>20</left>
             <top>70</top>
-			<control type="label" id="7001">
-				<description>Programme title</description>
-				<left>0</left>
-				<top>30</top>
-				<width>630</width>
-				<height>30</height>
-				<textcolor>white</textcolor>
-				<font>font13_title</font>
-				<align>left</align>
-				<label/>
-			</control>
-			<control type="label" id="7003">
-				<description>Programme date and time</description>
-				<left>340</left>
-				<top>0</top>
-				<width>300</width>
-				<height>30</height>
-				<textcolor>white</textcolor>
-				<font>font13_title</font>
-				<align>right</align>
-				<label></label>
-			</control>
 			<control type="label" id="7000">
 				<description>Programme description</description>
+				<width>630</width>
+				<height>200</height>
 				<left>0</left>
-				<top>60</top>
-				<width>650</width>
-				<height>150</height>
+				<top>0</top>
 				<textcolor>white</textcolor>
 				<font>font13</font>
 				<align>left</align>
@@ -122,19 +163,6 @@
 				<wrapmultiline>true</wrapmultiline>
 				<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
 				<label/>
-			</control>
-			<control type="label" id="4101">
-				<description>Channel name</description>
-				<left>0</left>
-				<top>0</top>
-				<width>400</width>
-				<height>30</height>
-				<align>left</align>
-				<font>font13_title</font>
-				<textcolor>white</textcolor>
-				<visible>true</visible>
-				<scroll>true</scroll>
-				<label>-</label>
 			</control>
         </control>
 
@@ -315,11 +343,11 @@
 
 		<!-- Button Group -->
 		<control type="group">
-            <left>715</left>
+            <left>647</left>
             <top>550</top>
 			<control type="button" id="4006">
 				<!-- super favourites -->
-				<left>280</left>
+				<left>223</left>
 				<top>25</top>
 				<width>200</width>
 				<height>30</height>
@@ -328,6 +356,7 @@
 				<onup>80003</onup>
 				<ondown>4005</ondown>
 				<onleft>4000</onleft>
+				<onright>4009</onright>
 				<align>center</align>
 				<aligny>center</aligny>
 				<font>font13</font>
@@ -337,7 +366,7 @@
 			</control>
 			<control type="button" id="4005">
 				<!-- watch from beginning -->
-				<left>280</left>
+				<left>223</left>
 				<top>56</top>
 				<width>200</width>
 				<height>30</height>
@@ -355,7 +384,7 @@
 			</control>
 			<control type="button" id="4002">
 				<!-- REMINDER -->
-				<left>280</left>
+				<left>223</left>
 				<top>87</top>
 				<width>200</width>
 				<height>30</height>
@@ -372,14 +401,14 @@
 			</control>
 			<control type="button" id="4008">
 				<description>autoplay</description>
-				<left>280</left>
+				<left>223</left>
 				<top>118</top>
 				<width>200</width>
 				<height>30</height>
 				<texturefocus>menu-grey-focus.png</texturefocus>
 				<texturenofocus>menu-grey.png</texturenofocus>
 				<onup>4002</onup>
-				<ondown>4000</ondown>
+				<ondown>4009</ondown>
 				<onleft>4003</onleft>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -390,7 +419,7 @@
 			</control>
 			<control type="button" id="4000">
 				<!-- Watch Stream -->
-				<left>30</left>
+				<left>20</left>
 				<top>25</top>
 				<width>200</width>
 				<height>30</height>
@@ -408,7 +437,7 @@
 			</control>
 			<control type="button" id="4001">
 				<!-- Choose Stream -->
-				<left>30</left>
+				<left>20</left>
 				<top>56</top>
 				<width>200</width>
 				<height>30</height>
@@ -426,7 +455,7 @@
 			</control>
 			<control type="button" id="4007">
 				<!-- Stream Setup -->
-				<left>30</left>
+				<left>20</left>
 				<top>87</top>
 				<width>200</width>
 				<height>30</height>
@@ -444,7 +473,7 @@
 			</control>
 			<control type="button" id="4003">
 				<!-- CHANNELS -->
-				<left>30</left>
+				<left>20</left>
 				<top>118</top>
 				<width>200</width>
 				<height>30</height>
@@ -459,6 +488,25 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<label>$ADDON[script.tvguide.fullscreen 30307]</label>
+			</control>
+			<control type="button" id="4009">
+				<!-- AutoPlay With -->
+				<description>autoplaywith</description>
+				<left>426</left>
+				<top>25</top>
+				<width>200</width>
+				<height>30</height>
+				<texturefocus>menu-grey-focus.png</texturefocus>
+				<texturenofocus>menu-grey.png</texturenofocus>
+				<onup>4008</onup>
+				<ondown>4000</ondown>
+				<onleft>4006</onleft>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<label>AutoPlayWith</label>
 			</control>
 			<control type="label">
 				<!-- Choose Stream Text -->
@@ -603,12 +651,10 @@
         </control>
         <control type="image" id="4100">
             <description>Channel logo</description>
-            <left>592</left>
+            <left>594</left>
             <top>618</top>
             <width>60</width>
             <height>60</height>
-            <align>center</align>
-            <aligny>center</aligny>
             <aspectratio>keep</aspectratio>
             <visible>true</visible>
         </control>
