@@ -15,7 +15,7 @@
             <top>0</top>
             <width>1280</width>
             <height>720</height>
-            <texture>highlight.png</texture>
+            <texture fallback="special://skin/extras/backgrounds/SKINDEFAULT.jpg">$VAR[GlobalFanartVar]</texture>
             <visible>true</visible>
         </control>
         <!-- Header Background-->
@@ -45,7 +45,7 @@
             <top>60</top>
             <width>1280</width>
             <height>498</height>
-            <texture>black-back.png</texture>
+            <texture fallback="special://skin/extras/backgrounds/SKINDEFAULT.jpg">$VAR[GlobalFanartVar]</texture>
 			<visible>true</visible>
         </control>			
 
@@ -227,7 +227,6 @@
 				<label>$ADDON[script.tvguide.fullscreen 30308]</label>
 				<visible>true</visible>
 			</control>
-
 			<control type="image">
 				<left>278</left>
 				<top>22</top>
