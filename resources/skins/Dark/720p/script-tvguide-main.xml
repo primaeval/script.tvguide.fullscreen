@@ -112,6 +112,22 @@
             <height>1</height>
             <texture>tvguide-program-grey-focus.png</texture>
         </control>
+		<control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplaywith-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplaywith-nofocus.png</texture>
+        </control>
 
 		<!-- Transparent background -->
 		<control type="image">
@@ -245,13 +261,14 @@
                 <control type="label" id="4000">
                     <description>Displays EPG day</description>
                     <left>0</left>
-                    <top>28</top>
+                    <top>0</top>
                     <width>180</width>
                     <height>60</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
+					<aligny>center</aligny>
                     <visible>true</visible>
                 </control>
 				<control type="label">
@@ -291,6 +308,31 @@
 					<shadowcolor>black</shadowcolor>
 					<label>$INFO[System.Time]</label>
 				</control>
+				<control type="label">
+					<description>Display current temperature</description>
+					<left>1095</left>
+					<top>5</top>
+					<width>60</width>
+					<height>20</height>
+					<align>right</align>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>$INFO[Window(Weather).Property(Current.Temperature)]$INFO[System.TemperatureUnits]</label>
+					<visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+				</control>
+				<control type="image">
+					<description>Display current weather icon</description>
+                    <left>1128</left>
+					<top>4</top>
+					<width>60</width>
+					<height>35</height>
+                    <fadetime>300</fadetime>
+                    <aspectratio align="right">keep</aspectratio>
+                    <texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
+                    <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+                </control>
+
 				<control type="label" id="4001">
                     <description>1st half hour label</description>
                     <left>180</left>
@@ -992,7 +1034,7 @@
             <control type="textbox" id="7022">
                 <description>Programme description</description>
                 <left>30</left>
-                <top>590</top>
+                <top>595</top>
                 <width>990</width>
                 <height>100</height>
                 <textcolor>white</textcolor>
@@ -1240,7 +1282,7 @@
             <width>1280</width>
             <height>100</height>
             <visible>!Control.IsVisible(6000)</visible>
-            <animation effect="fade" start="0" end="100" time="500">VisibleChange</animation>
+            <animation effect="slide" start="0,-60" time="500">VisibleChange</animation>
             <control type="image">
 				<description>OSD header background - Now playing</description>
                 <top>0</top>
@@ -1265,7 +1307,7 @@
 			<control type="label">
                 <description>Current time - Now playing</description>
                 <left>1030</left>
-                <top>10</top>
+                <top>5</top>
                 <width>240</width>
                 <height>20</height>
 				<align>right</align>
@@ -1298,7 +1340,7 @@
 			<control type="label">
 				<description>Todays date - Now playing</description>
                 <left>1000</left>
-                <top>30</top>
+                <top>25</top>
 				<width>270</width>
                 <height>20</height>
                 <textcolor>white</textcolor>
@@ -1308,6 +1350,30 @@
                 <visible>true</visible>
                 <label>$INFO[System.Date]</label>
             </control>
+			<control type="button">
+				<description>Display current temperature</description>
+				<left>1095</left>
+				<top>5</top>
+				<width>60</width>
+				<height>20</height>
+				<align>right</align>
+				<font>font13_title</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>$INFO[Window(Weather).Property(Current.Temperature)]$INFO[System.TemperatureUnits]</label>
+                <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+			</control>
+			<control type="image">
+				<description>Display current weather icon</description>
+				<left>1128</left>
+				<top>4</top>
+				<width>60</width>
+				<height>35</height>
+				<fadetime>300</fadetime>
+				<aspectratio align="right">keep</aspectratio>
+				<texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
+				<visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+			</control>
         </control>
 		<!-- OSD footer - Now playing -->
         <control type="group">
@@ -1317,7 +1383,7 @@
             <width>1240</width>
             <height>220</height>
             <visible>!Control.IsVisible(6000)</visible>
-            <animation effect="fade" start="0" end="100" time="500">VisibleChange</animation>
+            <animation effect="slide" start="0,200" time="500">VisibleChange</animation>
             <control type="image">
                 <description>OSD footer backgroud - Now playing</description>
 				<left>0</left>
@@ -1352,7 +1418,7 @@
             <control type="textbox" id="6003">
                 <description>Programme description - Now playing</description>
                 <left>10</left>
-                <top>40</top>
+                <top>45</top>
                 <width>990</width>
                 <height>100</height>
                 <label>Description</label>
@@ -1395,7 +1461,7 @@
             <control type="textbox" id="6007">
                 <description>OSD - Next Programme description - Now playing</description>
                 <left>1045</left>
-                <top>50</top>
+                <top>45</top>
                 <width>220</width>
                 <height>100</height>
                 <label>Description</label>
@@ -1454,7 +1520,7 @@
             <width>1280</width>
             <height>100</height>
             <visible>!Control.IsVisible(8000)</visible>
-            <animation effect="fade" start="0" end="100" time="500">VisibleChange</animation>
+            <animation effect="slide" start="0,-60" time="500">VisibleChange</animation>
             <control type="image">
                 <description>OSD header background - Last played</description>
 				<top>0</top>
@@ -1566,7 +1632,7 @@
             <control type="textbox" id="8003">
                 <description>Programme description - Last played</description>
                 <left>10</left>
-                <top>40</top>
+                <top>45</top>
                 <width>990</width>
                 <height>100</height>
                 <label>Description</label>
@@ -1609,7 +1675,7 @@
             <control type="textbox" id="8007">
                 <description>Next Programme description - Last played</description>
                 <left>1045</left>
-                <top>50</top>
+                <top>45</top>
                 <width>220</width>
                 <height>100</height>
                 <label>Description</label>
@@ -1708,7 +1774,7 @@
             <control type="textbox" id="9003">
                 <description>Current programme description - Up Next</description>
                 <left>1045</left>
-                <top>50</top>
+                <top>45</top>
                 <width>220</width>
                 <height>124</height>
                 <label>Description</label>
@@ -1805,7 +1871,7 @@
             <control type="textbox" id="9007">
                 <description>Up Next programme description - Up Next</description>
                 <left>10</left>
-                <top>40</top>
+                <top>45</top>
                 <width>330</width>
                 <height>120</height>
                 <textcolor>white</textcolor>
@@ -1964,9 +2030,7 @@
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <label>$INFO[System.Time(hh:mm)]</label>
-                    <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">
-                        conditional
-                    </animation>
+                    <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
                 </control>
                 <control type="label" id="14001">
                     <description>1st half hour column</description>
