@@ -13,7 +13,7 @@ for proc in psutil.process_iter():
         proc.kill()
 '''
 # Windows specific
-cmd =['taskkill','/f','/im','ffmpeg.exe']
-p = Popen(cmd,shell=True)
+cmd =['/bin/pkill','-2','ffmpeg']
+p = Popen(cmd,shell=False)
 player = xbmc.Player()
 player.stop()
