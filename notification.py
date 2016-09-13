@@ -47,7 +47,7 @@ class Notification(object):
        
     def scheduleNotifications(self):
         for program in self.database.getFullNotifications():
-            self._scheduleNotification(program.channel.id, program.title, program.startDate, program.endDate)
+            self._scheduleNotification(program.channel.id, program.title, program.startDate)
 
             
     def _scheduleNotification(self, channelTitle, programTitle, startTime):
