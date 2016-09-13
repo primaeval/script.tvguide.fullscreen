@@ -17,7 +17,7 @@
             <top>0</top>
             <width>1280</width>
             <height>720</height>
-            <texture>menu-stream.png</texture>
+            <texture fallback="special://skin/extras/backgrounds/SKINDEFAULT.jpg">$VAR[GlobalFanartVar]</texture>
         </control>
 
         <control type="group">
@@ -146,6 +146,14 @@
             </itemlayout>
             <focusedlayout width="520" height="40">
                 <control type="image">
+                    <left>0</left>
+                    <top>0</top>
+                    <width>520</width>
+                    <height>38</height>
+                    <texture>menu-grey.png</texture>
+                    <visible>!Control.HasFocus(6000)</visible>
+                </control>
+				<control type="image">
                     <left>0</left>
                     <top>0</top>
                     <width>520</width>

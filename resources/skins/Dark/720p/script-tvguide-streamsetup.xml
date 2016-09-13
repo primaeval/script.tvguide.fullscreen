@@ -20,7 +20,7 @@
             <top>0</top>
             <width>1280</width>
             <height>720</height>
-            <texture>highlight.png</texture>
+            <texture fallback="special://skin/extras/backgrounds/SKINDEFAULT.jpg">$VAR[GlobalFanartVar]</texture>
             <visible>true</visible>
         </control>
         <!-- Header Background-->
@@ -50,7 +50,7 @@
             <top>60</top>
             <width>1280</width>
             <height>498</height>
-            <texture>black-back.png</texture>
+            <texture fallback="special://skin/extras/backgrounds/SKINDEFAULT.jpg">$VAR[GlobalFanartVar]</texture>
 			<visible>true</visible>
         </control>
 		
@@ -653,18 +653,18 @@
                         <top>0</top>
                         <width>300</width>
                         <height>38</height>
-                        <texture>menu-grey-focus.png</texture>
-                        <visible>Control.HasFocus(3002)</visible>
+                        <texture>menu-grey.png</texture>
+                        <visible>!Control.HasFocus(4002)</visible>
                     </control>
 					<control type="image">
                         <left>0</left>
                         <top>0</top>
                         <width>300</width>
                         <height>38</height>
-                        <texture>menu-grey.png</texture>
-                        <visible>!Control.HasFocus(4002)</visible>
+                        <texture>menu-grey-focus.png</texture>
+                        <visible>Control.HasFocus(3002)</visible>
                     </control>
-                    <control type="label">
+					<control type="label">
                         <left>16</left>
                         <top>0</top>
                         <width>300</width>
