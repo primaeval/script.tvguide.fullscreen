@@ -55,8 +55,8 @@ if not url:
     quit()
 
 # Find the actual url used to play the stream
-core = "dummy"
-xbmc.executebuiltin('PlayWith(%s)' % core)
+#core = "dummy"
+#xbmc.executebuiltin('PlayWith(%s)' % core)
 player = xbmc.Player()
 player.play(url)
 count = 30
@@ -75,8 +75,8 @@ if url:
     name = name.encode("cp1252")
     filename = xbmc.translatePath("special://temp/%s.ts" % name)
     #filename = "/storage/recordings/%s.ts" % name
-    ffmpeg = r"c:\utils\ffmpeg.exe"
-    ffmpeg = r"/usr/bin/ffmpeg"
+    ffmpeg = r"c:\utils\ffmpeg.exe" #WINDOWS
+    #ffmpeg = r"/usr/bin/ffmpeg" #LIBREELEC
     cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
-    p = Popen(cmd,shell=True)
-    #p = Popen(cmd,shell=False)
+    #p = Popen(cmd,shell=True)
+    p = Popen(cmd,shell=False)

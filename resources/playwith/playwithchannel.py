@@ -53,8 +53,8 @@ if not url:
     quit()
 
 # Find the actual url used to play the stream
-core = "dummy"
-xbmc.executebuiltin('PlayWith(%s)' % core)
+#core = "dummy"
+#xbmc.executebuiltin('PlayWith(%s)' % core)
 player = xbmc.Player()
 player.play(url)
 count = 30

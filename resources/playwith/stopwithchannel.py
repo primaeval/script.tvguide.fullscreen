@@ -12,8 +12,10 @@ for proc in psutil.process_iter():
     if proc.name() == PROCNAME:
         proc.kill()
 '''
-# Windows specific
-cmd =['pkill','-2','ffmpeg']
+# Windows
+cmd =['taskkill','/f','/im','ffmpeg.exe']
+# Linux
+#cmd =['pkill','-2','ffmpeg']
 p = Popen(cmd,shell=True)
 player = xbmc.Player()
 player.stop()
