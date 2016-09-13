@@ -7,7 +7,6 @@
         <top>0</top>
     </coordinates>
     <controls>
-	<constant name="aquashadow">aa00ffc6</constant>
         <control type="image">
             <description>workaround for texture not being loaded</description>
             <left>-10000</left>
@@ -112,6 +111,22 @@
             <height>1</height>
             <texture>tvguide-program-grey-focus.png</texture>
         </control>
+		<control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplaywith-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplaywith-nofocus.png</texture>
+        </control>
 
 		<!-- Transparent background -->
 		<control type="image">
@@ -120,7 +135,8 @@
             <top>0</top>
             <width>1280</width>
             <height>720</height>
-            <texture>highlight.png</texture>
+            <!--texture>highlight.png</texture-->
+			<texture fallback="special://skin/extras/backgrounds/SKINDEFAULT.jpg">$VAR[GlobalFanartVar]</texture>
             <visible>true</visible>
         </control>
 
