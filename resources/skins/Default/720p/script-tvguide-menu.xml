@@ -88,9 +88,9 @@
         <control type="list" id="7004">
             <description>categories</description>
             <left>20</left>
-            <top>125</top>
+            <top>75</top>
             <width>1280</width>
-            <height>720</height>
+            <height>625</height>
             <visible>true</visible>
             <onup>80003</onup>
             <ondown>4006</ondown>
