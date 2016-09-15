@@ -16,7 +16,7 @@
             <width>1280</width>
             <height>720</height>
 			<aspectratio>scale</aspectratio>
-            <texture fallback="charcoal.jpg">$VAR[GlobalFanartVar]</texture>
+            <texture fallback="charcoal.jpg">charcoal2.jpg</texture>
             <visible>true</visible>
         </control>
         <!-- Header Image-->
