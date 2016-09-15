@@ -11,13 +11,95 @@
         <control type="label" id="6001">
             <description>visibility marker for selection box</description>
         </control>
-
+		<!-- Background -->
         <control type="image">
+            <description>Background</description>
             <left>0</left>
             <top>0</top>
             <width>1280</width>
             <height>720</height>
-            <texture>tvg-background.png</texture>
+			<aspectratio>scale</aspectratio>
+            <texture fallback="charcoal.jpg">$VAR[GlobalFanartVar]</texture>
+            <visible>true</visible>
+        </control>
+		<control type="image">
+			<description>OSD header background - Now playing</description>
+			<top>0</top>
+			<left>0</left>
+			<width>1280</width>
+			<height>58</height>
+			<texture>black-back.png</texture>
+        </control>
+		<control type="image">
+			<description>Header Trim</description>
+			<left>0</left>
+			<top>58</top>
+			<width>1280</width>
+			<height>1</height>
+			<texture>aqua.png</texture>
+			<visible>true</visible>
+		</control>
+		<!-- Channel Mount -->
+        <control type="image">
+            <left>135</left>
+            <top>105</top>
+            <width>1000</width>
+            <height>500</height>
+            <texture>black-back.png</texture>
+        </control>
+		<!-- Header Information -->
+		<control type="group">
+			<left>0</left>
+			<top>0</top>
+			<width>1280</width>
+			<height>60</height>
+			<visible>true</visible>
+			<control type="label">
+				<description>Displays todays date</description>
+				<left>1000</left>
+				<top>25</top>
+				<width>270</width>
+				<height>20</height>
+				<textcolor>white</textcolor>
+				<font>font12</font>
+				<align>right</align>
+				<label>$INFO[System.Date]</label>
+				<visible>true</visible>
+			</control>
+			<control type="label">
+				<description>Display current time</description>
+				<left>1030</left>
+				<top>5</top>
+				<width>240</width>
+				<height>20</height>
+				<align>right</align>
+				<font>font13_title</font>
+				<textcolor>white</textcolor>
+				<label>$INFO[System.Time]</label>
+			</control>
+		</control>
+		<control type="label">
+			<description>Display current temperature</description>
+			<left>1095</left>
+			<top>5</top>
+			<width>60</width>
+			<height>20</height>
+			<align>right</align>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<label>$INFO[Window(Weather).Property(Current.Temperature)]$INFO[System.TemperatureUnits]</label>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+		</control>
+		<control type="image">
+			<description>Display current weather icon</description>
+            <left>1128</left>
+			<top>1</top>
+			<width>60</width>
+			<height>35</height>
+            <fadetime>300</fadetime>
+            <aspectratio align="right">keep</aspectratio>
+            <texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
         </control>
 
         <control type="group">
