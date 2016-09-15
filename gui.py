@@ -417,7 +417,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.osdChannel = self.currentChannel
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
-        elif action.getId() == [REMOTE_0, ACTION_JUMP_SMS0]:
+        elif action.getId() == [REMOTE_0]: #TODO find libreelec key
             self._playLastChannel()
         elif action.getId() == ACTION_RIGHT:
             self._showLastPlayedChannel()
@@ -435,7 +435,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideQuickEpg()
-        elif action.getId() in [REMOTE_1, ACTION_JUMP_SMS1]:
+        elif action.getId() in [REMOTE_1]:
             self.showListing(self.currentChannel)
 
     def onActionOSDMode(self, action):
@@ -487,7 +487,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showOsd()
             self.osdActive = True
 
-        elif action.getId() in [REMOTE_1, ACTION_JUMP_SMS1]:
+        elif action.getId() in [REMOTE_1]:
             self.showListing(self.osdChannel)
 
 
@@ -585,7 +585,7 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
-        elif action.getId() in [REMOTE_1, ACTION_JUMP_SMS1]:
+        elif action.getId() in [REMOTE_1]:
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
@@ -651,7 +651,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideQuickEpg()
             self.playChannel(self.osdChannel, self.osdProgram)
-        elif action.getId() in [REMOTE_1, ACTION_JUMP_SMS1]:
+        elif action.getId() in [REMOTE_1]:
             program = self._getQuickProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
