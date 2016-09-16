@@ -1044,8 +1044,15 @@
                 <width>1280</width>
                 <height>720</height>
                 <visible>!Control.IsVisible(4200)</visible>
-				<animation effect="fade" start="20" time="200">VisibleChange</animation>
-                <control type="image">
+                <control type="button" id="4203">
+                    <description>Loading - Cancel button</description>
+					<left>575</left>
+                    <top>475</top>
+                    <width>1</width>
+                    <height>1</height>
+					<visible>true</visible>
+                </control>
+				<control type="image">
                     <description>Loading background</description>
                     <left>0</left>
                     <top>0</top>
@@ -1108,14 +1115,6 @@
 					<visible>false</visible>
                     <aligny>center</aligny>
                 </control>
-				<control type="button" id="4203">
-                    <description>Loading - Cancel button image</description>
-					<left>575</left>
-                    <top>495</top>
-                    <width>130</width>
-                    <height>40</height>
-					<visible>true</visible>
-                </control>
 				<control type="image">
                     <description>Loading - Cancel button image</description>
 					<left>575</left>
@@ -1128,7 +1127,7 @@
 					<visible>true</visible>
                 </control>
                 <control type="label">
-                    <description>Loading - Cancel button</description>
+                    <description>Loading - Cancel button test</description>
 					<left>540</left>
                     <top>500</top>
                     <width>200</width>
