@@ -2962,8 +2962,18 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
         dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
-        links = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "file"])
-        thumbnails = dict([[f["label"], f["thumbnail"]] for f in files if f["filetype"] == "file"])
+        links = {}
+        thumbnails = {}
+        for f in files:
+            if f["filetype"] == "file":
+                label = f["label"]
+                label = re.sub(r'\[[BI]\]','',label)
+                label = re.sub(r'\[/?COLOR.*?\]','',label)
+                file = f["file"]
+                while (label in links):
+                    label = "%s." % label
+                links[label] = file
+                thumbnails[label] = f["thumbnail"]
 
         items = list()
         item = xbmcgui.ListItem('[B]..[/B]')
@@ -3038,7 +3048,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         for i in range(0,listControl.size()):
             listItem = listControl.getListItem(i)
             name = listItem.getLabel()
-            name = re.sub(r'\[.*?\]','',name)
             stream = listItem.getProperty('stream')
             if stream:
                 streams[addonId][name] = stream
@@ -3089,8 +3098,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl = self.getControl(StreamSetupDialog.C_STREAM_BROWSE_STREAMS)
         for i in range(0,listControl.size()):
             listItem = listControl.getListItem(i)
-            #name = listItem.getLabel()
-            #name = re.sub(r'\[.*?\]','',name)
             stream = listItem.getProperty('stream')
             icon = listItem.getProperty('icon')
             if stream:
@@ -3107,7 +3114,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = addonStreams[name]
                 if name.startswith(' '):
                     continue
-                #name = re.sub(r'[:=]',' ',name)
                 if not stream:
                     stream = 'nothing'
                 write_str = "%s|%s\n" % (name,stream)
