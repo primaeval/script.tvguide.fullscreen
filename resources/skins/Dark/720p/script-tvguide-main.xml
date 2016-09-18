@@ -1044,6 +1044,7 @@
                 <width>1280</width>
                 <height>720</height>
                 <visible>!Control.IsVisible(4200)</visible>
+				<animation effect="fade" delay="500">Visible</animation>
                 <control type="button" id="4203">
                     <description>Loading - Cancel button</description>
 					<left>575</left>
