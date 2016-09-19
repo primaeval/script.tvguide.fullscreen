@@ -77,15 +77,12 @@ if url:
     #name = start
     #name = name.encode("cp1252")
     name = name.encode("utf8")
-    #filename = xbmc.translatePath("special://temp/%s.ts" % name)
-    filename = "/storage/external_storage/sda1/recordings/%s.ts" %name
-    #filename = "/storage/recordings/%s.ts" % name
-    #ffmpeg = r"c:\utils\ffmpeg.exe"
+    filename = xbmc.translatePath("special://temp/%s.ts" % name)
+    #filename = "/storage/external_storage/sda1/recordings/%s.ts" %name
     ffmpeg = r"/data/data/ffmpeg"
-    #seconds = 60
     cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
     xbmc.log(repr(' '.join(cmd)))
-    
+
     dialog = xbmcgui.Dialog()
     dialog.notification("TV Guide Fullscreen","Starting Recording",sound=True)
 
@@ -94,14 +91,5 @@ if url:
         xbmc.log( line )
     p.stdout.close()
     p.wait()
-
-
-    #p = Popen(cmd,shell=True)
-    #p = Popen(cmd,shell=False)
-    #p = call(cmd,shell=False)
-    #xbmc.log(repr(("XXX",p.pid)))
-    #xbmc.log(repr(("XXX",p)))
-    #if p.wait() != 0:
-    #    xbmc.log("There were some errors") 
 
     dialog.notification("TV Guide Fullscreen","Finished Recording",sound=True)
