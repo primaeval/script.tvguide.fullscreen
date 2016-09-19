@@ -1204,10 +1204,14 @@ class TVGuide(xbmcgui.WindowXML):
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:
-            if str.startswith(url,"plugin://plugin.video.meta") and program is not None:
+            if str.startswith(url,"plugin://plugin.video.meta/movies/play_by_name") and program is not None:
                 import urllib
                 title = urllib.quote(program.title)
                 url += "/%s/%s" % (title, program.language)
+            if str.startswith(url,"plugin://plugin.video.meta/tv/play_by_name") and program is not None:
+                import urllib
+                title = urllib.quote(program.title)
+                url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
             if url[0:9] == 'plugin://':
                 if self.alternativePlayback:
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
