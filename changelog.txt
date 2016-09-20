@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.118
+- import PVR channels (in Stream Setup)
+- Right for Fullscreen in TV mode
+- Context Menu everywhere
+
 version 0.0.117
 - support for Meta channel play by name
 - use these as channels in addons.ini
