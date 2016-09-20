@@ -423,10 +423,10 @@ class TVGuide(xbmcgui.WindowXML):
             self._showOsd()
         elif action.getId() == [REMOTE_0]: #TODO find libreelec key
             self._playLastChannel()
-        elif action.getId() == ACTION_RIGHT:
-            self._showLastPlayedChannel()
         elif action.getId() == ACTION_LEFT:
             self._showLastPlayedChannel()
+        elif action.getId() == ACTION_RIGHT:
+             xbmc.executebuiltin('Action(FullScreen)')
         elif action.getId() == ACTION_UP:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
