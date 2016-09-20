@@ -545,7 +545,11 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in [KEY_NAV_BACK]:
             if self.player.isPlaying():
-                self._hideEpg()
+                if ADDON.getSetting("exit.on.back") == "true":
+                    self.close()
+                    return
+                else:
+                    self._hideEpg()
             else:
                 self.close()
                 return
