@@ -128,7 +128,7 @@
             <width>1280</width>
             <height>720</height>
 			<aspectratio>scale</aspectratio>
-            <texture fallback="charcoal.jpg">charcoal2.jpg</texture>
+            <texture fallback="charcoal.png">$VAR[GlobalFanartVar]</texture>
             <visible>true</visible>
         </control>
 
@@ -1059,7 +1059,7 @@
                     <top>0</top>
                     <width>1280</width>
                     <height>720</height>
-					<texture fallback="charcoal.jpg">charcoal2.jpg</texture>
+					<texture fallback="charcoal.png">$VAR[GlobalFanartVar]</texture>
                 </control>
                 <!-- mount image-->
 				<control type="image">
