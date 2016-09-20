@@ -66,6 +66,7 @@
         <setting id="addon.match" label="Channel Matching" type="enum" default="2" values="Exact|Containing|Everything"/>
         <setting type="sep"/>
         <setting id="stop.on.exit" label="Stop Playing on Exit" type="bool" default="true" />
+        <setting id="exit.on.back" label="Exit on Back from EPG" type="bool" default="false" />
     </category>
 
     <category label="30114">

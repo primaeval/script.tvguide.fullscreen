@@ -1,7 +1,7 @@
 Commands
 
 EPG Window
-- exit (escape, back if not playing)
+- exit (escape, back if not playing or Exit On Back Setting)
 - back to tv window (info, i, back if playing)
 - movement (up,down,left,right,page up, page down)
 - play channel (select,ok,enter)
@@ -20,10 +20,12 @@ Main Menu
 TV Window
 - back to epg (back, escape)
 - show osd (info, i)
-- show last channel (left, right)
+- show last channel (left)
 - show quick epg (up, down)
 - change to next/prev channel (page up, page down)
 - change to last channel (0)
+- Fullscreen mode for normal kodi osd (right)
+- main menu (c, context)
 
 OSD Window
 - back to epg (back, escape)
@@ -33,6 +35,7 @@ OSD Window
 - change channel (ok, select, enter)
 - change to next/prev channel (page up, page down)
 - change to last channel (0)
+- main menu (c, context)
 
 Quick EPG Window
 - close (esc, back, info)
@@ -41,11 +44,11 @@ Quick EPG Window
 - change channel (ok, select, enter)
 - change to next/prev channel (page up, page down)
 - change to last channel (0)
+- main menu (c, context)
 
 Last Channel Window
 - back to epg (back, escape)
 - close osd window (info,i, left, right)
 - change channel (ok, select, enter)
 - change to last channel (0)
-
-*context menu key is saved for future menus
+- main menu (c, context)

@@ -457,7 +457,7 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4007</onup>
-            <ondown>80000</ondown>
+            <ondown>4004</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -467,7 +467,25 @@
             <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
 
-
+        <control type="button" id="4004">
+            <!-- QUIT -->
+            <posx>285</posx>
+            <posy>525</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4003</onup>
+            <ondown>80000</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>black</textcolor>
+			<focusedcolor>cyan</focusedcolor>
+            <label>$ADDON[script.tvguide.fullscreen 30308]</label>
+            <visible>true</visible>
+        </control>
 
 
         <control type="button" id="80000">
@@ -529,25 +547,7 @@
 			<visible>false</visible>
         </control>
 
-        <control type="button" id="4004">
-            <!-- QUIT -->
-            <posx>20</posx>
-            <posy>650</posy>
-            <width>200</width>
-            <height>40</height>
-            <texturefocus>tvg-button-focus.png</texturefocus>
-            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4003</onup>
-            <ondown>80000</ondown>
-            <onleft>7004</onleft>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
-            <label>$ADDON[script.tvguide.fullscreen 30308]</label>
-            <visible>false</visible>
-        </control>
+
 
 
 

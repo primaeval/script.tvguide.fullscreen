@@ -413,16 +413,20 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+        elif action.getId() in [KEY_CONTEXT_MENU]:
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+            if self.currentProgram is not None:
+                self._showContextMenu(self.currentProgram)
         elif action.getId() == ACTION_SHOW_INFO:
             self.osdChannel = self.currentChannel
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
         elif action.getId() == [REMOTE_0]: #TODO find libreelec key
             self._playLastChannel()
-        elif action.getId() == ACTION_RIGHT:
-            self._showLastPlayedChannel()
         elif action.getId() == ACTION_LEFT:
             self._showLastPlayedChannel()
+        elif action.getId() == ACTION_RIGHT:
+             xbmc.executebuiltin('Action(FullScreen)')
         elif action.getId() == ACTION_UP:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
@@ -438,6 +442,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [REMOTE_1]:
             self.showListing(self.currentChannel)
 
+
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
             self._hideOsd()
@@ -452,6 +457,11 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideOsd()
             self.playChannel(self.osdChannel, self.osdProgram)
+
+        elif action.getId() in [KEY_CONTEXT_MENU]:
+            self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
+            if self.osdProgram is not None:
+                self._showContextMenu(self.osdProgram)
 
         elif action.getId() == ACTION_PAGE_UP:
             self._channelUp()
@@ -502,6 +512,11 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+        elif action.getId() in [KEY_CONTEXT_MENU]:
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+            if self.currentProgram is not None:
+                self._showContextMenu(self.currentProgram)
+
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideLastPlayed()
             self.playChannel(self.lastChannel, self.lastProgram)
@@ -530,7 +545,11 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in [KEY_NAV_BACK]:
             if self.player.isPlaying():
-                self._hideEpg()
+                if ADDON.getSetting("exit.on.back") == "true":
+                    self.close()
+                    return
+                else:
+                    self._hideEpg()
             else:
                 self.close()
                 return
@@ -655,6 +674,10 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getQuickProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
+        elif action.getId() in [KEY_CONTEXT_MENU] and controlInFocus is not None:
+            program = self._getQuickProgramFromControl(controlInFocus)
+            if program is not None:
+                self._showContextMenu(program)
         else:
             xbmc.log('[script.tvguide.fullscreen] quick epg Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -1204,10 +1227,14 @@ class TVGuide(xbmcgui.WindowXML):
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         if url:
-            if str.startswith(url,"plugin://plugin.video.meta") and program is not None:
+            if str.startswith(url,"plugin://plugin.video.meta/movies/play_by_name") and program is not None:
                 import urllib
                 title = urllib.quote(program.title)
                 url += "/%s/%s" % (title, program.language)
+            if str.startswith(url,"plugin://plugin.video.meta/tv/play_by_name") and program is not None:
+                import urllib
+                title = urllib.quote(program.title)
+                url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
             if url[0:9] == 'plugin://':
                 if self.alternativePlayback:
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
@@ -2584,6 +2611,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_STRM_OK = 1003
     C_STREAM_STRM_CANCEL = 1004
     C_STREAM_STRM_IMPORT = 1006
+    C_STREAM_STRM_PVR = 1007
     C_STREAM_FAVOURITES = 2001
     C_STREAM_FAVOURITES_PREVIEW = 2002
     C_STREAM_FAVOURITES_OK = 2003
@@ -2793,6 +2821,68 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                             f.write(write_str)
                     f.close()
 
+        elif controlId == self.C_STREAM_STRM_PVR:
+            index = 0
+            urls = []
+            channels = {}
+            for group in ["radio","tv"]:
+                urls = urls + xbmcvfs.listdir("pvr://channels/%s/All channels/" % group)[1]
+            for group in ["radio","tv"]:
+                groupid = "all%s" % group
+                json_query = RPC.PVR.get_channels(channelgroupid=groupid, properties=[ "thumbnail", "channeltype", "hidden", "locked", "channel", "lastplayed", "broadcastnow" ] )
+                if "channels" in json_query:
+                    for channel in json_query["channels"]:
+                        channelname = channel["label"]
+                        streamUrl = urls[index]
+                        index = index + 1
+                        url = "pvr://channels/%s/All channels/%s" % (group,streamUrl)
+                        channels[url] = channelname
+            #TODO make this a function
+            file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
+            f = xbmcvfs.File(file_name)
+            items = f.read().splitlines()
+            f.close()
+            streams = {}
+            addonId = 'nothing'
+            for item in items:
+                if item.startswith('['):
+                    addonId = item.strip('[] \t')
+                    streams[addonId] = {}
+                elif item.startswith('#'):
+                    pass
+                else:
+                    name_url = item.split('=',1)
+                    if len(name_url) == 2:
+                        name = name_url[0]
+                        url = name_url[1]
+                        if url:
+                            streams[addonId][name] = url
+
+            addonId = "script.tvguide.fullscreen"
+            if addonId not in streams:
+                streams[addonId] = {}
+            for url in channels:
+                name = channels[url]
+                streams[addonId][name] = url
+
+            f = xbmcvfs.File(file_name,'w')
+            write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"
+            f.write(write_str.encode("utf8"))
+            for addonId in sorted(streams):
+                write_str = "[%s]\n" % (addonId)
+                f.write(write_str)
+                addonStreams = streams[addonId]
+                for name in sorted(addonStreams):
+                    stream = addonStreams[name]
+                    if name.startswith(' '):
+                        continue
+                    name = re.sub(r'[:=]',' ',name)
+                    if not stream:
+                        stream = 'nothing'
+                    write_str = "%s=%s\n" % (name,stream)
+                    f.write(write_str.encode("utf8"))
+            f.close()
+
         elif controlId == self.C_STREAM_ADDONS_OK:
             listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
             item = listControl.getSelectedItem()
@@ -2962,8 +3052,18 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
         dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
-        links = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "file"])
-        thumbnails = dict([[f["label"], f["thumbnail"]] for f in files if f["filetype"] == "file"])
+        links = {}
+        thumbnails = {}
+        for f in files:
+            if f["filetype"] == "file":
+                label = f["label"]
+                label = re.sub(r'\[[BI]\]','',label)
+                label = re.sub(r'\[/?COLOR.*?\]','',label)
+                file = f["file"]
+                while (label in links):
+                    label = "%s." % label
+                links[label] = file
+                thumbnails[label] = f["thumbnail"]
 
         items = list()
         item = xbmcgui.ListItem('[B]..[/B]')
@@ -3038,7 +3138,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         for i in range(0,listControl.size()):
             listItem = listControl.getListItem(i)
             name = listItem.getLabel()
-            name = re.sub(r'\[.*?\]','',name)
             stream = listItem.getProperty('stream')
             if stream:
                 streams[addonId][name] = stream
@@ -3089,8 +3188,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl = self.getControl(StreamSetupDialog.C_STREAM_BROWSE_STREAMS)
         for i in range(0,listControl.size()):
             listItem = listControl.getListItem(i)
-            #name = listItem.getLabel()
-            #name = re.sub(r'\[.*?\]','',name)
             stream = listItem.getProperty('stream')
             icon = listItem.getProperty('icon')
             if stream:
@@ -3107,7 +3204,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = addonStreams[name]
                 if name.startswith(' '):
                     continue
-                #name = re.sub(r'[:=]',' ',name)
                 if not stream:
                     stream = 'nothing'
                 write_str = "%s|%s\n" % (name,stream)

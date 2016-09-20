@@ -62,7 +62,7 @@
 			<texture>aqua.png</texture>
 			<visible>true</visible>
         </control>
-		
+
 		<!-- Video Preview -->
 		<control type="group">
 			<left>0</left>
@@ -118,7 +118,7 @@
 				<visible>true</visible>
 			</control>
 		</control>
-		
+
 		<!-- Header details -->
         <control type="label" id="4024">
             <description>Channel Name</description>
@@ -190,7 +190,7 @@
             <texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
             <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
         </control>
-		
+
 		<!-- Header Buttons -->
         <control type="group">
             <left>298</left>
@@ -312,6 +312,25 @@
                 <texturenofocus>menu-grey.png</texturenofocus>
                 <onup>101</onup>
                 <onleft>1001</onleft>
+                <onright>1007</onright>
+                <ondown>1002</ondown>
+            </control>
+            <control type="button" id="1007">
+                <description>Import PVR</description>
+                <left>441</left>
+                <top>100</top>
+                <width>200</width>
+                <height>30</height>
+                <label>Import PVR</label>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>white</textcolor>
+                <focusedcolor>white</focusedcolor>
+                <texturefocus>menu-grey-focus.png</texturefocus>
+                <texturenofocus>menu-grey.png</texturenofocus>
+                <onup>101</onup>
+                <onleft>1006</onleft>
                 <onright>1002</onright>
                 <ondown>1002</ondown>
             </control>
@@ -332,7 +351,7 @@
                 <height>30</height>
                 <wrapmultiline>true</wrapmultiline>
             </control>
-			
+
 			<!--Preview, Save, Cancel Buttons when Stream selected-->
             <control type="button" id="1002">
                 <left>668</left>
