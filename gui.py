@@ -413,6 +413,10 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+        elif action.getId() in [KEY_CONTEXT_MENU]:
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+            if self.currentProgram is not None:
+                self._showContextMenu(self.currentProgram)
         elif action.getId() == ACTION_SHOW_INFO:
             self.osdChannel = self.currentChannel
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
@@ -438,6 +442,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [REMOTE_1]:
             self.showListing(self.currentChannel)
 
+
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_SHOW_INFO:
             self._hideOsd()
@@ -452,6 +457,11 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideOsd()
             self.playChannel(self.osdChannel, self.osdProgram)
+
+        elif action.getId() in [KEY_CONTEXT_MENU]:
+            self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
+            if self.osdProgram is not None:
+                self._showContextMenu(self.osdProgram)
 
         elif action.getId() == ACTION_PAGE_UP:
             self._channelUp()
@@ -501,6 +511,11 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+        elif action.getId() in [KEY_CONTEXT_MENU]:
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+            if self.currentProgram is not None:
+                self._showContextMenu(self.currentProgram)
 
         elif action.getId() == ACTION_SELECT_ITEM:
             self._hideLastPlayed()
@@ -655,6 +670,10 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getQuickProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
+        elif action.getId() in [KEY_CONTEXT_MENU] and controlInFocus is not None:
+            program = self._getQuickProgramFromControl(controlInFocus)
+            if program is not None:
+                self._showContextMenu(program)
         else:
             xbmc.log('[script.tvguide.fullscreen] quick epg Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
