@@ -7,6 +7,12 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.117
+- support for Meta channel play by name
+- use these as channels in addons.ini
+- plugin://plugin.video.meta/tv/play_by_name/
+- plugin://plugin.video.meta/movies/play_by_name/
+
 version 0.0.116
 - fix
 
