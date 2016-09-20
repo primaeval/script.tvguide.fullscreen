@@ -717,8 +717,8 @@ class Database(object):
 
         return program
 
-    def getNextProgram(self, channel):
-        return self._invokeAndBlockForResult(self._getNextProgram, channel)
+    def getNextProgram(self, program):
+        return self._invokeAndBlockForResult(self._getNextProgram, program)
 
     def _getNextProgram(self, program):
         try:
@@ -729,16 +729,17 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.endDate])
             row = c.fetchone()
             if row:
-                nextProgram = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                nextProgram = Program(program.channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
                               is_movie=row['is_movie'], language=row['language'])
             c.close()
+            xbmc.log("close")
             return nextProgram
         except:
             return
 
-    def getPreviousProgram(self, channel):
-        return self._invokeAndBlockForResult(self._getPreviousProgram, channel)
+    def getPreviousProgram(self, program):
+        return self._invokeAndBlockForResult(self._getPreviousProgram, program)
 
     def _getPreviousProgram(self, program):
         try:
@@ -749,7 +750,7 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.startDate])
             row = c.fetchone()
             if row:
-                previousProgram = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+                previousProgram = Program(program.channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
                               is_movie=row['is_movie'], language=row['language'])
             c.close()
