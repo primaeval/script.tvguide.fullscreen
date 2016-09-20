@@ -21,7 +21,7 @@
             <width>1280</width>
             <height>720</height>
 			<aspectratio>scale</aspectratio>
-            <texture fallback="charcoal.jpg">charcoal2.jpg</texture>
+            <texture fallback="charcoal.png">$VAR[GlobalFanartVar]</texture>
             <visible>true</visible>
         </control>
         <!-- Header Image-->
@@ -317,7 +317,7 @@
             </control>
             <control type="button" id="1007">
                 <description>Import PVR</description>
-                <left>441</left>
+                <left>442</left>
                 <top>100</top>
                 <width>200</width>
                 <height>30</height>

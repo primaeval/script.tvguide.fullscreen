@@ -19,7 +19,7 @@
             <width>1280</width>
             <height>720</height>
 			<aspectratio>scale</aspectratio>
-            <texture fallback="charcoal.jpg">charcoal2.jpg</texture>
+            <texture fallback="charcoal.png">$VAR[GlobalFanartVar]</texture>
             <visible>true</visible>
         </control>
 		<control type="image">
