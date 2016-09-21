@@ -20,6 +20,25 @@
             <visible>true</visible>
         </control>
 
+        <control type="videowindow">
+            <description>video window</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <visible>true</visible>
+        </control>
+
+        <control type="image">
+            <description>background</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>tvg-back-trans.png</texture>
+            <visible>true</visible>
+        </control>
+
         <control type="label" id="1001">
             <description>Title</description>
             <left>0</left>
@@ -286,7 +305,7 @@
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(When)</info>
-                        </control>                        
+                        </control>
                         <control type="label">
                             <description>Program Title</description>
                             <left>700</left>
