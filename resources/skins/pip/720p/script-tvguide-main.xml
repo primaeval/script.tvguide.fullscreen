@@ -318,7 +318,7 @@
                     <height>20</height>
                     <textcolor>ffffffff</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font13</font>
+                    <font>font10</font>
                     <align>right</align>
                     <aligny>center</aligny>
                     <visible>true</visible>
