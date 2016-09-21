@@ -175,6 +175,7 @@
                             <width>200</width>
                             <height>40</height>
                             <font>font13</font>
+                            <textcolor>grey</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(ChannelName)</info>
@@ -185,6 +186,7 @@
                             <width>200</width>
                             <height>40</height>
                             <font>font13</font>
+                            <textcolor>grey</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(StartTime)</info>
@@ -195,6 +197,7 @@
                             <width>100</width>
                             <height>40</height>
                             <font>font13</font>
+                            <textcolor>grey</textcolor>
                             <align>right</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(Duration)</info>
@@ -229,6 +232,7 @@
                             <width>550</width>
                             <height>40</height>
                             <font>font13</font>
+                            <textcolor>grey</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Label</info>
@@ -240,7 +244,8 @@
                             <top>0</top>
                             <width>1280</width>
                             <height>100</height>
-                            <texture>tvg-button-focus.png</texture>
+                            <texture>tvg-program-focus.png</texture>
+                            <visible>true</visible>
                         </control>
                         <control type="image">
                             <left>10</left>
@@ -256,7 +261,7 @@
                             <width>200</width>
                             <height>40</height>
                             <font>font13</font>
-                            <textcolor>cyan</textcolor>
+                            <textcolor>black</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(ChannelName)</info>
@@ -267,7 +272,7 @@
                             <width>200</width>
                             <height>40</height>
                             <font>font13</font>
-                            <textcolor>cyan</textcolor>
+                            <textcolor>black</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(StartTime)</info>
@@ -278,7 +283,7 @@
                             <width>100</width>
                             <height>40</height>
                             <font>font13</font>
-                            <textcolor>cyan</textcolor>
+                            <textcolor>black</textcolor>
                             <align>right</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(Duration)</info>
@@ -301,7 +306,7 @@
                             <width>100</width>
                             <height>40</height>
                             <font>font12</font>
-                            <textcolor>grey</textcolor>
+                            <textcolor>black</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(When)</info>
@@ -313,7 +318,7 @@
                             <width>550</width>
                             <height>40</height>
                             <font>font13</font>
-                            <textcolor>cyan</textcolor>
+                            <textcolor>black</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Label</info>
@@ -325,6 +330,7 @@
                             <width>960</width>
                             <height>58</height>
                             <font>font12</font>
+                            <textcolor>white</textcolor>
                             <align>left</align>
                             <wrapmultiline>true</wrapmultiline>
                             <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
