@@ -1665,6 +1665,9 @@ class TVGuide(xbmcgui.WindowXML):
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top-2)
+            image = ADDON.getSetting('timebar.image')
+            if image:
+                self.setControlImage(self.C_MAIN_TIMEBAR, image)
         self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
 
         # add program controls
