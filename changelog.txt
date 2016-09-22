@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.119
+- custom background and timebar image Setting
+
 version 0.0.118
 - import PVR channels (in Stream Setup)
 - Right for Fullscreen in TV mode
