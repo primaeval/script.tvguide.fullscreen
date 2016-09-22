@@ -57,7 +57,8 @@
         <setting id="nextup.showTime" type="number" label="    - Time in seconds to show" default="10" visible="false" enable="true"/>
 
         <setting type="sep"/>
-        <setting id="program.background.enabled" label="Background Program Image" type="bool" default="true" />
+        <setting id="program.background.enabled" label="Enable Background EPG Image" type="bool" default="true" />
+        <setting id="program.background.image" label="Custom Background EPG Image" type="file" default="" />
         <setting type="sep"/>
         <setting id="channels.per.page" label="Channels per Page" type="labelenum" default="14" values="1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16"/>
         <setting type="sep"/>
