@@ -2402,11 +2402,23 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if self.category == "Any":
                 return
             dialog = xbmcgui.Dialog()
-            ret = dialog.select("%s" % self.category, ["Add Channels","Remove Channels"])
+            ret = dialog.select("%s" % self.category, ["Add Channels","Remove Channels","Clear Channels"])
             if ret < 0:
                 return
+
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+            lines = f.read().splitlines()
+            f.close()
+            categories = {}
+            categories[self.category] = []
+            for line in lines:
+                name,cat = line.split('=')
+                if cat not in categories:
+                    categories[cat] = []
+                categories[cat].append(name)
+
             if ret == 0:
-                categories = sorted(self.categories)
+                #categories = sorted(self.categories)
                 channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
                 str = 'Add Channels To %s' % self.category
                 ret = dialog.multiselect(str, channelList)
@@ -2417,37 +2429,12 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 channels = []
                 for i in ret:
                     channels.append(channelList[i])
-                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
-                lines = f.read().splitlines()
-                f.close()
-                categories = {}
-                categories[self.category] = []
-                for line in lines:
-                    name,cat = line.split('=')
-                    if cat not in categories:
-                        categories[cat] = []
 
-                    categories[cat].append(name)
                 for channel in channels:
                     categories[self.category].append(channel)
-                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
-                for cat in categories:
-                    channels = set(categories[cat])
-                    for channel in channels:
-                        f.write("%s=%s\n" % (channel.encode("utf8"),cat))
-                f.close()
-                self.categories = [category for category in categories if category]
-            else:
-                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
-                lines = f.read().splitlines()
-                f.close()
-                categories = {}
-                for line in lines:
-                    name,cat = line.split('=')
-                    if cat not in categories:
-                        categories[cat] = []
-                    categories[cat].append(name)
-                channelList = categories[self.category]
+
+            elif ret == 1:
+                channelList = sorted(categories[self.category])
                 str = 'Remove Channels From %s' % self.category
                 ret = dialog.multiselect(str, channelList)
                 if ret is None:
@@ -2461,13 +2448,17 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 for name in channelList:
                     if name:
                         categories[self.category].append(name)
-                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
-                for cat in categories:
-                    channels = categories[cat]
-                    for channel in channels:
-                        f.write("%s=%s\n" % (channel.encode("utf8"),cat))
-                f.close()
-                self.categories = [category for category in categories if category]
+
+            elif ret == 2:
+                categories[self.category] = []
+
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
+            for cat in categories:
+                channels = categories[cat]
+                for channel in channels:
+                    f.write("%s=%s\n" % (channel.encode("utf8"),cat))
+            f.close()
+            self.categories = [category for category in categories if category]
 
     def onClick(self, controlId):
         if controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
