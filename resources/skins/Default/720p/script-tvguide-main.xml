@@ -183,9 +183,9 @@
             <control type="image" id="4600">
                 <description>background</description>
                 <posx>0</posx>
-                <posy>-2</posy>
+                <posy>-60</posy>
                 <width>1280</width>
-                <height>450</height>
+                <height>720</height>
                 <texture>black.png</texture>
                 <visible>!Player.HasMedia</visible>
                 <aspectratio>scale</aspectratio>
@@ -234,7 +234,7 @@
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
 
-                <visible>Player.HasMedia</visible>
+                <visible>True</visible>
             </control>
 
             <control type="image" id="4100">
