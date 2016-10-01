@@ -77,6 +77,22 @@
             <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
+            <texture>tvg-autoplaywith-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplaywith-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
             <texture>background-cover.png</texture>
         </control>
         <control type="image">
@@ -157,9 +173,9 @@
             <control type="image" id="4600">
                 <description>background</description>
                 <posx>0</posx>
-                <posy>-2</posy>
+                <posy>-60</posy>
                 <width>1280</width>
-                <height>450</height>
+                <height>720</height>
                 <texture>black.png</texture>
                 <visible>true</visible>
                 <aspectratio>scale</aspectratio>
@@ -178,7 +194,7 @@
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>200</fadetime>
+                <fadetime>0</fadetime>
             </control>
 
 
@@ -207,7 +223,7 @@
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
-                <visible>Player.HasMedia</visible>
+                <visible>True</visible>
             </control>
 
             <control type="image" id="4100">
