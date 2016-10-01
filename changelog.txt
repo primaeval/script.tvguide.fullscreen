@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.122
+- lighten epg overlay
+
 version 0.0.121
 - fullscreen background image (1280x720)
 
