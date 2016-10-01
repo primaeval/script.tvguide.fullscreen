@@ -215,7 +215,7 @@
                 <posy>-60</posy>
                 <width>1280</width>
                 <height>58</height>
-                <texture>black-back.png</texture>
+                <texture>tvg-program-nofocus.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -228,7 +228,7 @@
                 <posy>450</posy>
                 <width>1280</width>
                 <height>220</height>
-                <texture>black-back.png</texture>
+                <texture>tvg-program-nofocus.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
