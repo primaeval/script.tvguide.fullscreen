@@ -2806,7 +2806,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     matches = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
                     playlist_streams = {}
                     for name,url in matches:
-                        playlist_streams[name.strip()] = url.strip()
+                        name = remove_formatting(name.strip())
+                        name = re.sub(r'[:=]',' ',name)
+                        playlist_streams[name] = url.strip()
 
                     #TODO make this a function
                     file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
@@ -2912,7 +2914,10 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     if not stream:
                         stream = 'nothing'
                     write_str = "%s=%s\n" % (name,stream)
-                    f.write(write_str.encode("utf8"))
+                    try:
+                        f.write(write_str.encode("utf8"))
+                    except:
+                        f.write(write_str)
             f.close()
 
         elif controlId == self.C_STREAM_ADDONS_OK:
