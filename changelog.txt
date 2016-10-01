@@ -8,7 +8,7 @@ USAGE NOTES:
 - use Spoyser's repo for Super Favourites
 
 version 0.0.121
-- fix
+- fullscreen background image (1280x720)
 
 version 0.0.120
 - Add/Remove/Clear Channels from Categories
