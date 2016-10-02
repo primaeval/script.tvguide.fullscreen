@@ -2026,7 +2026,7 @@
                 <posy>0</posy>
                 <width>-2</width>
                 <height>116</height>
-                <texture>cyan.png</texture>
+                <texture>white.png</texture>
             </control>
 
             <control type="image">

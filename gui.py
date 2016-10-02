@@ -541,7 +541,8 @@ class TVGuide(xbmcgui.WindowXML):
             return
 
         elif action.getId() == ACTION_MOUSE_MOVE:
-            self._showControl(self.C_MAIN_MOUSE_CONTROLS)
+            if ADDON.getSetting('mouse.controls') == "true":
+                self._showControl(self.C_MAIN_MOUSE_CONTROLS)
             return
 
         elif action.getId() in [KEY_NAV_BACK]:
@@ -1071,7 +1072,7 @@ class TVGuide(xbmcgui.WindowXML):
                     self.setControlImage(self.C_MAIN_BACKGROUND, image)
                 else:
                     self.setControlImage(self.C_MAIN_BACKGROUND, "white.png")
-                    name = ADDON.getSetting('program.background.color')
+                    name = remove_formatting(ADDON.getSetting('program.background.color'))
                     color = colors.color_name[name]
 
             control = self.getControl(self.C_MAIN_BACKGROUND)
@@ -1673,9 +1674,9 @@ class TVGuide(xbmcgui.WindowXML):
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top-2)
-            color = colors.color_name[ADDON.getSetting('timebar.color')]
+            color = colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))]
             control.setColorDiffuse(color)
-        self.getControl(self.C_QUICK_EPG_TIMEBAR).setColorDiffuse(colors.color_name[ADDON.getSetting('timebar.color')])
+        self.getControl(self.C_QUICK_EPG_TIMEBAR).setColorDiffuse(colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))])
         #self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
 
         # add program controls
