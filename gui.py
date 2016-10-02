@@ -886,6 +886,26 @@ class TVGuide(xbmcgui.WindowXML):
                     self.autoplaywith.addAutoplaywith(program, play_type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+        elif buttonClicked == PopupMenu.C_POPUP_LISTS:
+            d = xbmcgui.Dialog()
+            list = d.select("Lists", ["Channel Listing","On Now", "On Next", "Program Search", "Reminders", "AutoPlays", "AutoPlayWiths"])
+            if list < 0:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if list == 0:
+                self.showListing(program.channel)
+            elif list == 1:
+                self.showNow()
+            elif list == 2:
+                self.showNext()
+            elif list == 3:
+                self.programSearch()
+            elif list == 4:
+                self.showFullReminders()
+            elif list == 5:
+                self.showFullAutoplays()
+            elif list == 6:
+                self.showFullAutoplaywiths()
+
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
@@ -2274,6 +2294,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_STREAM_SETUP = 4007
     C_POPUP_AUTOPLAY = 4008
     C_POPUP_AUTOPLAYWITH = 4009
+    C_POPUP_LISTS = 4011
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102

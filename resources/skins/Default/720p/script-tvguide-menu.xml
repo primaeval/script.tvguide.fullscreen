@@ -80,7 +80,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>Add Category</label>
             <visible>true</visible>
         </control>
@@ -245,12 +245,12 @@
             <align>left</align>
             <aligny>top</aligny>
             <wrapmultiline>true</wrapmultiline>
-			<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             <label/>
         </control>
 
         <control type="label" id="4101">
-			<description>channel title</description>
+            <description>channel title</description>
             <posx>550</posx>
             <posy>10</posy>
             <width>240</width>
@@ -289,7 +289,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>iSearch</label>
         </control>
 
@@ -308,7 +308,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>Meta Search</label>
         </control>
 
@@ -327,7 +327,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
         </control>
 
         <control type="button" id="4008">
@@ -345,7 +345,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>AutoPlay</label>
         </control>
 
@@ -358,14 +358,34 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4008</onup>
+            <ondown>4011</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>black</textcolor>
+            <focusedcolor>cyan</focusedcolor>
+            <label>AutoPlayWith</label>
+        </control>
+
+        <control type="button" id="4011">
+            <description>Lists</description>
+            <posx>285</posx>
+            <posy>275</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4009</onup>
             <ondown>4000</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
-            <label>AutoPlayWith</label>
+            <focusedcolor>cyan</focusedcolor>
+            <visible>true</visible>
+            <label>Lists</label>
         </control>
 
         <control type="button" id="4000">
@@ -376,7 +396,7 @@
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4009</onup>
+            <onup>4011</onup>
             <ondown>4001</ondown>
             <onleft>7004</onleft>
             <align>center</align>
@@ -384,7 +404,7 @@
             <font>font13</font>
             <textcolor>black</textcolor>
             <focusedcolor>cyan</focusedcolor>
-			<visible>true</visible>
+            <visible>true</visible>
         </control>
         <control type="button" id="4001">
             <!-- Choose Stream -->
@@ -401,7 +421,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>Choose Stream</label>
         </control>
         <control type="button" id="4007">
@@ -419,7 +439,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>Stream Setup</label>
         </control>
         <control type="label">
@@ -463,7 +483,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
 
@@ -482,7 +502,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30308]</label>
             <visible>true</visible>
         </control>
@@ -504,7 +524,7 @@
             <font>font13</font>
             <textcolor>black</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 80000]</label>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
         <control type="button" id="80001">
@@ -522,9 +542,9 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80001]</label>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
         <control type="button" id="80002">
@@ -542,9 +562,9 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80002]</label>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
 
@@ -566,7 +586,7 @@
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <focusedcolor>cyan</focusedcolor>
             <label>Remove Category</label>
             <visible>false</visible>
         </control>
