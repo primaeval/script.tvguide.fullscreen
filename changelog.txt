@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.126
+- Lists button in main menu
+
 version 0.0.125
 - colored color selection
 - mouse controls visible setting
