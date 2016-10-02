@@ -33,6 +33,7 @@ import subprocess
 import xbmc
 import xbmcgui
 import xbmcvfs
+import colors
 
 import source as src
 from notification import Notification
@@ -1053,6 +1054,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_LOGO, '')
 
 
+            color = colors.color_name["white"]
             if program.imageSmall is not None:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
             else:
@@ -1068,7 +1070,12 @@ class TVGuide(xbmcgui.WindowXML):
                 if image:
                     self.setControlImage(self.C_MAIN_BACKGROUND, image)
                 else:
-                    self.setControlImage(self.C_MAIN_BACKGROUND, "tvg-programs-back.png")
+                    self.setControlImage(self.C_MAIN_BACKGROUND, "white.png")
+                    name = ADDON.getSetting('program.background.color')
+                    color = colors.color_name[name]
+
+            control = self.getControl(self.C_MAIN_BACKGROUND)
+            control.setColorDiffuse(color)
 
             #if not self.osdEnabled and self.player.isPlaying():
             #    self.player.stop()
@@ -1662,12 +1669,13 @@ class TVGuide(xbmcgui.WindowXML):
         if control:
             control.setPosition(0,top)
             control.setHeight(height)
+
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top-2)
-            image = ADDON.getSetting('timebar.image')
-            if image:
-                self.setControlImage(self.C_MAIN_TIMEBAR, image)
+            color = colors.color_name[ADDON.getSetting('timebar.color')]
+            control.setColorDiffuse(color)
+        self.getControl(self.C_QUICK_EPG_TIMEBAR).setColorDiffuse(colors.color_name[ADDON.getSetting('timebar.color')])
         #self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
 
         # add program controls
