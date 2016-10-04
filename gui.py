@@ -1076,12 +1076,15 @@ class TVGuide(xbmcgui.WindowXML):
 
 
             color = colors.color_name["white"]
-            if program.imageSmall is not None:
-                self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
-            else:
+            if ADDON.getSetting('program.background.enabled') == 'true':
                 self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
-            if program.imageLarge is not None:
-                self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
+            else:
+                if program.imageSmall is not None:
+                    self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
+                else:
+                    self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
+                if program.imageLarge is not None:
+                    self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
 
 
             if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
