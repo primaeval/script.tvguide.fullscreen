@@ -170,7 +170,7 @@
             <!--<animation type="Conditional" condition="!Control.IsVisible(5000)">
                 <effect type="zoom" end="25" center="1250,690" time="500" />
             </animation>-->
-            <visible>Control.IsVisible(5000)</visible>
+            <visible>true</visible>
         </control>
 
         <control type="label" id="5000">
@@ -1096,7 +1096,7 @@
 
                 <fadetime>0</fadetime>
                 <texture>-</texture>
-                <visible>!Player.HasMedia</visible>
+                <visible>true</visible>
             </control>
             <control type="image" id="7024">
                 <description>Channel logo</description>
@@ -1343,7 +1343,7 @@
             <height>240</height>
             <aligny>top</aligny>
             <aspectratio>scale</aspectratio>
-            <visible>!Control.IsVisible(5000)</visible>
+            <visible>false</visible>
         </control>
 
         <control type="label" id="6000">
