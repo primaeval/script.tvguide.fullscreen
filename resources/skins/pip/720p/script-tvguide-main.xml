@@ -1026,7 +1026,7 @@
                 <height>50</height>
                 <textcolor>white</textcolor>
                 <shadowcolor>black</shadowcolor>
-                <font>font12</font>
+                <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
                 <scroll>true</scroll>
@@ -1040,7 +1040,7 @@
                 <height>50</height>
                 <textcolor>white</textcolor>
                 <shadowcolor>black</shadowcolor>
-                <font>font12</font>
+                <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
                 <scroll>true</scroll>
@@ -1055,7 +1055,7 @@
                 <height>50</height>
                 <textcolor>white</textcolor>
                 <shadowcolor>black</shadowcolor>
-                <font>font12</font>
+                <font>font13</font>
                 <align>right</align>
 
                 <visible>true</visible>
@@ -1078,7 +1078,7 @@
                 <width>845</width>
                 <height>170</height>
                 <textcolor>white</textcolor>
-                <font>font12</font>
+                <font>font13</font>
                 <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
                 <label>-</label>
