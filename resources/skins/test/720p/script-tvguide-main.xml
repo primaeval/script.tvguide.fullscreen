@@ -179,15 +179,15 @@
         <control type="group">
             <description>TV Guide group</description>
             <posx>0</posx>
-            <posy>60</posy>
+            <posy>30</posy>
             <width>1280</width>
-            <height>660</height>
+            <height>690</height>
             <visible>!Control.IsVisible(5000)</visible>
 
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
-                <posy>60</posy>
+                <posy>30</posy>
                 <width>1100</width>
                 <height>450</height>
                 <visible>false</visible>
@@ -213,9 +213,9 @@
             <control type="image" id="4601">
                 <description>header</description>
                 <posx>0</posx>
-                <posy>-60</posy>
+                <posy>-30</posy>
                 <width>1280</width>
-                <height>58</height>
+                <height>28</height>
                 <texture>tvg-program-nofocus.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
@@ -1020,7 +1020,7 @@
 
             <control type="label" id="7025">
                 <description>Channel name</description>
-                <posx>365</posx>
+                <posx>430</posx>
                 <posy>470</posy>
                 <width>175</width>
                 <height>50</height>
@@ -1034,9 +1034,9 @@
             </control>
             <control type="label" id="7020">
                 <description>Program title</description>
-                <posx>550</posx>
+                <posx>600</posx>
                 <posy>470</posy>
-                <width>550</width>
+                <width>500</width>
                 <height>50</height>
                 <textcolor>white</textcolor>
                 <shadowcolor>black</shadowcolor>
@@ -1061,9 +1061,9 @@
                 <visible>true</visible>
             </control>
             <control type="progress" id="7026">
-                <posx>0</posx>
+                <posx>430</posx>
                 <posy>10r</posy>
-                <width>1280</width>
+                <width>845</width>
                 <height>5</height>
                 <lefttexture />
                 <righttexture />
@@ -1073,9 +1073,9 @@
             </control>
             <control type="textbox" id="7022">
                 <description>Program description</description>
-                <posx>365</posx>
+                <posx>430</posx>
                 <posy>505</posy>
-                <width>910</width>
+                <width>845</width>
                 <height>140</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
@@ -1089,8 +1089,8 @@
                 <description>Program logo / Source logo</description>
                 <posx>0</posx>
                 <posy>450</posy>
-                <width>360</width>
-                <height>200</height>
+                <width>425</width>
+                <height>240</height>
                 <aligny>top</aligny>
                 <aspectratio>scale</aspectratio>
 
@@ -1338,11 +1338,11 @@
         <control type="videowindow">
             <description>video window</description>
             <posx>0</posx>
-            <posy>210r</posy>
-            <width>360</width>
-            <height>200</height>
+            <posy>240r</posy>
+            <width>424</width>
+            <height>240</height>
             <aligny>top</aligny>
-            <aspectratio>keep</aspectratio>
+            <aspectratio>scale</aspectratio>
             <visible>!Control.IsVisible(5000)</visible>
         </control>
 
