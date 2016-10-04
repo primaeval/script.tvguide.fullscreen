@@ -1079,7 +1079,7 @@ class TVGuide(xbmcgui.WindowXML):
             if program.imageSmall is not None:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
             else:
-                self.setControlImage(self.C_MAIN_IMAGE, '')
+                self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
             if program.imageLarge is not None:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
 
