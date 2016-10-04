@@ -1370,6 +1370,7 @@ class XMLTVSource(Source):
             return None
 
     def parseXMLTV(self, context, f, size, logoFolder, progress_callback):
+        throwaway = datetime.datetime.strptime('20110101','%Y%m%d') #BUG FIX http://stackoverflow.com/questions/16309650/python-importerror-for-strptime-in-spyder-for-windows-7
         event, root = context.next()
         elements_parsed = 0
         meta_installed = False
