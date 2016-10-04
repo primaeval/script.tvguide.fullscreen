@@ -1076,15 +1076,12 @@ class TVGuide(xbmcgui.WindowXML):
 
 
             color = colors.color_name["white"]
-            if ADDON.getSetting('program.background.enabled') == 'true':
-                self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
+            if program.imageSmall is not None:
+                self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
             else:
-                if program.imageSmall is not None:
-                    self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
-                else:
-                    self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
-                if program.imageLarge is not None:
-                    self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
+                self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
+            if program.imageLarge is not None:
+                self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
 
 
             if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
@@ -1561,8 +1558,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         # date and time row
         self.setControlLabel(self.C_MAIN_DATE, self.formatDateTodayTomorrow(self.viewStartDate))
-        #self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
-        self.setControlLabel(self.C_MAIN_DATE_LONG, '{dt:%A} {dt.day} {dt:%B}'.format(dt=self.viewStartDate))
+        self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
+        #self.setControlLabel(self.C_MAIN_DATE_LONG, '{dt:%A} {dt.day} {dt:%B}'.format(dt=self.viewStartDate))
         for col in range(1, 5):
             self.setControlLabel(4000 + col, self.formatTime(startTime))
             startTime += HALF_HOUR
