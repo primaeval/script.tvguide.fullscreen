@@ -79,8 +79,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Add Category</label>
             <visible>true</visible>
         </control>
@@ -116,7 +116,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>black</textcolor>
+                    <textcolor>white</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -147,7 +147,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>black</textcolor>
+                    <textcolor>white</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -160,7 +160,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>black</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -265,11 +265,11 @@
         <control type="image" id="4100">
             <description>channel logo</description>
             <posx>275</posx>
-            <posy>80r</posy>
+            <posy>70r</posy>
             <width>220</width>
-            <height>60</height>
+            <height>45</height>
             <align>center</align>
-            <aligny>center</aligny>
+            <aligny>bottom</aligny>
             <aspectratio>keep</aspectratio>
             <visible>true</visible>
         </control>
@@ -288,8 +288,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>iSearch</label>
         </control>
 
@@ -307,8 +307,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Meta Search</label>
         </control>
 
@@ -326,8 +326,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
         </control>
 
         <control type="button" id="4008">
@@ -344,8 +344,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>AutoPlay</label>
         </control>
 
@@ -363,8 +363,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>AutoPlayWith</label>
         </control>
 
@@ -382,8 +382,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <visible>true</visible>
             <label>Lists</label>
         </control>
@@ -402,8 +402,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <visible>true</visible>
         </control>
         <control type="button" id="4001">
@@ -420,8 +420,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Choose Stream</label>
         </control>
         <control type="button" id="4007">
@@ -438,8 +438,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Stream Setup</label>
         </control>
         <control type="label">
@@ -449,7 +449,7 @@
             <width>200</width>
             <height>200</height>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30305]</label>
             <wrapmultiline>true</wrapmultiline>
             <visible>false</visible>
@@ -464,7 +464,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <visible>false</visible>
         </control>
 
@@ -482,8 +482,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
 
@@ -501,8 +501,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30308]</label>
             <visible>true</visible>
         </control>
@@ -522,7 +522,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 80000]</label>
             <visible>false</visible>
         </control>
@@ -541,8 +541,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80001]</label>
             <visible>false</visible>
         </control>
@@ -561,8 +561,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80002]</label>
             <visible>false</visible>
         </control>
@@ -585,8 +585,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Remove Category</label>
             <visible>false</visible>
         </control>
