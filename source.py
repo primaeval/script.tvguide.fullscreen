@@ -1613,7 +1613,7 @@ class TVGUKSource(Source):
         return ttime
 
 class USYoSource(Source):
-    KEY = 'uk.yo.tv'
+    KEY = '%s.yo.tv' % ADDON.getSetting("yo.country")
 
     def __init__(self, addon):
         self.needReset = False
@@ -1639,14 +1639,11 @@ class USYoSource(Source):
         @return:
         """
 
-        #channel_name = country_name
-        country_id = "danmark"
+        country_id = ADDON.getSetting("yo.country")
         html = self.get_url('http://%s.yo.tv/' % country_id)
 
-
         channels = html.split('<li><a data-ajax="false"')
-        #videos = []
-        #items = []
+
         for channel in channels:
             img_url = ''
 
