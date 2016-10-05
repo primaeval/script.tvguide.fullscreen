@@ -60,18 +60,18 @@
 
         <control type="image">
             <description>bottom buttons mount</description>
-            <posx>410</posx>
+            <posx>10</posx>
             <posy>640</posy>
-            <width>860</width>
+            <width>1260</width>
             <height>60</height>
             <texture>grey.png</texture>
             <visible>true</visible>
         </control>
         <control type="image">
             <description>bottom buttons background</description>
-            <posx>412</posx>
+            <posx>12</posx>
             <posy>642</posy>
-            <width>856</width>
+            <width>1256</width>
             <height>56</height>
             <texture>black-back.png</texture>
             <visible>true</visible>
