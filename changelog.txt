@@ -7,6 +7,43 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.130
+- tweaks
+
+version 0.0.129
+- automatic update fix
+
+version 0.0.128
+- tweaks
+
+version 0.0.127
+- bigger program image / pip window
+
+version 0.0.126
+- Lists button in main menu
+
+version 0.0.125
+- colored color selection
+- mouse controls visible setting
+
+version 0.0.124
+- full background customization settings
+
+version 0.0.123
+- darker background
+
+version 0.0.122
+- lighten epg overlay
+
+version 0.0.121
+- fullscreen background image (1280x720)
+
+version 0.0.120
+- Add/Remove/Clear Channels from Categories
+
+version 0.0.119
+- custom background and timebar image Setting
+
 version 0.0.118
 - import PVR channels (in Stream Setup)
 - Right for Fullscreen in TV mode

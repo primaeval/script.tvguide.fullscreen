@@ -550,15 +550,15 @@ class Database(object):
 
 
     #TODO hangs on second call from _getNowList. use _getChannelList instead
-    def getChannelList(self, onlyVisible=True):
+    def getChannelList(self, onlyVisible=True, all=False):
         if not self.channelList or not onlyVisible:
-            result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible)
+            result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible, all)
             if not onlyVisible:
                 return result
             self.channelList = result
         return self.channelList
 
-    def _getChannelList(self, onlyVisible):
+    def _getChannelList(self, onlyVisible, all=False):
         c = self.conn.cursor()
         channelList = list()
         if onlyVisible:
@@ -568,7 +568,7 @@ class Database(object):
         for row in c:
             channel = Channel(row['id'], row['title'], row['logo'], row['stream_url'], row['visible'], row['weight'])
             channelList.append(channel)
-        if self.category and self.category != "Any":
+        if all == False and self.category and self.category != "Any":
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
             lines = f.read().splitlines()
             f.close()
@@ -1370,6 +1370,7 @@ class XMLTVSource(Source):
             return None
 
     def parseXMLTV(self, context, f, size, logoFolder, progress_callback):
+        throwaway = datetime.datetime.strptime('20110101','%Y%m%d') #BUG FIX http://stackoverflow.com/questions/16309650/python-importerror-for-strptime-in-spyder-for-windows-7
         event, root = context.next()
         elements_parsed = 0
         meta_installed = False

@@ -33,6 +33,7 @@ import subprocess
 import xbmc
 import xbmcgui
 import xbmcvfs
+import colors
 
 import source as src
 from notification import Notification
@@ -540,7 +541,8 @@ class TVGuide(xbmcgui.WindowXML):
             return
 
         elif action.getId() == ACTION_MOUSE_MOVE:
-            self._showControl(self.C_MAIN_MOUSE_CONTROLS)
+            if ADDON.getSetting('mouse.controls') == "true":
+                self._showControl(self.C_MAIN_MOUSE_CONTROLS)
             return
 
         elif action.getId() in [KEY_NAV_BACK]:
@@ -884,6 +886,26 @@ class TVGuide(xbmcgui.WindowXML):
                     self.autoplaywith.addAutoplaywith(program, play_type)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+        elif buttonClicked == PopupMenu.C_POPUP_LISTS:
+            d = xbmcgui.Dialog()
+            list = d.select("Lists", ["Channel Listing","On Now", "On Next", "Program Search", "Reminders", "AutoPlays", "AutoPlayWiths"])
+            if list < 0:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if list == 0:
+                self.showListing(program.channel)
+            elif list == 1:
+                self.showNow()
+            elif list == 2:
+                self.showNext()
+            elif list == 3:
+                self.programSearch()
+            elif list == 4:
+                self.showFullReminders()
+            elif list == 5:
+                self.showFullAutoplays()
+            elif list == 6:
+                self.showFullAutoplaywiths()
+
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
@@ -1053,10 +1075,11 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_LOGO, '')
 
 
+            color = colors.color_name["white"]
             if program.imageSmall is not None:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
             else:
-                self.setControlImage(self.C_MAIN_IMAGE, '')
+                self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
             if program.imageLarge is not None:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
 
@@ -1064,7 +1087,16 @@ class TVGuide(xbmcgui.WindowXML):
             if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall is not None:
                 self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
             else:
-                self.setControlImage(self.C_MAIN_BACKGROUND, "tvg-programs-back.png")
+                image = ADDON.getSetting('program.background.image')
+                if image:
+                    self.setControlImage(self.C_MAIN_BACKGROUND, image)
+                else:
+                    self.setControlImage(self.C_MAIN_BACKGROUND, "white.png")
+                    name = remove_formatting(ADDON.getSetting('program.background.color'))
+                    color = colors.color_name[name]
+
+            control = self.getControl(self.C_MAIN_BACKGROUND)
+            control.setColorDiffuse(color)
 
             #if not self.osdEnabled and self.player.isPlaying():
             #    self.player.stop()
@@ -1527,6 +1559,7 @@ class TVGuide(xbmcgui.WindowXML):
         # date and time row
         self.setControlLabel(self.C_MAIN_DATE, self.formatDateTodayTomorrow(self.viewStartDate))
         self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
+        #self.setControlLabel(self.C_MAIN_DATE_LONG, '{dt:%A} {dt.day} {dt:%B}'.format(dt=self.viewStartDate))
         for col in range(1, 5):
             self.setControlLabel(4000 + col, self.formatTime(startTime))
             startTime += HALF_HOUR
@@ -1658,10 +1691,14 @@ class TVGuide(xbmcgui.WindowXML):
         if control:
             control.setPosition(0,top)
             control.setHeight(height)
+
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top-2)
-        self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
+            color = colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))]
+            control.setColorDiffuse(color)
+        self.getControl(self.C_QUICK_EPG_TIMEBAR).setColorDiffuse(colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))])
+        #self.getControl(self.C_MAIN_BACKGROUND).setHeight(top+2)
 
         # add program controls
         if focusFunction is None:
@@ -2258,6 +2295,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_STREAM_SETUP = 4007
     C_POPUP_AUTOPLAY = 4008
     C_POPUP_AUTOPLAYWITH = 4009
+    C_POPUP_LISTS = 4011
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
@@ -2395,17 +2433,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if self.category == "Any":
                 return
             dialog = xbmcgui.Dialog()
-            categories = sorted(self.categories)
-            channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False)])
-            str = 'Select Channels for %s Categeory' % self.category
-            ret = dialog.multiselect(str, channelList)
-            if ret is None:
+            ret = dialog.select("%s" % self.category, ["Add Channels","Remove Channels","Clear Channels"])
+            if ret < 0:
                 return
-            if not ret:
-                ret = []
-            channels = []
-            for i in ret:
-                channels.append(channelList[i])
+
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
             lines = f.read().splitlines()
             f.close()
@@ -2415,10 +2446,43 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 name,cat = line.split('=')
                 if cat not in categories:
                     categories[cat] = []
-                if cat != self.category:
-                    categories[cat].append(name)
-            for channel in channels:
-                categories[self.category].append(channel)
+                categories[cat].append(name)
+
+            if ret == 0:
+                #categories = sorted(self.categories)
+                channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
+                str = 'Add Channels To %s' % self.category
+                ret = dialog.multiselect(str, channelList)
+                if ret is None:
+                    return
+                if not ret:
+                    ret = []
+                channels = []
+                for i in ret:
+                    channels.append(channelList[i])
+
+                for channel in channels:
+                    categories[self.category].append(channel)
+
+            elif ret == 1:
+                channelList = sorted(categories[self.category])
+                str = 'Remove Channels From %s' % self.category
+                ret = dialog.multiselect(str, channelList)
+                if ret is None:
+                    return
+                if not ret:
+                    ret = []
+                channels = []
+                for i in ret:
+                    channelList[i] = ""
+                categories[self.category] = []
+                for name in channelList:
+                    if name:
+                        categories[self.category].append(name)
+
+            elif ret == 2:
+                categories[self.category] = []
+
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
             for cat in categories:
                 channels = categories[cat]
@@ -2426,7 +2490,6 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                     f.write("%s=%s\n" % (channel.encode("utf8"),cat))
             f.close()
             self.categories = [category for category in categories if category]
-
 
     def onClick(self, controlId):
         if controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
@@ -2774,7 +2837,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     matches = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
                     playlist_streams = {}
                     for name,url in matches:
-                        playlist_streams[name.strip()] = url.strip()
+                        name = remove_formatting(name.strip())
+                        name = re.sub(r'[:=]',' ',name)
+                        playlist_streams[name] = url.strip()
 
                     #TODO make this a function
                     file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
@@ -2880,7 +2945,10 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     if not stream:
                         stream = 'nothing'
                     write_str = "%s=%s\n" % (name,stream)
-                    f.write(write_str.encode("utf8"))
+                    try:
+                        f.write(write_str.encode("utf8"))
+                    except:
+                        f.write(write_str)
             f.close()
 
         elif controlId == self.C_STREAM_ADDONS_OK:

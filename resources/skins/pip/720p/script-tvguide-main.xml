@@ -77,6 +77,22 @@
             <posy>-10000</posy>
             <width>1</width>
             <height>1</height>
+            <texture>tvg-autoplaywith-focus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
+            <texture>tvg-autoplaywith-nofocus.png</texture>
+        </control>
+        <control type="image">
+            <description>workaround for texture not being loaded</description>
+            <posx>-10000</posx>
+            <posy>-10000</posy>
+            <width>1</width>
+            <height>1</height>
             <texture>background-cover.png</texture>
         </control>
         <control type="image">
@@ -121,7 +137,20 @@
             <texture>black.png</texture>
             <visible>true</visible>
         </control>
-
+        <control type="image" id="4600">
+            <description>background</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <colordiffuse>white</colordiffuse>
+            <texture>black.png</texture>
+            <visible></visible>
+            <aspectratio>scale</aspectratio>
+            <align>center</align>
+            <aligny>center</aligny>
+            <fadetime>0</fadetime>
+        </control>
         <control type="image">
             <description>blackout on play</description>
             <posx>0</posx>
@@ -132,7 +161,17 @@
             <visible>Control.IsVisible(5000)</visible>
         </control>
         <!-- Background -->
-
+        <control type="videowindow">
+            <description>video window</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <!--<animation type="Conditional" condition="!Control.IsVisible(5000)">
+                <effect type="zoom" end="25" center="1250,690" time="500" />
+            </animation>-->
+            <visible>Control.IsVisible(5000)</visible>
+        </control>
 
         <control type="label" id="5000">
             <description>visibility marker for TV Guide group</description>
@@ -140,33 +179,21 @@
         <control type="group">
             <description>TV Guide group</description>
             <posx>0</posx>
-            <posy>60</posy>
+            <posy>30</posy>
             <width>1280</width>
-            <height>660</height>
+            <height>690</height>
             <visible>!Control.IsVisible(5000)</visible>
 
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
-                <posy>60</posy>
+                <posy>30</posy>
                 <width>1100</width>
                 <height>450</height>
                 <visible>false</visible>
             </control>
 
-            <control type="image" id="4600">
-                <description>background</description>
-                <posx>0</posx>
-                <posy>-2</posy>
-                <width>1280</width>
-                <height>450</height>
-                <texture>black.png</texture>
-                <visible>true</visible>
-                <aspectratio>scale</aspectratio>
-                <align>center</align>
-                <aligny>center</aligny>
-                <fadetime>200</fadetime>
-            </control>
+
             <control type="image">
                 <description>background</description>
                 <posx>0</posx>
@@ -178,7 +205,7 @@
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>200</fadetime>
+                <fadetime>0</fadetime>
             </control>
 
 
@@ -186,10 +213,10 @@
             <control type="image" id="4601">
                 <description>header</description>
                 <posx>0</posx>
-                <posy>-60</posy>
+                <posy>-30</posy>
                 <width>1280</width>
-                <height>58</height>
-                <texture>black-back.png</texture>
+                <height>28</height>
+                <texture>tvg-program-nofocus.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -202,22 +229,24 @@
                 <posy>450</posy>
                 <width>1280</width>
                 <height>220</height>
-                <texture>black-back.png</texture>
+                <texture>tvg-program-nofocus.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
-                <visible>Player.HasMedia</visible>
+
+                <visible>True</visible>
             </control>
 
             <control type="image" id="4100">
                 <description>time bar</description>
                 <posx>180</posx>
                 <posy>0</posy>
-                <width>-10</width>
+                <width>-2</width>
                 <height>446</height>
                 <visible>Control.IsVisible(4200)</visible>
-                <texture>cyan.png</texture>
+                <colordiffuse>blue</colordiffuse>
+                <texture>white.png</texture>
             </control>
 
             <control type="image">
@@ -293,21 +322,21 @@
                     <align>center</align>
                     <aligny>center</aligny>
 
-                    <visible>true</visible>
+                    <visible>false</visible>
                 </control>
 
                 <control type="label" id="3999">
                     <description>Displays date</description>
-                    <posx>0r</posx>
-                    <posy>-20</posy>
-                    <width>280</width>
-                    <height>20</height>
-                    <textcolor>ffffffff</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font13</font>
-                    <align>right</align>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>180</width>
+                    <height>50</height>
+                    <textcolor>white</textcolor>
+
+                    <font>font10_title</font>
+                    <align>center</align>
                     <aligny>center</aligny>
-                    <visible>false</visible>
+                    <visible>true</visible>
                 </control>
 
                 <control type="label">
@@ -316,7 +345,7 @@
                     <posy>-15</posy>
                     <width>280</width>
                     <height>20</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <font>font10</font>
                     <align>right</align>
@@ -328,12 +357,12 @@
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
-                    <top>5</top>
-                    <width>200</width>
-                    <height>30</height>
+                    <posy>0</posy>
+                    <width>270</width>
+                    <height>50</height>
+                    <font>font13_title</font>
                     <align>right</align>
                     <aligny>center</aligny>
-                    <font>font28_title</font>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
                     <label>$INFO[System.Time]</label>
@@ -362,7 +391,7 @@
                     <width>270</width>
                     <height>50</height>
                     <textcolor>white</textcolor>
-                    <font>font13</font>
+                    <font>font12</font>
                     <aligny>center</aligny>
                 </control>
                 <control type="label" id="4002">
@@ -372,7 +401,7 @@
                     <width>270</width>
                     <height>50</height>
                     <textcolor>white</textcolor>
-                    <font>font13</font>
+                    <font>font12</font>
                     <aligny>center</aligny>
                 </control>
                 <control type="label" id="4003">
@@ -382,7 +411,7 @@
                     <width>270</width>
                     <height>50</height>
                     <textcolor>white</textcolor>
-                    <font>font13</font>
+                    <font>font12</font>
                     <aligny>center</aligny>
                 </control>
                 <control type="label" id="4004">
@@ -392,7 +421,7 @@
                     <width>270</width>
                     <height>50</height>
                     <textcolor>white</textcolor>
-                    <font>font13</font>
+                    <font>font12</font>
                     <aligny>center</aligny>
                 </control>
             </control>
@@ -991,42 +1020,33 @@
 
             <control type="label" id="7025">
                 <description>Channel name</description>
-                <posx>360</posx>
+                <posx>430</posx>
                 <posy>470</posy>
-                <width>250</width>
+                <width>165</width>
                 <height>50</height>
                 <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
-                <font>font13</font>
-                <align>left</align>
 
-                <scroll>true</scroll>
-            </control>
-            <control type="label" id="7020">
-                <description>Program title</description>
-                <posx>640</posx>
-                <posy>470</posy>
-                <width>400</width>
-                <height>50</height>
-                <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
                 <font>font13</font>
                 <align>left</align>
                 <visible>true</visible>
                 <scroll>true</scroll>
+                <label>-</label>
             </control>
-            <control type="image" id="7024">
-                <description>Channel logo</description>
-                <posx>360</posx>
+            <control type="label" id="7020">
+                <description>Program title</description>
+                <posx>600</posx>
                 <posy>470</posy>
-                <width>160</width>
-                <height>40</height>
+                <width>450</width>
+                <height>50</height>
+                <textcolor>white</textcolor>
+
+                <font>font13</font>
                 <align>left</align>
-                <aspectratio>keep</aspectratio>
-                <fadetime>500</fadetime>
-                <visible>false</visible>
-                <!-- unused in default skin -->
+                <visible>true</visible>
+                <scroll>true</scroll>
+                <label>-</label>
             </control>
+
             <control type="label" id="7021">
                 <description>Program time</description>
                 <posx>1260</posx>
@@ -1034,16 +1054,16 @@
                 <width>1090</width>
                 <height>50</height>
                 <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
+
                 <font>font13</font>
                 <align>right</align>
 
                 <visible>true</visible>
             </control>
             <control type="progress" id="7026">
-                <posx>0</posx>
+                <posx>430</posx>
                 <posy>10r</posy>
-                <width>1280</width>
+                <width>845</width>
                 <height>5</height>
                 <lefttexture />
                 <righttexture />
@@ -1053,30 +1073,45 @@
             </control>
             <control type="textbox" id="7022">
                 <description>Program description</description>
-                <posx>360</posx>
+                <posx>430</posx>
                 <posy>505</posy>
-                <width>920</width>
-                <height>142</height>
+                <width>845</width>
+                <height>170</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
                 <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
-
-
+                <label>-</label>
+                <autoscroll delay="3000" time="1000" repeat="10000"></autoscroll>
             </control>
+
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
                 <posx>0</posx>
-                <posy>180r</posy>
-                <width>350</width>
-                <height>180</height>
+                <posy>450</posy>
+                <width>425</width>
+                <height>240</height>
                 <aligny>top</aligny>
-                <aspectratio>keep</aspectratio>
+                <aspectratio>scale</aspectratio>
 
-                <fadetime>500</fadetime>
+                <fadetime>0</fadetime>
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>
             </control>
+            <control type="image" id="7024">
+                <description>Channel logo</description>
+                <posx>0</posx>
+                <posy>50r</posy>
+                <width>160</width>
+                <height>40</height>
+                <aspectratio>keep</aspectratio>
+                <align>left</align>
+                <fadetime>0</fadetime>
+                <visible>false</visible>
+                <!-- unused in default skin -->
+            </control>
+
+
             <control type="label" id="4200">
                 <description>visibility marker for loading group</description>
             </control>
@@ -1162,7 +1197,7 @@
             <control type="group">
                 <visible>true</visible>
                 <posx>0</posx>
-                <posy>-60</posy>
+                <posy>-30</posy>
                 <width>1280</width>
                 <height>720</height>
                 <visible>!Control.IsVisible(4300)</visible>
@@ -1239,9 +1274,9 @@
                 </control>
                 <control type="button" id="4303">
                     <description>navigate up</description>
-                    <posx>40</posx>
+                    <posx>0</posx>
                     <posy>0</posy>
-                    <width>100</width>
+                    <width>50</width>
                     <height>40</height>
                     <textcolor>yellow</textcolor>
                     <font>font13</font>
@@ -1253,9 +1288,9 @@
                 </control>
                 <control type="button" id="4304">
                     <description>navigate down</description>
-                    <posx>40</posx>
+                    <posx>0</posx>
                     <posy>40r</posy>
-                    <width>100</width>
+                    <width>50</width>
                     <height>40</height>
                     <textcolor>yellow</textcolor>
                     <font>font13</font>
@@ -1303,15 +1338,13 @@
         <control type="videowindow">
             <description>video window</description>
             <posx>0</posx>
-            <posy>0</posy>
-            <width>1280</width>
-            <height>720</height>
-            <animation type="Conditional" condition="!Control.IsVisible(5000)">
-                <effect type="zoom" end="25" center="0,700" time="0" />
-            </animation>
-            <visible>true</visible>
+            <posy>240r</posy>
+            <width>424</width>
+            <height>240</height>
+            <aligny>top</aligny>
+            <aspectratio>scale</aspectratio>
+            <visible>!Control.IsVisible(5000)</visible>
         </control>
-
 
         <control type="label" id="6000">
             <description>visibility marker for OSD Info bar</description>
@@ -1355,8 +1388,8 @@
                 <label>[B]Title[/B]</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
-
             </control>
+
             <control type="label" id="6002">
                 <description>Program time</description>
                 <posx>1255</posx>
@@ -1419,10 +1452,10 @@
             <control type="image" id="6006">
                 <description>Program image</description>
                 <posx>280</posx>
-                <posy>57</posy>
+                <posy>7</posy>
                 <width>296</width>
                 <height>177</height>
-                <aspectratio>stretch</aspectratio>
+                <aspectratio>keep</aspectratio>
                 <texture>-</texture>
                 <visible>false</visible>
             </control>
@@ -1478,6 +1511,9 @@
                 <texture>-</texture>
                 <visible>false</visible>
             </control>
+
+
+
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
@@ -1573,6 +1609,7 @@
                 <midtexture colordiffuse="grey">grey.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(8011),0)</visible>
             </control>
+
             <control type="textbox" id="8003">
                 <description>Program description</description>
                 <posx>30</posx>
@@ -1749,6 +1786,7 @@
                 <align>right</align>
 
             </control>
+
             <control type="progress" id="9011">
                 <posx>0</posx>
                 <posy>10r</posy>
@@ -1760,6 +1798,7 @@
                 <midtexture colordiffuse="grey">grey.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(9011),0)</visible>
             </control>
+
             <control type="image" id="9004">
                 <description>Program channel logo</description>
                 <posx>5</posx>
@@ -1769,6 +1808,8 @@
                 <aspectratio>keep</aspectratio>
                 <colordiffuse>white</colordiffuse>>
             </control>
+
+
             <control type="textbox" id="9007">
                 <description>Program description</description>
                 <posx>30</posx>
@@ -1893,18 +1934,6 @@
                 <visible>false</visible>
             </control>
 
-            <control type="progress" id="9011">
-                <posx>0</posx>
-                <posy>10r</posy>
-                <width>1280</width>
-                <height>5</height>
-                <lefttexture />
-                <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
-                <visible>IntegerGreaterThan(Control.GetLabel(9011),0)</visible>
-            </control>
-
                 <control type="label">
                     <description>time label</description>
                     <right>20</right>
@@ -1932,6 +1961,7 @@
             <width>1280</width>
             <height>280</height>
             <visible>!Control.IsVisible(10000)</visible>
+
             <control type="button" id="10001">
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>180</posx>
@@ -1963,6 +1993,8 @@
                 <texture colordiffuse="FF00BFFF">white50.png</texture>
                 <visible>!Control.IsVisible(10000)</visible>
             </control>
+
+
             <control type="image" id="14601">
                 <description>header</description>
                 <posx>0</posx>
@@ -2003,9 +2035,9 @@
                 <description>time bar</description>
                 <posx>180</posx>
                 <posy>0</posy>
-                <width>-10</width>
+                <width>-2</width>
                 <height>116</height>
-                <texture>cyan.png</texture>
+                <texture>white.png</texture>
             </control>
 
             <control type="image">

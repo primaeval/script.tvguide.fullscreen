@@ -79,8 +79,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Add Category</label>
             <visible>true</visible>
         </control>
@@ -116,7 +116,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>black</textcolor>
+                    <textcolor>white</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -147,7 +147,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>black</textcolor>
+                    <textcolor>white</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -160,7 +160,7 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>black</textcolor>
                     <selectedcolor>red</selectedcolor>
                     <align>left</align>
                     <info>ListItem.Label</info>
@@ -245,12 +245,12 @@
             <align>left</align>
             <aligny>top</aligny>
             <wrapmultiline>true</wrapmultiline>
-			<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
             <label/>
         </control>
 
         <control type="label" id="4101">
-			<description>channel title</description>
+            <description>channel title</description>
             <posx>550</posx>
             <posy>10</posy>
             <width>240</width>
@@ -265,11 +265,11 @@
         <control type="image" id="4100">
             <description>channel logo</description>
             <posx>275</posx>
-            <posy>80r</posy>
+            <posy>70r</posy>
             <width>220</width>
-            <height>60</height>
+            <height>45</height>
             <align>center</align>
-            <aligny>center</aligny>
+            <aligny>bottom</aligny>
             <aspectratio>keep</aspectratio>
             <visible>true</visible>
         </control>
@@ -288,8 +288,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>iSearch</label>
         </control>
 
@@ -307,8 +307,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Meta Search</label>
         </control>
 
@@ -326,8 +326,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
         </control>
 
         <control type="button" id="4008">
@@ -344,8 +344,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>AutoPlay</label>
         </control>
 
@@ -358,14 +358,34 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4008</onup>
+            <ondown>4011</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>AutoPlayWith</label>
+        </control>
+
+        <control type="button" id="4011">
+            <description>Lists</description>
+            <posx>285</posx>
+            <posy>275</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4009</onup>
             <ondown>4000</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
-            <label>AutoPlayWith</label>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <visible>true</visible>
+            <label>Lists</label>
         </control>
 
         <control type="button" id="4000">
@@ -376,15 +396,15 @@
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4009</onup>
+            <onup>4011</onup>
             <ondown>4001</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
-			<visible>true</visible>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <visible>true</visible>
         </control>
         <control type="button" id="4001">
             <!-- Choose Stream -->
@@ -400,8 +420,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Choose Stream</label>
         </control>
         <control type="button" id="4007">
@@ -418,8 +438,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Stream Setup</label>
         </control>
         <control type="label">
@@ -429,7 +449,7 @@
             <width>200</width>
             <height>200</height>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30305]</label>
             <wrapmultiline>true</wrapmultiline>
             <visible>false</visible>
@@ -444,7 +464,7 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <visible>false</visible>
         </control>
 
@@ -462,8 +482,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
 
@@ -481,8 +501,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30308]</label>
             <visible>true</visible>
         </control>
@@ -502,9 +522,9 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
+            <textcolor>white</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 80000]</label>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
         <control type="button" id="80001">
@@ -521,10 +541,10 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80001]</label>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
         <control type="button" id="80002">
@@ -541,10 +561,10 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 80002]</label>
-			<visible>false</visible>
+            <visible>false</visible>
         </control>
 
 
@@ -565,8 +585,8 @@
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-			<focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>Remove Category</label>
             <visible>false</visible>
         </control>
