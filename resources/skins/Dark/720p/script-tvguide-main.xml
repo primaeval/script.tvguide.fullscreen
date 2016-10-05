@@ -160,7 +160,7 @@
         <control type="group">
             <description>Initial EPG group</description>
             <left>0</left>
-            <top>0</top>
+            <top>60</top>
             <width>1280</width>
             <height>720</height>
             <visible>!Control.IsVisible(5000)</visible>
@@ -175,7 +175,7 @@
 			<control type="image" id="4600">
                 <description>EPG Background with no media playback</description>
                 <left>0</left>
-                <top>0</top>
+                <top>-60</top>
                 <width>1280</width>
                 <height>720</height>
                 <texture>black.png</texture>
@@ -203,7 +203,7 @@
 			<control type="image" id="4601">
                 <description>Main screen header</description>
                 <left>0</left>
-                <top>0</top>
+                <top>-60</top>
                 <width>1280</width>
                 <height>58</height>
                 <texture>black-back.png</texture>
@@ -212,36 +212,25 @@
 			<control type="image">
                 <description>Header Trim</description>
                 <left>0</left>
-                <top>58</top>
+                <top>-2</top>
                 <width>1280</width>
                 <height>1</height>
                 <texture>aqua.png</texture>
 				<visible>true</visible>
             </control>
             <control type="image" id="4602">
-                <description>Main screen footer - disabled due to strange offset</description>
+                <description>Main screen footer</description>
                 <left>0</left>
-                <top>560</top>
+                <top>500</top>
                 <width>1280</width>
                 <height>160</height>
                 <texture>black-back.png</texture>
-                <fadetime>200</fadetime>
-				<visible>false</visible>
-            </control>
-            <control type="image">
-                <description>Main screen footer - image to work around 4602 issues</description>
-                <left>0</left>
-                <top>560</top>
-                <width>1280</width>
-                <height>160</height>
-                <texture>black-back.png</texture>
-                <fadetime>200</fadetime>
 				<visible>true</visible>
             </control>
 			<control type="image">
                 <description>Footer Trim</description>
                 <left>0</left>
-                <top>560</top>
+                <top>500</top>
                 <width>1280</width>
                 <height>1</height>
                 <texture>aqua.png</texture>
@@ -250,7 +239,7 @@
             <control type="image" id="4100">
                 <description>Progress bar over EPG</description>
                 <left>180</left>
-                <top>60</top>
+                <top>0</top>
                 <width>-4</width>
                 <height>200</height>
                 <visible>Control.IsVisible(4200)</visible>
@@ -260,7 +249,7 @@
             <!-- Header - Date and time display -->
             <control type="group">
                 <left>0</left>
-                <top>0</top>
+                <top>-60</top>
                 <width>1280</width>
                 <height>60</height>
                 <visible>true</visible>
@@ -341,7 +330,7 @@
                     <width>270</width>
                     <height>20</height>
                     <textcolor>white</textcolor>
-					        <font>font13_title</font>
+					<font>font13_title</font>
                 </control>
                 <control type="label" id="4002">
                     <description>2nd half hour label</description>
@@ -350,7 +339,7 @@
                     <width>270</width>
                     <height>20</height>
                     <textcolor>white</textcolor>
-					        <font>font13_title</font>
+					<font>font13_title</font>
 					<visible>false</visible>
                 </control>
                 <control type="label" id="4003">
@@ -360,7 +349,7 @@
                     <width>270</width>
                     <height>20</height>
                     <textcolor>white</textcolor>
-					        <font>font13_title</font>
+					<font>font13_title</font>
                 </control>
                 <control type="label" id="4004">
                     <description>4th half hour column</description>
@@ -369,7 +358,7 @@
                     <width>270</width>
                     <height>20</height>
                     <textcolor>white</textcolor>
-					        <font>font13_title</font>
+					<font>font13_title</font>
 					<visible>false</visible>
                 </control>
             </control>
@@ -377,8 +366,9 @@
             <!-- EPG channel layout -->
             <control type="group">
                 <left>0</left>
-                <top>60</top>
+                <top>0</top>
                 <width>180</width>
+				<height>500</height>
                 <visible>true</visible>
 
                 <!-- EPG layout - channel backgrounds -->
@@ -950,7 +940,7 @@
 			<control type="label" id="7025">
                 <description>Station name</description>
                 <left>640</left>
-                <top>560</top>
+                <top>500</top>
                 <width>200</width>
                 <height>50</height>
                 <textcolor>white</textcolor>
@@ -961,7 +951,7 @@
             </control>
             <control type="image" id="7024">
                 <description>Station logo</description>
-                <top>590</top>
+                <top>530</top>
                 <left>1030</left>
                 <width>220</width>
                 <height>120</height>
@@ -971,7 +961,7 @@
             <control type="label" id="7020">
                 <description>Programme title</description>
                 <left>30</left>
-                <top>560</top>
+                <top>500</top>
                 <width>700</width>
                 <height>20</height>
                 <textcolor>white</textcolor>
@@ -982,7 +972,7 @@
             </control>
 			<control type="image" id="7023">
                 <description>Programme image</description>
-                <top>590</top>
+                <top>530</top>
                 <left>1030</left>
                 <width>220</width>
                 <height>120</height>
@@ -992,7 +982,7 @@
 			<control type="image">
 				<description>Programme image backup</description>
                 <left>1030</left>
-                <top>590</top>
+                <top>530</top>
                 <width>220</width>
                 <height>120</height>
                 <aspectratio>keep</aspectratio>
@@ -1002,7 +992,7 @@
 			<control type="label" id="7021">
                 <description>Programme scheduled time</description>
                 <left>1010</left>
-                <top>560</top>
+                <top>500</top>
                 <width>240</width>
                 <height>20</height>
                 <textcolor>white</textcolor>
@@ -1012,7 +1002,7 @@
             <control type="textbox" id="7022">
                 <description>Programme description</description>
                 <left>30</left>
-                <top>595</top>
+                <top>535</top>
                 <width>990</width>
                 <height>100</height>
                 <textcolor>white</textcolor>
@@ -1024,7 +1014,7 @@
 			<control type="progress" id="7026">
                 <description>EPG -Progress bar</description>
 				<left>30</left>
-                <top>700</top>
+                <top>640</top>
                 <width>990</width>
                 <height>10</height>
                 <lefttexture />
@@ -2050,7 +2040,7 @@
                     <width>180</width>
                     <height>60</height>
                     <textcolor>white</textcolor>
-                            <font>font13_title</font>
+                    <font>font13_title</font>
                     <align>center</align>
                     <visible>true</visible>
                 </control>
@@ -2061,10 +2051,10 @@
                     <width>270</width>
                     <height>20</height>
                     <textcolor>white</textcolor>
-                            <font>font12</font>
+                    <font>font12</font>
                     <align>right</align>
                     <visible>true</visible>
-                    <label>$INFO[System.Date(DDD)], $INFO[System.Date(dd)] $INFO[System.Date(MMM)]</label>
+                    <label>$INFO[System.Date]</label>
                 </control>
                 <control type="label">
                     <description>Quick EPG - Display current time</description>
@@ -2076,8 +2066,33 @@
                     <aligny>center</aligny>
                     <font>font13_title</font>
                     <textcolor>white</textcolor>
-                    <label>$INFO[System.Time(hh:mm)]</label>
+                    <label>$INFO[System.Time]</label>
                     <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
+                </control>
+				<control type="label">
+					<description>Display current temperature</description>
+					<left>1095</left>
+					<top>-10</top>
+					<width>60</width>
+					<height>20</height>
+					<align>right</align>
+					<aligny>center</aligny>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<label>$INFO[Weather.Temperature]</label>
+					<visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+				</control>
+				<control type="image">
+					<description>Display current weather icon</description>
+                    <left>1128</left>
+					<top>-18</top>
+					<width>60</width>
+					<height>35</height>
+					<aligny>center</aligny>
+                    <fadetime>300</fadetime>
+                    <aspectratio align="right">keep</aspectratio>
+                    <texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
+                    <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
                 </control>
                 <control type="label" id="14001">
                     <description>1st half hour column</description>
