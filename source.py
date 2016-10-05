@@ -41,6 +41,7 @@ import xbmcgui
 import xbmcvfs
 import xbmcaddon
 import sqlite3
+import HTMLParser
 
 import resources.lib.pytz
 from resources.lib.pytz import timezone
@@ -1503,14 +1504,14 @@ class FileWrapper(object):
 
     def tell(self):
         return self.bytesRead
-        
+
 class TVGUKSource(Source):
     KEY = 'tvguide.co.uk'
 
     def __init__(self, addon):
         self.needReset = False
         self.done = False
-        
+
     def getDataFromExternal(self, date, progress_callback=None):
         """
         Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
@@ -1524,7 +1525,7 @@ class TVGUKSource(Source):
         html = r.text
         xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
         #xbmc.log(repr(html))
-        
+
         channels = html.split('<div class="div-channel-progs">')
 
         for channel in channels:
@@ -1534,7 +1535,7 @@ class TVGUKSource(Source):
             if img_match:
                 img_url = img_match.group(1)
                 name = img_match.group(2)
-                
+
             channel_number = '0'
             match = re.search(r'href="http://www\.tvguide\.co\.uk/mobile/channellisting\.asp\?ch=(.*?)"', channel)
             if match:
@@ -1558,11 +1559,11 @@ class TVGUKSource(Source):
                 start = self.local_time(match.group(1),year,month,day)
                 program = match.group(2)
                 next_start = self.local_time(match.group(3),year,month,day)
-               
+
                 next_program = match.group(4)
                 after_start = self.local_time(match.group(5),year,month,day)
-                 
-                after_program = match.group(6)            
+
+                after_program = match.group(6)
                 match = re.search('<img.*?>&nbsp;(.*)',program)
                 if match:
                     program = match.group(1)
@@ -1575,9 +1576,9 @@ class TVGUKSource(Source):
                 yield Program(c, program, start, next_start, "", imageSmall="",
                      season = "", episode = "", is_movie = "", language= "")
                 yield Program(c, next_program, next_start, after_start, "", imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")           
+                     season = "", episode = "", is_movie = "", language= "")
                 yield Program(c, after_program, after_start, after_start + datetime.timedelta(hours=1), "", imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")  
+                     season = "", episode = "", is_movie = "", language= "")
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
         today = datetime.datetime.now()
@@ -1586,8 +1587,8 @@ class TVGUKSource(Source):
 
         if programsLastUpdated is None or programsLastUpdated.day != today.day:
             return True
-        return False        
-        
+        return False
+
     def local_time(self,ttime,year,month,day):
         match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
         if match:
@@ -1601,7 +1602,7 @@ class TVGUKSource(Source):
             else:
                 if hour == 12:
                     hour = 0
-            
+
             london = timezone('Europe/London')
             utc = timezone('UTC')
             utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
@@ -1609,11 +1610,127 @@ class TVGUKSource(Source):
             return utc_dt
             #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
 
-        return ttime        
+        return ttime
+
+class USYoSource(Source):
+    KEY = 'uk.yo.tv'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+
+    def get_url(self,url):
+        #headers = {'user-agent': 'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+'}
+        headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+        try:
+            r = requests.get(url,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+            return html
+        except:
+            return ''
+
+    def getDataFromExternal(self, date, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+
+        #channel_name = country_name
+        country_id = "danmark"
+        html = self.get_url('http://%s.yo.tv/' % country_id)
+
+
+        channels = html.split('<li><a data-ajax="false"')
+        #videos = []
+        #items = []
+        for channel in channels:
+            img_url = ''
+
+            img_match = re.search(r'<img class="lazy" src="/Content/images/yo/program_logo.gif" data-original="(.*?)"', channel)
+            if img_match:
+                img_url = img_match.group(1)
+
+            channel_name = ''
+            channel_number = ''
+            name_match = re.search(r'href="/tv_guide/channel/(.*?)/(.*?)"', channel)
+            if name_match:
+                channel_number = name_match.group(1)
+                channel_name = name_match.group(2)
+                c = Channel(channel_name, channel_name, img_url, "", True)
+                yield c
+            else:
+                continue
+
+            start = ''
+            program = ''
+            next_start = ''
+            next_program = ''
+            after_start = ''
+            after_program = ''
+            match = re.search(r'<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>', channel,flags=(re.DOTALL | re.MULTILINE))
+            if match:
+                now = datetime.datetime.now()
+                year = now.year
+                month = now.month
+                day = now.day
+                start = self.local_time(match.group(1),year,month,day)
+                program = match.group(2)
+                next_start = self.local_time(match.group(3),year,month,day)
+                next_program = match.group(4)
+                after_start = self.local_time(match.group(5),year,month,day)
+                after_program = match.group(6)
+                yield Program(c, program, start, next_start, "", imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")
+                yield Program(c, next_program, next_start, after_start, "", imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")
+                yield Program(c, after_program, after_start, after_start + datetime.timedelta(hours=1), "", imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")
+            else:
+                pass
+
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        today = datetime.datetime.now()
+        if channelsLastUpdated is None or channelsLastUpdated.day != today.day:
+            return True
+
+        if programsLastUpdated is None or programsLastUpdated.day != today.day:
+            return True
+        return False
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+
+            london = timezone('Europe/Athens')
+            utc = timezone('US/Hawaii')
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
+            loc_dt = utc_dt.astimezone(london)
+            return loc_dt
+            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
+
+        return ttime
 
 
 def instantiateSource():
     if ADDON.getSetting("source.source") == "xmltv":
         return XMLTVSource(ADDON)
-    else:
+    elif ADDON.getSetting("source.source") == "tvguide.co.uk":
         return TVGUKSource(ADDON)
+    else:
+        return USYoSource(ADDON)
