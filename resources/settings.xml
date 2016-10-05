@@ -110,6 +110,8 @@
     <category label="Lab">
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
+        <setting type="sep"/>
+        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|tvguide.co.uk" />
 
     </category>
 </settings>

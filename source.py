@@ -42,6 +42,9 @@ import xbmcvfs
 import xbmcaddon
 import sqlite3
 
+import resources.lib.pytz
+from resources.lib.pytz import timezone
+
 SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder']
 
 
@@ -1500,7 +1503,117 @@ class FileWrapper(object):
 
     def tell(self):
         return self.bytesRead
+        
+class TVGUKSource(Source):
+    KEY = 'tvguide.co.uk'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+        
+    def getDataFromExternal(self, date, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+        r = requests.get('http://www.tvguide.co.uk/mobile/')
+        html = r.text
+        xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
+        #xbmc.log(repr(html))
+        
+        channels = html.split('<div class="div-channel-progs">')
+
+        for channel in channels:
+            img_url = ''
+            name = ''
+            img_match = re.search(r'<img class="img-channel-logo" width="50" src="(.*?)"\s*?alt="(.*?) TV Listings" />', channel)
+            if img_match:
+                img_url = img_match.group(1)
+                name = img_match.group(2)
+                
+            channel_number = '0'
+            match = re.search(r'href="http://www\.tvguide\.co\.uk/mobile/channellisting\.asp\?ch=(.*?)"', channel)
+            if match:
+                channel_number=match.group(1)
+            else:
+                continue
+            c = Channel(name, name, img_url, "", True)
+            yield c
+            start = ''
+            program = ''
+            next_start = ''
+            next_program = ''
+            after_start = ''
+            after_program = ''
+            match = re.search(r'<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>', channel,flags=(re.DOTALL | re.MULTILINE))
+            if match:
+                now = datetime.datetime.now()
+                year = now.year
+                month = now.month
+                day = now.day
+                start = self.local_time(match.group(1),year,month,day)
+                program = match.group(2)
+                next_start = self.local_time(match.group(3),year,month,day)
+               
+                next_program = match.group(4)
+                after_start = self.local_time(match.group(5),year,month,day)
+                 
+                after_program = match.group(6)            
+                match = re.search('<img.*?>&nbsp;(.*)',program)
+                if match:
+                    program = match.group(1)
+                match = re.search('<img.*?>&nbsp;(.*)',next_program)
+                if match:
+                    next_program = match.group(1)
+                match = re.search('<img.*?>&nbsp;(.*)',after_program)
+                if match:
+                    after_program = match.group(1)
+                yield Program(c, program, start, next_start, "", imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")
+                yield Program(c, next_program, next_start, after_start, "", imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")           
+                yield Program(c, after_program, after_start, after_start + datetime.timedelta(hours=1), "", imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")  
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        today = datetime.datetime.now()
+        if channelsLastUpdated is None or channelsLastUpdated.day != today.day:
+            return True
+
+        if programsLastUpdated is None or programsLastUpdated.day != today.day:
+            return True
+        return False        
+        
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+            
+            london = timezone('Europe/London')
+            utc = timezone('UTC')
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
+            loc_dt = utc_dt.astimezone(london)
+            return utc_dt
+            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
+
+        return ttime        
 
 
 def instantiateSource():
-    return XMLTVSource(ADDON)
+    if ADDON.getSetting("source.source") == "xmltv":
+        return XMLTVSource(ADDON)
+    else:
+        return TVGUKSource(ADDON)
