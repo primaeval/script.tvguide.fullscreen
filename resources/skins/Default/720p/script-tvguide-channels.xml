@@ -28,6 +28,25 @@
             <texture>black-back.png</texture>
         </control>
 
+        <control type="image">
+            <description>main mount</description>
+            <posx>10</posx>
+            <posy>10</posy>
+            <width>1260</width>
+            <height>700</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <description>main background</description>
+            <posx>12</posx>
+            <posy>12</posy>
+            <width>1256</width>
+            <height>696</height>
+            <texture>black-back.png</texture>
+            <visible>true</visible>
+        </control>
+
         <control type="group">
             <posx>200</posx>
             <posy>380</posy>
@@ -76,7 +95,7 @@
                 <height>38</height>
                 <aligny>center</aligny>
                 <font>font13</font>
-                <textcolor>cyan</textcolor>
+                <textcolor>white</textcolor>
                 <label>text</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
@@ -87,7 +106,7 @@
                 <width>410</width>
                 <height>60</height>
                 <font>font13</font>
-                <textcolor>cyan</textcolor>
+                <textcolor>white</textcolor>
 				<visible>false</visible>
                 <label>$ADDON[script.tvguide.fullscreen 30501]</label>
             </control>
@@ -101,7 +120,7 @@
             <align>left</align>
             <aligny>center</aligny>
             <font>font13_title</font>
-            <textcolor>ffffffff</textcolor>
+            <textcolor>white</textcolor>
             <label>$ADDON[script.tvguide.fullscreen 30500]</label>
         </control>
 		<control type="label">
@@ -110,7 +129,7 @@
             <posy>160</posy>
             <width>500</width>
             <height>400</height>
-            <textcolor>ffffffff</textcolor>
+            <textcolor>white</textcolor>
             <font>font13</font>
 			<align>left</align>
             <aligny>top</aligny>
@@ -142,7 +161,7 @@
                     <height>38</height>
                     <aligny>center</aligny>
                     <font>font13</font>
-                    <textcolor>black</textcolor>
+                    <textcolor>white</textcolor>
                     <info>ListItem.Label</info>
                 </control>
                 <control type="image">
@@ -184,7 +203,7 @@
                     <height>38</height>
                     <aligny>center</aligny>
                     <font>font13</font>
-                    <textcolor>cyan</textcolor>
+                    <textcolor>white</textcolor>
                     <label>[B]$INFO[ListItem.Label][/B]</label>
                 </control>
                 <control type="image">
@@ -199,14 +218,14 @@
 
         <control type="button" id="6003">
             <posx>700</posx>
-            <posy>670</posy>
+            <posy>660</posy>
             <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30502]</label>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
@@ -216,14 +235,14 @@
         </control>
         <control type="button" id="6004">
             <posx>900</posx>
-            <posy>670</posy>
+            <posy>660</posy>
             <width>170</width>
             <height>40</height>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>black</textcolor>
-            <focusedcolor>cyan</focusedcolor>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30503]</label>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
