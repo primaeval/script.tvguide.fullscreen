@@ -737,7 +737,7 @@ class Database(object):
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
                               is_movie=row['is_movie'], language=row['language'])
             c.close()
-            xbmc.log("close")
+
             return nextProgram
         except:
             return
