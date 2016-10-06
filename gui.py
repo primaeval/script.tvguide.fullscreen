@@ -2462,7 +2462,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                     channels.append(channelList[i])
 
                 for channel in channels:
-                    categories[self.category].append(channel)
+                    if channel not in categories[self.category]:
+                        categories[self.category].append(channel)
 
             elif ret == 1:
                 channelList = sorted(categories[self.category])
