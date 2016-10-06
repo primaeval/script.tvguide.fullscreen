@@ -418,7 +418,8 @@ class Database(object):
             c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
             self.conn.commit()
 
-            if imported_channels == 0 or imported_programs == 0:
+            #if imported_channels == 0 or imported_programs == 0:
+            if imported_programs == 0:
                 self.updateFailed = True
 
         except SourceUpdateCanceledException:
@@ -1863,7 +1864,7 @@ class DirectScheduleSource(Source):
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if channelsLastUpdated is None or programLastUpdate is None:
             return True
-
+        #return True
         update = False
         interval = int(ADDON.getSetting('sd.interval'))
         modTime = programLastUpdate
@@ -1908,7 +1909,8 @@ class DirectScheduleSource(Source):
             elements_parsed += 1
             if result:
                 if progress_callback and elements_parsed % 100 == 0:
-                    if not progress_callback(100.0 / len(schedules) * elements_parsed):
+                    percent = 100.0 / len(schedules) * elements_parsed
+                    if not progress_callback(percent):
                         raise SourceUpdateCanceledException()
                 yield result
 
