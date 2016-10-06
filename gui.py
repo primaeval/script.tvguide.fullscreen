@@ -2377,10 +2377,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             pass
         programLabelControl.setLabel(self.program.title+label)
         start = self.program.startDate
-        day = self.formatDateTodayTomorrow(start)
-        start = start.strftime("%H:%M")
-        start = "%s %s" % (day,start)
-        programDateControl.setLabel(start)
+        if start:
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
+            programDateControl.setLabel(start)
         if self.program.imageSmall:
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:

@@ -1796,7 +1796,7 @@ class YoSource(Source):
         return False
 
     def local_time(self,ttime,year,month,day):
-        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        match = re.search(r'(.{1,2}):(.{2}) ?(.{2})',ttime)
         if match:
             hour = int(match.group(1))
             minute = int(match.group(2))
