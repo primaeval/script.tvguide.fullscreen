@@ -1076,11 +1076,11 @@ class TVGuide(xbmcgui.WindowXML):
 
 
             color = colors.color_name["white"]
-            if program.imageSmall is not None:
+            if program.imageSmall:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
             else:
                 self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
-            if program.imageLarge is not None:
+            if program.imageLarge:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
 
 
