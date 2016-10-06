@@ -313,7 +313,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
+                <focusedcolor>black</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
@@ -330,7 +330,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
+                <focusedcolor>black</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
@@ -347,7 +347,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
+                <focusedcolor>black</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
