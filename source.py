@@ -28,6 +28,7 @@
 import os
 import threading
 import datetime
+from dateutil import tz
 import time
 from xml.etree import ElementTree
 import re
@@ -967,6 +968,12 @@ class Database(object):
                     "CREATE TABLE IF NOT EXISTS autoplays(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
                 c.execute(
                     "CREATE TABLE IF NOT EXISTS autoplaywiths(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+            if version < [1, 3, 4]:
+                # Recreate tables with seasons, episodes and is_movie
+                c.execute('UPDATE version SET major=1, minor=3, patch=4')
+                c.execute('DROP TABLE programs')
+                c.execute(
+                    'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, UNIQUE (channel, start_date, end_date), FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -1616,7 +1623,7 @@ class TVGUKSource(Source):
 
         return ttime
 
-class USYoSource(Source):
+class YoSource(Source):
     KEY = '%s.yo.tv' % ADDON.getSetting("yo.country")
 
     def __init__(self, addon):
@@ -1678,6 +1685,7 @@ class USYoSource(Source):
                 year = now.year
                 month = now.month
                 day = now.day
+                xbmc.log(match.group(1))
                 start = self.local_time(match.group(1),year,month,day)
                 program = match.group(2)
                 next_start = self.local_time(match.group(3),year,month,day)
@@ -1718,10 +1726,11 @@ class USYoSource(Source):
                 if hour == 12:
                     hour = 0
 
-            london = timezone('Europe/Athens')
-            utc = timezone('US/Hawaii')
+            london = timezone('Europe/Copenhagen')
+            utc = timezone('UTC')
             utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
-            loc_dt = utc_dt.astimezone(london)
+            to_zone = tz.tzlocal()
+            loc_dt = utc_dt.astimezone(to_zone)
             return loc_dt
             #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
 
@@ -1734,4 +1743,4 @@ def instantiateSource():
     elif ADDON.getSetting("source.source") == "tvguide.co.uk":
         return TVGUKSource(ADDON)
     else:
-        return USYoSource(ADDON)
+        return YoSource(ADDON)
