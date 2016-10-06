@@ -1864,9 +1864,11 @@ class DirectScheduleSource(Source):
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if channelsLastUpdated is None or programLastUpdate is None:
             return True
-        #return True
+
         update = False
         interval = int(ADDON.getSetting('sd.interval'))
+        if interval == FileFetcher.INTERVAL_ALWAYS:
+            return True
         modTime = programLastUpdate
         td = datetime.datetime.now() - modTime
         # need to do it this way cause Android doesn't support .total_seconds() :(
