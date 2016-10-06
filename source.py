@@ -1534,7 +1534,7 @@ class TVGUKSource(Source):
         """
         r = requests.get('http://www.tvguide.co.uk/mobile/')
         html = r.text
-        xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
+        #xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
         #xbmc.log(repr(html))
 
         channels = html.split('<div class="div-channel-progs">')
@@ -1685,7 +1685,6 @@ class YoSource(Source):
                 year = now.year
                 month = now.month
                 day = now.day
-                xbmc.log(match.group(1))
                 start = self.local_time(match.group(1),year,month,day)
                 program = match.group(2)
                 next_start = self.local_time(match.group(3),year,month,day)
