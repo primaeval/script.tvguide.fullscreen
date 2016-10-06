@@ -1751,7 +1751,7 @@ class YoSource(Source):
             name_match = re.search(r'href="/tv_guide/channel/(.*?)/(.*?)"', channel)
             if name_match:
                 channel_number = name_match.group(1)
-                channel_name = name_match.group(2)
+                channel_name = re.sub("_"," ",name_match.group(2))
                 c = Channel(channel_name, channel_name, '', img_url, "", True)
                 yield c
             else:

@@ -1026,7 +1026,7 @@ class TVGuide(xbmcgui.WindowXML):
             return
 
         title = '[B]%s[/B]' % program.title
-        if program.season is not None and program.episode is not None:
+        if program.season and program.episode:
             title += " [B]S%sE%s[/B]" % (program.season, program.episode)
         if program.is_movie == "Movie":
             title += " [B](Movie)[/B]"
@@ -2371,6 +2371,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         try:
             season = self.program.season
             episode = self.program.episode
+            xbmc.log(repr((season,episode)))
             if season and episode:
                 label = " - S%sE%s" % (season,episode)
         except:
