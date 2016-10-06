@@ -110,8 +110,8 @@
     <category label="Lab">
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
-        <setting type="lsep" label="Experimental Alternative Data Sources (Program Data is Only Now/Next)"/>
-        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|tvguide.co.uk|yo.tv|SchedulesDirect" />
+        <setting type="lsep" label="Experimental Alternative Data Sources"/>
+        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|yo.tv" />
         <setting id="yo.country" label="yo.tv Country" type="select" default="uk" visible="eq(-1,yo.tv)" values="anguilla|ag|argentina|osterreich|bahamas|barbados|belgie|bolivia|brasil|canada|chile|cn|columbia|cr|cuba|danmark|do|ecuador|sv|suomi|francaise|deutschland|grenada|guatemala|guyana|honduras|ireland|italia|jamaica|luxembourg|mexico|montserrat|nederland|nicaragua|norge|panama|peru|polska|pr|ru|kn|lc|mf|vc|espana|sverige|schweiz|tt|tr|tc|uk|us|ve|vg"/> 
         <setting type="lsep" label="SchedulesDirect"/>
 		<setting id="sd.username" label="SD-Username" default="" type="text"  visible="false"/>
