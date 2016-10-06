@@ -47,13 +47,17 @@ import HTMLParser
 import resources.lib.pytz
 from resources.lib.pytz import timezone
 
+from sdAPI import SdAPI
+from utils import *
+
 SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder']
 
 
-class Channel(object):
-    def __init__(self, id, title, logo=None, streamUrl=None, visible=True, weight=-1):
+class Channel2(object):
+    def __init__(self, id, title, lineup, logo=None, streamUrl=None, visible=True, weight=-1):
         self.id = id
         self.title = title
+        self.lineup = lineup
         self.logo = logo
         self.streamUrl = streamUrl
         self.visible = visible
@@ -66,8 +70,8 @@ class Channel(object):
         return self.id == other.id
 
     def __repr__(self):
-        return 'Channel(id=%s, title=%s, logo=%s, streamUrl=%s)' \
-               % (self.id, self.title, self.logo, self.streamUrl)
+        return 'Channel(id=%s, title=%s, lineup=%s, logo=%s, streamUrl=%s)' \
+               % (self.id, self.title, self.lineup, self.logo, self.streamUrl)
 
 
 class Program(object):
@@ -376,7 +380,8 @@ class Database(object):
             updatesId = c.lastrowid
 
             imported = imported_channels = imported_programs = 0
-            for item in self.source.getDataFromExternal(date, progress_callback):
+            ch_list = self._getChannelList(onlyVisible=False)
+            for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
                 imported += 1
 
                 if imported % 10000 == 0:
@@ -524,6 +529,78 @@ class Database(object):
             idx = len(channels) - 1
         return channels[idx]
 
+    def deleteLineup(self, callback, lineup):
+        self.eventQueue.append([self._deleteLineup, callback, lineup])
+        self.event.set()
+
+    def _deleteLineup(self, lineup):
+        c = self.conn.cursor()
+        # delete channels associated with the lineup
+        xbmc.log('[%s] Removing Channels for lineup: %s' % (
+            ADDON.getAddonInfo('id'), str(lineup)), xbmc.LOGDEBUG)
+        c.execute('DELETE FROM channels WHERE source=? AND lineup=?', [self.source.KEY, lineup])
+
+        c.execute("UPDATE sources SET channels_updated=? WHERE id=?",
+                  [datetime.datetime.now(), self.source.KEY])
+        self.conn.commit()
+
+    def saveLineup(self, callback, channelList, lineup):
+        self.eventQueue.append([self._saveLineup, callback, channelList, lineup])
+        self.event.set()
+
+    def _saveLineup(self, channelList, lineup):
+        c = self.conn.cursor()
+        # delete removed channels
+        c.execute('SELECT * FROM channels WHERE source=? AND lineup=?',
+                  [self.source.KEY, lineup])
+        to_delete = []
+        for row in c:
+            station_id = row['id']
+            found = False
+            for channel in channelList:
+                if channel.id == station_id:
+                    found = True
+                    break
+            if not found:
+                xbmc.log('[%s] Removing Channel: %s from lineup: %s' % (
+                    ADDON.getAddonInfo('id'), str(station_id), str(lineup)), xbmc.LOGDEBUG)
+                to_delete.append(station_id)
+
+        if to_delete:
+            c.execute('DELETE FROM channels WHERE id IN (%s)' %
+                      ','.join('?' * len(to_delete)), to_delete)
+
+        # Add new channels
+        for channel in channelList:
+            xbmc.log('[%s] Adding Channel: %s from lineup: %s' % (
+                ADDON.getAddonInfo('id'), str(channel.id), str(lineup)), xbmc.LOGDEBUG)
+
+            logo = get_logo(channel)
+            c.execute(
+                'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source, lineup) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?, ?)',
+                [channel.id, channel.title, logo, '', True, -1, self.source.KEY, -1, self.source.KEY, lineup])
+
+        c.execute("UPDATE sources SET channels_updated=? WHERE id=?",
+                  [datetime.datetime.now(), self.source.KEY])
+        self.conn.commit()
+    def getLineupChannels(self, lineup):
+        result = self._invokeAndBlockForResult(self._getLineupChannels, lineup)
+        return result
+
+    def _getLineupChannels(self, lineup):
+        c = self.conn.cursor()
+        channelList = list()
+        c.execute('SELECT * FROM channels WHERE source=? AND lineup=? ORDER BY title',
+                  [self.source.KEY, lineup])
+
+
+        for row in c:
+            channel = Channel(row['id'], row['title'], row['lineup'], row['logo'], row['stream_url'],
+                              row['visible'], row['weight'])
+            channelList.append(channel)
+        c.close()
+        return channelList
+
     def saveChannelList(self, callback, channelList):
         self.eventQueue.append([self._saveChannelList, callback, channelList])
         self.event.set()
@@ -571,7 +648,7 @@ class Database(object):
         else:
             c.execute('SELECT * FROM channels WHERE source=? ORDER BY weight', [self.source.KEY])
         for row in c:
-            channel = Channel(row['id'], row['title'], row['logo'], row['stream_url'], row['visible'], row['weight'])
+            channel = Channel(row['id'], row['title'], row['lineup'], row['logo'], row['stream_url'], row['visible'], row['weight'])
             channelList.append(channel)
         if all == False and self.category and self.category != "Any":
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
@@ -974,6 +1051,12 @@ class Database(object):
                 c.execute('DROP TABLE programs')
                 c.execute(
                     'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, UNIQUE (channel, start_date, end_date), FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+            if version < [1, 3, 5]:
+                # Recreate tables with seasons, episodes and is_movie
+                c.execute('UPDATE version SET major=1, minor=3, patch=5')
+                c.execute('DROP TABLE channels')
+                c.execute(
+                    'CREATE TABLE channels(id TEXT, title TEXT, logo TEXT, stream_url TEXT, source TEXT, lineup TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -1025,18 +1108,18 @@ class Database(object):
         programList = list()
         c = self.conn.cursor()
         #once
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
             programList.append(program)
         #always
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         #c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
         for row in c:
-            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
@@ -1108,17 +1191,17 @@ class Database(object):
         if not c:
             return
         #once
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
-            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
             programList.append(program)
         #always
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
-            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
@@ -1163,7 +1246,7 @@ class Database(object):
         programList = list()
         c = self.conn.cursor()
         #once
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 0 AND p.title = a.program_title AND a.start_date = p.start_date")
         for row in c:
             channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
@@ -1171,9 +1254,9 @@ class Database(object):
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         #always
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title AND p.start_date >= ? AND p.end_date <= ?", [start,end])
         for row in c:
-            channel = Channel(row["id"], row["channel_title"], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel,title=row["title"],startDate=row["start_date"],endDate=row["end_date"],description=row["description"],
             imageLarge=row["image_large"],imageSmall=row["image_small"],
             season=row["season"],episode=row["episode"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
@@ -1209,7 +1292,7 @@ class Database(object):
 
 
 class Source(object):
-    def getDataFromExternal(self, date, progress_callback=None):
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
         """
         Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
         The source may choose to ignore the date parameter and return all data available.
@@ -1320,7 +1403,7 @@ class XMLTVSource(Source):
 
         return path
 
-    def getDataFromExternal(self, date, progress_callback=None):
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
         f = FileWrapper(self.xmltvFile)
         context = ElementTree.iterparse(f, events=("start", "end"))
         size = f.size
@@ -1487,7 +1570,7 @@ class XMLTVSource(Source):
                         visible = False
                     else:
                         visible = True
-                    result = Channel(cid, title, logo, streamUrl, visible)
+                    result = Channel(cid, title, '', logo, streamUrl, visible)
 
                 if result:
                     elements_parsed += 1
@@ -1523,7 +1606,7 @@ class TVGUKSource(Source):
         self.needReset = False
         self.done = False
 
-    def getDataFromExternal(self, date, progress_callback=None):
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
         """
         Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
         The source may choose to ignore the date parameter and return all data available.
@@ -1553,7 +1636,7 @@ class TVGUKSource(Source):
                 channel_number=match.group(1)
             else:
                 continue
-            c = Channel(name, name, img_url, "", True)
+            c = Channel(name, name, '', img_url, "", True)
             yield c
             start = ''
             program = ''
@@ -1640,7 +1723,7 @@ class YoSource(Source):
         except:
             return ''
 
-    def getDataFromExternal(self, date, progress_callback=None):
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
         """
         Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
         The source may choose to ignore the date parameter and return all data available.
@@ -1668,7 +1751,7 @@ class YoSource(Source):
             if name_match:
                 channel_number = name_match.group(1)
                 channel_name = name_match.group(2)
-                c = Channel(channel_name, channel_name, img_url, "", True)
+                c = Channel(channel_name, channel_name, '', img_url, "", True)
                 yield c
             else:
                 continue
@@ -1735,11 +1818,122 @@ class YoSource(Source):
 
         return ttime
 
+class DirectScheduleSource(Source):
+    KEY = 'sdirect'
+    PLUGIN_DATA = xbmc.translatePath(ADDON.getAddonInfo('profile'))
+    INI_TYPE_DEFAULT = 0
+    INI_TYPE_CUSTOM = 1
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.fetchError = False
+        '''
+        self.xmltvInterval = int(addon.getSetting('sd.interval'))
+        self.logoSource = int(addon.getSetting('logos.source'))
+        self.addonsType = int(addon.getSetting('addons.ini.type'))
+
+        # make sure the folder in the user's profile exists or create it!
+        if not os.path.exists(self.PLUGIN_DATA):
+            os.makedirs(self.PLUGIN_DATA)
+
+        # make sure the ini file is fetched as well if necessary
+        if self.addonsType != self.INI_TYPE_DEFAULT:
+            customFile = str(addon.getSetting('addons.ini.file'))
+            if os.path.exists(customFile):
+                # uses local file provided by user!
+                xbmc.log('[%s] Use local file: %s' % (ADDON.getAddonInfo('id'), customFile), xbmc.LOGDEBUG)
+            else:
+                # Probably a remote file
+                xbmc.log('[%s] Use remote file: %s' % (ADDON.getAddonInfo('id'), customFile), xbmc.LOGDEBUG)
+                self.updateLocalFile(customFile, addon, True)
+        '''
+
+    def updateLocalFile(self, name, addon, isIni=False):
+        path = os.path.join(self.PLUGIN_DATA, name)
+        fetcher = FileFetcher(name, addon)
+        retVal = fetcher.fetchFile()
+        if retVal == fetcher.FETCH_OK and not isIni:
+            self.needReset = True
+        elif retVal == fetcher.FETCH_ERROR:
+            xbmcgui.Dialog().ok(strings(FETCH_ERROR_TITLE), strings(FETCH_ERROR_LINE1),
+                                strings(FETCH_ERROR_LINE2))
+
+        return path
+
+    def isUpdated(self, channelsLastUpdated, programLastUpdate):
+        if channelsLastUpdated is None or programLastUpdate is None:
+            return True
+
+        update = False
+        interval = int(ADDON.getSetting('sd.interval'))
+        modTime = programLastUpdate
+        td = datetime.datetime.now() - modTime
+        # need to do it this way cause Android doesn't support .total_seconds() :(
+        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
+                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+            update = True
+        return update
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        return self.updateSchedules(ch_list, progress_callback)
+
+    def updateSchedules(self, ch_list, progress_callback):
+        sd = SdAPI()
+
+        station_ids = []
+        for ch in ch_list:
+            station_ids.append(ch.id)
+
+        # make sure date is in UTC!
+        date_local = datetime.datetime.now()
+        is_dst = time.daylight and time.localtime().tm_isdst > 0
+        utc_offset = time.altzone if is_dst else time.timezone
+        td_utc = datetime.timedelta(seconds=utc_offset)
+        date = date_local + td_utc
+        xbmc.log("[%s] Local date '%s' converted to UTC '%s'" %
+                 (ADDON.getAddonInfo('id'), str(date_local), str(date)), xbmc.LOGDEBUG)
+
+        # [{'station_id': station_id, 'p_id': p_id, 'start': start,
+        #   'dur': dur, 'title': 'abc', 'desc': 'abc', 'logo': ''}, ... ]
+        elements_parsed = 0
+        schedules = sd.get_schedules(station_ids, date, progress_callback)
+        for prg in schedules:
+            start = self.to_local(prg['start'])
+            end = start + datetime.timedelta(seconds=int(prg['dur']))
+            result = Program(prg['station_id'], prg['title'], start, end, prg['desc'],
+                             imageSmall=prg['logo'])
+
+            elements_parsed += 1
+            if result:
+                if progress_callback and elements_parsed % 100 == 0:
+                    if not progress_callback(100.0 / len(schedules) * elements_parsed):
+                        raise SourceUpdateCanceledException()
+                yield result
+
+    @staticmethod
+    def to_local(time_str):
+        # format: 2016-08-21T00:45:00Z
+        try:
+            utc = datetime.datetime.strptime(time_str, '%Y-%m-%dT%H:%M:%SZ')
+        except TypeError:
+            utc = datetime.datetime.fromtimestamp(
+                time.mktime(time.strptime(time_str, '%Y-%m-%dT%H:%M:%SZ')))
+        # get the local timezone offset in seconds
+        is_dst = time.daylight and time.localtime().tm_isdst > 0
+        utc_offset = - (time.altzone if is_dst else time.timezone)
+        td_local = datetime.timedelta(seconds=utc_offset)
+        t_local = utc + td_local
+        return t_local
 
 def instantiateSource():
-    if ADDON.getSetting("source.source") == "xmltv":
+    source = ADDON.getSetting("source.source")
+    if source == "xmltv":
         return XMLTVSource(ADDON)
-    elif ADDON.getSetting("source.source") == "tvguide.co.uk":
+    elif source == "tvguide.co.uk":
         return TVGUKSource(ADDON)
-    else:
+    elif source == "yo.tv":
         return YoSource(ADDON)
+    else:
+        return DirectScheduleSource(ADDON)

@@ -111,8 +111,17 @@
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
         <setting type="lsep" label="Experimental Alternative Data Sources (Program Data is Only Now/Next)"/>
-        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|tvguide.co.uk|yo.tv" />
+        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|tvguide.co.uk|yo.tv|SchedulesDirect" />
         <setting id="yo.country" label="yo.tv Country" type="select" default="uk" visible="eq(-1,yo.tv)" values="anguilla|ag|argentina|osterreich|bahamas|barbados|belgie|bolivia|brasil|canada|chile|cn|columbia|cr|cuba|danmark|do|ecuador|sv|suomi|francaise|deutschland|grenada|guatemala|guyana|honduras|ireland|italia|jamaica|luxembourg|mexico|montserrat|nederland|nicaragua|norge|panama|peru|polska|pr|ru|kn|lc|mf|vc|espana|sverige|schweiz|tt|tr|tc|uk|us|ve|vg"/> 
-
+        <setting type="lsep" label="SchedulesDirect"/>
+		<setting id="sd.username" label="SD-Username" default="" type="text"  visible="false"/>
+        <setting id="sd.password" label="SD-Password" default="" type="text" option="hidden" visible="false" />
+		<setting id="sd.changed" label="SD-Changed" default="0" type="number"  visible="false"/>
+		<setting label="Change SchedulesDirect-Login" type="action" action="RunScript($CWD/editor.py, 1)" />
+        <setting label="Add lineup" type="action" action="RunScript($CWD/editor.py, 2)" />
+        <setting label="Edit channels" type="action" action="RunScript($CWD/editor.py, 3)" />
+        <setting label="Delete lineup" type="action" action="RunScript($CWD/editor.py, 4)" />
+        <setting id="sd.range" label="Days of guide data to load" type="slider" default="3" range="1,1,14" option="int" />
+        <setting id="sd.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
     </category>
 </settings>
