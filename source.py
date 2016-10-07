@@ -381,42 +381,43 @@ class Database(object):
 
             imported = imported_channels = imported_programs = 0
             ch_list = self._getChannelList(onlyVisible=False)
-            for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
-                imported += 1
+            if len(ch_list) > 0:
+                for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
+                    imported += 1
 
-                if imported % 10000 == 0:
-                    self.conn.commit()
+                    if imported % 10000 == 0:
+                        self.conn.commit()
 
-                if isinstance(item, Channel):
-                    imported_channels += 1
-                    channel = item
-                    c.execute(
-                        'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)',
-                        [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
-                         self.source.KEY, channel.weight, self.source.KEY])
-                    if not c.rowcount:
+                    if isinstance(item, Channel):
+                        imported_channels += 1
+                        channel = item
                         c.execute(
-                            'UPDATE channels SET title=?, logo=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
-                            [channel.title, channel.logo, channel.streamUrl, channel.weight, channel.visible,
-                             channel.weight, channel.weight, channel.id, self.source.KEY])
+                            'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)',
+                            [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
+                             self.source.KEY, channel.weight, self.source.KEY])
+                        if not c.rowcount:
+                            c.execute(
+                                'UPDATE channels SET title=?, logo=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
+                                [channel.title, channel.logo, channel.streamUrl, channel.weight, channel.visible,
+                                 channel.weight, channel.weight, channel.id, self.source.KEY])
 
-                elif isinstance(item, Program):
-                    imported_programs += 1
-                    program = item
-                    if isinstance(program.channel, Channel):
-                        channel = program.channel.id
-                    else:
-                        channel = program.channel
+                    elif isinstance(item, Program):
+                        imported_programs += 1
+                        program = item
+                        if isinstance(program.channel, Channel):
+                            channel = program.channel.id
+                        else:
+                            channel = program.channel
 
-                    c.execute(
-                        'INSERT OR REPLACE INTO programs(channel, title, start_date, end_date, description, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                        [channel, program.title, program.startDate, program.endDate, program.description,
-                         program.imageLarge, program.imageSmall, program.season, program.episode, program.is_movie,
-                         program.language, self.source.KEY, updatesId])
+                        c.execute(
+                            'INSERT OR REPLACE INTO programs(channel, title, start_date, end_date, description, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                            [channel, program.title, program.startDate, program.endDate, program.description,
+                             program.imageLarge, program.imageSmall, program.season, program.episode, program.is_movie,
+                             program.language, self.source.KEY, updatesId])
 
-            # channels updated
-            c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
-            self.conn.commit()
+                # channels updated
+                c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
+                self.conn.commit()
 
             #if imported_channels == 0 or imported_programs == 0:
             if imported_programs == 0:
@@ -1677,10 +1678,10 @@ class TVGUKSource(Source):
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
         today = datetime.datetime.now()
-        if channelsLastUpdated is None or channelsLastUpdated.day != today.day:
+        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
             return True
 
-        if programsLastUpdated is None or programsLastUpdated.day != today.day:
+        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
             return True
         return False
 
@@ -1788,10 +1789,10 @@ class YoSource(Source):
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
         today = datetime.datetime.now()
-        if channelsLastUpdated is None or channelsLastUpdated.day != today.day:
+        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
             return True
 
-        if programsLastUpdated is None or programsLastUpdated.day != today.day:
+        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
             return True
         return False
 
@@ -1828,6 +1829,7 @@ class DirectScheduleSource(Source):
     def __init__(self, addon):
         self.needReset = False
         self.fetchError = False
+        self.start = True
         '''
         self.xmltvInterval = int(addon.getSetting('sd.interval'))
         self.logoSource = int(addon.getSetting('logos.source'))
@@ -1867,7 +1869,8 @@ class DirectScheduleSource(Source):
 
         update = False
         interval = int(ADDON.getSetting('sd.interval'))
-        if interval == FileFetcher.INTERVAL_ALWAYS:
+        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
+            self.start = False
             return True
         modTime = programLastUpdate
         td = datetime.datetime.now() - modTime
