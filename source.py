@@ -380,8 +380,13 @@ class Database(object):
             updatesId = c.lastrowid
 
             imported = imported_channels = imported_programs = 0
-            ch_list = self._getChannelList(onlyVisible=False)
-            if len(ch_list) > 0:
+            getData = True
+            ch_list = []
+            if self.source.KEY == "sdirect":
+                ch_list = self._getChannelList(onlyVisible=False)
+                if len(ch_list) == 0:
+                    getData = False
+            if getData == True:
                 for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
                     imported += 1
 
