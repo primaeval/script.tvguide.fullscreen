@@ -52,7 +52,7 @@
                     <posy>0</posy>
                     <width>200</width>
                     <height>20180</height>
-                    <texture>tvguide-program-grey.png</texture>
+                    <texture>tvg-button-nofocus.png</texture>
                     <visible>false</visible>
                 </control>
                 <control type="image">
@@ -79,20 +79,21 @@
                     <posy>0</posy>
                     <width>200</width>
                     <height>180</height>
-                    <texture>tvguide-program-grey-focus.png</texture>
+                    <texture>tvg-button-focus.png</texture>
                     <visible>Control.HasFocus(1000)</visible>
                 </control>
                 <control type="image">
-                    <posx>31</posx>
+                    <posx>35</posx>
                     <posy>16</posy>
                     <width>128</width>
                     <height>128</height>
+                    <aspectratio>keep</aspectratio>
                     <info>ListItem.Icon</info>
                 </control>
                 <control type="label">
                     <posx>0</posx>
                     <posy>150</posy>
-                    <width>180</width>
+                    <width>200</width>
                     <height>40</height>
                     <align>center</align>
                     <font>font13</font>
