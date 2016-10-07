@@ -343,7 +343,7 @@
                             <width>200</width>
                             <height>100</height>
                             <info>ListItem.Property(ProgramImage)</info>
-                            <aspectratio>keep</aspectratio>
+                            <aspectratio>scale</aspectratio>
                         </control>
                     </focusedlayout>
                 </control>
