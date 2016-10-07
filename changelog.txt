@@ -7,13 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
-version 0.0.136
-- fix
-
-version 0.0.135
-- fix
-
-version 0.0.134
+version 0.0.134-137
 - fixes
 
 version 0.0.133
