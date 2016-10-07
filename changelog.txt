@@ -7,6 +7,18 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.134-138
+- fixes
+
+version 0.0.133
+- experimental support for SchedulesDirect (thanks to bluezed)
+
+version 0.0.132
+- fixes
+
+version 0.0.131
+- tweaks
+
 version 0.0.130
 - tweaks
 

@@ -1182,8 +1182,10 @@
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>tvguide-program-grey.png</texturenofocus>
+                    <textcolor>white</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
             </control>
 

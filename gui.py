@@ -1026,7 +1026,7 @@ class TVGuide(xbmcgui.WindowXML):
             return
 
         title = '[B]%s[/B]' % program.title
-        if program.season is not None and program.episode is not None:
+        if program.season and program.episode:
             title += " [B]S%sE%s[/B]" % (program.season, program.episode)
         if program.is_movie == "Movie":
             title += " [B](Movie)[/B]"
@@ -1076,11 +1076,11 @@ class TVGuide(xbmcgui.WindowXML):
 
 
             color = colors.color_name["white"]
-            if program.imageSmall is not None:
+            if program.imageSmall:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
             else:
                 self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
-            if program.imageLarge is not None:
+            if program.imageLarge:
                 self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
 
 
@@ -2371,16 +2371,18 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         try:
             season = self.program.season
             episode = self.program.episode
+            xbmc.log(repr((season,episode)))
             if season and episode:
                 label = " - S%sE%s" % (season,episode)
         except:
             pass
         programLabelControl.setLabel(self.program.title+label)
         start = self.program.startDate
-        day = self.formatDateTodayTomorrow(start)
-        start = start.strftime("%H:%M")
-        start = "%s %s" % (day,start)
-        programDateControl.setLabel(start)
+        if start:
+            day = self.formatDateTodayTomorrow(start)
+            start = start.strftime("%H:%M")
+            start = "%s %s" % (day,start)
+            programDateControl.setLabel(start)
         if self.program.imageSmall:
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:
@@ -2462,7 +2464,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                     channels.append(channelList[i])
 
                 for channel in channels:
-                    categories[self.category].append(channel)
+                    if channel not in categories[self.category]:
+                        categories[self.category].append(channel)
 
             elif ret == 1:
                 channelList = sorted(categories[self.category])
