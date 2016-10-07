@@ -201,7 +201,7 @@
             <font>font13</font>
             <textcolor>white</textcolor>
             <focusedcolor>black</focusedcolor>
-            <label>$ADDON[script.epg.direct 30502]</label>
+            <label>Save</label>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onleft>6000</onleft>
@@ -218,7 +218,7 @@
             <font>font13</font>
             <textcolor>white</textcolor>
             <focusedcolor>black</focusedcolor>
-            <label>$ADDON[script.epg.direct 30503]</label>
+            <label>Cancel</label>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onleft>6003</onleft>
