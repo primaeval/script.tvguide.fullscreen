@@ -50,7 +50,7 @@ from resources.lib.pytz import timezone
 from sdAPI import SdAPI
 from utils import *
 
-SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder']
+SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder', 'logos.source', 'logos.folder', 'logos.url', 'source.source', 'yo.country' ]
 
 
 class Channel2(object):
@@ -289,7 +289,9 @@ class Database(object):
 
         if settingsChanged or noRows:
             for key in SETTINGS_TO_CHECK:
-                value = addon.getSetting(key).decode('utf-8', 'ignore')
+                value = addon.getSetting(key)
+                if value:
+                    value = value.decode('utf-8', 'ignore')
                 c.execute('INSERT OR IGNORE INTO settings(key, value) VALUES (?, ?)', [key, value])
                 if not c.rowcount:
                     c.execute('UPDATE settings SET value=? WHERE key=?', [value, key])
