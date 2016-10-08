@@ -303,6 +303,9 @@ if __name__ == '__main__':
                         if mode == 2:
                             select_lineup()
                         elif mode == 3:
+                            if get_setting('source.source') != "SchedulesDirect":
+                                xbmcgui.Dialog().ok('Settings','Set Data Source to SchedulesDirect and press OK first.')
+                                exit()
                             edit_channels()
                         elif mode == 4:
                             delete_lineup()
