@@ -753,6 +753,9 @@ class TVGuide(xbmcgui.WindowXML):
         index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
+        action = d.action
+        if action == ACTION_RIGHT:
+            self.showNext()
 
     def showNext(self):
         programList = self.database.getNextList()
@@ -762,6 +765,9 @@ class TVGuide(xbmcgui.WindowXML):
         index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
+        action = d.action
+        if action == ACTION_LEFT:
+            self.showNow()
 
     def programSearch(self):
         d = xbmcgui.Dialog()
@@ -3333,6 +3339,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         self.title = title
         self.programs = programs
         self.index = -1
+        self.action = None
 
     def onInit(self):
         control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
@@ -3411,6 +3418,12 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
 
     def onAction(self, action):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
+            self.close()
+        elif action.getId() == ACTION_LEFT:
+            self.action = ACTION_LEFT
+            self.close()
+        elif action.getId() == ACTION_RIGHT:
+            self.action = ACTION_RIGHT
             self.close()
 
     def onClick(self, controlId):
