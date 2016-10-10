@@ -1038,7 +1038,7 @@
                 <control type="button" id="4203">
                     <description>Loading - Cancel button</description>
 					<left>575</left>
-                    <top>475</top>
+                    <top>435</top>
                     <width>1</width>
                     <height>1</height>
 					<visible>true</visible>
@@ -1050,6 +1050,7 @@
                     <width>1280</width>
                     <height>720</height>
 					<texture fallback="charcoal.png">$VAR[GlobalFanartVar]</texture>
+					<visible>!Player.HasMedia</visible>
                 </control>
                 <!-- mount image-->
 				<control type="image">
@@ -1057,9 +1058,9 @@
 					<left>0</left>
 					<top>0</top>
 					<width>1280</width>
-					<height>720</height>
+					<height>500</height>
 					<texture>black-back.png</texture>
-					<visible>true</visible>
+					<visible>Player.HasMedia</visible>
 				</control>
                 <control type="image">
                     <description>Loading - Spinning GIF</description>
@@ -1109,7 +1110,7 @@
 				<control type="image">
                     <description>Loading - Cancel button image</description>
 					<left>575</left>
-                    <top>495</top>
+                    <top>455</top>
                     <width>130</width>
                     <height>40</height>
 					<texture>black.png</texture>
@@ -1118,9 +1119,9 @@
 					<visible>true</visible>
                 </control>
                 <control type="label">
-                    <description>Loading - Cancel button test</description>
+                    <description>Loading - Cancel button text</description>
 					<left>540</left>
-                    <top>500</top>
+                    <top>460</top>
                     <width>200</width>
                     <height>30</height>
                     <label>$ADDON[script.tvguide.fullscreen 30008]</label>
