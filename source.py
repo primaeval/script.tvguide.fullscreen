@@ -1742,55 +1742,56 @@ class YoSource(Source):
         @return:
         """
 
-        country_id = ADDON.getSetting("yo.country")
-        html = self.get_url('http://%s.yo.tv/' % country_id)
+        country_ids = ADDON.getSetting("yo.countries").split(',')
+        for country_id in country_ids:
+            html = self.get_url('http://%s.yo.tv/' % country_id)
 
-        channels = html.split('<li><a data-ajax="false"')
+            channels = html.split('<li><a data-ajax="false"')
 
-        for channel in channels:
-            img_url = ''
+            for channel in channels:
+                img_url = ''
 
-            img_match = re.search(r'<img class="lazy" src="/Content/images/yo/program_logo.gif" data-original="(.*?)"', channel)
-            if img_match:
-                img_url = img_match.group(1)
+                img_match = re.search(r'<img class="lazy" src="/Content/images/yo/program_logo.gif" data-original="(.*?)"', channel)
+                if img_match:
+                    img_url = img_match.group(1)
 
-            channel_name = ''
-            channel_number = ''
-            name_match = re.search(r'href="/tv_guide/channel/(.*?)/(.*?)"', channel)
-            if name_match:
-                channel_number = name_match.group(1)
-                channel_name = re.sub("_"," ",name_match.group(2))
-                c = Channel(channel_name, channel_name, '', img_url, "", True)
-                yield c
-            else:
-                continue
+                channel_name = ''
+                channel_number = ''
+                name_match = re.search(r'href="/tv_guide/channel/(.*?)/(.*?)"', channel)
+                if name_match:
+                    channel_number = name_match.group(1)
+                    channel_name = re.sub("_"," ",name_match.group(2))
+                    c = Channel(channel_name, channel_name, '', img_url, "", True)
+                    yield c
+                else:
+                    continue
 
-            start = ''
-            program = ''
-            next_start = ''
-            next_program = ''
-            after_start = ''
-            after_program = ''
-            match = re.search(r'<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>', channel,flags=(re.DOTALL | re.MULTILINE))
-            if match:
-                now = datetime.datetime.now()
-                year = now.year
-                month = now.month
-                day = now.day
-                start = self.local_time(match.group(1),year,month,day)
-                program = match.group(2)
-                next_start = self.local_time(match.group(3),year,month,day)
-                next_program = match.group(4)
-                after_start = self.local_time(match.group(5),year,month,day)
-                after_program = match.group(6)
-                yield Program(c, program, start, next_start, "", imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")
-                yield Program(c, next_program, next_start, after_start, "", imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")
-                yield Program(c, after_program, after_start, after_start + datetime.timedelta(hours=1), "", imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")
-            else:
-                pass
+                start = ''
+                program = ''
+                next_start = ''
+                next_program = ''
+                after_start = ''
+                after_program = ''
+                match = re.search(r'<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>', channel,flags=(re.DOTALL | re.MULTILINE))
+                if match:
+                    now = datetime.datetime.now()
+                    year = now.year
+                    month = now.month
+                    day = now.day
+                    start = self.local_time(match.group(1),year,month,day)
+                    program = match.group(2)
+                    next_start = self.local_time(match.group(3),year,month,day)
+                    next_program = match.group(4)
+                    after_start = self.local_time(match.group(5),year,month,day)
+                    after_program = match.group(6)
+                    yield Program(c, program, start, next_start, "", imageSmall="",
+                         season = "", episode = "", is_movie = "", language= "")
+                    yield Program(c, next_program, next_start, after_start, "", imageSmall="",
+                         season = "", episode = "", is_movie = "", language= "")
+                    yield Program(c, after_program, after_start, after_start + datetime.timedelta(hours=1), "", imageSmall="",
+                         season = "", episode = "", is_movie = "", language= "")
+                else:
+                    pass
 
 
 
