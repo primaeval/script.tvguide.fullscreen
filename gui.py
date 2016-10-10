@@ -429,10 +429,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_RIGHT:
              xbmc.executebuiltin('Action(FullScreen)')
         elif action.getId() == ACTION_UP:
-            self.quickViewStartDate = datetime.datetime.today()
-            self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
-            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
-            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
+            self.showNow()
         elif action.getId() == ACTION_DOWN:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
