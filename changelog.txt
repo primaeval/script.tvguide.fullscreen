@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.145
+- Up for Now in TV mode
+- Right for Next
+- Left for Now
+
 version 0.0.142-144
 - Simple Favourites (info,i in main epg or Favourites in context menu)
 
