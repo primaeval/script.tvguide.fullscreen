@@ -559,7 +559,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [ACTION_SHOW_INFO]:
             #if self.player.isPlaying():
             #    self._hideEpg()
-            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.program.simple.favourites/?content_type=video,return)")
+            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.program.simple.favourites,return)")
 
 
         controlInFocus = None
@@ -980,7 +980,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
             xbmc.executebuiltin('ActivateWindow(10025,"plugin://plugin.program.super.favourites/?mode=0&keyword=%s",return)' % urllib.quote_plus(program.title))
         elif buttonClicked == PopupMenu.C_POPUP_FAVOURITES:
-            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.program.simple.favourites/?content_type=video,return)")
+            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.program.simple.favourites,return)")
 
     def setFocusId(self, controlId):
         control = self.getControl(controlId)
