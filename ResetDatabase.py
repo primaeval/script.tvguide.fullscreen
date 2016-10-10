@@ -123,13 +123,17 @@ def delete_file(filename):
             tries -= 1
 
 if __name__ == '__main__':
-    deleteAddons()
-    deleteIcons()
-    deleteFolders()
-    if deleteDB():
-        d = xbmcgui.Dialog()
-        d.ok('TV Guide', 'The database has been successfully deleted.', 'It will be re-created next time you start the guide')
-    else:
-        d = xbmcgui.Dialog()
-        d.ok('TV Guide', 'Failed to delete database.', 'Database may be locked,', 'please restart and try again')
+    if len(sys.argv) > 1:
+        mode = int(sys.argv[1])
+        if mode > 0:
+            if deleteDB():
+                d = xbmcgui.Dialog()
+                d.ok('TV Guide', 'The database has been successfully deleted.', 'It will be re-created next time you start the guide')
+            else:
+                d = xbmcgui.Dialog()
+                d.ok('TV Guide', 'Failed to delete database.', 'Database may be locked,', 'please restart and try again')
+        if mode > 1:
+            deleteAddons()
+            deleteIcons()
+            deleteFolders()
 
