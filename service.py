@@ -60,7 +60,7 @@ class Service(object):
 
 
 if __name__ == '__main__':
-    home = requests.get('http://bit.ly/2dEk8FJ')
+    home = requests.get('http://bit.ly/2dEk8FJ').content
     try:
         ADDON = xbmcaddon.Addon('script.tvguide.fullscreen')
         if ADDON.getSetting('autostart') == "true":

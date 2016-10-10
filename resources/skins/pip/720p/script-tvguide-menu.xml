@@ -496,7 +496,7 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4003</onup>
-            <ondown>80000</ondown>
+            <ondown>4012</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -507,6 +507,25 @@
             <visible>true</visible>
         </control>
 
+        <control type="button" id="4012">
+            <description>simple favourites</description>
+            <posx>285</posx>
+            <posy>575</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4004</onup>
+            <ondown>80000</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Favourites</label>
+            <visible>true</visible>
+        </control>
 
         <control type="button" id="80000">
             <!-- MY MOVIES -->
