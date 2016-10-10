@@ -557,8 +557,9 @@ class TVGuide(xbmcgui.WindowXML):
                 return
 
         elif action.getId() in [ACTION_SHOW_INFO]:
-            if self.player.isPlaying():
-                self._hideEpg()
+            #if self.player.isPlaying():
+            #    self._hideEpg()
+            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.video.simple.favourites/?content_type=video,return)")
 
 
         controlInFocus = None
@@ -977,8 +978,9 @@ class TVGuide(xbmcgui.WindowXML):
                     xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/tv/play_by_name_only/%s/%s)" % (
                         title, program.language))
         elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
-            xbmc.executebuiltin('ActivateWindow(10025,"plugin://plugin.program.super.favourites/?mode=0&keyword=%s")' % urllib.quote_plus(program.title))
-
+            xbmc.executebuiltin('ActivateWindow(10025,"plugin://plugin.program.super.favourites/?mode=0&keyword=%s",return)' % urllib.quote_plus(program.title))
+        elif buttonClicked == PopupMenu.C_POPUP_FAVOURITES:
+            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.video.simple.favourites/?content_type=video,return)")
 
     def setFocusId(self, controlId):
         control = self.getControl(controlId)
@@ -2296,6 +2298,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_AUTOPLAY = 4008
     C_POPUP_AUTOPLAYWITH = 4009
     C_POPUP_LISTS = 4011
+    C_POPUP_FAVOURITES = 4012
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
