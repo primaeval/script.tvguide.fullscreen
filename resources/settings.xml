@@ -105,7 +105,8 @@
     <category label="30140">
         <setting type="lsep" label="30137"/>
         <setting type="lsep" label="30138"/>
-        <setting label="30139" type="action" action="RunScript($CWD/ResetDatabase.py)" />
+        <setting label="Reset EPG Data" type="action" action="RunScript($CWD/ResetDatabase.py, 1)" />        
+        <setting label="Reset Everything" type="action" action="RunScript($CWD/ResetDatabase.py, 2)" />
     </category>
     <category label="Lab">
         <setting type="sep"/>
