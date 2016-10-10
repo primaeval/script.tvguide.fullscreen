@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.142
+- Simple Favourites (info,i in main epg or Favourites in context menu)
+
 version 0.0.134-141
 - fixes
 
