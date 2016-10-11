@@ -3101,13 +3101,13 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         self.previousDirsId = path
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
-        dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
+        dirs = dict([[f["file"],f["label"]] for f in files if f["filetype"] == "directory"])
         items = list()
         item = xbmcgui.ListItem('[B]%s[/B]' % addon.getAddonInfo('name'))
         item.setProperty('stream', path)
         items.append(item)
-        for label in sorted(dirs):
-            stream = dirs[label]
+        for stream in sorted(dirs, key=lambda x: dirs[x]):
+            label = dirs[stream]
             if item.getProperty('addon_id') == "plugin.video.meta":
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
@@ -3141,7 +3141,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
-        dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
+        dirs = dict([[f["file"],f["label"]] for f in files if f["filetype"] == "directory"])
         links = {}
         thumbnails = {}
         for f in files:
@@ -3160,8 +3160,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         item.setProperty('stream', previousDirsId)
         items.append(item)
 
-        for label in sorted(dirs):
-            stream = dirs[label]
+        for stream in sorted(dirs, key=lambda x: dirs[x]):
+            label = dirs[stream]
             item = xbmcgui.ListItem(label)
             item.setProperty('stream', stream)
             items.append(item)
