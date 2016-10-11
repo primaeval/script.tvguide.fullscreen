@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites
 
+version 0.0.146
+- Left for Listing from Now
+- Left/Right also for Menu from Listing/Next
+
 version 0.0.145
 - Up for Now in TV mode
 - Right for Next
