@@ -429,10 +429,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_RIGHT:
              xbmc.executebuiltin('Action(FullScreen)')
         elif action.getId() == ACTION_UP:
-            self.quickViewStartDate = datetime.datetime.today()
-            self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
-            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
-            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
+            self.showNow()
         elif action.getId() == ACTION_DOWN:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
@@ -559,7 +556,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [ACTION_SHOW_INFO]:
             #if self.player.isPlaying():
             #    self._hideEpg()
-            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.video.simple.favourites/?content_type=video,return)")
+            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.program.simple.favourites,return)")
 
 
         controlInFocus = None
@@ -754,8 +751,17 @@ class TVGuide(xbmcgui.WindowXML):
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
-        if index > -1:
-            self._showContextMenu(programList[index])
+        action = d.action
+        if action == ACTION_RIGHT:
+            self.showNext()
+        elif action == ACTION_LEFT:
+            self.showListing(programList[index].channel)
+        elif action == KEY_CONTEXT_MENU:
+            if index > -1:
+                self._showContextMenu(programList[index])
+        else:
+            if index > -1:
+                self.playChannel(programList[index].channel, programList[index])
 
     def showNext(self):
         programList = self.database.getNextList()
@@ -763,8 +769,18 @@ class TVGuide(xbmcgui.WindowXML):
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
-        if index > -1:
-            self._showContextMenu(programList[index])
+        action = d.action
+        if action == ACTION_LEFT:
+            self.showNow()
+        elif action == ACTION_RIGHT:
+            self.showListing(programList[index].channel)
+        elif action == KEY_CONTEXT_MENU:
+            if index > -1:
+                self._showContextMenu(programList[index])
+        else:
+            if index > -1:
+                self.playChannel(programList[index].channel, programList[index])
+
 
     def programSearch(self):
         d = xbmcgui.Dialog()
@@ -980,7 +996,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
             xbmc.executebuiltin('ActivateWindow(10025,"plugin://plugin.program.super.favourites/?mode=0&keyword=%s",return)' % urllib.quote_plus(program.title))
         elif buttonClicked == PopupMenu.C_POPUP_FAVOURITES:
-            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.video.simple.favourites/?content_type=video,return)")
+            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.program.simple.favourites,return)")
 
     def setFocusId(self, controlId):
         control = self.getControl(controlId)
@@ -3085,13 +3101,13 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         self.previousDirsId = path
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
-        dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
+        dirs = dict([[f["file"],f["label"]] for f in files if f["filetype"] == "directory"])
         items = list()
         item = xbmcgui.ListItem('[B]%s[/B]' % addon.getAddonInfo('name'))
         item.setProperty('stream', path)
         items.append(item)
-        for label in sorted(dirs):
-            stream = dirs[label]
+        for stream in sorted(dirs, key=lambda x: dirs[x]):
+            label = dirs[stream]
             if item.getProperty('addon_id') == "plugin.video.meta":
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
@@ -3125,7 +3141,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
-        dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
+        dirs = dict([[f["file"],f["label"]] for f in files if f["filetype"] == "directory"])
         links = {}
         thumbnails = {}
         for f in files:
@@ -3144,8 +3160,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         item.setProperty('stream', previousDirsId)
         items.append(item)
 
-        for label in sorted(dirs):
-            stream = dirs[label]
+        for stream in sorted(dirs, key=lambda x: dirs[x]):
+            label = dirs[stream]
             item = xbmcgui.ListItem(label)
             item.setProperty('stream', stream)
             items.append(item)
@@ -3336,6 +3352,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         self.title = title
         self.programs = programs
         self.index = -1
+        self.action = None
 
     def onInit(self):
         control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
@@ -3413,7 +3430,23 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
 
 
     def onAction(self, action):
+        listControl = self.getControl(self.C_PROGRAM_LIST)
+        self.id = self.getFocusId(self.C_PROGRAM_LIST)
+        item = listControl.getSelectedItem()
+        if item:
+            self.index = int(item.getProperty('index'))
+        else:
+            self.index = -1
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
+            self.close()
+        elif action.getId() in [KEY_CONTEXT_MENU]:
+            self.action = KEY_CONTEXT_MENU
+            self.close()
+        elif action.getId() == ACTION_LEFT:
+            self.action = ACTION_LEFT
+            self.close()
+        elif action.getId() == ACTION_RIGHT:
+            self.action = ACTION_RIGHT
             self.close()
 
     def onClick(self, controlId):
