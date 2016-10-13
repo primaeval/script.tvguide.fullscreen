@@ -1082,7 +1082,7 @@
                 <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
                 <label>-</label>
-                <autoscroll delay="3000" time="1000" repeat="10000"></autoscroll>
+                <autoscroll delay="5000" time="1000" repeat="10000"></autoscroll>
             </control>
 
             <control type="image" id="7023">
