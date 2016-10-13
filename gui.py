@@ -2390,7 +2390,6 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         try:
             season = self.program.season
             episode = self.program.episode
-            xbmc.log(repr((season,episode)))
             if season and episode:
                 label = " - S%sE%s" % (season,episode)
         except:
@@ -2719,6 +2718,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_BROWSE_FOLDER = 4009
     C_STREAM_CHANNEL_LOGO = 4023
     C_STREAM_CHANNEL_LABEL = 4024
+    C_STREAM_ADDON_LOGO = 4025
+    C_STREAM_ADDON_LABEL = 4026
 
     C_STREAM_VISIBILITY_MARKER = 100
 
@@ -2802,8 +2803,39 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
         self.getControl(self.C_STREAM_CHANNEL_LABEL).setLabel(self.channel.title)
         if self.channel.logo:
-            self.getControl(self.C_STREAM_CHANNEL_LOGO).setImage(self.channel.logo)
+            try:
+                control = self.getControl(self.C_STREAM_CHANNEL_LOGO)
+                if control:
+                    control.setImage(self.channel.logo)
+            except:
+                pass
 
+        url = self.database.getStreamUrl(self.channel)
+        if url:
+            if url.startswith('plugin://'):
+                match = re.search('plugin://(.*?)/.*',url)
+                if match:
+                    id = match.group(1)
+                    addon = xbmcaddon.Addon(id)
+                    name = addon.getAddonInfo('name')
+                    icon = addon.getAddonInfo('icon')
+            else:
+                name = "Playlist"
+                icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
+            if name:
+                try:
+                    control = self.getControl(self.C_STREAM_ADDON_LABEL)
+                    if control:
+                        control.setLabel(name)
+                except:
+                    pass
+            if icon:
+                try:
+                    control = self.getControl(self.C_STREAM_ADDON_LOGO)
+                    if control:
+                        control.setImage(icon)
+                except:
+                    pass
 
     def onAction(self, action):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU]:

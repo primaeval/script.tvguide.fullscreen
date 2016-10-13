@@ -98,7 +98,6 @@
             <visible>true</visible>
         </control>
 
-
         <control type="image" id="4023">
             <description>Channel Logo</description>
             <posx>20</posx>
@@ -107,7 +106,6 @@
             <height>40</height>
             <aspectratio>keep</aspectratio>
             <align>left</align>
-            <fadetime>500</fadetime>
             <texture>-</texture>
             <visible>true</visible>
         </control>
@@ -118,11 +116,38 @@
             <posy>40</posy>
             <width>170</width>
             <height>40</height>
-            <align>center</align>
+            <align>left</align>
             <aligny>center</aligny>
             <font>font13_title</font>
             <textcolor>white</textcolor>
             <label/>
+            <align>left</align>
+            <scroll>true</scroll>
+        </control>
+
+        <control type="image" id="4025">
+            <description>Addon Logo</description>
+            <posx>20</posx>
+            <posy>645</posy>
+            <width>170</width>
+            <height>50</height>
+            <aspectratio>keep</aspectratio>
+            <align>left</align>
+            <texture>-</texture>
+            <visible>true</visible>
+        </control>
+
+        <control type="label" id="4026">
+            <description>Addon Name</description>
+            <posx>200</posx>
+            <posy>650</posy>
+            <width>240</width>
+            <height>40</height>
+            <align>left</align>
+            <aligny>center</aligny>
+            <font>font13_title</font>
+            <textcolor>white</textcolor>
+            <label></label>
             <align>left</align>
             <scroll>true</scroll>
         </control>
