@@ -845,7 +845,7 @@
             <control type="label">
                 <posx>400</posx>
                 <posy>-20</posy>
-                <width>560</width>
+                <width>760</width>
                 <height>38</height>
                 <aligny>center</aligny>
                 <font>font13</font>
@@ -853,7 +853,6 @@
                 <focusedcolor>black</focusedcolor>
                 <label>Click and Wait to Load</label>
             </control>
-
 
             <control type="list" id="4008">
                 <posx>400</posx>
@@ -1082,10 +1081,29 @@
             </control>
         </control>
 
+        <control type="image">
+            <description>video mount</description>
+            <posx>0</posx>
+            <posy>244r</posy>
+            <width>428</width>
+            <height>244</height>
+            <texture>grey.png</texture>
+            <visible>Player.HasMedia</visible>
+        </control>
+        <control type="image">
+            <description>video background</description>
+            <posx>2</posx>
+            <posy>242r</posy>
+            <width>424</width>
+            <height>240</height>
+            <texture>black-back.png</texture>
+            <visible>Player.HasMedia</visible>
+        </control>
+
         <control type="videowindow">
             <description>video window</description>
-            <posx>0</posx>
-            <posy>240r</posy>
+            <posx>2</posx>
+            <posy>242r</posy>
             <width>424</width>
             <height>240</height>
             <aligny>top</aligny>
