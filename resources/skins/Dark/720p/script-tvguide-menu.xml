@@ -105,10 +105,10 @@
 			</control>
 			<control type="image" id="4100">
 				<description>Channel logo</description>
-				<left>578</left>
-				<top>298</top>
-				<width>60</width>
-				<height>60</height>
+				<left>588</left>
+				<top>308</top>
+				<width>50</width>
+				<height>50</height>
 				<aspectratio>keep</aspectratio>
 				<visible>true</visible>
 			</control>
