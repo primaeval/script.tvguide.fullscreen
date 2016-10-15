@@ -3442,7 +3442,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
                 item.setProperty('When', when_str)
 
             if elapsed.seconds > 0:
-                progress = 100.0 * float(elapsed.seconds) / float(duration.seconds)
+                progress = 100.0 * float(timedelta_total_seconds(elapsed)) / float(duration.seconds)
                 progress = str(int(progress))
             else:
                 #TODO hack for progress bar with 0 time
