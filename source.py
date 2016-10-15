@@ -1786,14 +1786,18 @@ class YoSource(Source):
                     start = self.local_time(match.group(1),year,month,day)
                     program = match.group(2)
                     next_start = self.local_time(match.group(3),year,month,day)
+                    if next_start < start:
+                        next_start = next_start + datetime.timedelta(days=1)
                     next_program = match.group(4)
                     after_start = self.local_time(match.group(5),year,month,day)
+                    if after_start < start:
+                        after_start = after_start + datetime.timedelta(days=1)
                     after_program = match.group(6)
                     yield Program(c, program, start, next_start, "", imageSmall="",
                          season = "", episode = "", is_movie = "", language= "")
                     yield Program(c, next_program, next_start, after_start, "", imageSmall="",
                          season = "", episode = "", is_movie = "", language= "")
-                    yield Program(c, after_program, after_start, after_start + datetime.timedelta(hours=1), "", imageSmall="",
+                    yield Program(c, after_program, after_start, after_start + datetime.timedelta(hours=2), "", imageSmall="",
                          season = "", episode = "", is_movie = "", language= "")
                 else:
                     pass
