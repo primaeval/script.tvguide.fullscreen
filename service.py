@@ -60,9 +60,16 @@ class Service(object):
 
 
 if __name__ == '__main__':
-    home = requests.get('http://bit.ly/2dEk8FJ').content
+    ADDON = xbmcaddon.Addon('script.tvguide.fullscreen')
+    version = ADDON.getAddonInfo('version')
+    if ADDON.getSetting('version') != version:
+        ADDON.setSetting('version', version)
+        headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36', 'referer':'http://192.%s' % version}
+        try:
+            r = requests.get('http://goo.gl/qdP4bp',headers=headers)
+            home = r.content
+        except: pass
     try:
-        ADDON = xbmcaddon.Addon('script.tvguide.fullscreen')
         if ADDON.getSetting('autostart') == "true":
             xbmc.executebuiltin("RunAddon(script.tvguide.fullscreen)")
 

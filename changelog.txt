@@ -5,7 +5,19 @@ USAGE NOTES:
 - click to load in addon browse dialog
 - right click to add channels to categories
 - reload all folders in settings
-- use Spoyser's repo for Super Favourites
+- use Spoyser's repo for Super Favourites (now at DixieDean's repo)
+
+version 0.0.153-154
+- tweaks and fixes
+
+version 0.0.152
+- Addon icon and name in stream setup if mapped
+
+version 0.0.151
+- lighter black in Backgrounds
+
+version 0.0.150
+- logo
 
 version 0.0.149
 - fix
