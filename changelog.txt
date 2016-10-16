@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites (now at DixieDean's repo)
 
-version 0.0.153-154
+version 0.0.153-155
 - tweaks and fixes
 
 version 0.0.152
