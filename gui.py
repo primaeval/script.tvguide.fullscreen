@@ -1576,7 +1576,10 @@ class TVGuide(xbmcgui.WindowXML):
 
         # date and time row
         self.setControlLabel(self.C_MAIN_DATE, self.formatDateTodayTomorrow(self.viewStartDate))
-        self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
+        if ADDON.getSetting('date.long') == 'true':
+            self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
+        else:
+            self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, False))
         #self.setControlLabel(self.C_MAIN_DATE_LONG, '{dt:%A} {dt.day} {dt:%B}'.format(dt=self.viewStartDate))
         for col in range(1, 5):
             self.setControlLabel(4000 + col, self.formatTime(startTime))

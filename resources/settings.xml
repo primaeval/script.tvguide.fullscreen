@@ -55,7 +55,8 @@
         <setting id="nextup.time" type="number" label="  - Time before end in seconds to show" default="20" visible="false" enable="true"/>
         <setting id="enable.nextup.showTime" label="  - Set display time" visible="false" type="bool" default="false" />
         <setting id="nextup.showTime" type="number" label="    - Time in seconds to show" default="10" visible="false" enable="true"/>
-
+        <setting type="sep"/>
+        <setting id="date.long" label="Show Long Date in EPG" type="bool" default="true" />
         <setting type="sep"/>
         <setting id="mouse.controls" label="Touch Control Buttons" type="bool" default="false" />
         <setting type="sep"/>
