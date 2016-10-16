@@ -162,15 +162,15 @@
                     <pagecontrol>-</pagecontrol>
                     <itemlayout height="40">
                         <control type="image">
-                            <left>10</left>
+                            <left>0</left>
                             <top>0</top>
-                            <width>80</width>
+                            <width>140</width>
                             <height>40</height>
                             <info>ListItem.Icon</info>
                             <aspectratio>keep</aspectratio>
                         </control>
                         <control type="label">
-                            <left>100</left>
+                            <left>150</left>
                             <top>0</top>
                             <width>200</width>
                             <height>40</height>
@@ -181,7 +181,7 @@
                             <info>ListItem.Property(ChannelName)</info>
                         </control>
                         <control type="label">
-                            <left>300</left>
+                            <left>350</left>
                             <top>0</top>
                             <width>200</width>
                             <height>40</height>
@@ -248,15 +248,15 @@
                             <visible>true</visible>
                         </control>
                         <control type="image">
-                            <left>10</left>
-                            <top>30</top>
-                            <width>80</width>
+                            <left>0</left>
+                            <top>0</top>
+                            <width>140</width>
                             <height>40</height>
                             <info>ListItem.Icon</info>
                             <aspectratio>keep</aspectratio>
                         </control>
                         <control type="label">
-                            <left>100</left>
+                            <left>150</left>
                             <top>0</top>
                             <width>200</width>
                             <height>40</height>
@@ -267,7 +267,7 @@
                             <info>ListItem.Property(ChannelName)</info>
                         </control>
                         <control type="label">
-                            <left>300</left>
+                            <left>350</left>
                             <top>0</top>
                             <width>200</width>
                             <height>40</height>
@@ -325,9 +325,9 @@
                         </control>
                         <control type="textbox">
                             <description>Plot Value for TVShow</description>
-                            <left>100</left>
+                            <left>150</left>
                             <top>30</top>
-                            <width>960</width>
+                            <width>910</width>
                             <height>66</height>
                             <font>font12</font>
                             <textcolor>white</textcolor>
