@@ -333,7 +333,7 @@
                     <height>50</height>
                     <textcolor>white</textcolor>
 
-                    <font>font10_title</font>
+                    <font>font10</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>true</visible>
