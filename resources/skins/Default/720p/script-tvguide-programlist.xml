@@ -58,7 +58,7 @@
             <posx>5r</posx>
             <posy>0</posy>
             <width>280</width>
-            <height>20</height>
+            <height>30</height>
             <textcolor>bbffffff</textcolor>
             <shadowcolor>black</shadowcolor>
             <font>font13</font>
@@ -70,8 +70,8 @@
 
         <control type="label">
             <description>time label</description>
-            <right>5</right>
-            <top>20</top>
+            <posx>10r</posx>
+            <posy>20</posy>
             <width>200</width>
             <height>30</height>
             <align>right</align>
