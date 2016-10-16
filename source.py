@@ -1500,7 +1500,9 @@ class XMLTVSource(Source):
                     iconElement = elem.find("icon")
                     icon = None
                     if iconElement is not None:
-                        icon = iconElement.get("src")
+                        src = iconElement.get("src")
+                        if src:
+                            icon = src
                     if not description:
                         description = strings(NO_DESCRIPTION)
 
