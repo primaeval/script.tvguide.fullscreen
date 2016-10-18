@@ -2009,6 +2009,7 @@ class BBCSource(Source):
             yield c
 
 
+        elements_parsed = 0
         for channel,url in channels:
             #for week in ["this","next"]:
             for week in ["this"]:
@@ -2056,6 +2057,13 @@ class BBCSource(Source):
                     print '</programme>'
                     yield Program(channel, title, self.parseXMLTVDate(start), self.parseXMLTVDate(end), description, imageSmall=icon,
                          season = series, episode = episode, is_movie = "", language= "")
+
+                elements_parsed += 1
+                total = len(channels)
+                if progress_callback:
+                    percent = 100.0 * elements_parsed / len(channels)
+                    if not progress_callback(percent):
+                        raise SourceUpdateCanceledException()
 
 
 
