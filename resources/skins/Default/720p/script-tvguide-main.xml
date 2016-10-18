@@ -1092,7 +1092,6 @@
                 <height>240</height>
                 <aligny>top</aligny>
                 <aspectratio>scale</aspectratio>
-
                 <fadetime>0</fadetime>
                 <texture>-</texture>
                 <visible>true</visible>
