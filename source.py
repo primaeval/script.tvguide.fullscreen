@@ -2068,6 +2068,7 @@ class BBCSource(Source):
 
 
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
+        #TODO needs fixing. updates too often
         if channelsLastUpdated is None or programLastUpdate is None:
             return True
 
