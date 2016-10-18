@@ -43,6 +43,8 @@ import xbmcvfs
 import xbmcaddon
 import sqlite3
 import HTMLParser
+import xml.etree.ElementTree as ET
+import requests
 
 import resources.lib.pytz
 from resources.lib.pytz import timezone
@@ -1951,6 +1953,177 @@ class DirectScheduleSource(Source):
         t_local = utc + td_local
         return t_local
 
+class BBCSource(Source):
+    KEY = 'bbc'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+        self.start = True
+
+    def get_url(self,url):
+        #headers = {'user-agent': 'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+'}
+        headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+        try:
+            r = requests.get(url,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+            return html
+        except:
+            return ''
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+        channels = [
+        ("BBC One", "http://www.bbc.co.uk/bbcone/programmes/schedules/hd/this_week.xml"),
+        ("BBC Two", "http://www.bbc.co.uk/bbctwo/programmes/schedules/hd/this_week.xml"),
+        ("BBC Four", "http://www.bbc.co.uk/bbcfour/programmes/schedules/this_week.xml"),
+        ("BBC News", "http://www.bbc.co.uk/bbcnews/programmes/schedules/this_week.xml"),
+        ("BBC Parliament", "http://www.bbc.co.uk/bbcparliament/programmes/schedules/this_week.xml"),
+
+        ("CBBC", "http://www.bbc.co.uk/cbbc/programmes/schedules/this_week.xml"),
+        ("CBeebies", "http://www.bbc.co.uk/cbeebies/programmes/schedules/this_week.xml"),
+
+        ("BBC Radio 1", "http://www.bbc.co.uk/radio1/programmes/schedules/england/this_week.xml"),
+        ("BBC Radio 1Xtra", "http://www.bbc.co.uk/1xtra/programmes/schedules/this_week.xml"),
+        ("BBC Radio 2", "http://www.bbc.co.uk/radio2/programmes/schedules/this_week.xml"),
+        ("BBC Radio 3", "http://www.bbc.co.uk/radio3/programmes/schedules/this_week.xml"),
+        ("BBC Radio 4", "http://www.bbc.co.uk/radio4/programmes/schedules/fm/this_week.xml"),
+        ("BBC Radio 4 Extra", "http://www.bbc.co.uk/radio4extra/programmes/schedules/this_week.xml"),
+
+        ("BBC Radio 5 Live", "http://www.bbc.co.uk/5live/programmes/schedules/this_week.xml"),
+        ("BBC Radio 5 Live Sports Extra", "http://www.bbc.co.uk/5livesportsextra/programmes/schedules/this_week.xml"),
+        ("BBC Radio 6 Music", "http://www.bbc.co.uk/6music/programmes/schedules/this_week.xml"),
+        ("BBC Radio Asian Network", "http://www.bbc.co.uk/asiannetwork/programmes/schedules/this_week.xml"),
+        ]
+
+        for channel_name,url in channels:
+            img_url = ''
+            c = Channel(channel_name, channel_name, '', img_url, "", True)
+            yield c
+
+
+        for channel,url in channels:
+            #for week in ["this","next"]:
+            for week in ["this"]:
+                #url = channels[channel]
+                u = re.sub("this",week,url)
+                data = requests.get(u).content
+                root = ET.fromstring(data)
+
+                for p in root.iter('broadcast'):
+                    programme  = p.find('programme')
+
+                    display_titles = programme.find('display_titles')
+                    title = display_titles.find('title').text
+                    title = re.sub('&','and',title)
+                    subtitle = display_titles.find('subtitle').text
+
+                    start = p.find('start').text
+                    end = p.find('end').text
+
+                    image = programme.find('image')
+                    icon = ""
+                    if image:
+                        icon = image.find('pid').text
+                        icon = "http://ichef.bbci.co.uk/images/ic/480xn/%s.jpg" % icon
+
+                    short_synopsis = programme.find('short_synopsis')
+                    description = short_synopsis.text
+                    description = re.sub('&','and',description)
+
+                    start = re.sub('[-:T]','',start)
+                    start = re.sub('\+',' +',start)
+                    end = re.sub('[-:T]','',end)
+                    end = re.sub('\+',' +',end)
+
+                    type = programme.get('type')
+                    series = ''
+                    if type == "episode":
+                        episode = programme.find('position').text
+                        ps = programme.find("programme[@type='series']")
+                        if ps:
+                            try:
+                                series = ps.find('position').text
+                            except: pass
+
+                    print '</programme>'
+                    yield Program(channel, title, self.parseXMLTVDate(start), self.parseXMLTVDate(end), "", imageSmall=icon,
+                         season = series, episode = episode, is_movie = "", language= "")
+
+
+
+    def isUpdated(self, channelsLastUpdated, programLastUpdate):
+        if channelsLastUpdated is None or programLastUpdate is None:
+            return True
+
+        update = False
+        interval = int(ADDON.getSetting('xmltv.interval'))
+        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
+            self.start = False
+            return True
+        modTime = programLastUpdate
+        td = datetime.datetime.now() - modTime
+        # need to do it this way cause Android doesn't support .total_seconds() :(
+        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
+                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+            update = True
+        return update
+
+    def parseXMLTVDate(self, origDateString):
+        if origDateString.find(' ') != -1:
+            # get timezone information
+            dateParts = origDateString.split()
+            if len(dateParts) == 2:
+                dateString = dateParts[0]
+                offset = dateParts[1]
+                if len(offset) == 5:
+                    offSign = offset[0]
+                    offHrs = int(offset[1:3])
+                    offMins = int(offset[-2:])
+                    td = datetime.timedelta(minutes=offMins, hours=offHrs)
+                else:
+                    td = datetime.timedelta(seconds=0)
+            elif len(dateParts) == 1:
+                dateString = dateParts[0]
+                td = datetime.timedelta(seconds=0)
+            else:
+                return None
+
+            # normalize the given time to UTC by applying the timedelta provided in the timestamp
+            try:
+                t_tmp = datetime.datetime.strptime(dateString, '%Y%m%d%H%M%S')
+            except TypeError:
+                xbmc.log('[script.tvguide.fullscreen] strptime error with this date: %s' % dateString, xbmc.LOGDEBUG)
+                t_tmp = datetime.datetime.fromtimestamp(time.mktime(time.strptime(dateString, '%Y%m%d%H%M%S')))
+            if offSign == '+':
+                t = t_tmp - td
+            elif offSign == '-':
+                t = t_tmp + td
+            else:
+                t = t_tmp
+
+            # get the local timezone offset in seconds
+            is_dst = time.daylight and time.localtime().tm_isdst > 0
+            utc_offset = - (time.altzone if is_dst else time.timezone)
+            td_local = datetime.timedelta(seconds=utc_offset)
+
+            t = t + td_local
+
+            return t
+
+        else:
+            return None
+
+
 def instantiateSource():
     source = ADDON.getSetting("source.source")
     if source == "xmltv":
@@ -1959,5 +2132,7 @@ def instantiateSource():
         return TVGUKSource(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
+    elif source == "bbc":
+        return BBCSource(ADDON)
     else:
         return DirectScheduleSource(ADDON)
