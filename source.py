@@ -2054,7 +2054,7 @@ class BBCSource(Source):
                             except: pass
 
                     print '</programme>'
-                    yield Program(channel, title, self.parseXMLTVDate(start), self.parseXMLTVDate(end), "", imageSmall=icon,
+                    yield Program(channel, title, self.parseXMLTVDate(start), self.parseXMLTVDate(end), description, imageSmall=icon,
                          season = series, episode = episode, is_movie = "", language= "")
 
 
