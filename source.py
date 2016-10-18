@@ -2012,7 +2012,6 @@ class BBCSource(Source):
         for channel,url in channels:
             #for week in ["this","next"]:
             for week in ["this"]:
-                #url = channels[channel]
                 u = re.sub("this",week,url)
                 data = requests.get(u).content
                 root = ET.fromstring(data)
@@ -2044,7 +2043,7 @@ class BBCSource(Source):
                     end = re.sub('\+',' +',end)
 
                     type = programme.get('type')
-                    series = ''
+                    series = '0'
                     if type == "episode":
                         episode = programme.find('position').text
                         ps = programme.find("programme[@type='series']")
@@ -2052,7 +2051,8 @@ class BBCSource(Source):
                             try:
                                 series = ps.find('position').text
                             except: pass
-
+                    if episode and not series:
+                        series = "1"
                     print '</programme>'
                     yield Program(channel, title, self.parseXMLTVDate(start), self.parseXMLTVDate(end), description, imageSmall=icon,
                          season = series, episode = episode, is_movie = "", language= "")
