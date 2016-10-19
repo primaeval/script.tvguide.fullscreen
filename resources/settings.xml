@@ -56,6 +56,8 @@
         <setting id="enable.nextup.showTime" label="  - Set display time" visible="false" type="bool" default="false" />
         <setting id="nextup.showTime" type="number" label="    - Time in seconds to show" default="10" visible="false" enable="true"/>
         <setting type="sep"/>
+        <setting id="search.type" label="iSearch or MySearch" type="select" default="MySearch" values="iSearch|MySearch" />
+        <setting type="sep"/>
         <setting id="date.long" label="Show Long Date in EPG" type="bool" default="true" />
         <setting type="sep"/>
         <setting id="mouse.controls" label="Touch Control Buttons" type="bool" default="false" />
@@ -68,6 +70,7 @@
         <setting type="sep"/>
         <setting id="stop.on.exit" label="Stop Playing on Exit" type="bool" default="true" />
         <setting id="exit.on.back" label="Exit on Back from EPG" type="bool" default="false" />
+
     </category>
     <category label="Background">
         <setting id="program.background.enabled" label="Enable Background Program Image" type="bool" default="false" />
@@ -106,7 +109,7 @@
     <category label="30140">
         <setting type="lsep" label="30137"/>
         <setting type="lsep" label="30138"/>
-        <setting label="Reset EPG Data" type="action" action="RunScript($CWD/ResetDatabase.py, 1)" />        
+        <setting label="Reset EPG Data" type="action" action="RunScript($CWD/ResetDatabase.py, 1)" />
         <setting label="Reset Everything" type="action" action="RunScript($CWD/ResetDatabase.py, 2)" />
     </category>
     <category label="Lab">
