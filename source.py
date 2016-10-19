@@ -322,7 +322,8 @@ class Database(object):
         # check if program data is up-to-date in database
         dateStr = date.strftime('%Y-%m-%d')
         c = self.conn.cursor()
-        c.execute('SELECT programs_updated FROM updates WHERE source=? AND date=?', [self.source.KEY, dateStr])
+        #c.execute('SELECT programs_updated FROM updates WHERE source=? AND date=?', [self.source.KEY, dateStr])
+        c.execute('SELECT programs_updated FROM updates WHERE source=?', [self.source.KEY])
         row = c.fetchone()
         if row:
             programsLastUpdated = row['programs_updated']
@@ -2068,7 +2069,6 @@ class BBCSource(Source):
 
 
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
-        #TODO needs fixing. updates too often
         if channelsLastUpdated is None or programLastUpdate is None:
             return True
 
@@ -2081,10 +2081,12 @@ class BBCSource(Source):
         td = datetime.datetime.now() - modTime
         # need to do it this way cause Android doesn't support .total_seconds() :(
         diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+
         if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
                 (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
                 (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
             update = True
+
         return update
 
     def parseXMLTVDate(self, origDateString):
