@@ -25,6 +25,15 @@
 #  http://www.gnu.org/copyleft/gpl.html
 #
 import gui
+import sys
+import xbmc,xbmcaddon
+
+ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
+
+if len(sys.argv) > 1:
+    category = sys.argv[1]
+    if category:
+        ADDON.setSetting('category',category)
 
 try:
     w = gui.TVGuide()
