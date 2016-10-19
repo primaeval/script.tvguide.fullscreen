@@ -251,7 +251,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.lastProgram = None
         self.currentProgram = None
         self.quickEpgShowInfo = False
-        self.category = None
+        self.category = ADDON.getSetting('category')
 
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
@@ -351,6 +351,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.onSourceNotConfigured()
                 self.close()
                 return
+            self.database.setCategory(self.category)
             self.database.initialize(self.onSourceInitialized, self.isSourceInitializationCancelled)
 
 
@@ -869,6 +870,7 @@ class TVGuide(xbmcgui.WindowXML):
         d.doModal()
         buttonClicked = d.buttonClicked
         self.category = d.category
+        ADDON.setSetting('category',self.category)
         self.database.setCategory(self.category)
         self.categories = d.categories
         del d
