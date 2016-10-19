@@ -2018,7 +2018,7 @@ class BBCSource(Source):
                 data = requests.get(u).content
                 root = ET.fromstring(data)
 
-                for p in root.iter('broadcast'):
+                for p in root.getiterator('broadcast'):
                     programme  = p.find('programme')
 
                     display_titles = programme.find('display_titles')
@@ -2048,7 +2048,15 @@ class BBCSource(Source):
                     series = '0'
                     if type == "episode":
                         episode = programme.find('position').text
-                        ps = programme.find("programme[@type='series']")
+                        #BUG python 2.6 fix
+                        #ps = programme.find("programme[@type='series']")
+                        ps = ''
+                        progs = programme.findall('programme')
+                        for prog in progs:
+                            type = prog.get('type')
+                            if type == "series":
+                                ps = prog
+                                break
                         if ps:
                             try:
                                 series = ps.find('position').text
