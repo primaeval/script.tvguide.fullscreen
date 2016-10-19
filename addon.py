@@ -24,7 +24,7 @@
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 #
-import gui
+
 import sys
 import xbmc,xbmcaddon
 
@@ -36,6 +36,7 @@ if len(sys.argv) > 1:
         ADDON.setSetting('category',category)
 
 try:
+    import gui
     w = gui.TVGuide()
     w.doModal()
     del w
