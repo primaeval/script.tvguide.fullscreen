@@ -2003,10 +2003,36 @@ class BBCSource(Source):
         ("BBC Radio 6 Music", "http://www.bbc.co.uk/6music/programmes/schedules/this_week.xml"),
         ("BBC Radio Asian Network", "http://www.bbc.co.uk/asiannetwork/programmes/schedules/this_week.xml"),
         ]
+        self.logoSource = int(ADDON.getSetting('logos.source'))
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
+            self.logoFolder = ADDON.getSetting('logos.folder')
+        elif self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
+            self.logoFolder = ADDON.getSetting('logos.url')
+        else:
+            self.logoFolder = ""
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
+            dirs, files = xbmcvfs.listdir(self.logoFolder)
+            logos = [file[:-4] for file in files if file.endswith(".png")]
 
-        for channel_name,url in channels:
-            img_url = ''
-            c = Channel(channel_name, channel_name, '', img_url, "", True)
+        for title,url in channels:
+            logo = ''
+            if self.logoFolder:
+                logoFile = os.path.join(self.logoFolder, title + '.png')
+                if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
+                    logo = logoFile.replace(' ', '%20')
+                #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
+                #    logo = logoFile
+                else:
+                    #TODO use hash or db
+                    t = re.sub(r' ','',title.lower())
+                    t = re.escape(t)
+                    titleRe = "^%s" % t
+                    for l in sorted(logos):
+                        logox = re.sub(r' ','',l.lower())
+                        if re.match(titleRe,logox):
+                            logo = os.path.join(self.logoFolder, l + '.png')
+                            break
+            c = Channel(title, title, '', logo, "", True)
             yield c
 
 
