@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites (now at DixieDean's repo)
 
+version 0.0.156
+- experimental BBC data source (lots of pictures, short descriptions)
+- MySearch version of iSearch (Settings\Appearance)
+
 version 0.0.153-155
 - tweaks and fixes
 
