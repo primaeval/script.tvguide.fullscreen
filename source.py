@@ -1695,6 +1695,8 @@ class TVGUKSource(Source):
                     match = re.search(r'background-image: url\((.*?)\)',table,flags=(re.DOTALL | re.MULTILINE))
                     if match:
                         thumb = match.group(1)
+                        if not thumb.endswith('.jpg'):
+                            thumb = ''
                     match = re.search(r'<a href="(http://www.tvguide.co.uk/detail/.*?)"',table,flags=(re.DOTALL | re.MULTILINE))
                     path = ''
                     if match:
