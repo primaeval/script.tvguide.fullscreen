@@ -366,6 +366,15 @@ class Database(object):
             if progress_callback:
                 progress_callback(0)
 
+            getData = True
+            ch_list = []
+            if self.source.KEY == "sdirect":
+                ch_list = self._getChannelList(onlyVisible=False)
+                if len(ch_list) == 0:
+                    getData = False
+            else:
+                ch_list = self._getChannelList(onlyVisible=True)
+
             if self.settingsChanged:
                 c.execute('DELETE FROM channels WHERE source=?', [self.source.KEY])
                 c.execute('DELETE FROM programs WHERE source=?', [self.source.KEY])
@@ -385,14 +394,7 @@ class Database(object):
             updatesId = c.lastrowid
 
             imported = imported_channels = imported_programs = 0
-            getData = True
-            ch_list = []
-            if self.source.KEY == "sdirect":
-                ch_list = self._getChannelList(onlyVisible=False)
-                if len(ch_list) == 0:
-                    getData = False
-            else:
-                ch_list = self._getChannelList(onlyVisible=True)
+
             if getData == True:
                 for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
                     imported += 1
@@ -1642,7 +1644,7 @@ class TVGUKSource(Source):
         if ch_list:
             visible_channels = [c.id for c in ch_list]
         else:
-            visible_channels = ["86","89","642","121"]
+            visible_channels = ["86"]
         channel_number = {}
         for channel in channels:
             name = channel[1]
