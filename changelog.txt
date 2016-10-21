@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites (now at DixieDean's repo)
 
+version 0.0.159
+- tvguide.co.uk full data source in Lab (today/tomorrow only)
+-   only the 4 main channels are visible by default (use channels menu for others)
+
 version 0.0.157-158
 - persistant category
 - category arg for favourites - RunScript(script.tvguide.fullscreen,your category here)
