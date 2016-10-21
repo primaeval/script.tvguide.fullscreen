@@ -1620,6 +1620,7 @@ class TVGUKSource(Source):
         self.needReset = False
         self.done = False
         self.start = True
+        self.channelsLastUpdated = None
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
         """
@@ -1630,7 +1631,6 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
-        xbmc.log(repr(ch_list))
         r = requests.get('http://www.tvguide.co.uk/')
         html = r.text
 
@@ -1640,7 +1640,7 @@ class TVGUKSource(Source):
         channels = re.findall(r'<option value=(.*?)>(.*?)</option>',match.group(1),flags=(re.DOTALL | re.MULTILINE))
 
         if ch_list:
-            visible_channels = [c.id for c in ch_list] 
+            visible_channels = [c.id for c in ch_list]
         else:
             visible_channels = ["86","89","642","121"]
         channel_number = {}
@@ -1741,8 +1741,16 @@ class TVGUKSource(Source):
                 if not progress_callback(percent):
                     raise SourceUpdateCanceledException()
 
-    def isUpdated(self, channelsLastUpdated, programLastUpdate):
-        if channelsLastUpdated is None or programLastUpdate is None:
+        self.channelsLastUpdated = datetime.datetime.now()
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        if self.channelsLastUpdated == None:
+            self.channelsLastUpdated = channelsLastUpdated
+        elif channelsLastUpdated > self.channelsLastUpdated:
+            return True
+
+        if channelsLastUpdated is None or programsLastUpdated is None:
             return True
 
         update = False
@@ -1750,7 +1758,7 @@ class TVGUKSource(Source):
         if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
             self.start = False
             return True
-        modTime = programLastUpdate
+        modTime = programsLastUpdated
         td = datetime.datetime.now() - modTime
         # need to do it this way cause Android doesn't support .total_seconds() :(
         diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
@@ -1802,7 +1810,6 @@ class TVGUKNowSource(Source):
         r = requests.get('http://www.tvguide.co.uk/mobile/')
         html = r.text
         #xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
-        #xbmc.log(repr(html))
 
         channels = html.split('<div class="div-channel-progs">')
 
