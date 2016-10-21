@@ -391,6 +391,8 @@ class Database(object):
                 ch_list = self._getChannelList(onlyVisible=False)
                 if len(ch_list) == 0:
                     getData = False
+            else:
+                ch_list = self._getChannelList(onlyVisible=True)
             if getData == True:
                 for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
                     imported += 1
@@ -1627,6 +1629,157 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
+
+        r = requests.get('http://www.tvguide.co.uk/')
+        html = r.text
+
+        match = re.search(r'<select name="channelid">(.*?)</select>',html,flags=(re.DOTALL | re.MULTILINE))
+        if not match:
+            return
+        channels = re.findall(r'<option value=(.*?)>(.*?)</option>',match.group(1),flags=(re.DOTALL | re.MULTILINE))
+
+        visible_channels = ["86"]
+        visible_channels = ["86","89","642","121"]
+        channel_number = {}
+        for channel in channels:
+            name = channel[1]
+            number = channel[0]
+            channel_number[number] = name
+            thumb = "http://my.tvguide.co.uk/channel_logos/60x35/%s.png" % number
+            url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
+            visible = False
+            if number in visible_channels:
+                visible = True
+            c = Channel(number, name, '', thumb, "", visible)
+            yield c
+            program = name
+            start = datetime.datetime.now()
+            end = start + datetime.timedelta(hours=1)
+
+        for number in visible_channels:
+            listing_url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
+            for day in range(2):
+                r = requests.get(listing_url)
+                html = r.text
+                match = re.search(r'<span class=programmeheading>(.*?), (.*?) (.*?), (.*?)</span>.*?<a href=\'(.*?)\'>previous</a>.*?<a href=\'(.*?)\'.*?>next</a>',html,flags=(re.DOTALL | re.MULTILINE))
+                day =''
+                month=''
+                year=''
+                if match:
+                    year = match.group(4)
+                    month = match.group(2)
+                    day = match.group(3)
+                    next = 'http://my.tvguide.co.uk%s' % match.group(6)
+                    previous = 'http://my.tvguide.co.uk%s' % match.group(5)
+                    next_day = ''
+                    match = re.search(r'cTime=(.*?) ',next)
+                    if match:
+                        next_day = match.group(1)
+                        listing_url = "%s&cTime=%s" % (listing_url,next_day)
+                    previous_day = ''
+                    match = re.search(r'cTime=(.*?) ',previous)
+                    if match:
+                        previous_day = match.group(1)
+
+                tables = html.split('<table')
+
+                programs = []
+                for table in tables:
+                    thumb = ''
+                    match = re.search(r'background-image: url\((.*?)\)',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        thumb = match.group(1)
+                    match = re.search(r'<a href="(http://www.tvguide.co.uk/detail/.*?)"',table,flags=(re.DOTALL | re.MULTILINE))
+                    path = ''
+                    if match:
+                        detail = url=match.group(1).encode("utf8")
+
+                    season = ''
+                    episode = ''
+                    match = re.search(r'<b><span class="season">Season (.*?) </span> <span class="season">Episode (.*?) of (.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        season = match.group(1)
+                        episode = match.group(2)
+
+                    genre = ''
+                    match = re.search(r'<span class="tvchannel">Category </span><span class="programmetext">(.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        genre = match.group(1)
+
+                    ttime = ''
+                    title = ''
+                    plot = ''
+                    match = re.search(r'<span class="season">(.*?) </span>.*?<span class="programmeheading" >(.*?)</span>.*?<span class="programmetext">(.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        ttime = match.group(1)
+                        title = match.group(2)
+                        plot = match.group(3)
+                        mon = {'January':0,'February':1,'March':2,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
+                        start = self.local_time(ttime,year,mon[month],day)
+                        programs.append((title,start,plot,season,episode,thumb))
+
+                last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
+                for index in range(len(programs)):
+                    (title,start,plot,season,episode,thumb) = programs[index]
+                    if start < last_start:
+                        start = start + datetime.timedelta(days=1)
+                    last_start = start
+                    if index < len(programs)-1:
+                        end = programs[index+1][1]
+                    else:
+                        end = start + datetime.timedelta(hours=1)
+                    yield Program(number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
+
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        today = datetime.datetime.now()
+        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
+            return True
+
+        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
+            return True
+        return False
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+
+            london = timezone('Europe/London')
+            utc = timezone('UTC')
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
+            loc_dt = utc_dt.astimezone(london)
+            return utc_dt
+            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
+
+        return ttime
+
+class TVGUKNowSource(Source):
+    KEY = 'tvguide.co.uk.now'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
         r = requests.get('http://www.tvguide.co.uk/mobile/')
         html = r.text
         #xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
@@ -2175,6 +2328,8 @@ def instantiateSource():
         return XMLTVSource(ADDON)
     elif source == "tvguide.co.uk":
         return TVGUKSource(ADDON)
+    elif source == "tvguide.co.uk now":
+        return TVGUKNowSource(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
     elif source == "bbc":

@@ -116,7 +116,7 @@
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
         <setting type="lsep" label="Experimental Alternative Data Sources (yo and tvguide show only Now/Next)"/>
-        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|yo.tv|bbc" />
+        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|tvguide.co.uk now|yo.tv|bbc" />
         <setting label="yo.tv Countries" type="action" visible="eq(-1,yo.tv)" action="RunScript($CWD/yo.py, 1)"/>
         <setting type="lsep" label="SchedulesDirect (OK this dialog before editing channels after changing source)"/>
         <setting id="sd.username" label="SD-Username" default="" type="text"  visible="false"/>
