@@ -1619,6 +1619,7 @@ class TVGUKSource(Source):
     def __init__(self, addon):
         self.needReset = False
         self.done = False
+        self.start = True
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
         """
@@ -1629,7 +1630,7 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
-
+        xbmc.log(repr(ch_list))
         r = requests.get('http://www.tvguide.co.uk/')
         html = r.text
 
@@ -1638,8 +1639,10 @@ class TVGUKSource(Source):
             return
         channels = re.findall(r'<option value=(.*?)>(.*?)</option>',match.group(1),flags=(re.DOTALL | re.MULTILINE))
 
-        visible_channels = ["86"]
-        visible_channels = ["86","89","642","121"]
+        if ch_list:
+            visible_channels = [c.id for c in ch_list] 
+        else:
+            visible_channels = ["86","89","642","121"]
         channel_number = {}
         for channel in channels:
             name = channel[1]
@@ -1656,8 +1659,9 @@ class TVGUKSource(Source):
             start = datetime.datetime.now()
             end = start + datetime.timedelta(hours=1)
 
-        for number in visible_channels:
-            listing_url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
+        elements_parsed = 0
+        for id in visible_channels:
+            listing_url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % id
             for day in range(2):
                 r = requests.get(listing_url)
                 html = r.text
@@ -1728,18 +1732,33 @@ class TVGUKSource(Source):
                         end = programs[index+1][1]
                     else:
                         end = start + datetime.timedelta(hours=1)
-                    yield Program(number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
+                    yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
+            elements_parsed += 1
+            total = len(visible_channels)
+            if progress_callback:
+                percent = 100.0 * elements_parsed / len(visible_channels)
+                if not progress_callback(percent):
+                    raise SourceUpdateCanceledException()
 
-
-    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
-        today = datetime.datetime.now()
-        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
+    def isUpdated(self, channelsLastUpdated, programLastUpdate):
+        if channelsLastUpdated is None or programLastUpdate is None:
             return True
 
-        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
+        update = False
+        interval = int(ADDON.getSetting('xmltv.interval'))
+        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
+            self.start = False
             return True
-        return False
+        modTime = programLastUpdate
+        td = datetime.datetime.now() - modTime
+        # need to do it this way cause Android doesn't support .total_seconds() :(
+        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
+                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+            update = True
+        return update
 
     def local_time(self,ttime,year,month,day):
         match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
