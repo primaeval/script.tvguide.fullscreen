@@ -145,7 +145,7 @@
             <height>720</height>
             <colordiffuse>white</colordiffuse>
             <texture>black.png</texture>
-            <visible></visible>
+            <visible>!Player.HasMedia</visible>
             <aspectratio>scale</aspectratio>
             <align>center</align>
             <aligny>center</aligny>
