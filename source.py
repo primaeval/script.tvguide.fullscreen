@@ -1665,7 +1665,7 @@ class TVGUKSource(Source):
         for id in visible_channels:
             listing_url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % id
             programs = []
-            for day in range(2):
+            for day in range(int(ADDON.getSetting('tvguide.co.uk.days'))):
                 r = requests.get(listing_url)
                 html = r.text
                 match = re.search(r'<span class=programmeheading>(.*?), (.*?) (.*?), (.*?)</span>.*?<a href=\'(.*?)\'>previous</a>.*?<a href=\'(.*?)\'.*?>next</a>',html,flags=(re.DOTALL | re.MULTILINE))
