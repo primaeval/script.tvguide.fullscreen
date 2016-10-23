@@ -2356,7 +2356,11 @@ class BBCSource(Source):
 
 
 def instantiateSource():
-    source = ADDON.getSetting("source.source")
+    source_arg = ADDON.getSetting("source")
+    if source_arg:
+        source = source_arg
+    else:
+        source = ADDON.getSetting("source.source")
     if source == "xmltv":
         return XMLTVSource(ADDON)
     elif source == "tvguide.co.uk":

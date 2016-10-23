@@ -34,6 +34,11 @@ if len(sys.argv) > 1:
     category = sys.argv[1]
     if category:
         ADDON.setSetting('category',category)
+ADDON.setSetting('source','')
+if len(sys.argv) > 2:
+    source = sys.argv[2]
+    if source:
+        ADDON.setSetting('source',source)
 
 try:
     import gui
