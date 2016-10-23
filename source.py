@@ -1664,6 +1664,7 @@ class TVGUKSource(Source):
         elements_parsed = 0
         for id in visible_channels:
             listing_url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % id
+            programs = []
             for day in range(2):
                 r = requests.get(listing_url)
                 html = r.text
@@ -1689,7 +1690,7 @@ class TVGUKSource(Source):
 
                 tables = html.split('<table')
 
-                programs = []
+
                 for table in tables:
                     thumb = ''
                     match = re.search(r'background-image: url\((.*?)\)',table,flags=(re.DOTALL | re.MULTILINE))
@@ -1726,17 +1727,19 @@ class TVGUKSource(Source):
                         start = self.local_time(ttime,year,mon[month],day)
                         programs.append((title,start,plot,season,episode,thumb))
 
-                last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
-                for index in range(len(programs)):
-                    (title,start,plot,season,episode,thumb) = programs[index]
-                    if start < last_start:
-                        start = start + datetime.timedelta(days=1)
-                    last_start = start
-                    if index < len(programs)-1:
-                        end = programs[index+1][1]
-                    else:
-                        end = start + datetime.timedelta(minutes=10)
-                    yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
+            last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
+            for index in range(len(programs)):
+                (title,start,plot,season,episode,thumb) = programs[index]
+                if start < last_start:
+                    start = start + datetime.timedelta(days=1)
+                last_start = start
+                if index < len(programs)-1:
+                    end = programs[index+1][1]
+                else:
+                    end = start + datetime.timedelta(hours=1,minutes=6)
+                if end < start:
+                    end = end  + datetime.timedelta(days=1)
+                yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
             elements_parsed += 1
             total = len(visible_channels)
