@@ -1735,7 +1735,7 @@ class TVGUKSource(Source):
                     if index < len(programs)-1:
                         end = programs[index+1][1]
                     else:
-                        end = start + datetime.timedelta(hours=1)
+                        end = start + datetime.timedelta(minutes=10)
                     yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
             elements_parsed += 1
