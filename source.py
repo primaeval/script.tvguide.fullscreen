@@ -2224,8 +2224,8 @@ class BBCSource(Source):
 
         elements_parsed = 0
         for channel,url in channels:
-            #for week in ["this","next"]:
-            for week in ["this"]:
+            for week in ["this","next"]:
+            #for week in ["this"]:
                 u = re.sub("this",week,url)
                 data = requests.get(u).content
                 root = ET.fromstring(data)
