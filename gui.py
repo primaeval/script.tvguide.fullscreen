@@ -1306,8 +1306,8 @@ class TVGuide(xbmcgui.WindowXML):
             self._hideEpg()
             self._hideQuickEpg()
 
-        threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
-        self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
+            threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
+            self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
 
