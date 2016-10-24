@@ -2253,7 +2253,8 @@ class BBCSource(Source):
 
                     short_synopsis = programme.find('short_synopsis')
                     description = short_synopsis.text
-                    description = re.sub('&','and',description)
+                    if description:
+                        description = re.sub('&','and',description)
 
                     start = re.sub('[-:T]','',start)
                     start = re.sub('\+',' +',start)
