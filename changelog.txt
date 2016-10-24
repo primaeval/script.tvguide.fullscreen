@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.159-161
+version 0.0.159-162
 - tvguide.co.uk full data source in Lab
 -   only bbc1 is visible by default (use channels menu for others)
 
