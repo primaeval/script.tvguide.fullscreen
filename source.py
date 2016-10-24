@@ -1941,7 +1941,7 @@ class YoSource(Source):
             html = self.get_url('http://%s.yo.tv/' % country_id)
 
             channels = html.split('<li><a data-ajax="false"')
-
+            channel_numbers = {}
             for channel in channels:
                 img_url = ''
 
@@ -1955,6 +1955,9 @@ class YoSource(Source):
                 if name_match:
                     channel_number = name_match.group(1)
                     channel_name = re.sub("_"," ",name_match.group(2))
+                    if channel_name in channel_numbers:
+                        channel_name = "%s." % channel_name
+                    channel_numbers[channel_name] = channel_number
                     c = Channel(channel_name, channel_name, '', img_url, "", True)
                     yield c
                 else:
@@ -1968,6 +1971,7 @@ class YoSource(Source):
                 after_program = ''
                 match = re.search(r'<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>', channel,flags=(re.DOTALL | re.MULTILINE))
                 if match:
+                    xbmc.log(channel_name)
                     now = datetime.datetime.now()
                     year = now.year
                     month = now.month
