@@ -115,11 +115,12 @@
     <category label="Lab">
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
-        <setting type="lsep" label="Experimental Alternative Data Sources (yo and tvguide show only Now/Next)"/>
+        <setting type="lsep" label="Experimental Alternative Data Sources"/> 
+        <setting type="lsep" label="(OK this dialog and return after changing source)"/>
         <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|tvguide.co.uk now|yo.tv|yo.tv now|bbc" />
         <setting id="tvguide.co.uk.days" label="tvguide.co.uk Days" default="1" type="number"  visible="true"/>
         <setting label="yo.tv Countries" type="action" visible="true" action="RunScript($CWD/yo.py, 1)"/>
-        <setting type="lsep" label="SchedulesDirect (OK this dialog before editing channels after changing source)"/>
+        <setting type="lsep" label="SchedulesDirect"/>
         <setting id="sd.username" label="SD-Username" default="" type="text"  visible="false"/>
         <setting id="sd.password" label="SD-Password" default="" type="text" option="hidden" visible="false" />
         <setting id="sd.changed" label="SD-Changed" default="0" type="number"  visible="false"/>

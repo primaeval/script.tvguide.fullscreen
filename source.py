@@ -1948,9 +1948,7 @@ class YoSource(Source):
             s = requests.Session()
             headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
             if country_id == "uk":
-                r = s.get('http://uk.yo.tv/settings/headend/39',verify=False,stream=True,headers=headers)
-            #elif country_id == "us":
-            #    r = s.get('http://us.yo.tv/settings/headend/318996-320586',verify=False,stream=True,headers=headers)
+                r = s.get('http://uk.yo.tv/settings/headend/39',verify=False,stream=True,headers=headers) # sky
             r = s.get('http://%s.yo.tv/' % country_id,verify=False,stream=True,headers=headers)
             html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
 
