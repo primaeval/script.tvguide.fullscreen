@@ -1966,7 +1966,10 @@ class YoSource(Source):
                     if channel_name in channel_numbers:
                         channel_name = "%s." % channel_name
                     channel_numbers[channel_name] = channel_number
-                    c = Channel(channel_number, channel_name, '', img_url, "", False)
+                    visible = False
+                    if channel_number in visible_channels:
+                        visible = True
+                    c = Channel(channel_number, channel_name, '', img_url, "", visible)
                     yield c
                 else:
                     continue
@@ -1978,9 +1981,10 @@ class YoSource(Source):
                     html = self.get_url(channel_url)
                     #xbmc.log(repr(html))
 
-                    month = ""
-                    day = ""
-                    year = ""
+                    now = datetime.datetime.now()
+                    year = now.year
+                    month = now.month
+                    day = now.day
 
                     tables = html.split('<a data-ajax="false"')
                     programs = []
@@ -2004,18 +2008,6 @@ class YoSource(Source):
                             if match:
                                 plot = match.group(1).strip()
 
-                        match = re.search(r'<li class="dt">(.*?)</li>',table)
-                        if match:
-                            date_str = match.group(1)
-                            match = re.search(r'(.*?), (.*?) (.*?), (.*)',date_str)
-                            if match:
-                                weekday = match.group(1)
-                                Month = match.group(2)
-                                months={"January":"1","February":"2","March":"3","April":"4","May":"5","June":"6","July":"7","August":"8","September":"9","October":"10","November":"11","December":"12"}
-                                month = months[Month]
-                                day = match.group(3)
-                                year = match.group(4)
-
                         start = ''
                         match = re.search(r'<span class="time">(.*?)</span>',table)
                         if match:
@@ -2025,13 +2017,18 @@ class YoSource(Source):
                         match = re.search(r'<h2> (.*?) </h2>',table)
                         if match:
                             title = match.group(1)
-                        programs.append((title,start,plot,season,episode,thumb))
+                        else:
+                            title = "UNKNOWN"
+                        #xbmc.log(repr((title,start,plot,season,episode,thumb)))
+                        if start:
+                            programs.append((title,start,plot,season,episode,thumb))
 
-                    last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
+                    #last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
+                    last_start = datetime.datetime.now() - datetime.timedelta(days=7)
                     for index in range(len(programs)):
-                        xbmc.log(repr(programs[index]))
+                        #xbmc.log(repr(programs[index]))
                         (title,start,plot,season,episode,thumb) = programs[index]
-                        xbmc.log(repr((start,last_start)))
+                        #xbmc.log(repr((start,last_start)))
                         if start < last_start:
                             start = start + datetime.timedelta(days=1)
                         last_start = start
@@ -2041,7 +2038,7 @@ class YoSource(Source):
                             end = start + datetime.timedelta(hours=1,minutes=6)
                         if end < start:
                             end = end  + datetime.timedelta(days=1)
-                        yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
+                        yield Program(channel_number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
@@ -2093,6 +2090,7 @@ class YoSource(Source):
 
             utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
             loc_dt = self.utc2local(utc_dt)
+            return loc_dt
             ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
         return ttime
 
