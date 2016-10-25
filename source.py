@@ -2032,14 +2032,14 @@ class YoSource(Source):
                         #xbmc.log(repr(programs[index]))
                         (title,start,plot,season,episode,thumb) = programs[index]
                         #xbmc.log(repr((start,last_start)))
-                        if start < last_start:
+                        while (start < last_start):
                             start = start + datetime.timedelta(days=1)
                         last_start = start
                         if index < len(programs)-1:
                             end = programs[index+1][1]
                         else:
                             end = start + datetime.timedelta(hours=1,minutes=6)
-                        if end < start:
+                        while (end < start):
                             end = end  + datetime.timedelta(days=1)
                         yield Program(channel_number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
