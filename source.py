@@ -1916,6 +1916,8 @@ class YoSource(Source):
     def __init__(self, addon):
         self.needReset = False
         self.done = False
+        self.start = True
+        self.channelsLastUpdated = None
 
     def get_url(self,url):
         #headers = {'user-agent': 'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+'}
@@ -1941,7 +1943,7 @@ class YoSource(Source):
             visible_channels = [c.id for c in ch_list]
         else:
             visible_channels = ["240713"]
-
+        elements_parsed = 0
 
         country_ids = ADDON.getSetting("yo.countries").split(',')
         for country_id in country_ids:
@@ -1975,12 +1977,8 @@ class YoSource(Source):
                     continue
 
                 if channel_number in visible_channels:
-
                     channel_url = 'http://%s.yo.tv/tv_guide/channel/%s/%s' % (country_id,channel_number,orig_channel_name)
-                    xbmc.log(channel_url)
                     html = self.get_url(channel_url)
-                    #xbmc.log(repr(html))
-
                     now = datetime.datetime.now()
                     year = now.year
                     month = now.month
@@ -1989,14 +1987,12 @@ class YoSource(Source):
                     tables = html.split('<a data-ajax="false"')
                     programs = []
                     for table in tables:
-
                         thumb = ''
                         season = ''
                         episode = ''
                         episode_title = ''
                         genre = ''
                         plot = ''
-
                         match = re.search(r'<span class="episode">Season (.*?) Episode (.*?)<span>(.*?)</span>.*?</span>(.*?)<',table,flags=(re.DOTALL | re.MULTILINE))
                         if match:
                             season = match.group(1).strip('\n\r\t ')
@@ -2018,20 +2014,14 @@ class YoSource(Source):
                         if match:
                             title = match.group(1)
                             title = re.sub('<.*>','',title).strip()
-                            #xbmc.log(title.encode("utf8"))
                         else:
-                            xbmc.log(table.encode("utf8"))
                             title = "UNKNOWN"
-                        #xbmc.log(repr((title,start,plot,season,episode,thumb)))
                         if start:
                             programs.append((title,start,plot,season,episode,thumb))
 
-                    #last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
                     last_start = datetime.datetime.now() - datetime.timedelta(days=7)
                     for index in range(len(programs)):
-                        #xbmc.log(repr(programs[index]))
                         (title,start,plot,season,episode,thumb) = programs[index]
-                        #xbmc.log(repr((start,last_start)))
                         while (start < last_start):
                             start = start + datetime.timedelta(days=1)
                         last_start = start
@@ -2043,15 +2033,39 @@ class YoSource(Source):
                             end = end  + datetime.timedelta(days=1)
                         yield Program(channel_number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
+                    elements_parsed += 1
+                    total = len(visible_channels)
+                    if progress_callback:
+                        percent = 100.0 * elements_parsed / len(visible_channels)
+                        if not progress_callback(percent):
+                            raise SourceUpdateCanceledException()
+
+        self.channelsLastUpdated = datetime.datetime.now()
+
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
-        today = datetime.datetime.now()
-        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
+        if self.channelsLastUpdated == None:
+            self.channelsLastUpdated = channelsLastUpdated
+        elif channelsLastUpdated > self.channelsLastUpdated:
             return True
 
-        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
+        if channelsLastUpdated is None or programsLastUpdated is None:
             return True
-        return False
+
+        update = False
+        interval = int(ADDON.getSetting('xmltv.interval'))
+        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
+            self.start = False
+            return True
+        modTime = programsLastUpdated
+        td = datetime.datetime.now() - modTime
+        # need to do it this way cause Android doesn't support .total_seconds() :(
+        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
+                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+            update = True
+        return update
 
     def local_time(self,ttime,year,month,day):
         match = re.search(r'(.{1,2}):(.{2}) {0,1}(.{2})',ttime)
@@ -2070,8 +2084,8 @@ class YoSource(Source):
             utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
             loc_dt = self.utc2local(utc_dt)
             return loc_dt
-            ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
-        return ttime
+
+        return
 
     def utc2local (self,utc):
         epoch = time.mktime(utc.timetuple())
