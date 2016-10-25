@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.165
+version 0.0.165-166
 - url for epg background (change it to file to use your old image)
 
 version 0.0.164
