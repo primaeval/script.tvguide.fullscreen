@@ -1991,8 +1991,8 @@ class YoSource(Source):
                     for table in tables:
 
                         thumb = ''
-                        season = '0'
-                        episode = '0'
+                        season = ''
+                        episode = ''
                         episode_title = ''
                         genre = ''
                         plot = ''
@@ -2014,10 +2014,13 @@ class YoSource(Source):
                             start = self.local_time(match.group(1),year,month,day)
 
                         title = ''
-                        match = re.search(r'<h2> (.*?) </h2>',table)
+                        match = re.search(r'<h2>(.*?)</h2>',table)
                         if match:
                             title = match.group(1)
+                            title = re.sub('<.*>','',title).strip()
+                            #xbmc.log(title.encode("utf8"))
                         else:
+                            xbmc.log(table.encode("utf8"))
                             title = "UNKNOWN"
                         #xbmc.log(repr((title,start,plot,season,episode,thumb)))
                         if start:
@@ -2049,30 +2052,6 @@ class YoSource(Source):
         if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
             return True
         return False
-
-    def local_time1(self,ttime,year,month,day):
-        match = re.search(r'(.{1,2}):(.{2}) ?(.{2})',ttime)
-        if match:
-            hour = int(match.group(1))
-            minute = int(match.group(2))
-            ampm = match.group(3)
-            if ampm == "pm":
-                if hour < 12:
-                    hour = hour + 12
-                    hour = hour % 24
-            else:
-                if hour == 12:
-                    hour = 0
-
-            london = timezone('Europe/Copenhagen')
-            utc = timezone('UTC')
-            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
-            to_zone = tz.tzlocal()
-            loc_dt = utc_dt.astimezone(to_zone)
-            return loc_dt
-            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
-
-        return ttime
 
     def local_time(self,ttime,year,month,day):
         match = re.search(r'(.{1,2}):(.{2}) {0,1}(.{2})',ttime)
