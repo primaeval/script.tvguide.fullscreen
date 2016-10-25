@@ -1942,15 +1942,23 @@ class YoSource(Source):
         if ch_list:
             visible_channels = [c.id for c in ch_list]
         else:
-            visible_channels = ["240713"]
+            visible_channels = []
         elements_parsed = 0
 
         country_ids = ADDON.getSetting("yo.countries").split(',')
         for country_id in country_ids:
-            html = self.get_url('http://%s.yo.tv/' % country_id)
+            s = requests.Session()
+            headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+            if country_id == "uk":
+                r = s.get('http://uk.yo.tv/settings/headend/39',verify=False,stream=True,headers=headers)
+            #elif country_id == "us":
+            #    r = s.get('http://us.yo.tv/settings/headend/318996-320586',verify=False,stream=True,headers=headers)
+            r = s.get('http://%s.yo.tv/' % country_id,verify=False,stream=True,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
 
             channels = html.split('<li><a data-ajax="false"')
             channel_numbers = {}
+            first = True
             for channel in channels:
                 img_url = ''
 
@@ -1971,6 +1979,10 @@ class YoSource(Source):
                     visible = False
                     if channel_number in visible_channels:
                         visible = True
+                    if not visible_channels and first == True:
+                        visible = True
+                        first = False
+                        visible_channels.append(channel_number)
                     c = Channel(channel_number, channel_name, '', img_url, "", visible)
                     yield c
                 else:
@@ -1978,7 +1990,8 @@ class YoSource(Source):
 
                 if channel_number in visible_channels:
                     channel_url = 'http://%s.yo.tv/tv_guide/channel/%s/%s' % (country_id,channel_number,orig_channel_name)
-                    html = self.get_url(channel_url)
+                    r = s.get(channel_url,verify=False,stream=True,headers=headers)
+                    html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
                     now = datetime.datetime.now()
                     year = now.year
                     month = now.month
