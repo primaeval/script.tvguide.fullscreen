@@ -1975,7 +1975,7 @@ class YoSource(Source):
                     visible = False
                     if channel_number in visible_channels:
                         visible = True
-                    if not visible_channels and first == True:
+                    if first == True:
                         visible = True
                         first = False
                         visible_channels.append(channel_number)
