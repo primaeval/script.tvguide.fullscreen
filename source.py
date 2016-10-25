@@ -2022,9 +2022,12 @@ class YoSource(Source):
                         match = re.search(r'<h2>(.*?)</h2>',table)
                         if match:
                             title = match.group(1)
-                            title = re.sub('<.*>','',title).strip()
+                            title = re.sub('<i.*?</i>','',title).strip()
+                            title = re.sub('<span.*?</span>','',title).strip()
+                            title = re.sub('<.*?</.*?>','',title).strip()
                         else:
                             title = "UNKNOWN"
+
                         if start:
                             programs.append((title,start,plot,season,episode,thumb))
 
