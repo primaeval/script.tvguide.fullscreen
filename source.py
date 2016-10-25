@@ -1909,8 +1909,200 @@ class TVGUKNowSource(Source):
 
         return ttime
 
+
 class YoSource(Source):
-    KEY = '%s.yo.tv' % ADDON.getSetting("yo.country")
+    KEY = 'yo.tv'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+
+    def get_url(self,url):
+        #headers = {'user-agent': 'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+'}
+        headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+        try:
+            r = requests.get(url,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+            return html
+        except:
+            return ''
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+
+        if ch_list:
+            visible_channels = [c.id for c in ch_list]
+        else:
+            visible_channels = ["240713"]
+
+
+        country_ids = ADDON.getSetting("yo.countries").split(',')
+        for country_id in country_ids:
+            html = self.get_url('http://%s.yo.tv/' % country_id)
+
+            channels = html.split('<li><a data-ajax="false"')
+            channel_numbers = {}
+            for channel in channels:
+                img_url = ''
+
+                img_match = re.search(r'<img class="lazy" src="/Content/images/yo/program_logo.gif" data-original="(.*?)"', channel)
+                if img_match:
+                    img_url = img_match.group(1)
+
+                channel_name = ''
+                channel_number = ''
+                name_match = re.search(r'href="/tv_guide/channel/(.*?)/(.*?)"', channel)
+                if name_match:
+                    channel_number = name_match.group(1)
+                    orig_channel_name = name_match.group(2)
+                    channel_name = re.sub("_"," ",orig_channel_name)
+                    if channel_name in channel_numbers:
+                        channel_name = "%s." % channel_name
+                    channel_numbers[channel_name] = channel_number
+                    c = Channel(channel_number, channel_name, '', img_url, "", False)
+                    yield c
+                else:
+                    continue
+
+                if channel_number in visible_channels:
+
+                    channel_url = 'http://%s.yo.tv/tv_guide/channel/%s/%s' % (country_id,channel_number,orig_channel_name)
+                    xbmc.log(channel_url)
+                    html = self.get_url(channel_url)
+                    #xbmc.log(repr(html))
+
+                    month = ""
+                    day = ""
+                    year = ""
+
+                    tables = html.split('<a data-ajax="false"')
+                    programs = []
+                    for table in tables:
+
+                        thumb = ''
+                        season = '0'
+                        episode = '0'
+                        episode_title = ''
+                        genre = ''
+                        plot = ''
+
+                        match = re.search(r'<span class="episode">Season (.*?) Episode (.*?)<span>(.*?)</span>.*?</span>(.*?)<',table,flags=(re.DOTALL | re.MULTILINE))
+                        if match:
+                            season = match.group(1).strip('\n\r\t ')
+                            episode = match.group(2).strip('\n\r\t ')
+                            episode_title = match.group(3).strip('\n\r\t ')
+                            plot = match.group(4).strip('\n\r\t ')
+                        else:
+                            match = re.search(r'<div class="desc">(.*?)<',table,flags=(re.DOTALL | re.MULTILINE))
+                            if match:
+                                plot = match.group(1).strip()
+
+                        match = re.search(r'<li class="dt">(.*?)</li>',table)
+                        if match:
+                            date_str = match.group(1)
+                            match = re.search(r'(.*?), (.*?) (.*?), (.*)',date_str)
+                            if match:
+                                weekday = match.group(1)
+                                Month = match.group(2)
+                                months={"January":"1","February":"2","March":"3","April":"4","May":"5","June":"6","July":"7","August":"8","September":"9","October":"10","November":"11","December":"12"}
+                                month = months[Month]
+                                day = match.group(3)
+                                year = match.group(4)
+
+                        start = ''
+                        match = re.search(r'<span class="time">(.*?)</span>',table)
+                        if match:
+                            start = self.local_time(match.group(1),year,month,day)
+
+                        title = ''
+                        match = re.search(r'<h2> (.*?) </h2>',table)
+                        if match:
+                            title = match.group(1)
+                        programs.append((title,start,plot,season,episode,thumb))
+
+                    last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
+                    for index in range(len(programs)):
+                        xbmc.log(repr(programs[index]))
+                        (title,start,plot,season,episode,thumb) = programs[index]
+                        xbmc.log(repr((start,last_start)))
+                        if start < last_start:
+                            start = start + datetime.timedelta(days=1)
+                        last_start = start
+                        if index < len(programs)-1:
+                            end = programs[index+1][1]
+                        else:
+                            end = start + datetime.timedelta(hours=1,minutes=6)
+                        if end < start:
+                            end = end  + datetime.timedelta(days=1)
+                        yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        today = datetime.datetime.now()
+        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
+            return True
+
+        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
+            return True
+        return False
+
+    def local_time1(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2}) ?(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+
+            london = timezone('Europe/Copenhagen')
+            utc = timezone('UTC')
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
+            to_zone = tz.tzlocal()
+            loc_dt = utc_dt.astimezone(to_zone)
+            return loc_dt
+            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
+
+        return ttime
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2}) {0,1}(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
+            loc_dt = self.utc2local(utc_dt)
+            ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
+        return ttime
+
+    def utc2local (self,utc):
+        epoch = time.mktime(utc.timetuple())
+        offset = datetime.datetime.fromtimestamp (epoch) - datetime.datetime.utcfromtimestamp (epoch)
+        return utc + offset
+
+class YoNowSource(Source):
+    KEY = 'yo.tv.now'
 
     def __init__(self, addon):
         self.needReset = False
@@ -1958,7 +2150,7 @@ class YoSource(Source):
                     if channel_name in channel_numbers:
                         channel_name = "%s." % channel_name
                     channel_numbers[channel_name] = channel_number
-                    c = Channel(channel_name, channel_name, '', img_url, "", True)
+                    c = Channel(channel_number, channel_name, '', img_url, "", True)
                     yield c
                 else:
                     continue
@@ -2374,6 +2566,8 @@ def instantiateSource():
         return TVGUKNowSource(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
+    elif source == "yo.tv now":
+        return YoNowSource(ADDON)
     elif source == "bbc":
         return BBCSource(ADDON)
     else:
