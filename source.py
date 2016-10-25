@@ -1905,9 +1905,8 @@ class TVGUKNowSource(Source):
             utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
             loc_dt = utc_dt.astimezone(london)
             return utc_dt
-            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
 
-        return ttime
+        return 
 
 
 class YoSource(Source):
@@ -1920,7 +1919,6 @@ class YoSource(Source):
         self.channelsLastUpdated = None
 
     def get_url(self,url):
-        #headers = {'user-agent': 'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+'}
         headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
         try:
             r = requests.get(url,headers=headers)
