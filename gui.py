@@ -1115,7 +1115,7 @@ class TVGuide(xbmcgui.WindowXML):
                 image = ''
                 source = ADDON.getSetting('program.background.image.source')
                 if source == "1":
-                    image = ADDON.getSetting('program.background.image.file')
+                    image = ADDON.getSetting('program.background.image')
                 elif source == "2":
                     image = ADDON.getSetting('program.background.image.url')
                 if image:
