@@ -992,6 +992,10 @@ class TVGuide(xbmcgui.WindowXML):
         elif buttonClicked == PopupMenu.C_POPUP_PLAY_BEGINNING:
             title = program.title.replace(" ", "%20").replace(",", "").replace(u"\u2013", "-")
             title = unicode.encode(title, "ascii", "ignore")
+            match = re.search('(.*?)\([0-9]{4}\)$',title)
+            if match:
+                title = match.group(1).strip()
+                program.is_movie = "Movie"
             if program.is_movie == "Movie":
                 selection = 0
             elif program.season is not None:

@@ -7,6 +7,9 @@ from HTMLParser import HTMLParser
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 orig_title = sys.argv[1]
+match = re.search('(.*?)\([0-9]{4}\)$',orig_title)
+if match:
+    orig_title = match.group(1).strip()
 title = urllib.quote_plus(orig_title)
 
 f = xbmcvfs.File('special://home/addons/script.tvguide.fullscreen/resources/favourites.xml')
