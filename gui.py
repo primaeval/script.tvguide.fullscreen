@@ -248,11 +248,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.player = xbmc.Player()
         self.database = None
         self.tvdb_urls = {}
-        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'
-        if xbmcvfs.exists(file_name):
-            f = open(xbmc.translatePath(file_name),'rb')
-            if f:
-                self.tvdb_urls = pickle.load(f)
+        self.loadTVDBBanners()
 
         self.mode = MODE_EPG
         self.currentChannel = None
@@ -297,6 +293,12 @@ class TVGuide(xbmcgui.WindowXML):
         self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 30,
                                                  seconds=self.quickViewStartDate.second)
 
+    def loadTVDBBanners(self):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'
+        if xbmcvfs.exists(file_name):
+            f = open(xbmc.translatePath(file_name),'rb')
+            if f:
+                self.tvdb_urls = pickle.load(f)
 
     def getControl(self, controlId):
         try:
@@ -752,6 +754,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = channel.title
         d = ProgramListDialog(title,programList)
         d.doModal()
+        self.loadTVDBBanners()
         index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
@@ -762,6 +765,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "Now"
         d = ProgramListDialog(title,programList)
         d.doModal()
+        self.loadTVDBBanners()
         index = d.index
         action = d.action
         if action == ACTION_RIGHT:
@@ -780,6 +784,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "Next"
         d = ProgramListDialog(title,programList)
         d.doModal()
+        self.loadTVDBBanners()
         index = d.index
         action = d.action
         if action == ACTION_LEFT:
@@ -803,6 +808,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "Program Search"
         d = ProgramListDialog(title,programList)
         d.doModal()
+        self.loadTVDBBanners()
         index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
@@ -812,6 +818,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "Reminders"
         d = ProgramListDialog(title,programList)
         d.doModal()
+        self.loadTVDBBanners()
         index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
@@ -821,6 +828,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "Reminders"
         d = ProgramListDialog(title,programList)
         d.doModal()
+        self.loadTVDBBanners()
         index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
@@ -837,6 +845,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "AutoPlays"
         d = xbmcgui.Dialog()
         index = d.select(title,labels)
+        self.loadTVDBBanners()
         if index > -1:
             program = programList[index]
             self._showContextMenu(program)
@@ -846,6 +855,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "AutoPlays"
         d = ProgramListDialog(title,programList)
         d.doModal()
+        self.loadTVDBBanners()
         index = d.index
         if index > -1:
             self._showContextMenu(programList[index])
@@ -862,6 +872,7 @@ class TVGuide(xbmcgui.WindowXML):
         title = "AutoPlayWiths"
         d = xbmcgui.Dialog()
         index = d.select(title,labels)
+        self.loadTVDBBanners()
         if index > -1:
             program = programList[index]
             self._showContextMenu(program)
@@ -872,6 +883,7 @@ class TVGuide(xbmcgui.WindowXML):
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
+        self.loadTVDBBanners()
         if index > -1:
             self._showContextMenu(programList[index])
 
@@ -1117,8 +1129,6 @@ class TVGuide(xbmcgui.WindowXML):
                 program_image = ''
             if program.imageLarge:
                 program_image = program.imageLarge
-            program_image = re.sub(' ','+',program_image)
-            xbmc.log(repr(program_image))
             self.setControlImage(self.C_MAIN_IMAGE, program_image)
 
             if ADDON.getSetting('tvdb.banners') == 'true':
@@ -3431,6 +3441,12 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         self.programs = programs
         self.index = -1
         self.action = None
+        self.tvdb_urls = {}
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'
+        if xbmcvfs.exists(file_name):
+            f = open(xbmc.translatePath(file_name),'rb')
+            if f:
+                self.tvdb_urls = pickle.load(f)
 
     def onInit(self):
         control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
@@ -3497,7 +3513,24 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             if progress and (int(progress) < 100):
                 item.setProperty('Completed', progress)
 
-            item.setProperty('ProgramImage', program.imageSmall if program.imageSmall else program.imageLarge)
+            program_image = program.imageSmall if program.imageSmall else program.imageLarge
+            if not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
+                tvdb_url = ''
+                if program.title in self.tvdb_urls:
+                    tvdb_url = self.tvdb_urls[program.title]
+                else:
+                    url = "http://thetvdb.com//api/GetSeries.php?seriesname=%s" % program.title
+                    r = requests.get(url)
+                    tvdb_html = r.text
+                    tvdb_id = ''
+                    tvdb_match = re.search(r'<banner>(.*?)</banner>', tvdb_html, flags=(re.DOTALL | re.MULTILINE))
+                    if tvdb_match:
+                        tvdb_id = tvdb_match.group(1)
+                        tvdb_url = "http://thetvdb.com/banners/_cache/%s" % tvdb_id
+                    self.tvdb_urls[program.title] = tvdb_url
+                if tvdb_url:
+                    program_image = tvdb_url
+            item.setProperty('ProgramImage', program_image)
 
             items.append(item)
 
@@ -3555,3 +3588,9 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
                 return 'Yesterday'
             else:
                 return timestamp.strftime("%A")
+
+    def close(self):
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle','wb')
+        pickle.dump(self.tvdb_urls,f)
+        super(ProgramListDialog, self).close()
+
