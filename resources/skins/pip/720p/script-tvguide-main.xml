@@ -1124,7 +1124,7 @@
                 <control type="image">
                     <description>loading background</description>
                     <posx>-340</posx>
-                    <posy>-310</posy>
+                    <posy>-280</posy>
                     <width>1280</width>
                     <height>720</height>
                     <texture>black.png</texture>
