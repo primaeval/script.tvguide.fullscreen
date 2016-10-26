@@ -145,7 +145,7 @@
             <height>720</height>
             <colordiffuse>white</colordiffuse>
             <texture>black.png</texture>
-            <visible>!Player.HasMedia</visible>
+            <visible>true</visible>
             <aspectratio>scale</aspectratio>
             <align>center</align>
             <aligny>center</aligny>
@@ -1092,7 +1092,18 @@
                 <height>240</height>
                 <aligny>top</aligny>
                 <aspectratio>scale</aspectratio>
-
+                <fadetime>0</fadetime>
+                <texture>-</texture>
+                <visible>!Player.HasMedia</visible>
+            </control>
+            <control type="image" id="7027">
+                <description>TVDB Banner</description>
+                <posx>0</posx>
+                <posy>500</posy>
+                <width>425</width>
+                <height>55</height>
+                <aligny>top</aligny>
+                <aspectratio>keep</aspectratio>
                 <fadetime>0</fadetime>
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>

@@ -95,8 +95,14 @@ class Program(object):
         self.startDate = startDate
         self.endDate = endDate
         self.description = description
-        self.imageLarge = imageLarge
-        self.imageSmall = imageSmall
+        if imageLarge and imageLarge.startswith('http'):
+            self.imageLarge = re.sub(' ','+',imageLarge)
+        else:
+            self.imageLarge = imageLarge
+        if imageSmall and imageSmall.startswith('http'):
+            self.imageSmall = re.sub(' ','+',imageSmall)
+        else:
+            self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
         self.autoplayScheduled = autoplayScheduled
         self.autoplaywithScheduled = autoplaywithScheduled

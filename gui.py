@@ -34,6 +34,8 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 import colors
+import requests
+import pickle
 
 import source as src
 from notification import Notification
@@ -149,6 +151,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_LOGO = 7024
     C_MAIN_CHANNEL = 7025
     C_MAIN_PROGRESS = 7026
+    C_MAIN_TVDB_IMAGE = 7027
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -244,6 +247,12 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.player = xbmc.Player()
         self.database = None
+        self.tvdb_urls = {}
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'
+        if xbmcvfs.exists(file_name):
+            f = open(xbmc.translatePath(file_name),'rb')
+            if f:
+                self.tvdb_urls = pickle.load(f)
 
         self.mode = MODE_EPG
         self.currentChannel = None
@@ -306,6 +315,8 @@ class TVGuide(xbmcgui.WindowXML):
             if self.player.isPlaying():
                 if ADDON.getSetting('stop.on.exit') == "true":
                     self.player.stop()
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle','wb')
+            pickle.dump(self.tvdb_urls,f)
             if self.database:
                 self.database.close(super(TVGuide, self).close)
             else:
@@ -1099,18 +1110,38 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.setControlImage(self.C_MAIN_LOGO, '')
 
+            program_image = ''
+            if program.imageSmall:
+                program_image = program.imageSmall
+            else:
+                program_image = ''
+            if program.imageLarge:
+                program_image = program.imageLarge
+            program_image = re.sub(' ','+',program_image)
+            xbmc.log(repr(program_image))
+            self.setControlImage(self.C_MAIN_IMAGE, program_image)
+
+            if ADDON.getSetting('tvdb.banners') == 'true':
+                tvdb_url = ''
+                if not program_image:
+                    if program.title in self.tvdb_urls:
+                        tvdb_url = self.tvdb_urls[program.title]
+                    else:
+                        url = "http://thetvdb.com//api/GetSeries.php?seriesname=%s" % program.title
+                        r = requests.get(url)
+                        tvdb_html = r.text
+                        tvdb_id = ''
+                        tvdb_match = re.search(r'<banner>(.*?)</banner>', tvdb_html, flags=(re.DOTALL | re.MULTILINE))
+                        if tvdb_match:
+                            tvdb_id = tvdb_match.group(1)
+                            tvdb_url = "http://thetvdb.com/banners/_cache/%s" % tvdb_id
+                        self.tvdb_urls[program.title] = tvdb_url
+                self.setControlImage(self.C_MAIN_TVDB_IMAGE, tvdb_url)
 
             color = colors.color_name["white"]
-            if program.imageSmall:
-                self.setControlImage(self.C_MAIN_IMAGE, program.imageSmall)
-            else:
-                self.setControlImage(self.C_MAIN_IMAGE, 'tvg-tv.png')
-            if program.imageLarge:
-                self.setControlImage(self.C_MAIN_IMAGE, program.imageLarge)
-
-
             if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall:
-                self.setControlImage(self.C_MAIN_BACKGROUND, program.imageSmall)
+                program_image = re.sub(' ','+',program.imageSmall)
+                self.setControlImage(self.C_MAIN_BACKGROUND, program_image)
             else:
                 image = ''
                 source = ADDON.getSetting('program.background.image.source')

@@ -136,4 +136,4 @@ if __name__ == '__main__':
             deleteAddons()
             deleteIcons()
             deleteFolders()
-
+            delete_file(xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'))
