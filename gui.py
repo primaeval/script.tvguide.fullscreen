@@ -1123,25 +1123,33 @@ class TVGuide(xbmcgui.WindowXML):
                 program_image = program.imageLarge
             self.setControlImage(self.C_MAIN_IMAGE, program_image)
 
-            match = re.search('(.*?) \(([0-9]{4})\)',program.title)
-            if match:
-                movie = match.group(1)
-                year = match.group(2)
-                #xbmc.log(repr((movie,year,program.title)))
-
             if ADDON.getSetting('tvdb.banners') == 'true':
-                tvdb_url = ''
-                if not program_image:
-                    if program.title in self.tvdb_urls:
-                        tvdb_url = self.tvdb_urls[program.title]
+                match = re.search('(.*?) \(([0-9]{4})\)',program.title)
+                if match:
+                    movie = match.group(1)
+                    year = match.group(2)
+                    orig_title = "%s (%s)" % (movie,year)
+                    if orig_title in self.tvdb_urls:
+                        tvdb_url = self.tvdb_urls[orig_title]
                         self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
                     else:
                         try:
-                            t1 = threading.Thread(target=self.getTVDBImage,args=(program.title,))
+                            t1 = threading.Thread(target=self.getIMDBImage,args=(movie,year))
                             t1.start()
-                            #thread.start_new_thread( self.getTVDBImage, ((program.title)) )
                         except thread.error as detail:
-                           xbmc.log( "Error: unable to start thread: %s" % detail )
+                           xbmc.log( "Error: unable to start thread: %s" % detail , xbmc.LOGERROR)
+                else:
+                    tvdb_url = ''
+                    if not program_image:
+                        if program.title in self.tvdb_urls:
+                            tvdb_url = self.tvdb_urls[program.title]
+                            self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
+                        else:
+                            try:
+                                t1 = threading.Thread(target=self.getTVDBImage,args=(program.title,))
+                                t1.start()
+                            except thread.error as detail:
+                               xbmc.log( "Error: unable to start thread: %s" % detail , xbmc.LOGERROR)
 
 
             color = colors.color_name["white"]
@@ -1181,10 +1189,32 @@ class TVGuide(xbmcgui.WindowXML):
             match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
             if match:
                 tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
-        if tvdb_url not in self.tvdb_urls:
+        if title not in self.tvdb_urls:
             self.tvdb_urls[title] = tvdb_url
         if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
             self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
+
+    def getIMDBImage(self, title, year):
+        orig_title = "%s (%s)" % (title,year)
+        try: title = orig_title.encode("utf8")
+        except: title = unicode(title)
+        headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+        url = "http://www.bing.com/search?q=site%%3Aimdb.com+%s" % urllib.quote_plus(title)
+        html = requests.get(url).content
+        match = re.search('href="(http://www.imdb.com/title/tt.*?/)"',html)
+        tvdb_url = ''
+        if match:
+            url = match.group(1)
+            html = requests.get(url,headers=headers).content
+            match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
+            if match:
+                tvdb_url = match.group(1)
+                tvdb_url = re.sub(r'S[XY].*_.jpg','SY240_.jpg',tvdb_url)
+        if orig_title not in self.tvdb_urls:
+            self.tvdb_urls[orig_title] = tvdb_url
+        if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
+            self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
+
 
     def _left(self, currentFocus):
         control = self._findControlOnLeft(currentFocus)
