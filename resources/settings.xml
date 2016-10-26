@@ -116,7 +116,7 @@
     </category>
     <category label="Lab1">
         <setting type="sep"/>
-        <setting id="tvdb.banners" label="TVDB Program Banners" type="bool" default="true" />
+        <setting id="tvdb.banners" label="TVDB Program Banners" type="bool" default="false" />
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
     </category>

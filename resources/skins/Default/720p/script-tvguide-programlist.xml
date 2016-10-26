@@ -41,16 +41,17 @@
 
         <control type="label" id="1001">
             <description>Title</description>
-            <left>0</left>
+            <left>750</left>
             <top>20</top>
-            <width>950</width>
+            <width>300</width>
             <height>20</height>
             <font>font13_title</font>
             <textcolor>orange</textcolor>
             <shadowcolor>black</shadowcolor>
-            <align>right</align>
+            <align>center</align>
             <aligny>center</aligny>
             <label>Title</label>
+            <scroll>true</scroll>
         </control>
 
         <control type="label">
@@ -220,7 +221,7 @@
                             <width>100</width>
                             <height>40</height>
                             <font>font12</font>
-                            <textcolor>grey</textcolor>
+                            <textcolor>dimgrey</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(When)</info>
@@ -306,7 +307,7 @@
                             <width>100</width>
                             <height>40</height>
                             <font>font12</font>
-                            <textcolor>black</textcolor>
+                            <textcolor>dimgrey</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(When)</info>
