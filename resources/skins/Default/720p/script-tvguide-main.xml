@@ -1095,18 +1095,6 @@
                 <texture>-</texture>
                 <visible>true</visible>
             </control>
-            <control type="image" id="7027">
-                <description>TVDB Banner</description>
-                <posx>0</posx>
-                <posy>500</posy>
-                <width>425</width>
-                <height>55</height>
-                <aligny>top</aligny>
-                <aspectratio>keep</aspectratio>
-                <fadetime>0</fadetime>
-                <texture>-</texture>
-                <visible>true</visible>
-            </control>
             <control type="image" id="7024">
                 <description>Channel logo</description>
                 <posx>0</posx>

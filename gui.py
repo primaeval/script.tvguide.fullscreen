@@ -151,7 +151,6 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_LOGO = 7024
     C_MAIN_CHANNEL = 7025
     C_MAIN_PROGRESS = 7026
-    C_MAIN_TVDB_IMAGE = 7027
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -1139,31 +1138,15 @@ class TVGuide(xbmcgui.WindowXML):
                     else:
                         url = "http://thetvdb.com/?string=%s&searchseriesid=&tab=listseries&function=Search" % urllib.quote_plus(program.title.encode("utf8"))
                         html = requests.get(url).content
-                        #xbmc.log(repr(html))
                         match = re.search('<a href="(/\?tab=series&amp;id=.*?)"',html)
                         if match:
                             url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
-                            #xbmc.log(repr(url))
                             html = requests.get(url).content
-                            #xbmc.log(repr(html))
                             match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
                             if match:
                                 tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
-                                #tvdb_url = re.sub('_cache/','',tvdb_url)
-                                #xbmc.log(repr(tvdb_url))
-                        '''
-                        url = "http://thetvdb.com//api/GetSeries.php?seriesname=%s" % re.sub(' ','+',program.title)
-                        xbmc.log(repr(url))
-                        r = requests.get(url)
-                        tvdb_html = r.text
-                        tvdb_id = ''
-                        tvdb_match = re.search(r'<banner>(.*?)</banner>', tvdb_html, flags=(re.DOTALL | re.MULTILINE))
-                        if tvdb_match:
-                            tvdb_id = tvdb_match.group(1)
-                            tvdb_url = "http://thetvdb.com/banners/_cache/%s" % tvdb_id
-                        '''
+
                         self.tvdb_urls[program.title] = tvdb_url
-                #self.setControlImage(self.C_MAIN_TVDB_IMAGE, tvdb_url)
                 self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
 
             color = colors.color_name["white"]
