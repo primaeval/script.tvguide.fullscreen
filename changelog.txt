@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.167
+version 0.0.167-168
 - IMDB/TVDB image search Setting in Lab1
 
 version 0.0.165-166

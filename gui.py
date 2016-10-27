@@ -3508,6 +3508,11 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             f = open(xbmc.translatePath(file_name),'rb')
             if f:
                 self.tvdb_urls = pickle.load(f)
+                if len(self.tvdb_urls) > 5000:
+                    k = self.tvdb_urls.keys()
+                    k.reverse()
+                    while len(self.tvdb_urls) > 5000:
+                        self.tvdb_urls.pop(k.pop(),None)
 
     def onInit(self):
         control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
