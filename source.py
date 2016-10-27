@@ -736,10 +736,13 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getChannelListing, channel)
 
     def _getChannelListing(self, channel):
+        now = datetime.datetime.now()
+        days = int(ADDON.getSetting('listing.days'))
+        endTime = now + datetime.timedelta(days=days)
         programList = []
         c = self.conn.cursor()
-        try: c.execute('SELECT * FROM programs WHERE channel=?',
-                  [channel.id])
+        try: c.execute('SELECT * FROM programs WHERE channel=? AND end_date>? AND start_date<?',
+                  [channel.id,now,endTime])
         except: return
         for row in c:
             program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
@@ -1091,6 +1094,15 @@ class Database(object):
                 c.execute('DROP TABLE channels')
                 c.execute(
                     'CREATE TABLE channels(id TEXT, title TEXT, logo TEXT, stream_url TEXT, source TEXT, lineup TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+            if version < [1, 3, 6]:
+                # Recreate tables with seasons, episodes and is_movie
+                c.execute('UPDATE version SET major=1, minor=3, patch=6')
+                c.execute('DROP TABLE programs')
+                c.execute(
+                    'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, UNIQUE (channel, start_date, end_date), FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+                c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
+                c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
+                c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
