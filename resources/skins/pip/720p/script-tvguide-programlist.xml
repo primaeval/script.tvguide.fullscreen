@@ -273,7 +273,7 @@
                             <width>200</width>
                             <height>40</height>
                             <font>font13</font>
-                            <textcolor>dimgrey</textcolor>
+                            <textcolor>lightgrey</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(StartTime)</info>
@@ -307,7 +307,7 @@
                             <width>100</width>
                             <height>40</height>
                             <font>font12</font>
-                            <textcolor>dimgrey</textcolor>
+                            <textcolor>lightgrey</textcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Property(When)</info>
