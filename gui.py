@@ -1738,9 +1738,12 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setPosition(2,top)
 
-        #TODO read from xml
-        focusColor = '0xFF000000'
-        noFocusColor = '0xFFFFFFFF'
+        name = remove_formatting(ADDON.getSetting('epg.nofocus.color'))
+        color = colors.color_name[name]
+        noFocusColor = color
+        name = remove_formatting(ADDON.getSetting('epg.focus.color'))
+        color = colors.color_name[name]
+        focusColor = color
 
         for program in programs:
             idx = channels.index(program.channel)
@@ -1933,9 +1936,12 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setHeight(self.quickEpgView.cellHeight-2)
                 control.setPosition(2,top)
 
-        #TODO read from xml
-        focusColor = '0xFF000000'
-        noFocusColor = '0xFFFFFFFF'
+        name = remove_formatting(ADDON.getSetting('epg.nofocus.color'))
+        color = colors.color_name[name]
+        noFocusColor = color
+        name = remove_formatting(ADDON.getSetting('epg.focus.color'))
+        color = colors.color_name[name]
+        focusColor = color
 
         for program in programs:
             idx = channels.index(program.channel)
