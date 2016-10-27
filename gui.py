@@ -3615,6 +3615,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         else:
             self.index = -1
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
+            self.index = -1
             self.close()
         elif action.getId() in [KEY_CONTEXT_MENU]:
             self.action = KEY_CONTEXT_MENU
