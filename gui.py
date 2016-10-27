@@ -885,6 +885,8 @@ class TVGuide(xbmcgui.WindowXML):
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
+        if not program.imageSmall and (program.title in self.tvdb_urls):
+            program.imageSmall = self.tvdb_urls[program.title]
         d = PopupMenu(self.database, program, not program.notificationScheduled, not program.autoplayScheduled, not program.autoplaywithScheduled, self.category, self.categories)
         d.doModal()
         buttonClicked = d.buttonClicked
