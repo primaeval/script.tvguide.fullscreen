@@ -13,6 +13,7 @@ EPG Window
 - reminders list (5)
 - autoplays (6)
 - Simple Favourites (i,info)
+- delete unwanted IMDB/TVDB image (m, menu)
 
 Main Menu
 - exit to epg (esc, back)
