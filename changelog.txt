@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.170
+- clear unwanted IMDB/TVDB image in main epg (m, menu)
+
 version 0.0.167-169
 - IMDB/TVDB image search Setting in Lab1
 
