@@ -68,6 +68,7 @@ ACTION_SHOW_INFO = 11
 ACTION_STOP = 13
 ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
+ACTION_SHOW_CODEC = 27
 ACTION_MENU = 163
 ACTION_LAST_PAGE = 160
 ACTION_PLAY = 68
@@ -103,6 +104,8 @@ ACTION_JUMP_SMS6 = 146
 ACTION_JUMP_SMS7 = 147
 ACTION_JUMP_SMS8 = 148
 ACTION_JUMP_SMS9 = 149
+
+
 
 CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
@@ -634,6 +637,11 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program:
                 self.playWithChannel(program.channel)
+        elif action.getId() == ACTION_MENU:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                self.tvdb_urls[program.title] = ''
+                self.setControlImage(self.C_MAIN_IMAGE, self.tvdb_urls[program.title])
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 

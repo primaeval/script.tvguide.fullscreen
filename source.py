@@ -1846,7 +1846,6 @@ class TVGUKNowSource(Source):
         """
         r = requests.get('http://www.tvguide.co.uk/mobile/')
         html = r.text
-        #xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
 
         channels = html.split('<div class="div-channel-progs">')
 
@@ -2196,7 +2195,6 @@ class YoNowSource(Source):
                 after_program = ''
                 match = re.search(r'<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>', channel,flags=(re.DOTALL | re.MULTILINE))
                 if match:
-                    xbmc.log(channel_name)
                     now = datetime.datetime.now()
                     year = now.year
                     month = now.month
