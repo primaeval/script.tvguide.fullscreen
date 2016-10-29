@@ -578,11 +578,6 @@ class TVGuide(xbmcgui.WindowXML):
                 self.close()
                 return
 
-        elif action.getId() in [ACTION_SHOW_INFO]:
-            #if self.player.isPlaying():
-            #    self._hideEpg()
-            xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.program.simple.favourites,return)")
-
 
         controlInFocus = None
         currentFocus = self.focusPoint
@@ -644,6 +639,23 @@ class TVGuide(xbmcgui.WindowXML):
             if program:
                 self.tvdb_urls[program.title] = ''
                 self.setControlImage(self.C_MAIN_IMAGE, self.tvdb_urls[program.title])
+        elif action.getId() in [ACTION_SHOW_INFO]:
+            program = self._getProgramFromControl(controlInFocus)
+            title = program.title
+            match = re.search('(.*?)\([0-9]{4}\)$',title)
+            if match:
+                title = match.group(1).strip()
+                program.is_movie = "Movie"
+            if program.is_movie == "Movie":
+                selection = 0
+            elif program.season:
+                selection = 1
+            else:
+                selection = xbmcgui.Dialog().select("Choose media type",["Search as Movie", "Search as TV Show"])
+            if selection == 0:
+                xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s)' % (title))
+            elif selection == 1:
+                xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s)' % (program.title))
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -1015,7 +1027,7 @@ class TVGuide(xbmcgui.WindowXML):
                 program.is_movie = "Movie"
             if program.is_movie == "Movie":
                 selection = 0
-            elif program.season is not None:
+            elif program.season:
                 selection = 1
             else:
                 selection = xbmcgui.Dialog().select("Choose media type",["Search as Movie", "Search as TV Show"])
@@ -1047,7 +1059,7 @@ class TVGuide(xbmcgui.WindowXML):
                 program.is_movie = "Movie"
             if program.is_movie == "Movie":
                 selection = 0
-            elif program.season is not None:
+            elif program.season:
                 selection = 1
             else:
                 selection = xbmcgui.Dialog().select("Choose media type",["Search as Movie", "Search as TV Show"])
