@@ -264,10 +264,10 @@
         </control>
         <control type="image" id="4100">
             <description>channel logo</description>
-            <posx>275</posx>
-            <posy>70r</posy>
-            <width>220</width>
-            <height>45</height>
+            <posx>188r</posx>
+            <posy>12</posy>
+            <width>176</width>
+            <height>40</height>
             <align>center</align>
             <aligny>bottom</aligny>
             <aspectratio>keep</aspectratio>
@@ -516,7 +516,7 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4004</onup>
-            <ondown>80000</ondown>
+            <ondown>4013</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -526,6 +526,26 @@
             <label>Favourites</label>
             <visible>true</visible>
         </control>
+        
+        <control type="button" id="4013">
+            <description>Extended Info</description>
+            <posx>285</posx>
+            <posy>625</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4012</onup>
+            <ondown>80000</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Extended Info</label>
+            <visible>true</visible>
+        </control>        
 
         <control type="button" id="80000">
             <!-- MY MOVIES -->
