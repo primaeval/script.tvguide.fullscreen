@@ -12,7 +12,7 @@ EPG Window
 - search programs (4)
 - reminders list (5)
 - autoplays (6)
-- Simple Favourites (i,info)
+- Extended Info (i,info)
 - delete unwanted IMDB/TVDB image (m, menu)
 
 Main Menu

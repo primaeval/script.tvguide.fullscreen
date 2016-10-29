@@ -8,7 +8,7 @@ USAGE NOTES:
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
 version 0.0.171
-- Extended Info in menu (needs script.extendedinfo)
+- Extended Info in menu and with (info,i) (needs script.extendedinfo)
 
 version 0.0.170
 - clear unwanted IMDB/TVDB image in main epg (m, menu)
