@@ -28,6 +28,7 @@ import os
 import xbmc
 import xbmcgui
 import xbmcaddon
+import xbmcvfs
 
 def deleteDB():
     try:
@@ -50,69 +51,6 @@ def deleteDB():
         xbmc.log('[script.tvguide.fullscreen] Deleting database...EXCEPTION', xbmc.LOGDEBUG)
         return False
 
-def deleteAddons():
-    try:
-        xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...", xbmc.LOGDEBUG)
-        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getAddonInfo('profile'))
-        dbPath = os.path.join(dbPath, 'addons.ini')
-
-        delete_file(dbPath)
-
-        passed = not os.path.exists(dbPath)
-
-        if passed:
-            xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...PASSED", xbmc.LOGDEBUG)
-        else:
-            xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...FAILED", xbmc.LOGDEBUG)
-
-        return passed
-
-    except Exception, e:
-        xbmc.log('[script.tvguide.fullscreen] Deleting addons.ini...EXCEPTION', xbmc.LOGDEBUG)
-        return False
-
-def deleteIcons():
-    try:
-        xbmc.log("[script.tvguide.fullscreen] Deleting icons.ini...", xbmc.LOGDEBUG)
-        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getAddonInfo('profile'))
-        dbPath = os.path.join(dbPath, 'icons.ini')
-
-        delete_file(dbPath)
-
-        passed = not os.path.exists(dbPath)
-
-        if passed:
-            xbmc.log("[script.tvguide.fullscreen] Deleting icons.ini...PASSED", xbmc.LOGDEBUG)
-        else:
-            xbmc.log("[script.tvguide.fullscreen] Deleting icons.ini...FAILED", xbmc.LOGDEBUG)
-
-        return passed
-
-    except Exception, e:
-        xbmc.log('[script.tvguide.fullscreen] Deleting icons.ini...EXCEPTION', xbmc.LOGDEBUG)
-        return False
-
-def deleteFolders():
-    try:
-        xbmc.log("[script.tvguide.fullscreen] Deleting addons.ini...", xbmc.LOGDEBUG)
-        dbPath = xbmc.translatePath(xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getAddonInfo('profile'))
-        dbPath = os.path.join(dbPath, 'folders.list')
-
-        delete_file(dbPath)
-
-        passed = not os.path.exists(dbPath)
-
-        if passed:
-            xbmc.log("[script.tvguide.fullscreen] Deleting folders.list...PASSED", xbmc.LOGDEBUG)
-        else:
-            xbmc.log("[script.tvguide.fullscreen] Deleting folders.list...FAILED", xbmc.LOGDEBUG)
-
-        return passed
-
-    except Exception, e:
-        xbmc.log('[script.tvguide.fullscreen] Deleting folders.list...EXCEPTION', xbmc.LOGDEBUG)
-        return False
-
 def delete_file(filename):
     tries = 10
     while os.path.exists(filename) and tries > 0:
@@ -125,19 +63,21 @@ def delete_file(filename):
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         mode = int(sys.argv[1])
-        if mode == 3:
-            delete_file(xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'))
-            delete_file(xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle'))
-        elif mode > 0:
+
+        if mode in [1,2]:
             if deleteDB():
                 d = xbmcgui.Dialog()
                 d.ok('TV Guide', 'The database has been successfully deleted.', 'It will be re-created next time you start the guide')
             else:
                 d = xbmcgui.Dialog()
                 d.ok('TV Guide', 'Failed to delete database.', 'Database may be locked,', 'please restart and try again')
-        elif mode > 1:
-            deleteAddons()
-            deleteIcons()
-            deleteFolders()
-            delete_file(xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'))
-            delete_file(xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle'))
+        if mode == 2:
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/addons.ini')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/categories.ini')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/icons.ini')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/folders.list')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle')
+        if mode == 3:
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle')

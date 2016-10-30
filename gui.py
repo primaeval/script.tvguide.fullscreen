@@ -762,7 +762,11 @@ class TVGuide(xbmcgui.WindowXML):
             result = self.streamingService.detectStream(program.channel)
             if not result:
                 # could not detect stream, show context menu
-                self._showContextMenu(program)
+                d = StreamSetupDialog(self.database, program.channel)
+                d.doModal()
+                del d
+                self.streamingService = streaming.StreamsService(ADDON)
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             elif type(result) == str:
                 # one single stream detected, save it and start streaming
                 self.database.setCustomStreamUrl(program.channel, result)
