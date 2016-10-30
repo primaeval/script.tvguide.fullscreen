@@ -1036,6 +1036,9 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 selection = xbmcgui.Dialog().select("Choose media type",["Search as Movie", "Search as TV Show"])
 
+            if not program.language:
+                program.language = "en"
+
             if selection == 0:
                 xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/movies/play_by_name/%s/%s)" % (
                     title, program.language))
