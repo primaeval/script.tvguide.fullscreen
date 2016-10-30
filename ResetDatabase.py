@@ -125,14 +125,17 @@ def delete_file(filename):
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         mode = int(sys.argv[1])
-        if mode > 0:
+        if mode == 3:
+            delete_file(xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle'))
+            delete_file(xbmc.translatePath('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle'))
+        elif mode > 0:
             if deleteDB():
                 d = xbmcgui.Dialog()
                 d.ok('TV Guide', 'The database has been successfully deleted.', 'It will be re-created next time you start the guide')
             else:
                 d = xbmcgui.Dialog()
                 d.ok('TV Guide', 'Failed to delete database.', 'Database may be locked,', 'please restart and try again')
-        if mode > 1:
+        elif mode > 1:
             deleteAddons()
             deleteIcons()
             deleteFolders()

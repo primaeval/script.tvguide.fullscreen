@@ -1257,7 +1257,7 @@ class TVGuide(xbmcgui.WindowXML):
             elif tvdb_match == "2":
                 found = True
             if found:
-                xbmc.log(repr((title,name,url)))
+                #xbmc.log(repr((title,name,url)))
                 html = requests.get(url).content
                 match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
                 if match:
@@ -1269,23 +1269,50 @@ class TVGuide(xbmcgui.WindowXML):
 
     def getIMDBImage(self, title, year):
         orig_title = "%s (%s)" % (title,year)
-        try: title = orig_title.encode("utf8")
-        except: title = unicode(title)
+        try: utf_title = orig_title.encode("utf8")
+        except: utf_title = unicode(utf_title)
         headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
-        url = "http://www.bing.com/search?q=site%%3Aimdb.com+%s" % urllib.quote_plus(title)
+        url = "http://www.bing.com/search?q=site%%3Aimdb.com+%s" % urllib.quote_plus(utf_title)
         html = requests.get(url).content
-        match = re.search('href="(http://www.imdb.com/title/tt.*?/)"',html)
+
+        match = re.search('href="(http://www.imdb.com/title/tt.*?/)".*?<strong>(.*?)</strong>',html)
         tvdb_url = ''
         if match:
+            #xbmc.log(repr(html))        
             url = match.group(1)
-            html = requests.get(url,headers=headers).content
-            match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
-            if match:
-                tvdb_url = match.group(1)
-                tvdb_url = re.sub(r'S[XY].*_.jpg','SY240_.jpg',tvdb_url)
+            name = match.group(2)
+            name = re.sub('\([0-9]*$','',name)
+            name = name.strip()
+            #xbmc.log(repr((title,name)))
+            found = False
+            imdb_match = ADDON.getSetting('imdb.match')
+            if not title:
+                found = False
+            elif imdb_match == "0": 
+                if title.lower().strip() ==  name.lower().strip():
+                    found = True
+            elif imdb_match == "1":
+                title_search = re.escape(title.lower().strip())
+                name_search = name.lower().strip()
+                if re.search(title_search,name_search):
+                    found = True
+                else:
+                    title_search = title.lower().strip()
+                    name_search = re.escape(name.lower().strip())
+                    if re.search(name_search,title_search):
+                        found = True
+            elif imdb_match == "2":
+                found = True
+            if found:
+                xbmc.log(repr((title,name,url)))
+                html = requests.get(url,headers=headers).content
+                match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
+                if match:
+                    tvdb_url = match.group(1)
+                    tvdb_url = re.sub(r'S[XY].*_.jpg','SY240_.jpg',tvdb_url)
         if orig_title not in self.tvdb_urls:
             self.tvdb_urls[orig_title] = tvdb_url
-        if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
+        if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == utf_title):
             self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
 
 
