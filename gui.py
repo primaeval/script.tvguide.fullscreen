@@ -1233,15 +1233,13 @@ class TVGuide(xbmcgui.WindowXML):
         match = re.search('<a href="(/\?tab=series&amp;id=.*?)">(.*?)</a>',html)
         tvdb_url = ''
         if match:
-            #xbmc.log(repr(html))
             url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
             name = match.group(2).strip()
-            #xbmc.log(repr((title,name,url)))
             found = False
             tvdb_match = ADDON.getSetting('tvdb.match')
             if not title:
                 found = False
-            elif tvdb_match == "0": 
+            elif tvdb_match == "0":
                 if title.lower().strip() ==  name.lower().strip():
                     found = True
             elif tvdb_match == "1":
@@ -1257,7 +1255,6 @@ class TVGuide(xbmcgui.WindowXML):
             elif tvdb_match == "2":
                 found = True
             if found:
-                #xbmc.log(repr((title,name,url)))
                 html = requests.get(url).content
                 match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
                 if match:
@@ -1278,17 +1275,15 @@ class TVGuide(xbmcgui.WindowXML):
         match = re.search('href="(http://www.imdb.com/title/tt.*?/)".*?<strong>(.*?)</strong>',html)
         tvdb_url = ''
         if match:
-            #xbmc.log(repr(html))        
             url = match.group(1)
             name = match.group(2)
             name = re.sub('\([0-9]*$','',name)
             name = name.strip()
-            #xbmc.log(repr((title,name)))
             found = False
             imdb_match = ADDON.getSetting('imdb.match')
             if not title:
                 found = False
-            elif imdb_match == "0": 
+            elif imdb_match == "0":
                 if title.lower().strip() ==  name.lower().strip():
                     found = True
             elif imdb_match == "1":
@@ -1304,7 +1299,6 @@ class TVGuide(xbmcgui.WindowXML):
             elif imdb_match == "2":
                 found = True
             if found:
-                xbmc.log(repr((title,name,url)))
                 html = requests.get(url,headers=headers).content
                 match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
                 if match:
