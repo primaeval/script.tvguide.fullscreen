@@ -1230,14 +1230,38 @@ class TVGuide(xbmcgui.WindowXML):
         except: title = unicode(title)
         url = "http://thetvdb.com/?string=%s&searchseriesid=&tab=listseries&function=Search" % urllib.quote_plus(title)
         html = requests.get(url).content
-        match = re.search('<a href="(/\?tab=series&amp;id=.*?)"',html)
+        match = re.search('<a href="(/\?tab=series&amp;id=.*?)">(.*?)</a>',html)
         tvdb_url = ''
         if match:
+            #xbmc.log(repr(html))
             url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
-            html = requests.get(url).content
-            match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
-            if match:
-                tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
+            name = match.group(2).strip()
+            #xbmc.log(repr((title,name,url)))
+            found = False
+            tvdb_match = ADDON.getSetting('tvdb.match')
+            if not title:
+                found = False
+            elif tvdb_match == "0": 
+                if title.lower().strip() ==  name.lower().strip():
+                    found = True
+            elif tvdb_match == "1":
+                title_search = re.escape(title.lower().strip())
+                name_search = name.lower().strip()
+                if re.search(title_search,name_search):
+                    found = True
+                else:
+                    title_search = title.lower().strip()
+                    name_search = re.escape(name.lower().strip())
+                    if re.search(name_search,title_search):
+                        found = True
+            elif tvdb_match == "2":
+                found = True
+            if found:
+                xbmc.log(repr((title,name,url)))
+                html = requests.get(url).content
+                match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
+                if match:
+                    tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
         if title not in self.tvdb_urls:
             self.tvdb_urls[title] = tvdb_url
         if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
