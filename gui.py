@@ -1172,7 +1172,7 @@ class TVGuide(xbmcgui.WindowXML):
                 program_image = program.imageLarge
             self.setControlImage(self.C_MAIN_IMAGE, program_image)
 
-            if ADDON.getSetting('tvdb.banners') == 'true':
+            if not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
                 match = re.search('(.*?) \(([0-9]{4})\)',program.title)
                 if match:
                     movie = match.group(1)
