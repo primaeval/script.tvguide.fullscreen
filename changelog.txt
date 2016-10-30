@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.173
+- show Stream Setup if no channel matches
+
 version 0.0.172
 - fuzzy program image matching in Settings\Lab1
 
