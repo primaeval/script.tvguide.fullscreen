@@ -761,7 +761,7 @@ class TVGuide(xbmcgui.WindowXML):
         if not self.playChannel(program.channel, program):
             result = self.streamingService.detectStream(program.channel)
             if not result:
-                # could not detect stream, show context menu
+                # could not detect stream, show stream setup
                 d = StreamSetupDialog(self.database, program.channel)
                 d.doModal()
                 del d
