@@ -1805,6 +1805,16 @@ class TVGUKSource(Source):
             update = True
         return update
 
+    def local_time_offset(self,t=None):
+        """Return offset of local zone from GMT, either at present or at time t."""
+        # python2.3 localtime() can't take None
+        if t is None:
+            t = time.time()
+        if time.localtime(t).tm_isdst and time.daylight:
+            return -time.altzone
+        else:
+            return -time.timezone
+
     def local_time(self,ttime,year,month,day):
         match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
         if match:
@@ -1818,15 +1828,11 @@ class TVGUKSource(Source):
             else:
                 if hour == 12:
                     hour = 0
-
             london = timezone('Europe/London')
-            utc = timezone('UTC')
-            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
-            loc_dt = utc_dt.astimezone(london)
-            return utc_dt
-            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
-
-        return ttime
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
+            loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
+            return loc_dt
+        return
 
 class TVGUKNowSource(Source):
     KEY = 'tvguide.co.uk.now'
@@ -1915,6 +1921,16 @@ class TVGUKNowSource(Source):
             return True
         return False
 
+    def local_time_offset(self,t=None):
+        """Return offset of local zone from GMT, either at present or at time t."""
+        # python2.3 localtime() can't take None
+        if t is None:
+            t = time.time()
+        if time.localtime(t).tm_isdst and time.daylight:
+            return -time.altzone
+        else:
+            return -time.timezone
+
     def local_time(self,ttime,year,month,day):
         match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
         if match:
@@ -1928,13 +1944,10 @@ class TVGUKNowSource(Source):
             else:
                 if hour == 12:
                     hour = 0
-
             london = timezone('Europe/London')
-            utc = timezone('UTC')
-            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
-            loc_dt = utc_dt.astimezone(london)
-            return utc_dt
-
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
+            loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
+            return loc_dt
         return
 
 
