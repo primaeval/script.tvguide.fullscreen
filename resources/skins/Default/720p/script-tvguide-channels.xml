@@ -145,7 +145,7 @@
             <viewtype label="list">list</viewtype>
             <orientation>vertical</orientation>
             <focusposition>9</focusposition>
-            <onright>6003</onright>
+            <onright>6005</onright>
             <itemlayout width="600" height="40">
                 <control type="image">
                     <posx>0</posx>

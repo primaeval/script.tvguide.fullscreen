@@ -2849,7 +2849,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
             logo_source = ["TheLogoDb","None","Folder","url"]
             selected = d.select("Logo Source: %s" % channel.title,logo_source)
             if selected > -1:
-                d.notification("what",logo_source[selected])
+                logo = channel.logo
                 if selected == 0:
                     title = d.input('Channel Name',channel.title)
                     if title:
@@ -2863,9 +2863,21 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                                 selected = d.select("Logo Source: %s" % channel.title,names)
                                 if selected > -1:
                                     logo = channels[selected]["strLogoWide"]
-                                    item.setArt({ 'banner': logo })
-                                    self.channelList[int(item.getProperty('idx'))].logo = logo
-                                    self.database.saveChannelList(None, self.channelList)
+
+                elif selected == 1:
+                    logo = ""
+                elif selected == 2:
+                    image = d.browse(2, "Logo Source: %s" % channel.title, 'files')
+                    if image:
+                        logo = image
+                elif selected == 3:
+                    url = d.input('Logo URL for %s' % channel.title)
+                    if url:
+                        logo = url
+
+                item.setArt({ 'banner': logo })
+                self.channelList[int(item.getProperty('idx'))].logo = logo
+                self.database.saveChannelList(None, self.channelList)
 
         elif controlId == self.C_CHANNELS_CANCEL:
             self.close()
