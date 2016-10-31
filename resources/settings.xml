@@ -35,7 +35,8 @@
         <setting type="sep"/>
         <setting id="xmltv.logos" label="Use xmltv Logos" type="bool" visible="eq(-5,true)" default="false" />
         <setting id="addon.logos" label="Use Addon Folder Logos" type="bool" visible="eq(-6,true)" default="false" />
-
+        <setting type="sep"/>
+        <setting id="thelogodb" label="Use TheLogoDB.com Logos" type="enum" default="0" values="Never|If Missing|Always" />
     </category>
 
     <category label="30148">

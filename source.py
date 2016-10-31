@@ -1581,31 +1581,44 @@ class XMLTVSource(Source):
                                      season = season, episode = episode, is_movie = is_movie, language= language)
 
                 elif elem.tag == "channel":
+                    logo = None
                     cid = elem.get("id").replace("'", "")  # Make ID safe to use as ' can cause crashes!
                     title = elem.findtext("display-name")
-                    iconElement = elem.find("icon")
-                    icon = None
-                    if iconElement is not None:
-                        icon = iconElement.get("src")
-                    logo = None
-                    if icon and ADDON.getSetting('xmltv.logos'):
-                        logo = icon
-                    if logoFolder:
-                        logoFile = os.path.join(logoFolder, title + '.png')
-                        if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
-                            logo = logoFile.replace(' ', '%20')
-                        #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
-                        #    logo = logoFile
-                        else:
-                            #TODO use hash or db
-                            t = re.sub(r' ','',title.lower())
-                            t = re.escape(t)
-                            titleRe = "^%s" % t
-                            for l in sorted(logos):
-                                logox = re.sub(r' ','',l.lower())
-                                if re.match(titleRe,logox):
-                                    logo = os.path.join(logoFolder, l + '.png')
-                                    break
+                    use_thelogodb = False
+                    if ADDON.getSetting('thelogodb') == "2":
+                        use_thelogodb = True
+                    else:
+                        iconElement = elem.find("icon")
+                        icon = None
+                        if iconElement is not None:
+                            icon = iconElement.get("src")
+                        logo = None
+                        if icon and ADDON.getSetting('xmltv.logos'):
+                            logo = icon
+                        if logoFolder:
+                            logoFile = os.path.join(logoFolder, title + '.png')
+                            if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
+                                logo = logoFile.replace(' ', '%20')
+                            #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
+                            #    logo = logoFile
+                            else:
+                                #TODO use hash or db
+                                t = re.sub(r' ','',title.lower())
+                                t = re.escape(t)
+                                titleRe = "^%s" % t
+                                for l in sorted(logos):
+                                    logox = re.sub(r' ','',l.lower())
+                                    if re.match(titleRe,logox):
+                                        logo = os.path.join(logoFolder, l + '.png')
+                                        break
+                    if use_thelogodb or (not logo and ADDON.getSetting('thelogodb') == "1"):
+                        db_url = "http://www.thelogodb.com/api/json/v1/7361/tvchannel.php?s=%s" % re.sub(' ','+',title)
+                        try: json = requests.get(db_url).json()
+                        except: pass
+                        if json and "channels" in json:
+                            channels = json["channels"]
+                            if channels:
+                                logo = channels[0]["strLogoWide"]
 
                     streamElement = elem.find("stream")
                     streamUrl = None
