@@ -2846,12 +2846,12 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
             item = listControl.getSelectedItem()
             channel = self.channelList[int(item.getProperty('idx'))]
             d = xbmcgui.Dialog()
-            logo_source = ["TheLogoDb","None","Folder","url"]
+            logo_source = ["TheLogoDb","None","Folder","URL"]
             selected = d.select("Logo Source: %s" % channel.title,logo_source)
             if selected > -1:
                 logo = channel.logo
                 if selected == 0:
-                    title = d.input('Channel Name',channel.title)
+                    title = d.input("TheLogoDb: %s" % channel.title,channel.title)
                     if title:
                         db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
                         try: json = requests.get(db_url).json()
