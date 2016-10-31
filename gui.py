@@ -2765,6 +2765,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
     C_CHANNELS_SELECTION = 6002
     C_CHANNELS_SAVE = 6003
     C_CHANNELS_CANCEL = 6004
+    C_CHANNELS_LOGO = 6005
 
     def __new__(cls, database):
         return super(ChannelsMenu, cls).__new__(cls, 'script-tvguide-channels.xml', ADDON.getAddonInfo('path'), SKIN)
@@ -2837,7 +2838,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
             else:
                 iconImage = 'tvguide-channel-hidden.png'
             item.setIconImage(iconImage)
-
+            item.setArt({ 'banner': channel.logo })
         elif controlId == self.C_CHANNELS_SAVE:
             self.database.saveChannelList(self.close, self.channelList)
 
@@ -2855,8 +2856,8 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                 iconImage = 'tvguide-channel-visible.png'
             else:
                 iconImage = 'tvguide-channel-hidden.png'
-
             item = xbmcgui.ListItem('%3d. %s' % (idx + 1, channel.title), iconImage=iconImage)
+            item.setArt({ 'banner': channel.logo })
             item.setProperty('idx', str(idx))
             listControl.addItem(item)
 
@@ -2869,6 +2870,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
         else:
             iconImage = 'tvguide-channel-hidden.png'
         item.setIconImage(iconImage)
+        item.setArt({ 'banner': channel.logo })
         item.setProperty('idx', str(idx))
 
     def swapChannels(self, fromIdx, toIdx):
