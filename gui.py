@@ -2766,6 +2766,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
     C_CHANNELS_SAVE = 6003
     C_CHANNELS_CANCEL = 6004
     C_CHANNELS_LOGO = 6005
+    C_CHANNELS_LOGOS = 6006
 
     def __new__(cls, database):
         return super(ChannelsMenu, cls).__new__(cls, 'script-tvguide-channels.xml', ADDON.getAddonInfo('path'), SKIN)
@@ -2878,7 +2879,96 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                 item.setArt({ 'banner': logo })
                 self.channelList[int(item.getProperty('idx'))].logo = logo
                 self.database.saveChannelList(None, self.channelList)
-
+        elif controlId == self.C_CHANNELS_LOGOS:
+            listControl = self.getControl(self.C_CHANNELS_LIST)
+            item = listControl.getSelectedItem()
+            channel = self.channelList[int(item.getProperty('idx'))]
+            d = xbmcgui.Dialog()
+            selected = d.select("Logos",["Clear All","Find Missing","Find All"])
+            if selected > -1:
+                if selected == 0:
+                    for idx, channel in enumerate(self.channelList):
+                        self.channelList[idx].logo = ""
+                        item = listControl.getListItem(idx)
+                        item.setArt({ 'banner': '' })
+                    self.database.saveChannelList(None, self.channelList)
+                elif selected == 1:
+                    logo_source = ["TheLogoDB","Folder","URL"]
+                    selected = d.select("Logo Source:",logo_source)
+                    if selected > -1:
+                        logo = channel.logo
+                        if selected == 0:
+                            for idx, channel in enumerate(self.channelList):
+                                if channel.logo:
+                                    continue
+                                title = d.input("TheLogoDB: %s" % channel.title,channel.title)
+                                if title:
+                                    db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
+                                    try: json = requests.get(db_url).json()
+                                    except: pass
+                                    if json and "channels" in json:
+                                        channels = json["channels"]
+                                        if channels:
+                                            names = ["%s [%s]" % (c["strChannel"],c["strCountry"]) for c in channels]
+                                            selected = d.select("Logo Source: %s" % channel.title,names)
+                                            if selected > -1:
+                                                logo = channels[selected]["strLogoWide"]
+                                                self.channelList[idx].logo = logo
+                                                item = listControl.getListItem(idx)
+                                                item.setArt({ 'banner': self.channelList[idx].logo })
+                        elif selected == 1:
+                            folder = d.browse(0, "Logo Folder:", 'files')
+                            if folder:
+                                for idx, channel in enumerate(self.channelList):
+                                    if channel.logo:
+                                        continue
+                                    self.channelList[idx].logo = "%s%s.png" % (folder,channel.title)
+                                    item = listControl.getListItem(idx)
+                                    item.setArt({ 'banner': self.channelList[idx].logo })
+                        elif selected == 2:
+                            url = d.input('Base URL for Logos')
+                            if url:
+                                for idx, channel in enumerate(self.channelList):
+                                    if channel.logo:
+                                        continue
+                                    self.channelList[idx].logo = "%s/%s.png" % (url,channel.title)
+                                    item = listControl.getListItem(idx)
+                                    item.setArt({ 'banner': self.channelList[idx].logo })
+                        self.database.saveChannelList(None, self.channelList)
+                elif selected == 2:
+                    logo_source = ["TheLogoDB","Folder","URL"]
+                    selected = d.select("Logo Source:",logo_source)
+                    if selected > -1:
+                        logo = channel.logo
+                        if selected == 0:
+                            for idx, channel in enumerate(self.channelList):
+                                title = d.input("TheLogoDB: %s" % channel.title,channel.title)
+                                if title:
+                                    db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
+                                    try: json = requests.get(db_url).json()
+                                    except: pass
+                                    if json and "channels" in json:
+                                        channels = json["channels"]
+                                        if channels:
+                                            logo = channels[0]["strLogoWide"]
+                                            self.channelList[idx].logo = logo
+                                            item = listControl.getListItem(idx)
+                                            item.setArt({ 'banner': self.channelList[idx].logo })
+                        elif selected == 1:
+                            folder = d.browse(0, "Logo Folder:", 'files')
+                            if folder:
+                                for idx, channel in enumerate(self.channelList):
+                                    self.channelList[idx].logo = "%s%s.png" % (folder,channel.title)
+                                    item = listControl.getListItem(idx)
+                                    item.setArt({ 'banner': self.channelList[idx].logo })
+                        elif selected == 2:
+                            url = d.input('Base URL for Logos')
+                            if url:
+                                for idx, channel in enumerate(self.channelList):
+                                    self.channelList[idx].logo = "%s/%s.png" % (url,channel.title)
+                                    item = listControl.getListItem(idx)
+                                    item.setArt({ 'banner': self.channelList[idx].logo })
+                        self.database.saveChannelList(None, self.channelList)
         elif controlId == self.C_CHANNELS_CANCEL:
             self.close()
 

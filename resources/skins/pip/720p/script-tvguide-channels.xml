@@ -145,7 +145,7 @@
             <viewtype label="list">list</viewtype>
             <orientation>vertical</orientation>
             <focusposition>9</focusposition>
-            <onright>6005</onright>
+            <onright>6006</onright>
             <itemlayout width="600" height="40">
                 <control type="image">
                     <posx>0</posx>
@@ -231,6 +231,23 @@
                 </control>
             </focusedlayout>
         </control>
+        <control type="button" id="6006">
+            <posx>300</posx>
+            <posy>660</posy>
+            <width>170</width>
+            <height>40</height>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Logos</label>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onleft>6000</onleft>
+            <onright>6005</onright>
+            <onup>6000</onup>
+        </control>        
         <control type="button" id="6005">
             <posx>500</posx>
             <posy>660</posy>
@@ -244,7 +261,7 @@
             <label>Logo</label>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onleft>6000</onleft>
+            <onleft>6006</onleft>
             <onright>6003</onright>
             <onup>6000</onup>
         </control>
