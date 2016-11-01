@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.175-176
+version 0.0.175-177
 - channel images from TheLogoDB.com (Settings \ Logos \ TheLogoDB)
 - also searchable in Context Menu \ Channels \ Logo
 
