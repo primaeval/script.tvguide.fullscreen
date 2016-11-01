@@ -216,7 +216,10 @@ def autocrop_image(image, border = 0):
     ratio = float(width)/height
     cropped_image = Image.new("RGBA", (width, height), (0,0,0,0))
     cropped_image.paste(image, (border, border))
-    cropped_image = cropped_image.resize((int(43.0*ratio), 43),Image.ANTIALIAS)
+    #TODO find epg height
+    logo_height = 450 / int(ADDON.getSetting('channels.per.page'))
+    logo_height = logo_height - 2
+    cropped_image = cropped_image.resize((int(logo_height*ratio), logo_height),Image.ANTIALIAS)
     return cropped_image
 
 def getLogo(title,ask=False):
