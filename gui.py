@@ -37,7 +37,7 @@ import xbmcvfs
 import colors
 import requests
 import pickle
-from PIL import Image
+from PIL import Image, ImageOps
 import source as src
 from notification import Notification
 from autoplay import Autoplay
@@ -2829,8 +2829,15 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
 
     def autocrop_image(self, image, border = 0):
         # Get the bounding box
+        size = image.size
         #xbmc.log(repr(image.size))
-        bbox = image.getbbox()
+        bb_image = image
+        bbox = bb_image.getbbox()
+        #xbmc.log(repr((size,bbox)))
+        if (size[0] == bbox[2]) and (size[1] == bbox[3]):
+            bb_image=bb_image.convert("RGB")
+            bb_image = ImageOps.invert(bb_image)
+            bbox = bb_image.getbbox()
         #xbmc.log(repr(bbox))
 
         # Crop the image to the contents of the bounding box
@@ -2850,7 +2857,9 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
         # Paste the cropped image onto the new image
         cropped_image.paste(image, (border, border))
 
-        #cropped_image = cropped_image.resize((int(45.0*ratio), 45),Image.ANTIALIAS)
+        #x = int(45.0*ratio)
+        #y = int(176.0/ratio)
+        cropped_image = cropped_image.resize((int(45.0*ratio), 45),Image.ANTIALIAS)
         #cropped_image = cropped_image.resize((176,int(176.0/ratio)),Image.ANTIALIAS)
 
         # Done!
@@ -2893,6 +2902,8 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                                 selected = d.select("Logo Source: %s" % channel.title,names)
                                 if selected > -1:
                                     logo = channels[selected]["strLogoWide"]
+                                    if not logo:
+                                        continue
                                     xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
                                     logo = re.sub('^https','http',logo)
                                     data = requests.get(logo).content
@@ -3007,6 +3018,8 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                                     channels = json["channels"]
                                     if channels:
                                         logo = channels[0]["strLogoWide"]
+                                        if not logo:
+                                            continue
                                         xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
                                         logo = re.sub('^https','http',logo)
                                         data = requests.get(logo).content
