@@ -25,6 +25,12 @@ import xbmc
 from strings import ADDON
 from xml.etree import ElementTree as eT
 import xml.etree.cElementTree as ceT
+import re
+import urllib
+import xbmcgui
+import xbmcvfs
+import requests
+from PIL import Image, ImageOps
 
 LOGO_TYPE_DEFAULT = 0
 LOGO_TYPE_CUSTOM = 1
@@ -194,3 +200,53 @@ def reset_playing():
     f = open(proc_file, 'w')
     f.write('')
     f.close()
+
+def autocrop_image(image, border = 0):
+    size = image.size
+    bb_image = image
+    bbox = bb_image.getbbox()
+    if (size[0] == bbox[2]) and (size[1] == bbox[3]):
+        bb_image=bb_image.convert("RGB")
+        bb_image = ImageOps.invert(bb_image)
+        bbox = bb_image.getbbox()
+    image = image.crop(bbox)
+    (width, height) = image.size
+    width += border * 2
+    height += border * 2
+    ratio = float(width)/height
+    cropped_image = Image.new("RGBA", (width, height), (0,0,0,0))
+    cropped_image.paste(image, (border, border))
+    cropped_image = cropped_image.resize((int(43.0*ratio), 43),Image.ANTIALIAS)
+    return cropped_image
+
+def getLogo(title,ask=False):
+    db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
+    try: json = requests.get(db_url).json()
+    except: pass
+    if json and "channels" in json:
+        channels = json["channels"]
+        if channels:
+            if ask:
+                names = ["%s [%s]" % (c["strChannel"],c["strCountry"]) for c in channels]
+                d = xbmcgui.Dialog()
+                selected = d.select("Logo Source: %s" % title,names)
+            else:
+                selected = 0
+            if selected > -1:
+                logo = channels[selected]["strLogoWide"]
+                xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
+                if not logo:
+                    return
+                logo = re.sub('^https','http',logo)
+                data = requests.get(logo).content
+                f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png","wb")
+                f.write(data)
+                f.close()
+                infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
+                outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % title)
+                image = Image.open(infile)
+                border = 0
+                image = autocrop_image(image, border)
+                image.save(outfile)
+                logo = outfile
+                return logo

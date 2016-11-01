@@ -44,6 +44,7 @@ from autoplay import Autoplay
 from autoplaywith import Autoplaywith
 from strings import *
 from rpc import RPC
+import utils
 
 import streaming
 
@@ -2827,43 +2828,6 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
             if idx < listControl.size() - 1:
                 self.swapChannels(idx, idx + 1)
 
-    def autocrop_image(self, image, border = 0):
-        # Get the bounding box
-        size = image.size
-        #xbmc.log(repr(image.size))
-        bb_image = image
-        bbox = bb_image.getbbox()
-        #xbmc.log(repr((size,bbox)))
-        if (size[0] == bbox[2]) and (size[1] == bbox[3]):
-            bb_image=bb_image.convert("RGB")
-            bb_image = ImageOps.invert(bb_image)
-            bbox = bb_image.getbbox()
-        #xbmc.log(repr(bbox))
-
-        # Crop the image to the contents of the bounding box
-        image = image.crop(bbox)
-
-        # Determine the width and height of the cropped image
-        (width, height) = image.size
-
-        # Add border
-        width += border * 2
-        height += border * 2
-        ratio = float(width)/height
-
-        # Create a new image object for the output image
-        cropped_image = Image.new("RGBA", (width, height), (0,0,0,0))
-
-        # Paste the cropped image onto the new image
-        cropped_image.paste(image, (border, border))
-
-        #x = int(45.0*ratio)
-        #y = int(176.0/ratio)
-        cropped_image = cropped_image.resize((int(45.0*ratio), 45),Image.ANTIALIAS)
-        #cropped_image = cropped_image.resize((176,int(176.0/ratio)),Image.ANTIALIAS)
-
-        # Done!
-        return cropped_image
 
     def onClick(self, controlId):
         if controlId == self.C_CHANNELS_LIST:
@@ -2892,32 +2856,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                 if selected == 0:
                     title = d.input("TheLogoDB: %s" % channel.title,channel.title)
                     if title:
-                        db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
-                        try: json = requests.get(db_url).json()
-                        except: pass
-                        if json and "channels" in json:
-                            channels = json["channels"]
-                            if channels:
-                                names = ["%s [%s]" % (c["strChannel"],c["strCountry"]) for c in channels]
-                                selected = d.select("Logo Source: %s" % channel.title,names)
-                                if selected > -1:
-                                    logo = channels[selected]["strLogoWide"]
-                                    if not logo:
-                                        continue
-                                    xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
-                                    logo = re.sub('^https','http',logo)
-                                    data = requests.get(logo).content
-                                    f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png","wb")
-                                    f.write(data)
-                                    f.close()
-                                    infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
-                                    outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % channel.title)
-                                    image = Image.open(infile)
-                                    border = 0
-                                    image = self.autocrop_image(image, border)
-                                    image.save(outfile)
-                                    logo = outfile
-
+                        logo = utils.getLogo(title,True)
                 elif selected == 1:
                     logo = ""
                 elif selected == 2:
@@ -2956,32 +2895,11 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                                     continue
                                 title = d.input("TheLogoDB: %s" % channel.title,channel.title)
                                 if title:
-                                    db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
-                                    try: json = requests.get(db_url).json()
-                                    except: pass
-                                    if json and "channels" in json:
-                                        channels = json["channels"]
-                                        if channels:
-                                            names = ["%s [%s]" % (c["strChannel"],c["strCountry"]) for c in channels]
-                                            selected = d.select("Logo Source: %s" % channel.title,names)
-                                            if selected > -1:
-                                                logo = channels[selected]["strLogoWide"]
-                                                xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
-                                                logo = re.sub('^https','http',logo)
-                                                data = requests.get(logo).content
-                                                f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png","wb")
-                                                f.write(data)
-                                                f.close()
-                                                infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
-                                                outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % channel.title)
-                                                image = Image.open(infile)
-                                                border = 0
-                                                image = self.autocrop_image(image, border)
-                                                image.save(outfile)
-                                                logo = outfile
-                                                self.channelList[idx].logo = logo
-                                                item = listControl.getListItem(idx)
-                                                item.setArt({ 'banner': self.channelList[idx].logo })
+                                    logo = utils.getLogo(title,True)
+                                    if logo:
+                                        self.channelList[idx].logo = logo
+                                        item = listControl.getListItem(idx)
+                                        item.setArt({ 'banner': self.channelList[idx].logo })
                         elif selected == 1:
                             folder = d.browse(0, "Logo Folder:", 'files')
                             if folder:
@@ -3009,30 +2927,9 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                         if selected == 0:
                             for idx, channel in enumerate(self.channelList):
                                 title = channel.title
-                                #title = d.input("TheLogoDB: %s" % channel.title,channel.title)
-                                #if title:
-                                db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
-                                try: json = requests.get(db_url).json()
-                                except: pass
-                                if json and "channels" in json:
-                                    channels = json["channels"]
-                                    if channels:
-                                        logo = channels[0]["strLogoWide"]
-                                        if not logo:
-                                            continue
-                                        xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
-                                        logo = re.sub('^https','http',logo)
-                                        data = requests.get(logo).content
-                                        f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png","wb")
-                                        f.write(data)
-                                        f.close()
-                                        infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
-                                        outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % channel.title)
-                                        image = Image.open(infile)
-                                        border = 0
-                                        image = self.autocrop_image(image, border)
-                                        image.save(outfile)
-                                        logo = outfile
+                                if title:
+                                    logo = utils.getLogo(title,False)
+                                    if logo:
                                         self.channelList[idx].logo = logo
                                         item = listControl.getListItem(idx)
                                         item.setArt({ 'banner': self.channelList[idx].logo })

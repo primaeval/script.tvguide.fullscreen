@@ -1612,13 +1612,7 @@ class XMLTVSource(Source):
                                         logo = os.path.join(logoFolder, l + '.png')
                                         break
                     if use_thelogodb or (not logo and ADDON.getSetting('thelogodb') == "1"):
-                        db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
-                        try: json = requests.get(db_url).json()
-                        except: pass
-                        if json and "channels" in json:
-                            channels = json["channels"]
-                            if channels:
-                                logo = channels[0]["strLogoWide"]
+                        logo = getLogo(title,False)
 
                     streamElement = elem.find("stream")
                     streamUrl = None
