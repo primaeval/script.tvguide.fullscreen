@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.179
+- movie match if xmltv program has a <date>YYYY field
+
 version 0.0.178
 - User Skins (Settings \ Appearance \ Skin Type = Yours)
 - Skin Name (your top folder name in userdata\addon_data\script.tvguide.fullscreen\resources\skins)

@@ -1546,7 +1546,7 @@ class XMLTVSource(Source):
                     episode = None
                     is_movie = None
                     title = elem.findtext('title')
-                    if date:
+                    if date and re.match("[0-9]{4}",date):
                         is_movie = "Movie"
                         title = "%s (%s)" % (title,date)
                     language = elem.find("title").get("lang")
