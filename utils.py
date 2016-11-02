@@ -222,7 +222,12 @@ def autocrop_image(image, border = 0):
     cropped_image = cropped_image.resize((int(logo_height*ratio), logo_height),Image.ANTIALIAS)
     return cropped_image
 
-def getLogo(title,ask=False):
+def getLogo(title,ask=False,force=True):
+    infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
+    outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % title)
+    if not force and xbmcvfs.exists(outfile):
+        return outfile
+    xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
     db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
     try: json = requests.get(db_url).json()
     except: pass
@@ -237,7 +242,7 @@ def getLogo(title,ask=False):
                 selected = 0
             if selected > -1:
                 logo = channels[selected]["strLogoWide"]
-                xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
+
                 if not logo:
                     return
                 logo = re.sub('^https','http',logo)
@@ -245,8 +250,7 @@ def getLogo(title,ask=False):
                 f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png","wb")
                 f.write(data)
                 f.close()
-                infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
-                outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % title)
+
                 image = Image.open(infile)
                 border = 0
                 image = autocrop_image(image, border)
