@@ -1131,8 +1131,8 @@ class TVGuide(xbmcgui.WindowXML):
         title = '[B]%s[/B]' % program.title
         if program.season and program.episode:
             title += " [B]S%sE%s[/B]" % (program.season, program.episode)
-        if program.is_movie == "Movie":
-            title += " [B](Movie)[/B]"
+        #if program.is_movie == "Movie":
+        #    title += " [B](Movie)[/B]"
 
         if self.mode == MODE_QUICK_EPG:
             self.setControlLabel(self.C_QUICK_EPG_TITLE, title)

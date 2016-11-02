@@ -1534,6 +1534,7 @@ class XMLTVSource(Source):
                 if elem.tag == "programme":
                     channel = elem.get("channel").replace("'", "")  # Make ID safe to use as ' can cause crashes!
                     description = elem.findtext("desc")
+                    date = elem.findtext("date")
                     iconElement = elem.find("icon")
                     icon = None
                     if iconElement is not None:
@@ -1544,6 +1545,10 @@ class XMLTVSource(Source):
                     season = None
                     episode = None
                     is_movie = None
+                    title = elem.findtext('title')
+                    if date:
+                        is_movie = "Movie"
+                        title = "%s (%s)" % (title,date)
                     language = elem.find("title").get("lang")
                     if meta_installed == True:
                         episode_num = elem.findtext("episode-num")
@@ -1576,7 +1581,7 @@ class XMLTVSource(Source):
                                 season = int(re.sub(pattern, r"\1", episode_num))
                                 episode = (re.sub(pattern, r"\2", episode_num))
 
-                    result = Program(channel, elem.findtext('title'), self.parseXMLTVDate(elem.get('start')),
+                    result = Program(channel, title, self.parseXMLTVDate(elem.get('start')),
                                      self.parseXMLTVDate(elem.get('stop')), description, imageSmall=icon,
                                      season = season, episode = episode, is_movie = is_movie, language= language)
 
