@@ -40,7 +40,9 @@
     </category>
 
     <category label="30148">
-        <setting id="skin" label="30141" type="fileenum" values="resources/skins" mask="/" default="Default" />
+        <setting id="skin.source" label="Skin Type" type="enum" default="0" values="Ours|Yours" />
+        <setting id="skin" label="Skin" type="fileenum" values="resources/skins" mask="/" default="Default" visible="eq(-1,0)"/>
+        <setting id="skin.user" label="User Skin Name" type="text" visible="eq(-2,1))" default=''/>
         <setting label="30119" type="lsep" />
         <setting id="enable.osd" label="30118" type="bool" default="true"  enable="eq(1,false)"/>
         <setting id="alternative.playback" label="30120" type="bool" default="false" />

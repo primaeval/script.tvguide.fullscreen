@@ -112,7 +112,13 @@ CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
 HALF_HOUR = datetime.timedelta(minutes=30)
 
-SKIN = ADDON.getSetting('skin')
+if ADDON.getSetting('skin.source') == "0":
+    SKIN = ADDON.getSetting('skin')
+    SKIN_PATH = ADDON.getAddonInfo('path')
+else:
+    SKIN = ADDON.getSetting('skin.user')
+    SKIN_PATH = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/")
+
 
 def timedelta_total_seconds(timedelta):
     return (
@@ -225,7 +231,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_UP_NEXT_TIME_REMAINING = 9012
 
     def __new__(cls):
-        return super(TVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), SKIN)
+        return super(TVGuide, cls).__new__(cls, 'script-tvguide-main.xml', SKIN_PATH, SKIN)
 
     def __init__(self):
         super(TVGuide, self).__init__()
@@ -2533,7 +2539,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
 
     def __new__(cls, database, program, showRemind, showAutoplay, showAutoplaywith, category, categories):
-        return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', ADDON.getAddonInfo('path'), SKIN)
+        return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', SKIN_PATH, SKIN)
 
     def __init__(self, database, program, showRemind, showAutoplay, showAutoplaywith, category, categories):
         """
@@ -2770,7 +2776,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
     C_CHANNELS_LOGOS = 6006
 
     def __new__(cls, database):
-        return super(ChannelsMenu, cls).__new__(cls, 'script-tvguide-channels.xml', ADDON.getAddonInfo('path'), SKIN)
+        return super(ChannelsMenu, cls).__new__(cls, 'script-tvguide-channels.xml', SKIN_PATH, SKIN)
 
     def __init__(self, database):
         """
@@ -3045,7 +3051,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     VISIBLE_BROWSE = 'browse'
 
     def __new__(cls, database, channel):
-        return super(StreamSetupDialog, cls).__new__(cls, 'script-tvguide-streamsetup.xml', ADDON.getAddonInfo('path'), SKIN)
+        return super(StreamSetupDialog, cls).__new__(cls, 'script-tvguide-streamsetup.xml', SKIN_PATH, SKIN)
 
     def __init__(self, database, channel):
         """
@@ -3654,7 +3660,7 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
     C_SELECTION_LIST = 1000
 
     def __new__(cls, addons):
-        return super(ChooseStreamAddonDialog, cls).__new__(cls, 'script-tvguide-streamaddon.xml', ADDON.getAddonInfo('path'), SKIN)
+        return super(ChooseStreamAddonDialog, cls).__new__(cls, 'script-tvguide-streamaddon.xml', SKIN_PATH, SKIN)
 
     def __init__(self, addons):
         super(ChooseStreamAddonDialog, self).__init__()
@@ -3693,7 +3699,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
     C_PROGRAM_LIST_TITLE = 1001
 
     def __new__(cls,title,programs):
-        return super(ProgramListDialog, cls).__new__(cls, 'script-tvguide-programlist.xml', ADDON.getAddonInfo('path'), SKIN)
+        return super(ProgramListDialog, cls).__new__(cls, 'script-tvguide-programlist.xml', SKIN_PATH, SKIN)
 
     def __init__(self,title,programs):
         super(ProgramListDialog, self).__init__()
