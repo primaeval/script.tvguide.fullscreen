@@ -147,4 +147,8 @@
         <setting id="sd.range" label="Days of guide data to load" type="slider" default="3" range="1,1,14" option="int" />
         <setting id="sd.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
     </category>
+    <category label="Backup">
+        <setting label="Export Channel Mappings" type="action" action="RunScript($CWD/backup.py,1)" />
+        <setting label="Import Channel Mappings" type="action" action="RunScript($CWD/backup.py,2)" />
+    </category>
 </settings>

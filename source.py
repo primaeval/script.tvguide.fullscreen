@@ -968,6 +968,21 @@ class Database(object):
             self.conn.commit()
             c.close()
 
+    def setCustomStreamUrls(self, stream_urls):
+        if stream_urls is not None:
+            self._invokeAndBlockForResult(self._setCustomStreamUrls, stream_urls)
+            # no result, but block until operation is done
+
+    def _setCustomStreamUrls(self, stream_urls):
+        if stream_urls is not None:
+            c = self.conn.cursor()
+            for (id,stream_url) in stream_urls:
+                c.execute("DELETE FROM custom_stream_url WHERE channel=?", [id])
+                c.execute("INSERT OR REPLACE INTO custom_stream_url(channel, stream_url) VALUES(?, ?)",
+                          [id, stream_url.decode('utf-8', 'ignore')])
+            self.conn.commit()
+            c.close()
+
     def getCustomStreamUrl(self, channel):
         return self._invokeAndBlockForResult(self._getCustomStreamUrl, channel)
 
@@ -983,6 +998,17 @@ class Database(object):
             return stream_url[0]
         else:
             return None
+
+    def getCustomStreamUrls(self):
+        return self._invokeAndBlockForResult(self._getCustomStreamUrls)
+
+    def _getCustomStreamUrls(self):
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM custom_stream_url")
+        stream_urls = []
+        for row in c:
+            stream_urls.append((row["channel"],row["stream_url"]))
+        return stream_urls
 
     def deleteCustomStreamUrl(self, channel):
         self.eventQueue.append([self._deleteCustomStreamUrl, None, channel])
