@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.180
+- Backup/Restore Channel Stream Mappings
+- BBC Source fix
+
 version 0.0.179
 - movie match if xmltv program has a <date>YYYY field
 
