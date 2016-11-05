@@ -2909,12 +2909,17 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                         elif selected == 1:
                             folder = d.browse(0, "Logo Folder:", 'files')
                             if folder:
+                                dirs, files = xbmcvfs.listdir(folder)
+                                files = dict([(f.lower(),f) for f in files])
                                 for idx, channel in enumerate(self.channelList):
                                     if channel.logo:
                                         continue
-                                    self.channelList[idx].logo = "%s%s.png" % (folder,channel.title)
-                                    item = listControl.getListItem(idx)
-                                    item.setArt({ 'banner': self.channelList[idx].logo })
+                                    title_lower = "%s.png" % channel.title.lower()
+                                    if title_lower in files:
+                                        logo_file = "%s%s" % (folder,files[title_lower])
+                                        self.channelList[idx].logo = logo_file
+                                        item = listControl.getListItem(idx)
+                                        item.setArt({ 'banner': self.channelList[idx].logo })
                         elif selected == 2:
                             url = d.input('Base URL for Logos')
                             if url:
@@ -2942,10 +2947,15 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
                         elif selected == 1:
                             folder = d.browse(0, "Logo Folder:", 'files')
                             if folder:
+                                dirs, files = xbmcvfs.listdir(folder)
+                                files = dict([(f.lower(),f) for f in files])
                                 for idx, channel in enumerate(self.channelList):
-                                    self.channelList[idx].logo = "%s%s.png" % (folder,channel.title)
-                                    item = listControl.getListItem(idx)
-                                    item.setArt({ 'banner': self.channelList[idx].logo })
+                                    title_lower = "%s.png" % channel.title.lower()
+                                    if title_lower in files:
+                                        logo_file = "%s%s" % (folder,files[title_lower])
+                                        self.channelList[idx].logo = logo_file
+                                        item = listControl.getListItem(idx)
+                                        item.setArt({ 'banner': self.channelList[idx].logo })
                         elif selected == 2:
                             url = d.input('Base URL for Logos')
                             if url:
