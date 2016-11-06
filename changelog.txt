@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.181
+- Settings \ Logos \ Keep Last Channel Logo Mapping (if you change the logos in Channels)
+
 version 0.0.180
 - Backup/Restore Channel Stream Mappings
 - BBC Source fix
