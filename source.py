@@ -1648,8 +1648,10 @@ class XMLTVSource(Source):
                                     if re.match(titleRe,logox):
                                         logo = os.path.join(logoFolder, l + '.png')
                                         break
+
                     if use_thelogodb or (not logo and ADDON.getSetting('thelogodb') == "1"):
-                        logo = getLogo(title,False,False)
+                        if ADDON.getSetting('logos.keep') == 'false':
+                            logo = getLogo(title,False,False)
 
                     streamElement = elem.find("stream")
                     streamUrl = None

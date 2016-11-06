@@ -244,7 +244,7 @@ def getLogo(title,ask=False,force=True):
                 logo = channels[selected]["strLogoWide"]
 
                 if not logo:
-                    return
+                    return None
                 logo = re.sub('^https','http',logo)
                 data = requests.get(logo).content
                 f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png","wb")
