@@ -416,10 +416,16 @@ class Database(object):
                             [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
                              self.source.KEY, channel.weight, self.source.KEY])
                         if not c.rowcount:
-                            c.execute(
-                                'UPDATE channels SET title=?, logo=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
-                                [channel.title, channel.logo, channel.streamUrl, channel.weight, channel.visible,
-                                 channel.weight, channel.weight, channel.id, self.source.KEY])
+                            if ADDON.getSetting('logos.keep') == 'true':
+                                c.execute(
+                                    'UPDATE channels SET title=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
+                                    [channel.title, channel.streamUrl, channel.weight, channel.visible,
+                                     channel.weight, channel.weight, channel.id, self.source.KEY])
+                            else:
+                                c.execute(
+                                    'UPDATE channels SET title=?, logo=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
+                                    [channel.title, channel.logo, channel.streamUrl, channel.weight, channel.visible,
+                                     channel.weight, channel.weight, channel.id, self.source.KEY])
 
                     elif isinstance(item, Program):
                         imported_programs += 1
@@ -1612,7 +1618,7 @@ class XMLTVSource(Source):
                                      season = season, episode = episode, is_movie = is_movie, language= language)
 
                 elif elem.tag == "channel":
-                    logo = None
+                    logo = ''
                     cid = elem.get("id").replace("'", "")  # Make ID safe to use as ' can cause crashes!
                     title = elem.findtext("display-name")
                     use_thelogodb = False
@@ -1623,7 +1629,7 @@ class XMLTVSource(Source):
                         icon = None
                         if iconElement is not None:
                             icon = iconElement.get("src")
-                        logo = None
+                        logo = ''
                         if icon and ADDON.getSetting('xmltv.logos'):
                             logo = icon
                         if logoFolder:
