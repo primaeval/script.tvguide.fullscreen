@@ -576,7 +576,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in [KEY_NAV_BACK]:
             if self.player.isPlaying():
-                if ADDON.getSetting("exit.on.back") == "true":
+                if (ADDON.getSetting("exit.on.back") == "true") and (ADDON.getSetting("play.minimized") == "false"):
                     self.close()
                     return
                 else:
@@ -1501,10 +1501,10 @@ class TVGuide(xbmcgui.WindowXML):
                 self.player.play(item=url, windowed=self.osdEnabled)
 
             self.tryingToPlay = True
-            self._hideEpg()
-            self._hideQuickEpg()
-
-            threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
+            if ADDON.getSetting('play.minimized') == 'false':
+                self._hideEpg()
+                self._hideQuickEpg()
+                threading.Timer(1, self.waitForPlayBackStopped, [channel.title]).start()
             self.osdProgram = self.database.getCurrentProgram(self.currentChannel)
 
         return url is not None
