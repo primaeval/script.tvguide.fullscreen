@@ -1098,9 +1098,9 @@
             <control type="image" id="7024">
                 <description>Channel logo</description>
                 <posx>0</posx>
-                <posy>50r</posy>
-                <width>160</width>
-                <height>40</height>
+                <posy>43r</posy>
+                <width>176</width>
+                <height>43</height>
                 <aspectratio>keep</aspectratio>
                 <align>left</align>
                 <fadetime>0</fadetime>
