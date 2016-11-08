@@ -1176,6 +1176,11 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
             else:
                 self.setControlImage(self.C_MAIN_LOGO, '')
+            control = self.getControl(self.C_MAIN_LOGO)
+            if ADDON.getSetting('channel.logo') == "true":
+                control.setVisible(True)
+            else:
+                control.setVisible(False)
 
             program_image = ''
             if program.imageSmall:

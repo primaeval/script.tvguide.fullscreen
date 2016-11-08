@@ -1105,7 +1105,7 @@
                 <aspectratio>keep</aspectratio>
                 <align>left</align>
                 <fadetime>0</fadetime>
-                <visible>false</visible>
+                <visible>true</visible>
                 <!-- unused in default skin -->
             </control>
 
