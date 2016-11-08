@@ -1091,7 +1091,7 @@
                 <width>425</width>
                 <height>240</height>
                 <aligny>top</aligny>
-                <aspectratio>scale</aspectratio>
+                <aspectratio>keep</aspectratio>
                 <fadetime>0</fadetime>
                 <texture>-</texture>
                 <visible>!Player.HasMedia</visible>
