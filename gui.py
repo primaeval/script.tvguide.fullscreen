@@ -3411,7 +3411,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     for r in result:
                         url = alt_url[r]
                         self.database.deleteAltCustomStreamUrl(url)
-            #self.database.deleteAltCustomStreamUrl(self.channel)
             self.close()
 
         elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_BROWSE_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:
