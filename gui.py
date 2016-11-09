@@ -3416,11 +3416,10 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     else:
                         plugin = "Favourite"
                     names.append("%s - %s" % (plugin,u[1]))
-                result = d.multiselect("%s" % self.channel.title, names)
-                if result:
-                    for r in result:
-                        url = alt_url[r][0]
-                        self.database.deleteAltCustomStreamUrl(url)
+                result = d.select("%s" % self.channel.title, names)
+                if result > - 1:
+                    url = alt_url[result][0]
+                    self.database.deleteAltCustomStreamUrl(url)
 
         elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_BROWSE_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:
             self.close()
