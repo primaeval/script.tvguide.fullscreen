@@ -982,8 +982,8 @@ class Database(object):
     def _setAltCustomStreamUrl(self, channel, stream_url):
         if stream_url is not None:
             c = self.conn.cursor()
-            c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
-            c.execute("INSERT INTO alt_custom_stream_url(channel, stream_url) VALUES(?, ?)",
+            #c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+            c.execute("INSERT OR REPLACE INTO alt_custom_stream_url(channel, stream_url) VALUES(?, ?)",
                       [channel.id, stream_url.decode('utf-8', 'ignore')])
             self.conn.commit()
             c.close()
@@ -1027,13 +1027,11 @@ class Database(object):
             return
         c = self.conn.cursor()
         c.execute("SELECT stream_url FROM alt_custom_stream_url WHERE channel=?", [channel.id])
-        stream_url = c.fetchone()
-        c.close()
-
-        if stream_url:
-            return stream_url[0]
-        else:
-            return None
+        #stream_url = c.fetchone()
+        stream_url = []
+        for row in c:
+            stream_url.append(row["stream_url"])
+        return stream_url
 
     def getCustomStreamUrls(self):
         return self._invokeAndBlockForResult(self._getCustomStreamUrls)
@@ -1041,6 +1039,17 @@ class Database(object):
     def _getCustomStreamUrls(self):
         c = self.conn.cursor()
         c.execute("SELECT * FROM custom_stream_url")
+        stream_urls = []
+        for row in c:
+            stream_urls.append((row["channel"],row["stream_url"]))
+        return stream_urls
+
+    def getAltCustomStreamUrls(self):
+        return self._invokeAndBlockForResult(self._getCustomStreamUrls)
+
+    def _getAltCustomStreamUrls(self):
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM alt_custom_stream_url")
         stream_urls = []
         for row in c:
             stream_urls.append((row["channel"],row["stream_url"]))
@@ -1079,16 +1088,7 @@ class Database(object):
         return None
 
     def getAltStreamUrl(self, channel):
-        customStreamUrl = self.getAltCustomStreamUrl(channel)
-        if customStreamUrl:
-            customStreamUrl = customStreamUrl.encode('utf-8', 'ignore')
-            return customStreamUrl
-
-        elif channel.isPlayable():
-            streamUrl = channel.streamUrl.encode('utf-8', 'ignore')
-            return streamUrl
-
-        return None
+        return self.getAltCustomStreamUrl(channel)
 
     @staticmethod
     def adapt_datetime(ts):

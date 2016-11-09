@@ -1489,15 +1489,21 @@ class TVGuide(xbmcgui.WindowXML):
         alt_url = self.database.getAltStreamUrl(channel)
         if url and alt_url:
             d = xbmcgui.Dialog()
-            result = d.yesno("TV Guide Fullscreen","Use alternative stream?")
-            if result:
-                url = alt_url
+            alt_urls = [url] + alt_url
+            names = ["Default"]
+            for u in alt_url:
+                plugin = re.match('plugin://(.*?)/',u).group(1)
+                plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
+                names.append(plugin)
+            result = d.select("%s" % channel.title, names)
+            if result > -1:
+                url = alt_urls[result]
         if url:
-            if str.startswith(url,"plugin://plugin.video.meta/movies/play_by_name") and program is not None:
+            if url.startswith("plugin://plugin.video.meta/movies/play_by_name") and program is not None:
                 import urllib
                 title = urllib.quote(program.title)
                 url += "/%s/%s" % (title, program.language)
-            if str.startswith(url,"plugin://plugin.video.meta/tv/play_by_name") and program is not None:
+            if url.startswith("plugin://plugin.video.meta/tv/play_by_name") and program is not None:
                 import urllib
                 title = urllib.quote(program.title)
                 url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
