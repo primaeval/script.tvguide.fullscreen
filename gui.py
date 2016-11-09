@@ -3375,7 +3375,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = item.getProperty('stream')
                 title = item.getLabel()
                 self.database.setAltCustomStreamUrl(self.channel, title, stream)
-            self.close()
+
         elif controlId == self.C_STREAM_BROWSE_OK:
             listControl = self.getControl(self.C_STREAM_BROWSE_STREAMS)
             item = listControl.getSelectedItem()
@@ -3398,7 +3398,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = item.getProperty('stream')
                 title = item.getLabel()
                 self.database.setAltCustomStreamUrl(self.channel, title, stream)
-            self.close()
+
         elif controlId == self.C_STREAM_STRM_OK:
             self.database.setCustomStreamUrl(self.channel, self.strmFile)
             self.close()
@@ -3421,7 +3421,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     for r in result:
                         url = alt_url[r][0]
                         self.database.deleteAltCustomStreamUrl(url)
-            self.close()
 
         elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_BROWSE_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:
             self.close()
