@@ -984,7 +984,7 @@ class Database(object):
             c = self.conn.cursor()
             #c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
             c.execute("INSERT OR REPLACE INTO alt_custom_stream_url(channel, title, stream_url) VALUES(?, ?, ?)",
-                      [channel.id, title, stream_url.decode('utf-8', 'ignore')])
+                      [channel.id, title.decode('utf-8', 'ignore'), stream_url.decode('utf-8', 'ignore')])
             self.conn.commit()
             c.close()
 
