@@ -1027,7 +1027,6 @@ class Database(object):
             return
         c = self.conn.cursor()
         c.execute("SELECT stream_url FROM alt_custom_stream_url WHERE channel=?", [channel.id])
-        #stream_url = c.fetchone()
         stream_url = []
         for row in c:
             stream_url.append(row["stream_url"])
