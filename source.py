@@ -974,6 +974,20 @@ class Database(object):
             self.conn.commit()
             c.close()
 
+    def setAltCustomStreamUrl(self, channel, stream_url):
+        if stream_url is not None:
+            self._invokeAndBlockForResult(self._setAltCustomStreamUrl, channel, stream_url)
+            # no result, but block until operation is done
+
+    def _setAltCustomStreamUrl(self, channel, stream_url):
+        if stream_url is not None:
+            c = self.conn.cursor()
+            c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+            c.execute("INSERT INTO alt_custom_stream_url(channel, stream_url) VALUES(?, ?)",
+                      [channel.id, stream_url.decode('utf-8', 'ignore')])
+            self.conn.commit()
+            c.close()
+
     def setCustomStreamUrls(self, stream_urls):
         if stream_urls is not None:
             self._invokeAndBlockForResult(self._setCustomStreamUrls, stream_urls)
@@ -1005,6 +1019,22 @@ class Database(object):
         else:
             return None
 
+    def getAltCustomStreamUrl(self, channel):
+        return self._invokeAndBlockForResult(self._getAltCustomStreamUrl, channel)
+
+    def _getAltCustomStreamUrl(self, channel):
+        if not channel:
+            return
+        c = self.conn.cursor()
+        c.execute("SELECT stream_url FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+        stream_url = c.fetchone()
+        c.close()
+
+        if stream_url:
+            return stream_url[0]
+        else:
+            return None
+
     def getCustomStreamUrls(self):
         return self._invokeAndBlockForResult(self._getCustomStreamUrls)
 
@@ -1026,8 +1056,30 @@ class Database(object):
         self.conn.commit()
         c.close()
 
+    def deleteAltCustomStreamUrl(self, channel):
+        self.eventQueue.append([self._deleteAltCustomStreamUrl, None, channel])
+        self.event.set()
+
+    def _deleteAltCustomStreamUrl(self, channel):
+        c = self.conn.cursor()
+        c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+        self.conn.commit()
+        c.close()
+
     def getStreamUrl(self, channel):
         customStreamUrl = self.getCustomStreamUrl(channel)
+        if customStreamUrl:
+            customStreamUrl = customStreamUrl.encode('utf-8', 'ignore')
+            return customStreamUrl
+
+        elif channel.isPlayable():
+            streamUrl = channel.streamUrl.encode('utf-8', 'ignore')
+            return streamUrl
+
+        return None
+
+    def getAltStreamUrl(self, channel):
+        customStreamUrl = self.getAltCustomStreamUrl(channel)
         if customStreamUrl:
             customStreamUrl = customStreamUrl.encode('utf-8', 'ignore')
             return customStreamUrl
@@ -1135,6 +1187,10 @@ class Database(object):
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
+            if version < [1, 3, 7]:
+                # Recreate tables with seasons, episodes and is_movie
+                c.execute('UPDATE version SET major=1, minor=3, patch=7')
+                c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, stream_url TEXT)')
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])

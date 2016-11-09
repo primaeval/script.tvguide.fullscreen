@@ -1486,6 +1486,12 @@ class TVGuide(xbmcgui.WindowXML):
         self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
+        alt_url = self.database.getAltStreamUrl(channel)
+        if url and alt_url:
+            d = xbmcgui.Dialog()
+            result = d.yesno("TV Guide Fullscreen","Use alternative stream?")
+            if result:
+                url = alt_url
         if url:
             if str.startswith(url,"plugin://plugin.video.meta/movies/play_by_name") and program is not None:
                 import urllib
@@ -3033,10 +3039,12 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_STRM_CANCEL = 1004
     C_STREAM_STRM_IMPORT = 1006
     C_STREAM_STRM_PVR = 1007
+    C_STREAM_STRM_CLEAR_ALT = 1009
     C_STREAM_FAVOURITES = 2001
     C_STREAM_FAVOURITES_PREVIEW = 2002
     C_STREAM_FAVOURITES_OK = 2003
     C_STREAM_FAVOURITES_CANCEL = 2004
+    C_STREAM_FAVOURITES_ALT = 2005
     C_STREAM_ADDONS = 3001
     C_STREAM_ADDONS_STREAMS = 3002
     C_STREAM_ADDONS_NAME = 3003
@@ -3044,6 +3052,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_ADDONS_PREVIEW = 3005
     C_STREAM_ADDONS_OK = 3006
     C_STREAM_ADDONS_CANCEL = 3007
+    C_STREAM_ADDONS_ALT = 3009
     C_STREAM_BROWSE_ADDONS = 4001
     C_STREAM_BROWSE_STREAMS = 4002
     C_STREAM_BROWSE_NAME = 4003
@@ -3349,6 +3358,13 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = item.getProperty('stream')
                 self.database.setCustomStreamUrl(self.channel, stream)
             self.close()
+        elif controlId == self.C_STREAM_ADDONS_ALT:
+            listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
+            item = listControl.getSelectedItem()
+            if item:
+                stream = item.getProperty('stream')
+                self.database.setAltCustomStreamUrl(self.channel, stream)
+            self.close()
         elif controlId == self.C_STREAM_BROWSE_OK:
             listControl = self.getControl(self.C_STREAM_BROWSE_STREAMS)
             item = listControl.getSelectedItem()
@@ -3364,9 +3380,19 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = item.getProperty('stream')
                 self.database.setCustomStreamUrl(self.channel, stream)
             self.close()
-
+        elif controlId == self.C_STREAM_FAVOURITES_ALT:
+            listControl = self.getControl(self.C_STREAM_FAVOURITES)
+            item = listControl.getSelectedItem()
+            if item:
+                stream = item.getProperty('stream')
+                self.database.setAltCustomStreamUrl(self.channel, stream)
+            self.close()
         elif controlId == self.C_STREAM_STRM_OK:
             self.database.setCustomStreamUrl(self.channel, self.strmFile)
+            self.close()
+
+        elif controlId == self.C_STREAM_STRM_CLEAR_ALT:
+            self.database.deleteAltCustomStreamUrl(self.channel)
             self.close()
 
         elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_BROWSE_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:

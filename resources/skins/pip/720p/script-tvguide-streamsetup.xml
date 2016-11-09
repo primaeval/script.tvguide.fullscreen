@@ -378,8 +378,24 @@
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>101</onup>
                 <onleft>1003</onleft>
+                <onright>1009</onright>
             </control>
-
+            <control type="button" id="1009">
+                <posx>1050</posx>
+                <posy>530</posy>
+                <width>170</width>
+                <height>40</height>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>white</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <label>Clear Alt Stream</label>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                <onup>101</onup>
+                <onleft>1004</onleft>
+            </control>
         </control>
 
         <control type="group" id="2000">
@@ -476,7 +492,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
+                <focusedcolor>black</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30604]</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
@@ -493,7 +509,7 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
+                <focusedcolor>black</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30605]</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
@@ -510,14 +526,30 @@
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
+                <focusedcolor>black</focusedcolor>
                 <label>$ADDON[script.tvguide.fullscreen 30606]</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>102</onup>
                 <onleft>2003</onleft>
+                <onright>2005</onright>
             </control>
-
+            <control type="button" id="2005">
+                <posx>1050</posx>
+                <posy>530</posy>
+                <width>170</width>
+                <height>40</height>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>white</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <label>Alt Stream</label>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                <onup>102</onup>
+                <onleft>2004</onleft>
+            </control>
         </control>
 
 
@@ -738,8 +770,24 @@
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>103</onup>
                 <onleft>3006</onleft>
+                <onright>3009</onright>
             </control>
-
+            <control type="button" id="3009">
+                <posx>1050</posx>
+                <posy>530</posy>
+                <width>170</width>
+                <height>40</height>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>white</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <label>Alt Stream</label>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                <onup>103</onup>
+                <onleft>3007</onleft>
+            </control>
         </control>
 
         <control type="group" id="4000">
