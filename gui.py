@@ -1489,16 +1489,16 @@ class TVGuide(xbmcgui.WindowXML):
         alt_url = self.database.getAltStreamUrl(channel)
         if url and alt_url:
             d = xbmcgui.Dialog()
-            alt_urls = [url] + alt_url
+            alt_urls = [url] + [x[0] for x in alt_url]
             names = ["Default"]
             for u in alt_url:
-                match = re.match('plugin://(.*?)/',u)
+                match = re.match('plugin://(.*?)/',u[0])
                 if match:
                     plugin = match.group(1)
                     plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
                 else:
                     plugin = "Favourite"
-                names.append(plugin)
+                names.append("%s - %s" % (plugin,u[1]))
             result = d.select("%s" % channel.title, names)
             if result > -1:
                 url = alt_urls[result]
@@ -3373,7 +3373,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             item = listControl.getSelectedItem()
             if item:
                 stream = item.getProperty('stream')
-                self.database.setAltCustomStreamUrl(self.channel, stream)
+                title = item.getLabel()
+                self.database.setAltCustomStreamUrl(self.channel, title, stream)
             self.close()
         elif controlId == self.C_STREAM_BROWSE_OK:
             listControl = self.getControl(self.C_STREAM_BROWSE_STREAMS)
@@ -3395,7 +3396,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             item = listControl.getSelectedItem()
             if item:
                 stream = item.getProperty('stream')
-                self.database.setAltCustomStreamUrl(self.channel, stream)
+                title = item.getLabel()
+                self.database.setAltCustomStreamUrl(self.channel, title, stream)
             self.close()
         elif controlId == self.C_STREAM_STRM_OK:
             self.database.setCustomStreamUrl(self.channel, self.strmFile)
@@ -3407,17 +3409,17 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 d = xbmcgui.Dialog()
                 names = []
                 for u in alt_url:
-                    match = re.match('plugin://(.*?)/',u)
+                    match = re.match('plugin://(.*?)/',u[0])
                     if match:
                         plugin = match.group(1)
                         plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
                     else:
                         plugin = "Favourite"
-                    names.append(plugin)
+                    names.append("%s - %s" % (plugin,u[1]))
                 result = d.multiselect("%s" % self.channel.title, names)
                 if result:
                     for r in result:
-                        url = alt_url[r]
+                        url = alt_url[r][0]
                         self.database.deleteAltCustomStreamUrl(url)
             self.close()
 

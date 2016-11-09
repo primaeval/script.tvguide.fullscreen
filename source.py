@@ -974,17 +974,17 @@ class Database(object):
             self.conn.commit()
             c.close()
 
-    def setAltCustomStreamUrl(self, channel, stream_url):
+    def setAltCustomStreamUrl(self, channel, title, stream_url):
         if stream_url is not None:
-            self._invokeAndBlockForResult(self._setAltCustomStreamUrl, channel, stream_url)
+            self._invokeAndBlockForResult(self._setAltCustomStreamUrl, channel, title, stream_url)
             # no result, but block until operation is done
 
-    def _setAltCustomStreamUrl(self, channel, stream_url):
+    def _setAltCustomStreamUrl(self, channel, title, stream_url):
         if stream_url is not None:
             c = self.conn.cursor()
             #c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
-            c.execute("INSERT OR REPLACE INTO alt_custom_stream_url(channel, stream_url) VALUES(?, ?)",
-                      [channel.id, stream_url.decode('utf-8', 'ignore')])
+            c.execute("INSERT OR REPLACE INTO alt_custom_stream_url(channel, title, stream_url) VALUES(?, ?, ?)",
+                      [channel.id, title, stream_url.decode('utf-8', 'ignore')])
             self.conn.commit()
             c.close()
 
@@ -1026,10 +1026,10 @@ class Database(object):
         if not channel:
             return
         c = self.conn.cursor()
-        c.execute("SELECT stream_url FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+        c.execute("SELECT stream_url, title FROM alt_custom_stream_url WHERE channel=?", [channel.id])
         stream_url = []
         for row in c:
-            stream_url.append(row["stream_url"])
+            stream_url.append((row["stream_url"],row["title"]))
         return stream_url
 
     def getCustomStreamUrls(self):
@@ -1190,6 +1190,11 @@ class Database(object):
                 # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=7')
                 c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, stream_url TEXT)')
+            if version < [1, 3, 8]:
+                # Recreate tables with seasons, episodes and is_movie
+                c.execute('UPDATE version SET major=1, minor=3, patch=8')
+                c.execute('DROP TABLE alt_custom_stream_url')
+                c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, title TEXT, stream_url TEXT)')
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
