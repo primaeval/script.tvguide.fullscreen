@@ -1492,8 +1492,12 @@ class TVGuide(xbmcgui.WindowXML):
             alt_urls = [url] + alt_url
             names = ["Default"]
             for u in alt_url:
-                plugin = re.match('plugin://(.*?)/',u).group(1)
-                plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
+                match = re.match('plugin://(.*?)/',u)
+                if match:
+                    plugin = match.group(1)
+                    plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
+                else:
+                    plugin = "Favourite"
                 names.append(plugin)
             result = d.select("%s" % channel.title, names)
             if result > -1:
@@ -3403,8 +3407,12 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 d = xbmcgui.Dialog()
                 names = []
                 for u in alt_url:
-                    plugin = re.match('plugin://(.*?)/',u).group(1)
-                    plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
+                    match = re.match('plugin://(.*?)/',u)
+                    if match:
+                        plugin = match.group(1)
+                        plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
+                    else:
+                        plugin = "Favourite"
                     names.append(plugin)
                 result = d.multiselect("%s" % self.channel.title, names)
                 if result:

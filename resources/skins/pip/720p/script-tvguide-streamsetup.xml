@@ -549,7 +549,7 @@
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>102</onup>
                 <onleft>2004</onleft>
-                <visible>false</visible>
+                <visible>true</visible>
             </control>
         </control>
 
