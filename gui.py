@@ -3398,7 +3398,20 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             self.close()
 
         elif controlId == self.C_STREAM_STRM_CLEAR_ALT:
-            self.database.deleteAltCustomStreamUrl(self.channel)
+            alt_url = self.database.getAltStreamUrl(self.channel)
+            if alt_url:
+                d = xbmcgui.Dialog()
+                names = []
+                for u in alt_url:
+                    plugin = re.match('plugin://(.*?)/',u).group(1)
+                    plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
+                    names.append(plugin)
+                result = d.multiselect("%s" % self.channel.title, names)
+                if result:
+                    for r in result:
+                        url = alt_url[r]
+                        self.database.deleteAltCustomStreamUrl(url)
+            #self.database.deleteAltCustomStreamUrl(self.channel)
             self.close()
 
         elif controlId in [self.C_STREAM_ADDONS_CANCEL, self.C_STREAM_BROWSE_CANCEL, self.C_STREAM_FAVOURITES_CANCEL, self.C_STREAM_STRM_CANCEL]:

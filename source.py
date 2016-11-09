@@ -1065,13 +1065,13 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    def deleteAltCustomStreamUrl(self, channel):
-        self.eventQueue.append([self._deleteAltCustomStreamUrl, None, channel])
+    def deleteAltCustomStreamUrl(self, url):
+        self.eventQueue.append([self._deleteAltCustomStreamUrl, None, url])
         self.event.set()
 
-    def _deleteAltCustomStreamUrl(self, channel):
+    def _deleteAltCustomStreamUrl(self, url):
         c = self.conn.cursor()
-        c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+        c.execute("DELETE FROM alt_custom_stream_url WHERE stream_url=?", [url])
         self.conn.commit()
         c.close()
 
