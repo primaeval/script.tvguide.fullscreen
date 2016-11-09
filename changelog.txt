@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.185
+- Alternative Stream in Stream Setup \ Favourites | Addons
+- Clear Alt Stream in Stream Setup \ strm|m3u
+
 version 0.0.184
 - Show Channel Logo in EPG in Settings \ Appearance
 
