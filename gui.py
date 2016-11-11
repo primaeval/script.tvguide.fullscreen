@@ -1189,7 +1189,6 @@ class TVGuide(xbmcgui.WindowXML):
                 program_image = ''
             if program.imageLarge:
                 program_image = program.imageLarge
-            self.setControlImage(self.C_MAIN_IMAGE, program_image)
 
             if not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
                 match = re.search('(.*?) \(([0-9]{4})\)',program.title)
@@ -1199,7 +1198,7 @@ class TVGuide(xbmcgui.WindowXML):
                     orig_title = "%s (%s)" % (movie,year)
                     if orig_title in self.tvdb_urls:
                         tvdb_url = self.tvdb_urls[orig_title]
-                        self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
+                        program_image = tvdb_url
                     else:
                         try:
                             t1 = threading.Thread(target=self.getIMDBImage,args=(movie,year))
@@ -1211,7 +1210,7 @@ class TVGuide(xbmcgui.WindowXML):
                     if not program_image:
                         if program.title in self.tvdb_urls:
                             tvdb_url = self.tvdb_urls[program.title]
-                            self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
+                            program_image = tvdb_url
                         else:
                             try:
                                 t1 = threading.Thread(target=self.getTVDBImage,args=(program.title,))
@@ -1219,6 +1218,11 @@ class TVGuide(xbmcgui.WindowXML):
                             except thread.error as detail:
                                xbmc.log( "Error: unable to start thread: %s" % detail , xbmc.LOGERROR)
 
+            if not program_image and (ADDON.getSetting('program.channel.logo') == "true"):
+                program_image = program.channel.logo
+            if not program_image:
+                program_image = ""
+            self.setControlImage(self.C_MAIN_IMAGE, program_image)
 
             color = colors.color_name["white"]
             if ADDON.getSetting('program.background.enabled') == 'true' and program.imageSmall:

@@ -38,6 +38,7 @@
         <setting id="addon.logos" label="Use Addon Folder Logos" type="bool" visible="eq(-6,true)" default="false" />
         <setting type="sep"/>
         <setting id="thelogodb" label="Use TheLogoDB.com Logos" type="enum" default="0" values="Never|If Missing|Always" />
+        <setting label="Delete TheLogoDB.com Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 4)" />
     </category>
     <category label="Playback">
         <setting label="30119" type="lsep" />
@@ -133,6 +134,8 @@
         <setting label="Clear Image Match Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 3)" />
         <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
+        <setting type="sep"/>
+        <setting id="program.channel.logo" label="Fall back to Channel Logo for Program Image" type="bool" default="false" />        
     </category>
     <category label="Lab2">
         <setting type="lsep" label="Experimental Alternative Data Sources"/>

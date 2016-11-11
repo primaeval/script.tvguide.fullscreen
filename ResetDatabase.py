@@ -81,3 +81,7 @@ if __name__ == '__main__':
         if mode == 3:
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle')
+        if mode in [2,4]:
+            dirs, files = xbmcvfs.listdir('special://profile/addon_data/script.tvguide.fullscreen/logos')
+            for f in files:
+                xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/logos/%s' % f)
