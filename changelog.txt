@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.189
+- Fall back to Channel Logo for Program Image in Settings\Lab1
+- Delete TheLogoDB.com Cache in Settings\Logos
+- !The Fall Back setting will use full size logos from TheLogoDB and might look bad in the epg
+
 version 0.0.186-188
 - Mulitple Alternative Streams
 
