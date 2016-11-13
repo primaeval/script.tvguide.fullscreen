@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.190
+- Settings \ Favourite Favourites = Favourites|Simple Favourites|Super Favourites
+
 version 0.0.189
 - Fall back to Channel Logo for Program Image in Settings\Lab1
 - Delete TheLogoDB.com Cache in Settings\Logos

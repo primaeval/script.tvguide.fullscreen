@@ -69,6 +69,7 @@
         <setting id="nextup.showTime" type="number" label="    - Time in seconds to show" default="10" visible="false" enable="true"/>
         <setting type="sep"/>
         <setting id="search.type" label="iSearch or MySearch" type="select" default="MySearch" values="iSearch|MySearch" />
+        <setting id="favourites" label="Favourite Favourites" type="select" default="Favourites" values="Favourites|Simple Favourites|Super Favourites" />
         <setting type="sep"/>
         <setting id="date.long" label="Show Long Date in EPG" type="bool" default="true" />
         <setting id="mouse.controls" label="Show Touch Control Buttons" type="bool" default="false" />
