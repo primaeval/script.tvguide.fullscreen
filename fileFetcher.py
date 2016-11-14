@@ -100,7 +100,7 @@ class FileFetcher(object):
                 if self.addon.getSetting('md5') == 'true':
                     old_md5 = xbmcvfs.File(self.filePath+".md5","rb").read()
                     new_md5 = requests.get(self.fileUrl+".md5").content[0:32]
-                    xbmcvfs.File(self.filePath+".md5","wb").write(new_md5)
+                    xbmcvfs.File(self.filePath+".md5","wb").write(new_md5) # writes empty file if no md5 on server
                     if old_md5 and (old_md5 == new_md5):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
