@@ -100,8 +100,7 @@ class FileFetcher(object):
                 if self.addon.getSetting('md5') == 'true':
                     old_md5 = xbmcvfs.File(self.filePath+".md5","rb").read()
                     new_md5 = requests.get(self.fileUrl+".md5").content[0:32]
-                    xbmcvfs.File(self.filePath+".md5","wb").write(new_md5) # writes empty file if no md5 on server
-                    if old_md5 and (old_md5 == new_md5):
+                    if old_md5 and (old_md5 == new_md5) and (self.addon.getSetting('xmltv.refresh') == 'false'):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
@@ -115,9 +114,10 @@ class FileFetcher(object):
                     f.close()
                     md5_file = md5.hexdigest()
                     if md5_file != new_md5:
-                        xbmcvfs.delete(self.filePath+".md5")
                         d = xbmcgui.Dialog()
                         d.notification('TV Guide Fullscreen', 'md5 Error: %s' % self.fileUrl.split('/')[-1], xbmcgui.NOTIFICATION_ERROR, 10000)
+                    else:
+                        xbmcvfs.File(self.filePath+".md5","wb").write(new_md5)
                 else:
                     for chunk in r.iter_content(chunk_size):
                         f.write(chunk)
