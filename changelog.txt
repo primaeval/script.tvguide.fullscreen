@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.191
+version 0.0.191-192
 - Settings \ Lab1 \ Use Program Image from Source
 - Settings \ Backup \ Download All Channel Logos
 - Settings \ Lab1 \ md5 Check
