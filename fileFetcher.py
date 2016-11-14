@@ -24,11 +24,13 @@
 #
 import xbmc
 import xbmcvfs
+import xbmcgui
 import os
 import urllib2
 import datetime
 import zlib
 import requests
+import hashlib
 
 
 
@@ -94,13 +96,32 @@ class FileFetcher(object):
                 if not xbmcvfs.copy(self.fileUrl, tmpFile):
                     xbmc.log('[script.tvguide.fullscreen] Remote file couldn\'t be copied: %s' % self.fileUrl, xbmc.LOGERROR)
             else:
+                if self.addon.getSetting('md5') == 'true':
+                    old_md5 = xbmcvfs.File(self.filePath+".md5","rb").read()
+                    if old_md5:
+                        new_md5 = requests.get(self.fileUrl+".md5").content[0:32]
+                        xbmcvfs.File(self.filePath+".md5","wb").write(new_md5)
+                        if old_md5 == new_md5:
+                            return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 r = requests.get(self.fileUrl)
                 chunk_size = 16 * 1024
-                for chunk in r.iter_content(chunk_size):
-                    f.write(chunk)
-                f.close()
+                if new_md5 and (self.addon.getSetting('md5') == 'true'):
+                    md5 = hashlib.md5()
+                    for chunk in r.iter_content(chunk_size):
+                        f.write(chunk)
+                        md5.update(chunk)
+                    f.close()
+                    md5_file = md5.hexdigest()
+                    xbmc.log(repr((old_md5,new_md5,md5_file)))
+                    if md5_file != new_md5:
+                        d = xbmcgui.Dialog()
+                        d.notification('TV Guide Fullscreen', 'md5 Error: %s' % self.fileUrl.split('/')[-1], xbmcgui.NOTIFICATION_ERROR, 10000)
+                else:
+                    for chunk in r.iter_content(chunk_size):
+                        f.write(chunk)
+                    f.close()
             if os.path.exists(self.filePath):
                 os.remove(self.filePath)
             os.rename(tmpFile, self.filePath)
