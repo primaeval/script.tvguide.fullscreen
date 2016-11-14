@@ -1503,7 +1503,8 @@ class TVGuide(xbmcgui.WindowXML):
         if url and alt_url:
             d = xbmcgui.Dialog()
             alt_urls = [url] + [x[0] for x in alt_url]
-            names = ["Default"]
+            names = []
+            alt_url = [(url,channel.title)] + alt_url
             for u in alt_url:
                 match = re.match('plugin://(.*?)/',u[0])
                 if match:
@@ -1512,6 +1513,7 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     plugin = "Favourite"
                 names.append("%s - %s" % (plugin,u[1]))
+            names[0] = "[B]%s[/B]" % names[0]
             result = d.select("%s" % channel.title, names)
             if result > -1:
                 url = alt_urls[result]
