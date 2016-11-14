@@ -1189,12 +1189,13 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setVisible(False)
 
             program_image = ''
-            if program.imageSmall:
-                program_image = program.imageSmall
-            else:
-                program_image = ''
-            if program.imageLarge:
-                program_image = program.imageLarge
+            if ADDON.getSetting('program.image') == 'true':
+                if program.imageSmall:
+                    program_image = program.imageSmall
+                else:
+                    program_image = ''
+                if program.imageLarge:
+                    program_image = program.imageLarge
 
             if not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
                 match = re.search('(.*?) \(([0-9]{4})\)',program.title)
@@ -1276,11 +1277,13 @@ class TVGuide(xbmcgui.WindowXML):
                 name_search = name.lower().strip()
                 if re.search(title_search,name_search):
                     found = True
+                '''
                 else:
                     title_search = title.lower().strip()
                     name_search = re.escape(name.lower().strip())
                     if re.search(name_search,title_search):
                         found = True
+                '''
             elif tvdb_match == "2":
                 found = True
             if found:
