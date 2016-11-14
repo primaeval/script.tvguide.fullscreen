@@ -96,6 +96,7 @@ class FileFetcher(object):
                 if not xbmcvfs.copy(self.fileUrl, tmpFile):
                     xbmc.log('[script.tvguide.fullscreen] Remote file couldn\'t be copied: %s' % self.fileUrl, xbmc.LOGERROR)
             else:
+                new_md5 = ''
                 if self.addon.getSetting('md5') == 'true':
                     old_md5 = xbmcvfs.File(self.filePath+".md5","rb").read()
                     if old_md5:
