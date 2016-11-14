@@ -115,7 +115,6 @@ class FileFetcher(object):
                         md5.update(chunk)
                     f.close()
                     md5_file = md5.hexdigest()
-                    xbmc.log(repr((old_md5,new_md5,md5_file)))
                     if md5_file != new_md5:
                         d = xbmcgui.Dialog()
                         d.notification('TV Guide Fullscreen', 'md5 Error: %s' % self.fileUrl.split('/')[-1], xbmcgui.NOTIFICATION_ERROR, 10000)
