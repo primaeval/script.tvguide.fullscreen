@@ -99,7 +99,9 @@ class FileFetcher(object):
                 new_md5 = ''
                 if self.addon.getSetting('md5') == 'true':
                     old_md5 = xbmcvfs.File(self.filePath+".md5","rb").read()
-                    new_md5 = requests.get(self.fileUrl+".md5").content[0:32]
+                    r = requests.get(self.fileUrl+".md5")
+                    if r.status_code == requests.codes.ok:
+                        new_md5 = r.text.encode('ascii', 'ignore')[:32]
                     if old_md5 and (old_md5 == new_md5) and (self.addon.getSetting('xmltv.refresh') == 'false'):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
