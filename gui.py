@@ -1280,7 +1280,7 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     title_search = title.lower().strip()
                     name_search = re.escape(name.lower().strip())
-                    if title.contains(' ') and re.search(name_search,title_search):
+                    if ' ' in title and re.search(name_search,title_search):
                         found = True
             elif tvdb_match == "2":
                 found = True
