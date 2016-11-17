@@ -75,6 +75,8 @@ class FileFetcher(object):
         fetch = False
         if not os.path.exists(self.filePath):  # always fetch if file doesn't exist!
             fetch = True
+        elif self.addon.getSetting('background.service') == 'true':
+            fetch = True
         else:
             interval = int(self.addon.getSetting('xmltv.interval'))
             if interval != self.INTERVAL_ALWAYS:
@@ -98,15 +100,26 @@ class FileFetcher(object):
             else:
                 new_md5 = ''
                 if self.addon.getSetting('md5') == 'true':
-                    old_md5 = xbmcvfs.File(self.filePath+".md5","rb").read()
-                    r = requests.get(self.fileUrl+".md5")
+                    file = self.filePath+".md5"
+                    old_md5 = xbmcvfs.File(file,"rb").read()
+                    url = self.fileUrl+".md5"
+                    try:
+                        r = requests.get(url)
+                    except:
+                        return self.FETCH_ERROR
                     if r.status_code == requests.codes.ok:
                         new_md5 = r.text.encode('ascii', 'ignore')[:32]
+
                     if old_md5 and (old_md5 == new_md5) and (self.addon.getSetting('xmltv.refresh') == 'false'):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
-                r = requests.get(self.fileUrl)
+                try:
+                    r = requests.get(self.fileUrl)
+                except:
+                    return self.FETCH_ERROR
+                if r.status_code != requests.codes.ok:
+                    return self.FETCH_NOT_ERROR
                 chunk_size = 16 * 1024
                 if new_md5 and (self.addon.getSetting('md5') == 'true'):
                     md5 = hashlib.md5()
