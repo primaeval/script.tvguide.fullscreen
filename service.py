@@ -36,7 +36,7 @@ import base64
 
 class Service(object):
     def __init__(self):
-        self.database = source.Database()
+        self.database = source.Database(True)
         self.database.initialize(self.onInit)
 
     def onInit(self, success):
@@ -57,7 +57,6 @@ class Service(object):
             n = autoplaywith.Autoplaywith(self.database, ADDON.getAddonInfo('path'))
             #n.scheduleAutoplaywiths()
         self.database.close(None)
-
 
 if __name__ == '__main__':
     ADDON = xbmcaddon.Addon('script.tvguide.fullscreen')

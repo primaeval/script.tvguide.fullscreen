@@ -139,13 +139,13 @@ class Database(object):
     SOURCE_DB = 'source.db'
     CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
-    def __init__(self):
+    def __init__(self,force=False):
         self.conn = None
         self.eventQueue = list()
         self.event = threading.Event()
         self.eventResults = dict()
 
-        self.source = instantiateSource()
+        self.source = instantiateSource(force)
 
         self.updateInProgress = False
         self.updateFailed = False
@@ -1464,7 +1464,7 @@ class XMLTVSource(Source):
     CATEGORIES_TYPE_FILE = 0
     CATEGORIES_TYPE_URL = 1
 
-    def __init__(self, addon):
+    def __init__(self, addon, force):
         #gType = GuideTypes()
 
         self.needReset = False
@@ -1495,10 +1495,10 @@ class XMLTVSource(Source):
             else:
                 # Probably a remote file
                 xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-                self.updateLocalFile(customFile, addon)
+                self.updateLocalFile(customFile, addon, force=force)
                 self.xmltvFile = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
         else:
-            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
+            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon, force=force)
 
         if addon.getSetting('categories.ini.enabled') == 'true':
             if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
@@ -1506,7 +1506,7 @@ class XMLTVSource(Source):
             else:
                 customFile = str(addon.getSetting('categories.ini.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True)
+                self.updateLocalFile(customFile, addon, True, force=force)
 
 
         # make sure the ini file is fetched as well if necessary
@@ -1517,7 +1517,7 @@ class XMLTVSource(Source):
             else:
                 customFile = str(addon.getSetting('addons.ini.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True)
+                self.updateLocalFile(customFile, addon, True, force=force)
 
 
         path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
@@ -1529,11 +1529,11 @@ class XMLTVSource(Source):
             raise SourceNotConfiguredException()
 
 
-    def updateLocalFile(self, name, addon, isIni=False):
+    def updateLocalFile(self, name, addon, isIni=False, force=False):
         fileName = os.path.basename(name)
         path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
         fetcher = FileFetcher(name, addon)
-        retVal = fetcher.fetchFile()
+        retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True
         elif retVal == fetcher.FETCH_ERROR:
@@ -2400,13 +2400,13 @@ class DirectScheduleSource(Source):
             else:
                 # Probably a remote file
                 xbmc.log('[%s] Use remote file: %s' % (ADDON.getAddonInfo('id'), customFile), xbmc.LOGDEBUG)
-                self.updateLocalFile(customFile, addon, True)
+                self.updateLocalFile(customFile, addon, True, force=force)
         '''
 
-    def updateLocalFile(self, name, addon, isIni=False):
+    def updateLocalFile(self, name, addon, isIni=False, force=False):
         path = os.path.join(self.PLUGIN_DATA, name)
         fetcher = FileFetcher(name, addon)
-        retVal = fetcher.fetchFile()
+        retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True
         elif retVal == fetcher.FETCH_ERROR:
@@ -2668,14 +2668,14 @@ class BBCSource(Source):
 
 
 
-def instantiateSource():
+def instantiateSource(force):
     source_arg = ADDON.getSetting("source")
     if source_arg:
         source = source_arg
     else:
         source = ADDON.getSetting("source.source")
     if source == "xmltv":
-        return XMLTVSource(ADDON)
+        return XMLTVSource(ADDON,force)
     elif source == "tvguide.co.uk":
         return TVGUKSource(ADDON)
     elif source == "tvguide.co.uk now":

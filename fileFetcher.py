@@ -70,12 +70,12 @@ class FileFetcher(object):
         if not os.path.exists(self.basePath):
             os.makedirs(self.basePath)
 
-    def fetchFile(self):
+    def fetchFile(self,force=False):
         retVal = self.FETCH_NOT_NEEDED
         fetch = False
         if not os.path.exists(self.filePath):  # always fetch if file doesn't exist!
             fetch = True
-        elif self.addon.getSetting('background.service') == 'true':
+        elif force == True:
             fetch = True
         else:
             interval = int(self.addon.getSetting('xmltv.interval'))
@@ -105,21 +105,22 @@ class FileFetcher(object):
                     url = self.fileUrl+".md5"
                     try:
                         r = requests.get(url)
-                    except:
-                        return self.FETCH_ERROR
-                    if r.status_code == requests.codes.ok:
-                        new_md5 = r.text.encode('ascii', 'ignore')[:32]
-
+                        if r.status_code == requests.codes.ok:
+                            new_md5 = r.text.encode('ascii', 'ignore')[:32]
+                    except Exception as detail:
+                        xbmc.log('[script.tvguide.fullscreen] Missing md5: %s.md5 (%s)' % (self.fileUrl,detail), xbmc.LOGERROR)
                     if old_md5 and (old_md5 == new_md5) and (self.addon.getSetting('xmltv.refresh') == 'false'):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 try:
                     r = requests.get(self.fileUrl)
-                except:
-                    return self.FETCH_ERROR
-                if r.status_code != requests.codes.ok:
-                    return self.FETCH_NOT_ERROR
+                    if r.status_code != requests.codes.ok:
+                        xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
+                        return self.FETCH_NOT_NEEDED
+                except Exception as detail:
+                    xbmc.log('[script.tvguide.fullscreen] bad request: %s (%s)' % (self.fileUrl,detail), xbmc.LOGERROR)
+                    return self.FETCH_NOT_NEEDED
                 chunk_size = 16 * 1024
                 if new_md5 and (self.addon.getSetting('md5') == 'true'):
                     md5 = hashlib.md5()
@@ -129,9 +130,7 @@ class FileFetcher(object):
                     f.close()
                     md5_file = md5.hexdigest()
                     if md5_file != new_md5:
-                        return self.FETCH_ERROR
-                        d = xbmcgui.Dialog()
-                        d.notification('TV Guide Fullscreen', 'md5 Error: %s' % self.fileUrl.split('/')[-1], xbmcgui.NOTIFICATION_ERROR, 10000)
+                        xbmc.log('[script.tvguide.fullscreen] md5 mismatch: %s calculated:%s server:%s' % (self.fileUrl,md5_file,new_md5), xbmc.LOGERROR)
                     else:
                         xbmcvfs.File(self.filePath+".md5","wb").write(new_md5)
                 else:
