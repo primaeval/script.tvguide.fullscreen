@@ -352,7 +352,6 @@ class Database(object):
 
         isCacheExpired = self._isCacheExpired(date)
         needReset = self.source.needReset
-        xbmc.log(repr(("QQQ",isCacheExpired,needReset)))
         if not isCacheExpired and not needReset:
             return
         else:
