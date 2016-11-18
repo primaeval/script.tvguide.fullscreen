@@ -1067,9 +1067,11 @@ class TVGuide(xbmcgui.WindowXML):
             favourites = ADDON.getSetting('favourites')
             if favourites == 'Simple Favourites':
                 xbmc.executebuiltin("ActivateWindow(10001,plugin://plugin.program.simple.favourites,return)")
-            if favourites == 'Super Favourites':
+            elif favourites == 'Video Favourites':
+                xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.video.favourites,return)")
+            elif favourites == 'Super Favourites':
                 xbmc.executebuiltin("ActivateWindow(10001,plugin://plugin.program.super.favourites,return)")
-            if favourites == 'Favourites':
+            elif favourites == 'Favourites':
                 xbmc.executebuiltin("ActivateWindow(10134)")
         elif buttonClicked == PopupMenu.C_POPUP_EXTENDED:
             title = program.title
