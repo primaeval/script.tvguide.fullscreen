@@ -28,7 +28,7 @@ import xbmcaddon
 import notification
 import autoplay
 import autoplaywith
-import xbmc
+import xbmc, xbmcgui
 import source
 import time
 import requests
@@ -60,7 +60,9 @@ class Service(object):
             #n.scheduleAutoplaywiths()
         self.database.close(None)
         xbmc.log("[script.tvguide.fullscreen] Background Update Finished", xbmc.LOGNOTICE)
-
+        if ADDON.getSetting('background.notify') == 'true':
+            d = xbmcgui.Dialog()
+            d.notification("TV Guide Fullscreen", "Finished Updating")
 if __name__ == '__main__':
     ADDON = xbmcaddon.Addon('script.tvguide.fullscreen')
 

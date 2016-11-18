@@ -101,6 +101,7 @@
         <setting id="background.startup" label="Update on Login" type="bool" default="false" visible="eq(-1,true)"/>
         <setting id="service.interval" label="30401" type="enum" default="1" lvalues="30402|30403|30404|30405" visible="eq(-2,true)" />
         <setting id="service.addon.folders" label="Update Addon Folders Too" type="bool" default="false" visible="eq(-3,true)"/>
+        <setting id="background.notify" label="Notify when Finished" type="bool" default="false" visible="eq(-4,true)"/>
     </category>
 
     <category label="Program Scheduler">
