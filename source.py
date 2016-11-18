@@ -350,7 +350,10 @@ class Database(object):
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
 
-        if not self._isCacheExpired(date) and not self.source.needReset:
+        isCacheExpired = self._isCacheExpired(date)
+        needReset = self.source.needReset
+        xbmc.log(repr(("QQQ",isCacheExpired,needReset)))
+        if not isCacheExpired and not needReset:
             return
         else:
             # if the xmltv data needs to be loaded the database
