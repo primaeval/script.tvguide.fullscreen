@@ -33,6 +33,7 @@ import source
 import time
 import requests
 import base64
+import time, datetime
 
 class Service(object):
     def __init__(self):
@@ -41,6 +42,7 @@ class Service(object):
 
     def onInit(self, success):
         if success:
+            xbmc.log("[script.tvguide.fullscreen] Background Update Starting...", xbmc.LOGNOTICE)
             self.database.updateChannelAndProgramListCaches(self.onCachesUpdated)
         else:
             self.database.close()
@@ -57,9 +59,11 @@ class Service(object):
             n = autoplaywith.Autoplaywith(self.database, ADDON.getAddonInfo('path'))
             #n.scheduleAutoplaywiths()
         self.database.close(None)
+        xbmc.log("[script.tvguide.fullscreen] Background Update Finished", xbmc.LOGNOTICE)
 
 if __name__ == '__main__':
     ADDON = xbmcaddon.Addon('script.tvguide.fullscreen')
+
     version = ADDON.getAddonInfo('version')
     if ADDON.getSetting('version') != version:
         ADDON.setSetting('version', version)
@@ -75,29 +79,39 @@ if __name__ == '__main__':
         if ADDON.getSetting('background.service') == 'true':
             monitor = xbmc.Monitor()
             xbmc.log("[script.tvguide.fullscreen] Background service started...", xbmc.LOGDEBUG)
-            Service()
-            if ADDON.getSetting('service.addon.folders') == "true":
-                xbmc.executebuiltin('RunScript(special://home/addons/script.tvguide.fullscreen/ReloadAddonFolders.py)')
-            interval = int(ADDON.getSetting('service.interval'))
-            waitTime = 21600  # Default 6hrs
-            if interval == 0:
-                waitTime = 7200   # 2hrs
-            elif interval == 1:
-                waitTime = 21600  # 6hrs
-            elif interval == 2:
-                waitTime = 43200  # 12hrs
-            elif interval == 3:
-                waitTime = 86400  # 24hrs
+            if ADDON.getSetting('background.startup') == 'true':
+                Service()
+                ADDON.setSetting('last.background.update', str(time.time()))
+                if ADDON.getSetting('service.addon.folders') == "true":
+                    xbmc.executebuiltin('RunScript(special://home/addons/script.tvguide.fullscreen/ReloadAddonFolders.py)')
             while not monitor.abortRequested():
-                # Sleep/wait for specified time
+                interval = int(ADDON.getSetting('service.interval'))
+                waitTime = 21600  # Default 6hrs
+                if interval == 0:
+                    waitTime = 7200   # 2hrs
+                elif interval == 1:
+                    waitTime = 21600  # 6hrs
+                elif interval == 2:
+                    waitTime = 43200  # 12hrs
+                elif interval == 3:
+                    waitTime = 86400  # 24hrs
+                ts = ADDON.getSetting('last.background.update') or "0.0"
+                lastTime = datetime.datetime.fromtimestamp(float(ts))
+                now = datetime.datetime.now()
+                nextTime = lastTime + datetime.timedelta(seconds=waitTime)
+                td = nextTime - now
+                timeLeft = td.seconds + (td.days * 24 * 3600)
+                if timeLeft < 0:
+                    timeLeft = 0
                 xbmc.log("[script.tvguide.fullscreen] Service waiting for interval %s" % waitTime, xbmc.LOGDEBUG)
-                if monitor.waitForAbort(waitTime):
-                    # Abort was requested while waiting. We should exit
+                if timeLeft and monitor.waitForAbort(timeLeft):
                     break
                 xbmc.log("[script.tvguide.fullscreen] Service now triggered...", xbmc.LOGDEBUG)
                 Service()
                 if ADDON.getSetting('service.addon.folders') == "true":
                     xbmc.executebuiltin('RunScript(special://home/addons/script.tvguide.fullscreen/ReloadAddonFolders.py)')
+                now = time.time()
+                ADDON.setSetting('last.background.update', str(now))
 
     except source.SourceNotConfiguredException:
         pass  # ignore
