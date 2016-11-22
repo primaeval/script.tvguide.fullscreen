@@ -2237,7 +2237,7 @@ class TVGuide(xbmcgui.WindowXML):
             lines = f.read()
             f.close()
             lines = lines.splitlines()
-            stream_urls = [line.split("=") for line in lines]
+            stream_urls = [line.split("=",1) for line in lines]
             f.close()
             if stream_urls:
                 self.database.setCustomStreamUrls(stream_urls)
