@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.195
+- Import Channel Mapping - Settings \ Optional \ Channel Mapping (mapping.ini = separator)
+
 version 0.0.194
 - Background Update Service independent of File Download Interval now
 - Notify after Background Update setting
