@@ -2,7 +2,7 @@
 #
 # TV Guide Fullscreen
 # Copyright (C) 2016 primaeval.dev@gmail.com
-# 
+#
 #      Original for FTV Guide
 #      bluezed.apps@gmail.com
 #
@@ -62,10 +62,12 @@ class FileFetcher(object):
                 fileName.startswith("https://") or fileName.startswith("ftps://") :
             self.fileType = self.TYPE_REMOTE
             self.fileUrl = fileName
+            self.fileName = fileName.split('/')[-1]
             self.filePath = os.path.join(self.basePath, fileName.split('/')[-1])
         else:
             self.fileType = self.TYPE_DEFAULT
             self.fileUrl = fileName
+            self.fileName = os.path.basename(fileName)
             self.filePath = os.path.join(self.basePath,os.path.basename(fileName))
 
         # make sure the folder is actually there already!
@@ -94,7 +96,8 @@ class FileFetcher(object):
                 fetch = True
 
         if fetch:
-            tmpFile = os.path.join(self.basePath, 'tmp')
+            tmpFile = os.path.join(self.basePath, self.fileName+'.tmp')
+            xbmc.log(tmpFile)
             if self.fileType == self.TYPE_DEFAULT:
                 xbmc.log('[script.tvguide.fullscreen] file is in remote location: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 if not xbmcvfs.copy(self.fileUrl, tmpFile):
@@ -140,8 +143,14 @@ class FileFetcher(object):
                         f.write(chunk)
                     f.close()
             if os.path.exists(self.filePath):
-                os.remove(self.filePath)
-            os.rename(tmpFile, self.filePath)
+                try:
+                    os.remove(self.filePath)
+                except:
+                    return self.FETCH_NOT_NEEDED
+            try:
+                os.rename(tmpFile, self.filePath)
+            except:
+                return self.FETCH_NOT_NEEDED
             retVal = self.FETCH_OK
             xbmc.log('[script.tvguide.fullscreen] file %s was downloaded' % self.filePath, xbmc.LOGDEBUG)
         return retVal
