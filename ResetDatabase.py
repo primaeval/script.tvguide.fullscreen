@@ -74,6 +74,8 @@ if __name__ == '__main__':
         if mode == 2:
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/addons.ini')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/categories.ini')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/custom_stream_urls.ini')
+            xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/mapping.ini')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/icons.ini')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/folders.list')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle')

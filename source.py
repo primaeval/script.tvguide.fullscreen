@@ -161,6 +161,7 @@ class Database(object):
 
         threading.Thread(name='Database Event Loop', target=self.eventLoop).start()
 
+
     def eventLoop(self):
         print 'Database.eventLoop() >>>>>>>>>> starting...'
         while True:
@@ -1476,6 +1477,7 @@ class XMLTVSource(Source):
         self.logoSource = int(addon.getSetting('logos.source'))
         self.addonsType = int(addon.getSetting('addons.ini.type'))
         self.categoriesType = int(addon.getSetting('categories.ini.type'))
+        self.mappingType = int(addon.getSetting('mapping.ini.type'))
 
         # make sure the folder in the user's profile exists or create it!
         if not os.path.exists(XMLTVSource.PLUGIN_DATA):
@@ -1510,6 +1512,13 @@ class XMLTVSource(Source):
             if customFile:
                 self.updateLocalFile(customFile, addon, True, force=force)
 
+        if addon.getSetting('mapping.ini.enabled') == 'true':
+            if self.mappingType == XMLTVSource.INI_TYPE_FILE:
+                customFile = str(addon.getSetting('mapping.ini.file'))
+            else:
+                customFile = str(addon.getSetting('mapping.ini.url'))
+            if customFile:
+                self.updateLocalFile(customFile, addon, True, force=force)
 
         # make sure the ini file is fetched as well if necessary
 

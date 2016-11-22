@@ -2228,6 +2228,19 @@ class TVGuide(xbmcgui.WindowXML):
             self.notification.scheduleNotifications()
             self.autoplay.scheduleAutoplays()
             self.autoplaywith.scheduleAutoplaywiths()
+            self.loadChannelMappings()
+
+    def loadChannelMappings(self):
+        if ADDON.getSetting('mapping.ini.enabled') == 'true':
+            file_name = 'special://profile/addon_data/script.tvguide.fullscreen/mapping.ini'
+            f = open(xbmc.translatePath(file_name),"rb")
+            lines = f.read()
+            f.close()
+            lines = lines.splitlines()
+            stream_urls = [line.split("=") for line in lines]
+            f.close()
+            if stream_urls:
+                self.database.setCustomStreamUrls(stream_urls)
 
     def onSourceProgressUpdate(self, percentageComplete):
         control = self.getControl(self.C_MAIN_LOADING_PROGRESS)

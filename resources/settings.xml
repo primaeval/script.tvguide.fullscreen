@@ -24,6 +24,11 @@
         <setting id="categories.ini.type" label="categories.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="categories.ini.file" label="categories.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="categories.ini" default=''/>
         <setting id="categories.ini.url" label="categories.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
+        <setting type="lsep" label="Channel Mappings"/>
+        <setting id="mapping.ini.enabled" label="Import mapping.ini" type="bool" default="false" />
+        <setting id="mapping.ini.type" label="mapping.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
+        <setting id="mapping.ini.file" label="mapping.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="mapping.ini" default=''/>
+        <setting id="mapping.ini.url" label="mapping.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
     </category>
 
     <category label="Logos">
