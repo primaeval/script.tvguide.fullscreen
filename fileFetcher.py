@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #
-# FTV Guide
-# Copyright (C) 2015 Thomas Geppert [bluezed]
+# TV Guide Fullscreen
+# Copyright (C) 2016 primaeval.dev@gmail.com
 # bluezed.apps@gmail.com
 #
-#      Modified for TV Guide Fullscren (2016)
+#      Modified for TV Guide Fullscreen (2016)
 #      by primaeval - primaeval.dev@gmail.com
 #
 # This Program is free software; you can redistribute it and/or modify

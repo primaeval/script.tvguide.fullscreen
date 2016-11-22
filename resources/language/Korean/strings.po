@@ -1,7 +1,7 @@
 # XBMC Media Center language file
-# Addon Name: FTV Guide
-# Addon id: script.ftvguide
-# Addon Provider: rayw1986, bluezed
+# Addon Name: TV Guide Fullscreen
+# Addon id: script.tvguide.fullscreen
+# Addon Provider: primaeval
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC Addons\n"
@@ -153,16 +153,16 @@ msgid "It looks like your current skin has a special"
 msgstr "현재 스킨이 최신 버전이 아닌"
 
 msgctxt "#30155"
-msgid "version of the FTV Guide skin that is not up-to-date."
-msgstr "특별한 FTV Guide 스킨인 것 같습니다."
+msgid "version of the TV Guide Fullscreen skin that is not up-to-date."
+msgstr "특별한 TV Guide Fullscreen 스킨인 것 같습니다."
 
 msgctxt "#30156"
 msgid "Please try with a different skin..."
 msgstr "다른 스킨을 선택하세요..."
 
 msgctxt "#30157"
-msgid "It looks like the FTV Guide database is broken."
-msgstr "FTV Guide 데이터베이스가 깨진 것 같습니다."
+msgid "It looks like the TV Guide Fullscreen database is broken."
+msgstr "TV Guide Fullscreen 데이터베이스가 깨진 것 같습니다."
 
 msgctxt "#30158"
 msgid "The database will be deleted and recreated."
@@ -269,5 +269,5 @@ msgid "Play channels using the Weeb.Tv addon"
 msgstr "Weeb.Tv 애드온을 이용해서 채널 재생"
 
 msgctxt "#30802"
-msgid "FTV Guide is configured to stream using Weeb.Tv"
+msgid "TV Guide Fullscreen is configured to stream using Weeb.Tv"
 msgstr "Weeb.Tv를 이용해서 스트림하도록 설정됨"
