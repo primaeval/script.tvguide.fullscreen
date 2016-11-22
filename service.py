@@ -76,6 +76,8 @@ if __name__ == '__main__':
         except: pass
 
     xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/source.db-journal')
+    lock = 'special://profile/addon_data/script.tvguide.fullscreen/db.lock'
+    xbmcvfs.delete(lock)
     try:
         if ADDON.getSetting('autostart') == "true":
             xbmc.executebuiltin("RunAddon(script.tvguide.fullscreen)")

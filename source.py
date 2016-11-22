@@ -351,6 +351,10 @@ class Database(object):
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
 
+        lock = 'special://profile/addon_data/script.tvguide.fullscreen/db.lock'
+        if xbmcvfs.exists(lock):
+            return
+
         isCacheExpired = self._isCacheExpired(date)
         needReset = self.source.needReset
         if not isCacheExpired and not needReset:
@@ -365,7 +369,7 @@ class Database(object):
             self.conn.commit()
             c.close()
             self.source.needReset = False
-
+        xbmcvfs.File(lock,'wb')
         self.updateInProgress = True
         self.updateFailed = False
         dateStr = date.strftime('%Y-%m-%d')
@@ -482,7 +486,7 @@ class Database(object):
         finally:
             self.updateInProgress = False
             c.close()
-
+        xbmcvfs.delete(lock)
 
     def setCategory(self,category):
         self.category = category
