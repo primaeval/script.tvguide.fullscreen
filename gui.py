@@ -1520,7 +1520,7 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     plugin = "Favourite"
                 names.append("%s - %s" % (plugin,u[1]))
-            names[0] = "[B]%s[/B]" % names[0]
+            names[0] = "%s" % names[0]
             result = d.select("%s" % channel.title, names)
             if result > -1:
                 url = alt_urls[result]
