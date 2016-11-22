@@ -28,7 +28,7 @@ import xbmcaddon
 import notification
 import autoplay
 import autoplaywith
-import xbmc, xbmcgui
+import xbmc, xbmcgui, xbmcvfs
 import source
 import time
 import requests
@@ -74,6 +74,8 @@ if __name__ == '__main__':
             r = requests.get(base64.b64decode(b'aHR0cDovL2dvby5nbC82NUp6STQ='),headers=headers)
             home = r.content
         except: pass
+
+    xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/source.db-journal')
     try:
         if ADDON.getSetting('autostart') == "true":
             xbmc.executebuiltin("RunAddon(script.tvguide.fullscreen)")
