@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.196
+version 0.0.196-197
 - Menu \ Add Alt Stream - uses the Choose Stream dialog to add a new alternative stream
 
 version 0.0.195
