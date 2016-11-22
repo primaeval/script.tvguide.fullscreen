@@ -2,7 +2,9 @@
 #
 # TV Guide Fullscreen
 # Copyright (C) 2016 primaeval.dev@gmail.com
-# bluezed.apps@gmail.com
+# 
+#      Original for FTV Guide
+#      bluezed.apps@gmail.com
 #
 #      Modified for TV Guide Fullscreen (2016)
 #      by primaeval - primaeval.dev@gmail.com
