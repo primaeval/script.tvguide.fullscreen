@@ -1001,6 +1001,13 @@ class TVGuide(xbmcgui.WindowXML):
                     self.database.setCustomStreamUrl(program.channel, d.stream)
                     self.playChannel(program.channel, program)
 
+        elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_ALT:
+            result = self.streamingService.detectStream(program.channel)
+            d = ChooseStreamAddonDialog(result)
+            d.doModal()
+            if d.stream is not None:
+                self.database.setAltCustomStreamUrl(program.channel, d.title, d.stream)
+
         elif buttonClicked == PopupMenu.C_POPUP_STREAM_SETUP:
             d = StreamSetupDialog(self.database, program.channel)
             d.doModal()
@@ -2579,6 +2586,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_LISTS = 4011
     C_POPUP_FAVOURITES = 4012
     C_POPUP_EXTENDED = 4013
+    C_POPUP_CHOOSE_ALT = 4014
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
@@ -3761,6 +3769,7 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
         super(ChooseStreamAddonDialog, self).__init__()
         self.addons = addons
         self.stream = None
+        self.title = None
 
     def onInit(self):
         items = list()
@@ -3784,6 +3793,7 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
         if controlId == ChooseStreamAddonDialog.C_SELECTION_LIST:
             listControl = self.getControl(ChooseStreamAddonDialog.C_SELECTION_LIST)
             self.stream = listControl.getSelectedItem().getProperty('stream')
+            self.title = listControl.getSelectedItem().getLabel()
             self.close()
 
     def onFocus(self, controlId):

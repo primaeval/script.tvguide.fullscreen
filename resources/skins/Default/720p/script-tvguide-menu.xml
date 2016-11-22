@@ -526,7 +526,7 @@
             <label>Favourites</label>
             <visible>true</visible>
         </control>
-        
+
         <control type="button" id="4013">
             <description>Extended Info</description>
             <posx>285</posx>
@@ -536,7 +536,7 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4012</onup>
-            <ondown>80000</ondown>
+            <ondown>4014</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -545,7 +545,27 @@
             <focusedcolor>black</focusedcolor>
             <label>Extended Info</label>
             <visible>true</visible>
-        </control>        
+        </control>
+
+        <control type="button" id="4014">
+            <description>Choose Alt Stream</description>
+            <posx>285</posx>
+            <posy>675</posy>
+            <width>200</width>
+            <height>30</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4013</onup>
+            <ondown>80000</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Add Alt Stream</label>
+            <visible>true</visible>
+        </control>
 
         <control type="button" id="80000">
             <!-- MY MOVIES -->
