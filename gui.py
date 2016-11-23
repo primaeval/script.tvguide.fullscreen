@@ -119,6 +119,8 @@ else:
     SKIN = ADDON.getSetting('skin.user')
     SKIN_PATH = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/")
 
+def log(what):
+    xbmc.log(repr(what))
 
 def timedelta_total_seconds(timedelta):
     return (
@@ -454,7 +456,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.osdChannel = self.currentChannel
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
-        elif action.getId() == [REMOTE_0]: #TODO find libreelec key
+        elif action.getId() in [REMOTE_0]: #TODO find libreelec key
             self._playLastChannel()
         elif action.getId() == ACTION_LEFT:
             self._showLastPlayedChannel()
