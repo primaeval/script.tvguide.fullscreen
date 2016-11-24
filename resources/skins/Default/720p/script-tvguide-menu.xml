@@ -302,7 +302,7 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4006</onup>
-            <ondown>4002</ondown>
+            <ondown>4013</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -312,8 +312,8 @@
             <label>Meta Search</label>
         </control>
 
-        <control type="button" id="4002">
-            <!-- REMINDER -->
+        <control type="button" id="4013">
+            <description>Extended Info</description>
             <posx>285</posx>
             <posy>110</posy>
             <width>200</width>
@@ -321,6 +321,46 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4005</onup>
+            <ondown>4011</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Extended Info</label>
+            <visible>true</visible>
+        </control>
+
+        <control type="button" id="4011">
+            <description>Lists</description>
+            <posx>285</posx>
+            <posy>155</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4013</onup>
+            <ondown>4002</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <visible>true</visible>
+            <label>Lists</label>
+        </control>
+
+        <control type="button" id="4002">
+            <!-- REMINDER -->
+            <posx>285</posx>
+            <posy>200</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4011</onup>
             <ondown>4008</ondown>
             <onleft>7004</onleft>
             <align>center</align>
@@ -333,7 +373,7 @@
         <control type="button" id="4008">
             <description>autoplay</description>
             <posx>285</posx>
-            <posy>155</posy>
+            <posy>245</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
@@ -352,13 +392,13 @@
         <control type="button" id="4009">
             <description>autoplaywith</description>
             <posx>285</posx>
-            <posy>200</posy>
+            <posy>290</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4008</onup>
-            <ondown>4011</ondown>
+            <ondown>4001</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -368,44 +408,7 @@
             <label>AutoPlayWith</label>
         </control>
 
-        <control type="button" id="4011">
-            <description>Lists</description>
-            <posx>285</posx>
-            <posy>245</posy>
-            <width>200</width>
-            <height>40</height>
-            <texturefocus>tvg-button-focus.png</texturefocus>
-            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4009</onup>
-            <ondown>4000</ondown>
-            <onleft>7004</onleft>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
-            <visible>true</visible>
-            <label>Lists</label>
-        </control>
 
-        <control type="button" id="4000">
-            <!-- Watch Stream -->
-            <posx>285</posx>
-            <posy>290</posy>
-            <width>200</width>
-            <height>40</height>
-            <texturefocus>tvg-button-focus.png</texturefocus>
-            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4011</onup>
-            <ondown>4001</ondown>
-            <onleft>7004</onleft>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
-            <visible>true</visible>
-        </control>
         <control type="button" id="4001">
             <!-- Choose Stream -->
             <posx>285</posx>
@@ -414,7 +417,7 @@
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4000</onup>
+            <onup>4009</onup>
             <ondown>4007</ondown>
             <onleft>7004</onleft>
             <align>center</align>
@@ -424,6 +427,7 @@
             <focusedcolor>black</focusedcolor>
             <label>Choose Stream</label>
         </control>
+
         <control type="button" id="4007">
             <!-- Stream Setup -->
             <posx>285</posx>
@@ -433,7 +437,7 @@
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4001</onup>
-            <ondown>4003</ondown>
+            <ondown>4014</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -442,6 +446,27 @@
             <focusedcolor>black</focusedcolor>
             <label>Stream Setup</label>
         </control>
+
+        <control type="button" id="4014">
+            <description>Choose Alt Stream</description>
+            <posx>285</posx>
+            <posy>425</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4007</onup>
+            <ondown>4003</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Add Alt Stream</label>
+            <visible>true</visible>
+        </control>
+
         <control type="label">
             <!-- Choose Stream Text -->
             <posx>20</posx>
@@ -471,13 +496,13 @@
         <control type="button" id="4003">
             <!-- CHANNELS -->
             <posx>285</posx>
-            <posy>425</posy>
+            <posy>470</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
             <onup>4007</onup>
-            <ondown>4004</ondown>
+            <ondown>4000</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -486,11 +511,10 @@
             <focusedcolor>black</focusedcolor>
             <label>$ADDON[script.tvguide.fullscreen 30307]</label>
         </control>
-
-        <control type="button" id="4004">
-            <!-- QUIT -->
+        <control type="button" id="4000">
+            <!-- Watch Stream -->
             <posx>285</posx>
-            <posy>470</posy>
+            <posy>515</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
@@ -503,20 +527,18 @@
             <font>font13</font>
             <textcolor>white</textcolor>
             <focusedcolor>black</focusedcolor>
-            <label>$ADDON[script.tvguide.fullscreen 30308]</label>
             <visible>true</visible>
         </control>
-
         <control type="button" id="4012">
             <description>simple favourites</description>
             <posx>285</posx>
-            <posy>515</posy>
+            <posy>560</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4004</onup>
-            <ondown>4013</ondown>
+            <onup>4000</onup>
+            <ondown>4004</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
@@ -527,45 +549,27 @@
             <visible>true</visible>
         </control>
 
-        <control type="button" id="4013">
-            <description>Extended Info</description>
-            <posx>285</posx>
-            <posy>560</posy>
-            <width>200</width>
-            <height>40</height>
-            <texturefocus>tvg-button-focus.png</texturefocus>
-            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4012</onup>
-            <ondown>4014</ondown>
-            <onleft>7004</onleft>
-            <align>center</align>
-            <aligny>center</aligny>
-            <font>font13</font>
-            <textcolor>white</textcolor>
-            <focusedcolor>black</focusedcolor>
-            <label>Extended Info</label>
-            <visible>true</visible>
-        </control>
-
-        <control type="button" id="4014">
-            <description>Choose Alt Stream</description>
+        <control type="button" id="4004">
+            <!-- QUIT -->
             <posx>285</posx>
             <posy>605</posy>
             <width>200</width>
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4013</onup>
-            <ondown>80000</ondown>
+            <onup>4012</onup>
+            <ondown>4004</ondown>
             <onleft>7004</onleft>
             <align>center</align>
             <aligny>center</aligny>
             <font>font13</font>
             <textcolor>white</textcolor>
             <focusedcolor>black</focusedcolor>
-            <label>Add Alt Stream</label>
+            <label>$ADDON[script.tvguide.fullscreen 30308]</label>
             <visible>true</visible>
         </control>
+
+
 
         <control type="button" id="80000">
             <!-- MY MOVIES -->
