@@ -264,10 +264,14 @@
         </control>
         <control type="image" id="4100">
             <description>channel logo</description>
-            <posx>188r</posx>
+            <posx>285</posx>
+            <posy>655</posy>
+            <width>200</width>
+            <height>45</height>
+            <!--<posx>188r</posx>
             <posy>12</posy>
             <width>176</width>
-            <height>40</height>
+            <height>40</height>-->
             <align>center</align>
             <aligny>bottom</aligny>
             <aspectratio>keep</aspectratio>
