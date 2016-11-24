@@ -96,6 +96,11 @@ class FileFetcher(object):
                 fetch = True
 
         if fetch:
+            user = ''
+            password = ''
+            if self.addon.getSetting('authentication') == 'true':
+                user = self.addon.getSetting('user')
+                password = self.addon.getSetting('password')
             tmpFile = os.path.join(self.basePath, self.fileName+'.tmp')
             xbmc.log(tmpFile)
             if self.fileType == self.TYPE_DEFAULT:
@@ -109,7 +114,7 @@ class FileFetcher(object):
                     old_md5 = xbmcvfs.File(file,"rb").read()
                     url = self.fileUrl+".md5"
                     try:
-                        r = requests.get(url)
+                        r = requests.get(url,auth=(user, password))
                         if r.status_code == requests.codes.ok:
                             new_md5 = r.text.encode('ascii', 'ignore')[:32]
                     except Exception as detail:
@@ -119,7 +124,7 @@ class FileFetcher(object):
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 try:
-                    r = requests.get(self.fileUrl)
+                    r = requests.get(self.fileUrl,auth=(user, password))
                     if r.status_code != requests.codes.ok:
                         xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
                         return self.FETCH_NOT_NEEDED

@@ -12,6 +12,9 @@
         <setting id="xmltv.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
     </category>
     <category label="Optional">
+        <setting id="authentication" label="Authentication" type="bool" default="false" />
+        <setting id="user" label="User" type="text" visible="eq(-1,true)" default="" />
+        <setting id="password" label="Password" type="file" visible="eq(-2,true)" option="hidden" default=""/> 
         <setting type="lsep" label="Import addons.ini will overwrite added addon folders!"/>
         <setting id="addons.ini.enabled" label="Import addons.ini" type="bool" default="false" />
         <setting id="addons.ini.type" label="addons.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
