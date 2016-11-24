@@ -320,6 +320,14 @@
                             <aligny>center</aligny>
                             <info>ListItem.Property(When)</info>
                         </control>
+                        <control type="image">
+                            <left>1030</left>
+                            <top>0</top>
+                            <width>250</width>
+                            <height>100</height>
+                            <info>ListItem.Property(ProgramImage)</info>
+                            <aspectratio>keep</aspectratio>
+                        </control>
                         <control type="label">
                             <description>Program Title</description>
                             <left>700</left>
@@ -328,6 +336,7 @@
                             <height>40</height>
                             <font>font13</font>
                             <textcolor>white</textcolor>
+                            <shadowcolor>black</shadowcolor>
                             <align>left</align>
                             <aligny>center</aligny>
                             <info>ListItem.Label</info>
@@ -346,14 +355,7 @@
                             <pagecontrol>-</pagecontrol>
                             <info>ListItem.Property(Plot)</info>
                         </control>
-                        <control type="image">
-                            <left>1030</left>
-                            <top>0</top>
-                            <width>250</width>
-                            <height>100</height>
-                            <info>ListItem.Property(ProgramImage)</info>
-                            <aspectratio>keep</aspectratio>
-                        </control>
+
                     </focusedlayout>
                 </control>
             </control>
