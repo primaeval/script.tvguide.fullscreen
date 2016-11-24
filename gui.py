@@ -1069,7 +1069,10 @@ class TVGuide(xbmcgui.WindowXML):
             if ADDON.getSetting('search.type') == 'MySearch':
                 script = "special://home/addons/script.tvguide.fullscreen/search.py"
                 if xbmcvfs.exists(script):
-                    xbmc.executebuiltin('RunScript(%s,%s)' % (script,program.title))
+                    if program.season:
+                        xbmc.executebuiltin('RunScript(%s,%s,%s,%s)' % (script, program.title, program.season, program.episode))
+                    else:
+                        xbmc.executebuiltin('RunScript(%s,%s)' % (script, program.title))
             else:
                 xbmc.executebuiltin('ActivateWindow(10025,"plugin://plugin.program.super.favourites/?mode=0&keyword=%s",return)' % urllib.quote_plus(program.title))
         elif buttonClicked == PopupMenu.C_POPUP_FAVOURITES:
