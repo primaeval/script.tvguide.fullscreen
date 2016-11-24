@@ -501,7 +501,7 @@
             <height>40</height>
             <texturefocus>tvg-button-focus.png</texturefocus>
             <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-            <onup>4007</onup>
+            <onup>4014</onup>
             <ondown>4000</ondown>
             <onleft>7004</onleft>
             <align>center</align>
