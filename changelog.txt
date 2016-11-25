@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.200
+- Listings Views speed-up
+- Authentication option in Settings \ Optional
+- Menu buttons re-ordered (program, scheduler, channels, actions)
+
 version 0.0.199
 - Last Channel fix - Remote 0 in TV Mode
 
