@@ -3818,6 +3818,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         self.index = -1
         self.action = None
         self.tvdb_urls = {}
+        '''
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle'
         if xbmcvfs.exists(file_name):
             f = open(xbmc.translatePath(file_name),'rb')
@@ -3828,6 +3829,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
                     k.reverse()
                     while len(self.tvdb_urls) > 5000:
                         self.tvdb_urls.pop(k.pop(),None)
+        '''
 
     def onInit(self):
         control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
@@ -3894,6 +3896,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             if progress and (int(progress) < 100):
                 item.setProperty('Completed', progress)
 
+            '''
             program_image = program.imageSmall if program.imageSmall else program.imageLarge
             if not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
                 tvdb_url = ''
@@ -3912,7 +3915,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
                 if tvdb_url:
                     program_image = tvdb_url
             item.setProperty('ProgramImage', program_image)
-
+            '''
             items.append(item)
 
         listControl = self.getControl(ProgramListDialog.C_PROGRAM_LIST)
