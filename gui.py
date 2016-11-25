@@ -313,10 +313,10 @@ class TVGuide(xbmcgui.WindowXML):
             if f:
                 try:
                     self.tvdb_urls = pickle.load(f)
-                    if len(self.tvdb_urls) > 5000:
+                    if len(self.tvdb_urls) > 1000:
                         k = self.tvdb_urls.keys()
                         k.reverse()
-                        while len(self.tvdb_urls) > 5000:
+                        while len(self.tvdb_urls) > 1000:
                             self.tvdb_urls.pop(k.pop(),None)
                 except: pass
 
