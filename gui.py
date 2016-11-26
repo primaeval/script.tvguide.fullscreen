@@ -770,8 +770,14 @@ class TVGuide(xbmcgui.WindowXML):
         if self.mode == MODE_QUICK_EPG:
             program = self._getQuickProgramFromControl(self.getControl(controlId))
 
+
         if program is None:
             return
+
+        if self.player.isPlaying() and program.channel.id == self.currentChannel.id:
+                self._hideEpg()
+                self._hideQuickEpg()
+                return
 
         if not self.playChannel(program.channel, program):
             result = self.streamingService.detectStream(program.channel)
