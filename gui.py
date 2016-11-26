@@ -37,6 +37,7 @@ import xbmcvfs
 import colors
 import requests
 import pickle
+import json
 from PIL import Image, ImageOps
 import source as src
 from notification import Notification
@@ -264,7 +265,12 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.mode = MODE_EPG
         self.currentChannel = None
-        self.lastChannel = None
+        s = ADDON.getSetting('last.channel')
+        if s:
+            (id, title, lineup, logo, streamUrl, visible, weight) = json.loads(s)
+            self.lastChannel = utils.Channel(id, title, lineup, logo, streamUrl, visible, weight)
+        else:
+            self.lastChannel = None
         self.lastProgram = None
         self.currentProgram = None
         self.focusedProgram = None
@@ -1507,6 +1513,8 @@ class TVGuide(xbmcgui.WindowXML):
     def playChannel(self, channel, program = None):
         if self.currentChannel:
             self.lastChannel = self.currentChannel
+            s = json.dumps([self.lastChannel.id, self.lastChannel.title, self.lastChannel.lineup, self.lastChannel.logo, self.lastChannel.streamUrl, self.lastChannel.visible, self.lastChannel.weight])
+            ADDON.setSetting('last.channel',s)
         self.currentChannel = channel
         self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         wasPlaying = self.player.isPlaying()
