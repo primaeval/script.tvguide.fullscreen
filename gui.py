@@ -774,7 +774,7 @@ class TVGuide(xbmcgui.WindowXML):
         if program is None:
             return
 
-        if self.player.isPlaying() and program.channel.id == self.currentChannel.id:
+        if self.player.isPlaying() and self.currentChannel and program.channel.id == self.currentChannel.id:
                 self._hideEpg()
                 self._hideQuickEpg()
                 return
