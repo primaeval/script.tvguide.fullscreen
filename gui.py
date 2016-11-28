@@ -2574,9 +2574,9 @@ class TVGuide(xbmcgui.WindowXML):
                 # Sometimes raises:
                 # exceptions.RuntimeError: Unknown exception thrown from the call "setVisible"
                 control.setVisible(timeDelta.days == 0)
+                control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
             except:
                 pass
-            control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
 
         if scheduleTimer and not xbmc.abortRequested and not self.isClosing:
             threading.Timer(1, self.updateTimebar).start()
