@@ -1016,11 +1016,25 @@ class TVGuide(xbmcgui.WindowXML):
                     self.playChannel(program.channel, program)
 
         elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_ALT:
-            result = self.streamingService.detectStream(program.channel)
-            d = ChooseStreamAddonDialog(result)
-            d.doModal()
-            if d.stream is not None:
-                self.database.setAltCustomStreamUrl(program.channel, d.title, d.stream)
+            result = self.streamingService.detectStream(program.channel,False)
+            if not result:
+                # could not detect stream, show context menu
+                d = StreamSetupDialog(self.database, program.channel)
+                d.doModal()
+                del d
+                self.streamingService = streaming.StreamsService(ADDON)
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            elif type(result) == str:
+                # one single stream detected, save it and start streaming
+                self.database.setCustomStreamUrl(program.channel, result)
+                #self.playChannel(program.channel, program)
+            else:
+                # multiple matches, let user decide
+
+                d = ChooseStreamAddonDialog(result)
+                d.doModal()
+                if d.stream is not None:
+                    self.database.setAltCustomStreamUrl(program.channel, d.title, d.stream)
 
         elif buttonClicked == PopupMenu.C_POPUP_STREAM_SETUP:
             d = StreamSetupDialog(self.database, program.channel)

@@ -78,17 +78,18 @@ class StreamsService(object):
     def getAddonStreams(self, id):
         return self.addonsParser.items(id)
 
-    def detectStream(self, channel):
+    def detectStream(self, channel, try_favourites=True):
         """
         @param channel:
         @type channel: source.Channel
         """
-        favourites = self.loadFavourites()
+        if try_favourites:
+            favourites = self.loadFavourites()
 
-        # First check favourites, if we get exact match we use it
-        for label, stream in favourites:
-            if label == channel.title:
-                return stream
+            # First check favourites, if we get exact match we use it
+            for label, stream in favourites:
+                if label == channel.title:
+                    return stream
 
 
         # Second check all addons and return all matches
