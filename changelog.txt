@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.205
+- yo.tv Providers (usually needs a zip code)
+- background progress dialogs
+
 version 0.0.201-204
 - Movie Year regex fix
 - persistant Last Channel
