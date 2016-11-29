@@ -1635,6 +1635,8 @@ class XMLTVSource(Source):
         if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
+        d = xbmcgui.DialogProgressBG()
+        d.create('TV Guide Fullscreen', "parsing xmltv")
         for event, elem in context:
             if event == "end":
                 result = None
@@ -1738,16 +1740,21 @@ class XMLTVSource(Source):
                     else:
                         visible = True
                     result = Channel(cid, title, '', logo, streamUrl, visible)
+                    channel = title
 
                 if result:
                     elements_parsed += 1
                     if progress_callback and elements_parsed % 500 == 0:
-                        if not progress_callback(100.0 / size * f.tell()):
+                        percent = 100.0 / size * f.tell()
+                        d.update(int(percent), message=channel)
+                        if not progress_callback(percent):
                             raise SourceUpdateCanceledException()
                     yield result
 
             root.clear()
         f.close()
+        d.update(100, message="Done")
+        d.close()
 
 
 class FileWrapper(object):

@@ -29,7 +29,7 @@ import xbmcvfs
 import xbmcgui
 import os
 import urllib2
-import datetime
+import datetime,time
 import zlib
 import requests
 import hashlib
@@ -124,20 +124,35 @@ class FileFetcher(object):
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 try:
-                    r = requests.get(self.fileUrl,auth=(user, password))
+                    r = requests.get(self.fileUrl,auth=(user, password), stream=True)
                     if r.status_code != requests.codes.ok:
                         xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
                         return self.FETCH_NOT_NEEDED
                 except Exception as detail:
                     xbmc.log('[script.tvguide.fullscreen] bad request: %s (%s)' % (self.fileUrl,detail), xbmc.LOGERROR)
                     return self.FETCH_NOT_NEEDED
+                total = int(requests.head(self.fileUrl,auth=(user, password)).headers['Content-Length'])
+                d = xbmcgui.DialogProgressBG()
+                title = self.fileUrl.split('/')[-1]
+                d.create('TV Guide Fullscreen', 'downloading %s' % title)
                 chunk_size = 16 * 1024
+                size = 0
+                oldtime = time.time()
                 if new_md5 and (self.addon.getSetting('md5') == 'true'):
                     md5 = hashlib.md5()
                     for chunk in r.iter_content(chunk_size):
                         f.write(chunk)
                         md5.update(chunk)
+                        size = size + chunk_size
+                        percent = 100.0 * size / total
+                        now = time.time()
+                        diff = now - oldtime
+                        if diff > 1:
+                            d.update(int(percent))
+                            oldtime = now
                     f.close()
+                    d.update(100, message="Done")
+                    d.close()
                     md5_file = md5.hexdigest()
                     if md5_file != new_md5:
                         xbmc.log('[script.tvguide.fullscreen] md5 mismatch: %s calculated:%s server:%s' % (self.fileUrl,md5_file,new_md5), xbmc.LOGERROR)
@@ -146,7 +161,16 @@ class FileFetcher(object):
                 else:
                     for chunk in r.iter_content(chunk_size):
                         f.write(chunk)
+                        size = size + chunk_size
+                        percent = 100.0 * size / total
+                        now = time.time()
+                        diff = now - oldtime
+                        if diff > 1:
+                            d.update(int(percent))
+                            oldtime = now
                     f.close()
+                    d.update(100, message="Done")
+                    d.close()
             if os.path.exists(self.filePath):
                 try:
                     os.remove(self.filePath)
