@@ -154,7 +154,8 @@
         <setting type="lsep" label="(OK this dialog and return after changing source)"/>
         <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|tvguide.co.uk now|yo.tv|yo.tv now|bbc" />
         <setting id="tvguide.co.uk.days" label="tvguide.co.uk Days" default="1" type="number"  visible="true"/>
-        <setting label="yo.tv Countries" type="action" visible="true" action="RunScript($CWD/yo.py, 1)"/>
+        <setting label="yo.tv Countries (OK Dialog After Selecting yo.tv Source)" type="action" visible="true" action="RunScript($CWD/yo.py, 1)"/>
+        <setting label="yo.tv Providers (OK Dialog After Selecting Countries)" type="action" visible="true" action="RunScript($CWD/yo.py, 2)"/>
         <setting type="lsep" label="SchedulesDirect"/>
         <setting id="sd.username" label="SD-Username" default="" type="text"  visible="false"/>
         <setting id="sd.password" label="SD-Password" default="" type="text" option="hidden" visible="false" />
