@@ -1920,10 +1920,16 @@ class TVGuide(xbmcgui.WindowXML):
         color = colors.color_name[name]
         focusColor = color
 
+        isPlaying = self.player.isPlaying()
         for program in programs:
             idx = channels.index(program.channel)
             if program.channel in channelsWithoutPrograms:
                 channelsWithoutPrograms.remove(program.channel)
+
+            if isPlaying and (self.currentChannel == channels[idx]):
+                channel_playing = True
+            else:
+                channel_playing = False
 
             startDelta = program.startDate - self.viewStartDate
             stopDelta = program.endDate - self.viewStartDate
@@ -1936,7 +1942,8 @@ class TVGuide(xbmcgui.WindowXML):
                 cellWidth = self.epgView.right - cellStart
 
             if cellWidth > 1:
-                if self.isProgramPlaying(program):
+                #if self.isProgramPlaying(program):
+                if channel_playing and not (program.autoplaywithScheduled or program.autoplayScheduled or program.notificationScheduled):
                     noFocusTexture = 'tvg-playing-nofocus.png'
                     focusTexture = 'tvg-playing-focus.png'
                 elif program.autoplaywithScheduled:
@@ -2118,10 +2125,16 @@ class TVGuide(xbmcgui.WindowXML):
         color = colors.color_name[name]
         focusColor = color
 
+        isPlaying = self.player.isPlaying()
         for program in programs:
             idx = channels.index(program.channel)
             if program.channel in channelsWithoutPrograms:
                 channelsWithoutPrograms.remove(program.channel)
+
+            if isPlaying and (self.currentChannel == channels[idx]):
+                channel_playing = True
+            else:
+                channel_playing = False
 
             startDelta = program.startDate - self.quickViewStartDate
             stopDelta = program.endDate - self.quickViewStartDate
@@ -2134,7 +2147,8 @@ class TVGuide(xbmcgui.WindowXML):
                 cellWidth = self.quickEpgView.right - cellStart
 
             if cellWidth > 1:
-                if self.isProgramPlaying(program):
+                #if self.isProgramPlaying(program):
+                if channel_playing and not (program.autoplaywithScheduled or program.autoplayScheduled or program.notificationScheduled):
                     noFocusTexture = 'tvg-playing-nofocus.png'
                     focusTexture = 'tvg-playing-focus.png'
                 elif program.autoplaywithScheduled:
