@@ -1819,14 +1819,18 @@ class TVGUKSource(Source):
         for channel in channels:
             channel_name = channel[1]
             number = channel[0]
-            while channel_name in channel_number:
-                channel_name = channel_name + " "
-            channel_number[number] = channel_name
+
             thumb = "http://my.tvguide.co.uk/channel_logos/60x35/%s.png" % number
             url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
             visible = False
             if number in visible_channels:
                 visible = True
+            if ADDON.getSetting("greedy") == 'true':
+                if not ('HD' in channel_name or '+1' in channel_name  or '+ 1' in channel_name or channel_name.startswith('ITV ')or channel_name.startswith('BBC1 ')or channel_name.startswith('BBC2 ')):
+                    visible = True
+            while channel_name in channel_number:
+                channel_name = channel_name + " "
+            channel_number[number] = channel_name
             c = Channel(number, channel_name, '', thumb, "", visible)
             yield c
             program = channel_name
