@@ -1836,6 +1836,8 @@ class TVGUKSource(Source):
             program = channel_name
             start = datetime.datetime.now()
             end = start + datetime.timedelta(hours=1)
+            #if visible:
+            #    visible_channels.append(number)
 
         elements_parsed = 0
         for id in visible_channels:
