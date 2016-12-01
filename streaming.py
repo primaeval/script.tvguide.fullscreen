@@ -115,17 +115,17 @@ class StreamsService(object):
                 if int(self.addon.getSetting('addon.match')) > 0:
                     labelx = re.sub(r' ','',label.lower())
                     title = re.sub(r' ','',channel.title.lower())
-                    title = re.sub(r'hd$','',title, flags=re.I)
-                    title = re.sub(r'london$','',title, flags=re.I)
-                    title = re.sub(r'england$','',title, flags=re.I)
+                    title = re.sub(re.compile(r'hd$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'london$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'england$',flags=re.I),'',title)
                     titleRe = r".*%s.*" % re.escape(title)
                     if re.match(titleRe,labelx):
                         sub_matches.append((id, label, stream))
                 if int(self.addon.getSetting('addon.match')) > 1:
                     title = re.sub(r' ','',channel.title.lower())
-                    title = re.sub(r'hd$','',title, flags=re.I)
-                    title = re.sub(r'london$','',title, flags=re.I)
-                    title = re.sub(r'england$','',title, flags=re.I)
+                    title = re.sub(re.compile(r'hd$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'london$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'england$',flags=re.I),'',title)
                     titleRe = r".*%s.*" % re.escape(title)
                     numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine" , "ten"]
                     for num in range(1,11):
