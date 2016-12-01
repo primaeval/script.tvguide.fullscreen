@@ -2307,8 +2307,14 @@ class YoNowSource(Source):
 
         country_ids = ADDON.getSetting("yo.countries").split(',')
         for country_id in country_ids:
-            html = self.get_url('http://%s.yo.tv/' % country_id)
-
+            #html = self.get_url('http://%s.yo.tv/' % country_id)
+            s = requests.Session()
+            headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}            
+            headend = ADDON.getSetting("yo.%s.headend" % country_id)
+            if headend:
+                r = s.get('http://%s.yo.tv/settings/headend/%s' % (country_id,headend),verify=False,stream=True,headers=headers)
+            r = s.get('http://%s.yo.tv/' % country_id,verify=False,stream=True,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
             channels = html.split('<li><a data-ajax="false"')
             channel_numbers = {}
             for channel in channels:
