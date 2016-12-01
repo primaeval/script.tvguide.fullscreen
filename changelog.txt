@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.206-207
+version 0.0.206-208
 - highlight all programs in currently playing channel
 - yo.tv temporary fix to add 1 day to program data
 
