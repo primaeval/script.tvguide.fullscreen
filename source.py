@@ -52,7 +52,7 @@ from resources.lib.pytz import timezone
 from sdAPI import SdAPI
 from utils import *
 
-SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder', 'logos.source', 'logos.folder', 'logos.url', 'source.source', 'yo.countries' ]
+SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder', 'logos.source', 'logos.folder', 'logos.url', 'source.source', 'yo.countries' , 'tvguide.co.uk.systemid']
 
 
 class Channel2(object):
@@ -1791,7 +1791,19 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
-        r = requests.get('http://www.tvguide.co.uk/')
+        systemid = {
+            "Popular":"7",
+            "Sky":"5",
+            "Virgin M+":"2",
+            "Virgin XL":"25",
+            "BT":"22",
+            "Freeview":"3",
+            "Virgin M":"27",
+            "Virgin L":"24",
+            "Freesat":"19",
+        }
+        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
+        r = requests.get('http://www.tvguide.co.uk/?systemid=%s' % id)
         html = r.text
 
         match = re.search(r'<select name="channelid">(.*?)</select>',html,flags=(re.DOTALL | re.MULTILINE))
@@ -1805,17 +1817,24 @@ class TVGUKSource(Source):
             visible_channels = ["86"]
         channel_number = {}
         for channel in channels:
-            name = channel[1]
+            channel_name = channel[1]
             number = channel[0]
-            channel_number[number] = name
+            if ADDON.getSetting('channel.tidy') == 'true':
+                channel_name = re.sub(" London","",channel_name)
+                channel_name = re.sub(" HDTV","",channel_name)
+                channel_name = re.sub(" HD","",channel_name)
+                channel_name = re.sub("HD$","",channel_name)
+            while channel_name in channel_number:
+                channel_name = channel_name + " "
+            channel_number[number] = channel_name
             thumb = "http://my.tvguide.co.uk/channel_logos/60x35/%s.png" % number
             url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
             visible = False
             if number in visible_channels:
                 visible = True
-            c = Channel(number, name, '', thumb, "", visible)
+            c = Channel(number, channel_name, '', thumb, "", visible)
             yield c
-            program = name
+            program = channel_name
             start = datetime.datetime.now()
             end = start + datetime.timedelta(hours=1)
 
@@ -1978,18 +1997,39 @@ class TVGUKNowSource(Source):
         @param progress_callback:
         @return:
         """
-        r = requests.get('http://www.tvguide.co.uk/mobile/')
+        systemid = {
+            "Popular":"7",
+            "Sky":"5",
+            "Virgin M+":"2",
+            "Virgin XL":"25",
+            "BT":"22",
+            "Freeview":"3",
+            "Virgin M":"27",
+            "Virgin L":"24",
+            "Freesat":"19",
+        }
+        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
+        r = requests.get('http://www.tvguide.co.uk/mobile/?systemid=%s' % id)
         html = r.text
 
         channels = html.split('<div class="div-channel-progs">')
 
+        channel_numbers = {}
         for channel in channels:
             img_url = ''
-            name = ''
+            channel_name = ''
             img_match = re.search(r'<img class="img-channel-logo" width="50" src="(.*?)"\s*?alt="(.*?) TV Listings" />', channel)
             if img_match:
                 img_url = img_match.group(1)
-                name = img_match.group(2)
+                orig_channel_name = img_match.group(2)
+                channel_name = orig_channel_name
+            if ADDON.getSetting('channel.tidy') == 'true':
+                channel_name = re.sub(" London","",channel_name)
+                channel_name = re.sub(" HDTV","",channel_name)
+                channel_name = re.sub(" HD","",channel_name)
+                channel_name = re.sub("HD$","",channel_name)
+            while channel_name in channel_numbers:
+                channel_name = channel_name + " "
 
             channel_number = '0'
             match = re.search(r'href="http://www\.tvguide\.co\.uk/mobile/channellisting\.asp\?ch=(.*?)"', channel)
@@ -1997,7 +2037,8 @@ class TVGUKNowSource(Source):
                 channel_number=match.group(1)
             else:
                 continue
-            c = Channel(name, name, '', img_url, "", True)
+            channel_numbers[channel_number] = channel_name
+            c = Channel(channel_number, channel_name, '', img_url, "", True)
             yield c
             start = ''
             program = ''
@@ -2140,10 +2181,11 @@ class YoSource(Source):
                     channel_number = name_match.group(1)
                     orig_channel_name = name_match.group(2)
                     channel_name = re.sub("_"," ",orig_channel_name)
-                    channel_name = re.sub(" london","",channel_name)
-                    channel_name = re.sub(" hdtv","",channel_name)
-                    channel_name = re.sub(" hd","",channel_name)
-                    channel_name = re.sub("hd$","",channel_name)
+                    if ADDON.getSetting('channel.tidy') == 'true':
+                        channel_name = re.sub(" london","",channel_name)
+                        channel_name = re.sub(" hdtv","",channel_name)
+                        channel_name = re.sub(" hd","",channel_name)
+                        channel_name = re.sub("hd$","",channel_name)
                     while channel_name in channel_numbers:
                         channel_name = "%s " % channel_name
                     channel_numbers[channel_name] = channel_number
@@ -2334,10 +2376,11 @@ class YoNowSource(Source):
                 if name_match:
                     channel_number = name_match.group(1)
                     channel_name = re.sub("_"," ",name_match.group(2))
-                    channel_name = re.sub(" london","",channel_name)
-                    channel_name = re.sub(" hdtv","",channel_name)
-                    channel_name = re.sub(" hd","",channel_name)
-                    channel_name = re.sub("hd$","",channel_name)
+                    if ADDON.getSetting('channel.tidy') == 'true':
+                        channel_name = re.sub(" london","",channel_name)
+                        channel_name = re.sub(" hdtv","",channel_name)
+                        channel_name = re.sub(" hd","",channel_name)
+                        channel_name = re.sub("hd$","",channel_name)
                     while channel_name in channel_numbers:
                         channel_name = "%s " % channel_name
                     channel_numbers[channel_name] = channel_number
