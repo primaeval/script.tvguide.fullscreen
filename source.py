@@ -2725,7 +2725,11 @@ class BBCSource(Source):
         return update
 
     def parseXMLTVDate(self, origDateString):
-        t = datetime.datetime.strptime(origDateString, '%Y%m%d%H%M%S')
+        #BUG http://forum.kodi.tv/showthread.php?tid=112916
+        try:
+            t = datetime.datetime.strptime(origDateString, '%Y%m%d%H%M%S')
+        except TypeError:
+            t = datetime.datetime(*(time.strptime(origDateString, '%Y%m%d%H%M%S')[0:6]))
 
         # get the local timezone offset in seconds
         is_dst = time.daylight and time.localtime().tm_isdst > 0
