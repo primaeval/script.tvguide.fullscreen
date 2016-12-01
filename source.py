@@ -2140,8 +2140,12 @@ class YoSource(Source):
                     channel_number = name_match.group(1)
                     orig_channel_name = name_match.group(2)
                     channel_name = re.sub("_"," ",orig_channel_name)
-                    if channel_name in channel_numbers:
-                        channel_name = "%s." % channel_name
+                    channel_name = re.sub(" london","",channel_name)
+                    channel_name = re.sub(" hdtv","",channel_name)
+                    channel_name = re.sub(" hd","",channel_name)
+                    channel_name = re.sub("hd$","",channel_name)
+                    while channel_name in channel_numbers:
+                        channel_name = "%s " % channel_name
                     channel_numbers[channel_name] = channel_number
                     visible = False
                     if channel_number in visible_channels:
@@ -2309,7 +2313,7 @@ class YoNowSource(Source):
         for country_id in country_ids:
             #html = self.get_url('http://%s.yo.tv/' % country_id)
             s = requests.Session()
-            headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}            
+            headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
             headend = ADDON.getSetting("yo.%s.headend" % country_id)
             if headend:
                 r = s.get('http://%s.yo.tv/settings/headend/%s' % (country_id,headend),verify=False,stream=True,headers=headers)
@@ -2330,8 +2334,12 @@ class YoNowSource(Source):
                 if name_match:
                     channel_number = name_match.group(1)
                     channel_name = re.sub("_"," ",name_match.group(2))
-                    if channel_name in channel_numbers:
-                        channel_name = "%s." % channel_name
+                    channel_name = re.sub(" london","",channel_name)
+                    channel_name = re.sub(" hdtv","",channel_name)
+                    channel_name = re.sub(" hd","",channel_name)
+                    channel_name = re.sub("hd$","",channel_name)
+                    while channel_name in channel_numbers:
+                        channel_name = "%s " % channel_name
                     channel_numbers[channel_name] = channel_number
                     c = Channel(channel_number, channel_name, '', img_url, "", True)
                     yield c
