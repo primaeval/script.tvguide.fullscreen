@@ -1926,7 +1926,7 @@ class TVGuide(xbmcgui.WindowXML):
             if program.channel in channelsWithoutPrograms:
                 channelsWithoutPrograms.remove(program.channel)
 
-            if isPlaying and (self.currentChannel == channels[idx]):
+            if isPlaying and self.currentChannel and (self.currentChannel == channels[idx]):
                 channel_playing = True
             else:
                 channel_playing = False
