@@ -153,7 +153,6 @@
         <setting type="lsep" label="Experimental Alternative Data Sources"/>
         <setting type="lsep" label="(OK this dialog and return after changing source)"/>
         <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|tvguide.co.uk now|yo.tv|yo.tv now|bbc" />
-        <setting id="channel.tidy" label="Tidy Channel Names (hd, hdtv, london)" default="false" type="bool" />
         <setting id="tvguide.co.uk.days" label="tvguide.co.uk Days" default="1" type="number"  visible="true"/>
         <setting id="tvguide.co.uk.systemid" label="tvguide.co.uk Provider" default="Sky" type="select"  visible="true" values="BT|Freeview|Freesat|Popular|Sky|Virgin M|Virgin L|Virgin M+|Virgin XL" />
         <setting label="yo.tv Countries (OK Dialog After Selecting yo.tv Source)" type="action" visible="true" action="RunScript($CWD/yo.py, 1)"/>

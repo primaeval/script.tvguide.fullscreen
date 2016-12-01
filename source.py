@@ -1819,11 +1819,6 @@ class TVGUKSource(Source):
         for channel in channels:
             channel_name = channel[1]
             number = channel[0]
-            if ADDON.getSetting('channel.tidy') == 'true':
-                channel_name = re.sub(" London","",channel_name)
-                channel_name = re.sub(" HDTV","",channel_name)
-                channel_name = re.sub(" HD","",channel_name)
-                channel_name = re.sub("HD$","",channel_name)
             while channel_name in channel_number:
                 channel_name = channel_name + " "
             channel_number[number] = channel_name
@@ -2023,11 +2018,6 @@ class TVGUKNowSource(Source):
                 img_url = img_match.group(1)
                 orig_channel_name = img_match.group(2)
                 channel_name = orig_channel_name
-            if ADDON.getSetting('channel.tidy') == 'true':
-                channel_name = re.sub(" London","",channel_name)
-                channel_name = re.sub(" HDTV","",channel_name)
-                channel_name = re.sub(" HD","",channel_name)
-                channel_name = re.sub("HD$","",channel_name)
             while channel_name in channel_numbers:
                 channel_name = channel_name + " "
 
@@ -2181,11 +2171,6 @@ class YoSource(Source):
                     channel_number = name_match.group(1)
                     orig_channel_name = name_match.group(2)
                     channel_name = re.sub("_"," ",orig_channel_name)
-                    if ADDON.getSetting('channel.tidy') == 'true':
-                        channel_name = re.sub(" london","",channel_name)
-                        channel_name = re.sub(" hdtv","",channel_name)
-                        channel_name = re.sub(" hd","",channel_name)
-                        channel_name = re.sub("hd$","",channel_name)
                     while channel_name in channel_numbers:
                         channel_name = "%s " % channel_name
                     channel_numbers[channel_name] = channel_number
@@ -2376,11 +2361,6 @@ class YoNowSource(Source):
                 if name_match:
                     channel_number = name_match.group(1)
                     channel_name = re.sub("_"," ",name_match.group(2))
-                    if ADDON.getSetting('channel.tidy') == 'true':
-                        channel_name = re.sub(" london","",channel_name)
-                        channel_name = re.sub(" hdtv","",channel_name)
-                        channel_name = re.sub(" hd","",channel_name)
-                        channel_name = re.sub("hd$","",channel_name)
                     while channel_name in channel_numbers:
                         channel_name = "%s " % channel_name
                     channel_numbers[channel_name] = channel_number
