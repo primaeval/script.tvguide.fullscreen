@@ -2046,6 +2046,7 @@ class TVGUKNowSource(Source):
             if match:
                 #TODO fix around midnight
                 now = datetime.datetime.now()
+                tomorrow = now + datetime.timedelta(days=1)
                 year = now.year
                 month = now.month
                 day = now.day
@@ -2070,6 +2071,10 @@ class TVGUKNowSource(Source):
                 match = re.search('<img.*?>&nbsp;(.*)',after_program)
                 if match:
                     after_program = match.group(1)
+                if after_start.replace(tzinfo=None) > tomorrow:
+                    start = start - datetime.timedelta(days=1)
+                    next_start = next_start - datetime.timedelta(days=1)
+                    after_start = after_start - datetime.timedelta(days=1)
                 yield Program(c, program, start, next_start, "", imageSmall="",
                      season = "", episode = "", is_movie = "", language= "")
                 yield Program(c, next_program, next_start, after_start, "", imageSmall="",
@@ -2239,6 +2244,17 @@ class YoSource(Source):
                         if start:
                             programs.append((title,start,plot,season,episode,thumb))
 
+                    '''
+                    tomorrow = datetime.datetime.now().replace(hour=0,minute=0,second=0) + datetime.timedelta(days=1)
+                    xbmc.log(repr(tomorrow))
+                    xbmc.log(repr(programs[0]))
+                    if programs[0][1].replace(tzinfo=None) > tomorrow:
+                        #log("OFFSET")
+                        offset =  datetime.timedelta(days=1)
+                    else:
+                        offset = None
+                    '''
+                    offset = None
                     last_start = datetime.datetime.now() - datetime.timedelta(days=7)
                     for index in range(len(programs)):
                         (title,start,plot,season,episode,thumb) = programs[index]
@@ -2251,6 +2267,9 @@ class YoSource(Source):
                             end = start + datetime.timedelta(hours=1,minutes=6)
                         while (end < start):
                             end = end  + datetime.timedelta(days=1)
+                        if offset:
+                            start = start - offset
+                            end = end - offset
                         yield Program(channel_number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
                     elements_parsed += 1
@@ -2381,6 +2400,7 @@ class YoNowSource(Source):
                 match = re.search(r'<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>', channel,flags=(re.DOTALL | re.MULTILINE))
                 if match:
                     now = datetime.datetime.now()
+                    tomorrow = now + datetime.timedelta(days=1)
                     year = now.year
                     month = now.month
                     day = now.day
@@ -2394,6 +2414,10 @@ class YoNowSource(Source):
                     if after_start < start:
                         after_start = after_start + datetime.timedelta(days=1)
                     after_program = match.group(6)
+                    if after_start.replace(tzinfo=None) > tomorrow:
+                        start = start - datetime.timedelta(days=1)
+                        next_start = next_start - datetime.timedelta(days=1)
+                        after_start = after_start - datetime.timedelta(days=1)
                     yield Program(c, program, start, next_start, "", imageSmall="",
                          season = "", episode = "", is_movie = "", language= "")
                     yield Program(c, next_program, next_start, after_start, "", imageSmall="",
