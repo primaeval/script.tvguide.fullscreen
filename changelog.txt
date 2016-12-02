@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
-version 0.0.212
+version 0.0.212-213
 - OMDb images and missing plot
 
 version 0.0.211
