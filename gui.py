@@ -345,7 +345,10 @@ class TVGuide(xbmcgui.WindowXML):
                     self.player.stop()
 
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle','wb')
-            pickle.dump(self.tvdb_urls,f)
+            try:
+                pickle.dump(self.tvdb_urls,f)
+            except:
+                pass
             f.close()
 
             file_name = 'special://profile/addon_data/script.tvguide.fullscreen/custom_stream_urls_autosave.ini'
