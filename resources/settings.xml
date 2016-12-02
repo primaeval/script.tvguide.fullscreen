@@ -138,12 +138,13 @@
         <setting label="Reset Everything" type="action" action="RunScript($CWD/ResetDatabase.py, 2)" />
     </category>
     <category label="Lab1">
-        <setting id="omdb" label="OMDb Image and Plot if Missing" type="bool" default="false" />
+        <setting id="omdb" label="OMDb Image and Plot if Missing" type="bool" enable="eq(2,false)" default="false" />
         <setting type="sep"/>
-        <setting id="tvdb.banners" label="Search IMDB/TVDB for Program Images" type="bool" default="false" />
-        <setting id="tvdb.match" label="TVDB Matching" type="enum" default="1" values="Exact|Containing|Any"/>
-        <setting id="imdb.match" label="IMDB Matching" type="enum" default="1" values="Exact|Containing|Any"/>
-        <setting label="Clear Image Match Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 3)" />
+        <setting id="tvdb.banners" label="Search IMDB/TVDB for Program Images" enable="eq(-2,false)" type="bool" default="false" />
+        <setting id="tvdb.match" label="TVDB Matching" type="enum" default="1" enable="eq(-1,true)" values="Exact|Containing|Any"/>
+        <setting id="imdb.match" label="IMDB Matching" type="enum" default="1" enable="eq(-2,true)" values="Exact|Containing|Any"/>
+        <setting label="Clear IMDB/TVDB Image Match Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 3)" />
+        <setting type="sep"/>
         <setting id="program.image" label="Use Program Image from Source" type="bool" default="true" />
         <setting type="sep"/>
         <setting id="program.channel.logo" label="Fall back to Channel Logo for Program Image" type="bool" default="false" />

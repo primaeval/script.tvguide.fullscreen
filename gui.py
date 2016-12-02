@@ -1262,7 +1262,7 @@ class TVGuide(xbmcgui.WindowXML):
                     year = match.group(2)
                 threading.Thread(target=self.getOMDbInfo,args=(program.title,title,year,season,episode)).start()
 
-            if not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
+            elif not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
                 match = re.search('(.*?) \(([0-9]{4})\)',program.title)
                 if match:
                     movie = match.group(1)
