@@ -1251,7 +1251,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.imageLarge:
                     program_image = program.imageLarge
 
-            if ADDON.getSetting('omdb') == 'true':
+            if not program_image and ADDON.getSetting('omdb') == 'true':
                 title = program.title
                 year = ''
                 season = program.season
