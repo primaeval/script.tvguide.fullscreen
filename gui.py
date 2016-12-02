@@ -1251,6 +1251,18 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.imageLarge:
                     program_image = program.imageLarge
 
+            if not program_image: #TODO
+                title = program.title
+                year = ''
+                season = program.season
+                episode = program.episode
+                movie = program.is_movie
+                match = re.search('(.*?) \(([0-9]{4})\)',program.title)
+                if match:
+                    title = match.group(1)
+                    year = match.group(2)
+                threading.Thread(target=self.getImage,args=(program.title,title,year,season,episode,movie)).start()
+
             if not program_image and ADDON.getSetting('omdb') == 'true':
                 title = program.title
                 year = ''
@@ -1320,6 +1332,77 @@ class TVGuide(xbmcgui.WindowXML):
             #if not self.osdEnabled and self.player.isPlaying():
             #    self.player.stop()
 
+    def getImage(self,program_title,title,year,season,episode,movie):
+        log((program_title,title,year,season,episode,movie))
+        if year:
+            url = 'http://www.omdbapi.com/?t=%s&y=%s&plot=short&r=json&type=movie' % (urllib.quote_plus(title),year)
+        elif movie:
+            url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=movie' % (urllib.quote_plus(title))
+        elif season and episode:
+            url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=episode&Season=%s&Episode=%s' % (urllib.quote_plus(title),season,episode)
+        else:
+            url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
+        data = requests.get(url).content
+        #log(data)
+        j = json.loads(data)
+        if j['Response'] != 'False':
+            img = j.get('Poster','')
+            plot = j.get('Plot','')
+            imdbID = j.get('imdbID','')
+            if plot == 'N/A':
+                plot = ''
+            if img == 'N/A':
+                img = ''
+            if imdbID == 'N/A':
+                imdbID = ''
+        else:
+            log(("omdb nothing",program_title))
+            if not (year or movie):
+                self.getTVDBImage(program_title, season, episode)
+            else:
+                self.getIMDBImage(title, year)
+            return
+
+
+        if img:
+            log(("omdb",img))
+            #return img
+
+        if not img and imdbID:
+            log(("ib",imdbID))
+            url = 'http://www.imdb.com/title/%s/' % imdbID
+            headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+            html = requests.get(url,headers=headers).content
+            match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
+            if match:
+                img = match.group(1)
+                log(("imdb",img))
+                img = re.sub(r'S[XY].*_.jpg','SY240_.jpg',img)
+                return
+
+            if not movie:
+                tvdb_url = "http://thetvdb.com//api/GetSeriesByRemoteID.php?imdbid=%s" % imdbID
+                r = requests.get(tvdb_url)
+                tvdb_html = r.text
+                tvdb_match = re.search(re.compile(r'<seriesid>(.*?)</seriesid>', flags=(re.DOTALL | re.MULTILINE)), tvdb_html)
+                if tvdb_match:
+                    tvdb_id = tvdb_match.group(1)
+                    url = 'http://thetvdb.com/?tab=series&id=%s' % tvdb_id
+                    html = requests.get(url).content
+                    match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
+                    if match:
+                        tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
+                        log(("tvdb",img))
+                        return tvdb_url
+
+        if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == program_title):
+            if img:
+                self.setControlImage(self.C_MAIN_IMAGE, img)
+            if plot and not self.focusedProgram.description:
+                self.setControlText(self.C_MAIN_DESCRIPTION, plot)
+        log(("none",program_title))
+
+
     def getOMDbInfo(self,program_title,title,year,season,episode):
         if year:
             url = 'http://www.omdbapi.com/?t=%s&y=%s&plot=short&r=json&type=movie' % (urllib.quote_plus(title),year)
@@ -1344,6 +1427,7 @@ class TVGuide(xbmcgui.WindowXML):
             if plot and not self.focusedProgram.description:
                 self.setControlText(self.C_MAIN_DESCRIPTION, plot)
         if img:
+            log(("getOMDbInfo",img))
             return img
 
 
@@ -1382,6 +1466,7 @@ class TVGuide(xbmcgui.WindowXML):
                 match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
                 if match:
                     tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
+                    log(("getTVDBImage",tvdb_url))
             else:
                 tvdb_url = self.getOMDbInfo(orig_title,orig_title,'',season,episode)
                 if tvdb_url and title not in self.tvdb_urls:
@@ -1431,6 +1516,7 @@ class TVGuide(xbmcgui.WindowXML):
                 match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
                 if match:
                     tvdb_url = match.group(1)
+                    log(("getIMDBImage",tvdb_url))
                     tvdb_url = re.sub(r'S[XY].*_.jpg','SY240_.jpg',tvdb_url)
             else:
                 tvdb_url = self.getOMDbInfo(orig_title,title,year,'','')
