@@ -159,7 +159,6 @@
         <setting id="tvguide.co.uk.systemid" label="tvguide.co.uk Provider" default="Sky" type="select"  visible="true" values="BT|Freeview|Freesat|Popular|Sky|Virgin M|Virgin L|Virgin M+|Virgin XL" />
         <setting label="yo.tv Countries (OK Dialog After Selecting yo.tv Source)" type="action" visible="true" action="RunScript($CWD/yo.py, 1)"/>
         <setting label="yo.tv Providers (OK Dialog After Selecting Countries)" type="action" visible="true" action="RunScript($CWD/yo.py, 2)"/>
-        <setting label="yo.tv Add 1 Day to Progam Time (temp fix)" id="yo.tv.timewarp" type="bool" visible="true" default="false"/>
         <setting type="lsep" label="SchedulesDirect"/>
         <setting id="sd.username" label="SD-Username" default="" type="text"  visible="false"/>
         <setting id="sd.password" label="SD-Password" default="" type="text" option="hidden" visible="false" />

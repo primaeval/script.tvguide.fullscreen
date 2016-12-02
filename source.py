@@ -2251,9 +2251,6 @@ class YoSource(Source):
                             end = start + datetime.timedelta(hours=1,minutes=6)
                         while (end < start):
                             end = end  + datetime.timedelta(days=1)
-                        if ADDON.getSetting('yo.tv.timewarp') == 'true':
-                            start = start  + datetime.timedelta(days=1)
-                            end = end  + datetime.timedelta(days=1)
                         yield Program(channel_number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
                     elements_parsed += 1
