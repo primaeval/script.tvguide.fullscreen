@@ -138,6 +138,7 @@
         <setting label="Reset Everything" type="action" action="RunScript($CWD/ResetDatabase.py, 2)" />
     </category>
     <category label="Lab1">
+        <setting id="omdb" label="OMDb Image and Plot if Missing" type="bool" default="false" />
         <setting type="sep"/>
         <setting id="tvdb.banners" label="Search IMDB/TVDB for Program Images" type="bool" default="false" />
         <setting id="tvdb.match" label="TVDB Matching" type="enum" default="1" values="Exact|Containing|Any"/>

@@ -1251,6 +1251,17 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.imageLarge:
                     program_image = program.imageLarge
 
+            if ADDON.getSetting('omdb') == 'true':
+                title = program.title
+                year = ''
+                season = program.season
+                episode = program.episode
+                match = re.search('(.*?) \(([0-9]{4})\)',program.title)
+                if match:
+                    title = match.group(1)
+                    year = match.group(2)
+                threading.Thread(target=self.getOMDbInfo,args=(program.title,title,year,season,episode)).start()
+
             if not program_image and (ADDON.getSetting('tvdb.banners') == 'true'):
                 match = re.search('(.*?) \(([0-9]{4})\)',program.title)
                 if match:
@@ -1308,6 +1319,33 @@ class TVGuide(xbmcgui.WindowXML):
 
             #if not self.osdEnabled and self.player.isPlaying():
             #    self.player.stop()
+
+    def getOMDbInfo(self,program_title,title,year,season,episode):
+        if year:
+            url = 'http://www.omdbapi.com/?t=%s&y=%s&plot=short&r=json&type=movie' % (urllib.quote_plus(title),year)
+        elif season and episode:
+            url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=episode&Season=%s&Episode=%s' % (urllib.quote_plus(title),season,episode)
+        else:
+            url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
+        data = requests.get(url).content
+        j = json.loads(data)
+        #log(j)
+        if j['Response'] == 'False':
+            return
+
+        img = j.get('Poster','')
+        plot = j.get('Plot','')
+        if plot == 'N/A':
+            plot = ''
+        if img == 'N/A':
+            img = ''
+
+        if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == program_title):
+            if img:
+                self.setControlImage(self.C_MAIN_IMAGE, img)
+            if plot and not self.focusedProgram.description:
+                self.setControlText(self.C_MAIN_DESCRIPTION, plot)
+
 
     def getTVDBImage(self, title):
         try: title = title.encode("utf8")
