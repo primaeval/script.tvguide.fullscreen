@@ -261,7 +261,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.player = xbmc.Player()
         self.database = None
         self.tvdb_urls = {}
-        self.loadTVDBImages()
+        #DEBUG self.loadTVDBImages()
 
         self.mode = MODE_EPG
         self.currentChannel = None
@@ -1251,18 +1251,21 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.imageLarge:
                     program_image = program.imageLarge
 
-            '''
-            if not program_image: #TODO
-                title = program.title
-                year = ''
-                season = program.season
-                episode = program.episode
-                movie = program.is_movie
-                match = re.search('(.*?) \(([0-9]{4})\)',program.title)
-                if match:
-                    title = match.group(1)
-                    year = match.group(2)
-                threading.Thread(target=self.getImage,args=(program.title,title,year,season,episode,movie)).start()
+
+            if not program_image and ADDON.getSetting('find.program.images') == 'true': #TODO
+                if program.title in self.tvdb_urls:
+                    program_image = self.tvdb_urls[program.title]
+                else:
+                    title = program.title
+                    year = ''
+                    season = program.season
+                    episode = program.episode
+                    movie = program.is_movie
+                    match = re.search('(.*?) \(([0-9]{4})\)',program.title)
+                    if match:
+                        title = match.group(1)
+                        year = match.group(2)
+                    threading.Thread(target=self.getImage,args=(program.title,title,year,season,episode,movie)).start()
             '''
             if not program_image and ADDON.getSetting('omdb') == 'true':
                 title = program.title
@@ -1302,7 +1305,7 @@ class TVGuide(xbmcgui.WindowXML):
                                 t1.start()
                             except thread.error as detail:
                                xbmc.log( "Error: unable to start thread: %s" % detail , xbmc.LOGERROR)
-
+            '''
             if not program_image and (ADDON.getSetting('program.channel.logo') == "true"):
                 program_image = program.channel.logo
             if not program_image:
@@ -1379,10 +1382,10 @@ class TVGuide(xbmcgui.WindowXML):
                 img = match.group(1)
                 log(("imdb",img))
                 img = re.sub(r'S[XY].*_.jpg','SY240_.jpg',img)
-                return
+                #return
 
             if not movie:
-                tvdb_url = "http://thetvdb.com//api/GetSeriesByRemoteID.php?imdbid=%s" % imdbID
+                tvdb_url = "http://thetvdb.com/api/GetSeriesByRemoteID.php?imdbid=%s" % imdbID
                 r = requests.get(tvdb_url)
                 tvdb_html = r.text
                 tvdb_match = re.search(re.compile(r'<seriesid>(.*?)</seriesid>', flags=(re.DOTALL | re.MULTILINE)), tvdb_html)
@@ -1392,9 +1395,12 @@ class TVGuide(xbmcgui.WindowXML):
                     html = requests.get(url).content
                     match = re.search('<img src="(/banners/_cache/fanart/original/.*?\.jpg)"',html)
                     if match:
-                        tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
+                        img = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
                         log(("tvdb",img))
-                        return tvdb_url
+                        #return tvdb_url
+
+        if img:
+            self.tvdb_urls[program_title] = img
 
         if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == program_title):
             if img:
@@ -1433,6 +1439,7 @@ class TVGuide(xbmcgui.WindowXML):
 
 
     def getTVDBImage(self, title, season, episode):
+        log(("getTVDBImage", title, season, episode))
         orig_title = title
         try: title = title.encode("utf8")
         except: title = unicode(title)
@@ -1468,11 +1475,11 @@ class TVGuide(xbmcgui.WindowXML):
                 if match:
                     tvdb_url = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
                     log(("getTVDBImage",tvdb_url))
-            else:
-                tvdb_url = self.getOMDbInfo(orig_title,orig_title,'',season,episode)
-                if tvdb_url and title not in self.tvdb_urls:
-                    self.tvdb_urls[title] = tvdb_url
-                return
+            #else:
+                #tvdb_url = self.getOMDbInfo(orig_title,orig_title,'',season,episode)
+                #if tvdb_url and title not in self.tvdb_urls:
+                #    self.tvdb_urls[title] = tvdb_url
+                #return
         if title not in self.tvdb_urls:
             self.tvdb_urls[title] = tvdb_url
         if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
@@ -1519,10 +1526,10 @@ class TVGuide(xbmcgui.WindowXML):
                     tvdb_url = match.group(1)
                     log(("getIMDBImage",tvdb_url))
                     tvdb_url = re.sub(r'S[XY].*_.jpg','SY240_.jpg',tvdb_url)
-            else:
-                tvdb_url = self.getOMDbInfo(orig_title,title,year,'','')
-                if tvdb_url and title not in self.tvdb_urls:
-                    self.tvdb_urls[title] = tvdb_url
+            #else:
+                #tvdb_url = self.getOMDbInfo(orig_title,title,year,'','')
+                #if tvdb_url and title not in self.tvdb_urls:
+                #    self.tvdb_urls[title] = tvdb_url
         if orig_title not in self.tvdb_urls:
             self.tvdb_urls[orig_title] = tvdb_url
         if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == utf_title):
