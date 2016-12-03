@@ -1251,6 +1251,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.imageLarge:
                     program_image = program.imageLarge
 
+            '''
             if not program_image: #TODO
                 title = program.title
                 year = ''
@@ -1262,7 +1263,7 @@ class TVGuide(xbmcgui.WindowXML):
                     title = match.group(1)
                     year = match.group(2)
                 threading.Thread(target=self.getImage,args=(program.title,title,year,season,episode,movie)).start()
-
+            '''
             if not program_image and ADDON.getSetting('omdb') == 'true':
                 title = program.title
                 year = ''

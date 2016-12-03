@@ -1905,6 +1905,12 @@ class TVGUKSource(Source):
                         start = self.local_time(ttime,year,mon[month],day)
                         programs.append((title,start,plot,season,episode,thumb))
 
+            offset = None
+            if programs:
+                diff = programs[0][1].replace(tzinfo=None) - datetime.datetime.now()
+                if diff > datetime.timedelta(hours=0):
+                    offset =  datetime.timedelta(days=1)
+
             last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
             for index in range(len(programs)):
                 (title,start,plot,season,episode,thumb) = programs[index]
@@ -1917,6 +1923,9 @@ class TVGUKSource(Source):
                     end = start + datetime.timedelta(hours=1,minutes=6)
                 if end < start:
                     end = end  + datetime.timedelta(days=1)
+                if offset:
+                    start = start - offset
+                    end = end - offset
                 yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
 
             elements_parsed += 1
@@ -2244,17 +2253,12 @@ class YoSource(Source):
                         if start:
                             programs.append((title,start,plot,season,episode,thumb))
 
-                    '''
-                    tomorrow = datetime.datetime.now().replace(hour=0,minute=0,second=0) + datetime.timedelta(days=1)
-                    xbmc.log(repr(tomorrow))
-                    xbmc.log(repr(programs[0]))
-                    if programs[0][1].replace(tzinfo=None) > tomorrow:
-                        #log("OFFSET")
-                        offset =  datetime.timedelta(days=1)
-                    else:
-                        offset = None
-                    '''
-                    offset = None
+                    offset = 0
+                    if programs:
+                        diff = programs[0][1].replace(tzinfo=None) - datetime.datetime.now()
+                        if diff > datetime.timedelta(hours=0):
+                            offset =  datetime.timedelta(days=1)
+
                     last_start = datetime.datetime.now() - datetime.timedelta(days=7)
                     for index in range(len(programs)):
                         (title,start,plot,season,episode,thumb) = programs[index]
