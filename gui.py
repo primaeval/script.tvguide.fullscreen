@@ -3837,11 +3837,13 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             addonStreams = streams[addonId]
             for name in sorted(addonStreams):
                 stream = addonStreams[name]
-                if name.startswith(' '):
-                    continue
+                #if name.startswith(' '):
+                #    continue
+                name = name.lstrip()
                 name = re.sub(r'[:=]',' ',name)
                 if not stream:
                     stream = 'nothing'
+                stream = re.sub('plugin ://','plugin://',stream)
                 write_str = "%s=%s\n" % (name,stream)
                 f.write(write_str)
         f.close()
