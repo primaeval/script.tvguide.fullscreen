@@ -261,7 +261,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.player = xbmc.Player()
         self.database = None
         self.tvdb_urls = {}
-        #DEBUG self.loadTVDBImages()
+        self.loadTVDBImages()
 
         self.mode = MODE_EPG
         self.currentChannel = None
@@ -1464,7 +1464,7 @@ class TVGuide(xbmcgui.WindowXML):
                 match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
                 if match:
                     tvdb_url = match.group(1)
-                    #tvdb_url = re.sub(r'S[XY].*_.jpg','SY240_.jpg',tvdb_url)
+                    tvdb_url = re.sub(r'S[XY].*_.jpg','SY240_.jpg',tvdb_url)
 
         if orig_title not in self.tvdb_urls:
             self.tvdb_urls[orig_title] = tvdb_url
