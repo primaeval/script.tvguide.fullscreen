@@ -1251,8 +1251,18 @@ class TVGuide(xbmcgui.WindowXML):
                 if program.imageLarge:
                     program_image = program.imageLarge
 
+            if not program_image and ADDON.getSetting('omdb') == 'true':
+                title = program.title
+                year = ''
+                season = program.season
+                episode = program.episode
+                match = re.search('(.*?) \(([0-9]{4})\)',program.title)
+                if match:
+                    title = match.group(1)
+                    year = match.group(2)
+                threading.Thread(target=self.getOMDbInfo,args=(program.title,title,year,season,episode)).start()
 
-            if not program_image and ADDON.getSetting('find.program.images') == 'true': #TODO
+            elif not program_image and ADDON.getSetting('find.program.images') == 'true': #TODO
                 if program.title in self.tvdb_urls:
                     program_image = self.tvdb_urls[program.title]
                 else:
@@ -1372,7 +1382,10 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
         data = requests.get(url).content
-        j = json.loads(data)
+        try:
+            j = json.loads(data)
+        except:
+            return
         if j['Response'] == 'False':
             return
         img = j.get('Poster','')
