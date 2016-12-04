@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.216
+- handle server compression
+
 version 0.0.214-215
 - combined program image search in Settings \ Lab1 \ Find Program Images from OMDb/TVDb/IMDb
 - fix for yo.tv & tvguide.co.uk around midnight wrong day error
