@@ -35,7 +35,6 @@ import requests
 import hashlib
 
 
-
 class FileFetcher(object):
     INTERVAL_ALWAYS = 0
     INTERVAL_12 = 1
@@ -123,15 +122,18 @@ class FileFetcher(object):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
+                total = 0
                 try:
                     r = requests.get(self.fileUrl,auth=(user, password), stream=True)
                     if r.status_code != requests.codes.ok:
                         xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
                         return self.FETCH_NOT_NEEDED
+                    if "Content-Length" in r.headers:
+                        total = int(r.headers['Content-Length'])
                 except Exception as detail:
                     xbmc.log('[script.tvguide.fullscreen] bad request: %s (%s)' % (self.fileUrl,detail), xbmc.LOGERROR)
                     return self.FETCH_NOT_NEEDED
-                total = int(requests.head(self.fileUrl,auth=(user, password)).headers['Content-Length'])
+
                 d = xbmcgui.DialogProgressBG()
                 title = self.fileUrl.split('/')[-1]
                 d.create('TV Guide Fullscreen', 'downloading %s' % title)
@@ -144,12 +146,13 @@ class FileFetcher(object):
                         f.write(chunk)
                         md5.update(chunk)
                         size = size + chunk_size
-                        percent = 100.0 * size / total
-                        now = time.time()
-                        diff = now - oldtime
-                        if diff > 1:
-                            d.update(int(percent))
-                            oldtime = now
+                        if total:
+                            percent = 100.0 * size / total
+                            now = time.time()
+                            diff = now - oldtime
+                            if diff > 1:
+                                d.update(int(percent))
+                                oldtime = now
                     f.close()
                     d.update(100, message="Done")
                     d.close()
@@ -162,12 +165,13 @@ class FileFetcher(object):
                     for chunk in r.iter_content(chunk_size):
                         f.write(chunk)
                         size = size + chunk_size
-                        percent = 100.0 * size / total
-                        now = time.time()
-                        diff = now - oldtime
-                        if diff > 1:
-                            d.update(int(percent))
-                            oldtime = now
+                        if total:
+                            percent = 100.0 * size / total
+                            now = time.time()
+                            diff = now - oldtime
+                            if diff > 1:
+                                d.update(int(percent))
+                                oldtime = now
                     f.close()
                     d.update(100, message="Done")
                     d.close()

@@ -1307,17 +1307,24 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
         data = requests.get(url).content
-        j = json.loads(data)
-        if j['Response'] != 'False':
-            img = j.get('Poster','')
-            plot = j.get('Plot','')
-            imdbID = j.get('imdbID','')
-            if plot == 'N/A':
-                plot = ''
-            if img == 'N/A':
-                img = ''
-            if imdbID == 'N/A':
-                imdbID = ''
+        img = ''
+        imdbID = ''
+        plot = ''
+        if data:
+            try:
+                j = json.loads(data)
+                if j['Response'] != 'False':
+                    img = j.get('Poster','')
+                    plot = j.get('Plot','')
+                    imdbID = j.get('imdbID','')
+                    if plot == 'N/A':
+                        plot = ''
+                    if img == 'N/A':
+                        img = ''
+                    if imdbID == 'N/A':
+                        imdbID = ''
+            except:
+                pass
         else:
             if not (year or movie):
                 self.getTVDBImage(program_title, season, episode)
