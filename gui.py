@@ -1643,13 +1643,6 @@ class TVGuide(xbmcgui.WindowXML):
         self.playChannel(channel, program)
 
     def playChannel(self, channel, program = None):
-        if self.currentChannel:
-            self.lastChannel = self.currentChannel
-            s = json.dumps([self.lastChannel.id, self.lastChannel.title, self.lastChannel.lineup, self.lastChannel.logo, self.lastChannel.streamUrl, self.lastChannel.visible, self.lastChannel.weight])
-            ADDON.setSetting('last.channel',s)
-        self.currentChannel = channel
-        self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
-        wasPlaying = self.player.isPlaying()
         url = self.database.getStreamUrl(channel)
         alt_url = self.database.getAltStreamUrl(channel)
         if url and alt_url:
@@ -1669,6 +1662,15 @@ class TVGuide(xbmcgui.WindowXML):
             result = d.select("%s" % channel.title, names)
             if result > -1:
                 url = alt_urls[result]
+            else:
+                return True
+        if self.currentChannel:
+            self.lastChannel = self.currentChannel
+            s = json.dumps([self.lastChannel.id, self.lastChannel.title, self.lastChannel.lineup, self.lastChannel.logo, self.lastChannel.streamUrl, self.lastChannel.visible, self.lastChannel.weight])
+            ADDON.setSetting('last.channel',s)
+        self.currentChannel = channel
+        self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+        wasPlaying = self.player.isPlaying()
         if url:
             if url.startswith("plugin://plugin.video.meta/movies/play_by_name") and program is not None:
                 import urllib
