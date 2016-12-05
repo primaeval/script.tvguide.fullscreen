@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.217
+- cancel channel selection
+
 version 0.0.216
 - handle server compression
 
