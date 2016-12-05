@@ -1264,7 +1264,24 @@ class TVGuide(xbmcgui.WindowXML):
                     if match:
                         title = match.group(1)
                         year = match.group(2)
-                    threading.Thread(target=self.getImage,args=(program.title,title,year,season,episode,movie)).start()
+                    threading.Thread(target=self.getImage,args=(program.title,title,year,season,episode,movie,True)).start()
+
+            for control in [self._findControlBelow(self.focusPoint), self._findControlOnRight(self.focusPoint), 
+            self._findControlAbove(self.focusPoint),self._findControlOnRight(self.focusPoint)]:
+                prog = self._getProgramFromControl(control)
+                if prog:
+                    if prog.title not in self.tvdb_urls:
+                        title = prog.title
+                        year = ''
+                        season = prog.season
+                        episode = prog.episode
+                        movie = prog.is_movie
+                        match = re.search('(.*?) \(([0-9]{4})\)',prog.title)
+                        if match:
+                            title = match.group(1)
+                            year = match.group(2)
+                        threading.Thread(target=self.getImage,args=(prog.title,title,year,season,episode,movie,False)).start()
+
 
             if not program_image and (ADDON.getSetting('program.channel.logo') == "true"):
                 program_image = program.channel.logo
@@ -1296,7 +1313,7 @@ class TVGuide(xbmcgui.WindowXML):
             #if not self.osdEnabled and self.player.isPlaying():
             #    self.player.stop()
 
-    def getImage(self,program_title,title,year,season,episode,movie):
+    def getImage(self,program_title,title,year,season,episode,movie,load):
         img = ''
         imdbID = ''
         plot = ''
@@ -1357,13 +1374,13 @@ class TVGuide(xbmcgui.WindowXML):
 
         if not img:
             if not (year or movie):
-                self.getTVDBImage(program_title, season, episode)
+                self.getTVDBImage(program_title, season, episode, load)
             else:
-                self.getIMDBImage(title, year)
+                self.getIMDBImage(title, year, load)
             return
 
 
-        if self.focusedProgram and (self.focusedProgram.title.encode("utf8") == program_title):
+        if load and self.focusedProgram and (self.focusedProgram.title.encode("utf8") == program_title):
             if img:
                 self.setControlImage(self.C_MAIN_IMAGE, img)
             if plot and not self.focusedProgram.description:
@@ -1401,7 +1418,7 @@ class TVGuide(xbmcgui.WindowXML):
             return img
 
 
-    def getTVDBImage(self, title, season, episode):
+    def getTVDBImage(self, title, season, episode, load=True):
         orig_title = title
         try: title = title.encode("utf8")
         except: title = unicode(title)
@@ -1443,10 +1460,10 @@ class TVGuide(xbmcgui.WindowXML):
         if title not in self.tvdb_urls:
             self.tvdb_urls[title] = tvdb_url
             #log(("tvdb",title,tvdb_url))
-        if tvdb_url and self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
+        if load and tvdb_url and self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
             self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
 
-    def getIMDBImage(self, title, year):
+    def getIMDBImage(self, title, year, load=True):
         orig_title = "%s (%s)" % (title,year)
         try: utf_title = orig_title.encode("utf8")
         except: utf_title = unicode(utf_title)
@@ -1490,8 +1507,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         if orig_title not in self.tvdb_urls:
             self.tvdb_urls[orig_title] = tvdb_url
-            log(("imdb",title,tvdb_url))
-        if tvdb_url and self.focusedProgram and (self.focusedProgram.title.encode("utf8") == utf_title):
+        if load and tvdb_url and self.focusedProgram and (self.focusedProgram.title.encode("utf8") == utf_title):
             self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
 
 
