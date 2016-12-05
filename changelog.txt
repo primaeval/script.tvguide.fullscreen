@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.218
+- OMDb option as part of program image search options
+- Settings \ Source \ Treat 4 Digit Program Date as Movie
+- Settings \ Lab1 \ Use Better Resolution IMDb Image (takes longer)
+
 version 0.0.217
 - cancel channel selection
 
