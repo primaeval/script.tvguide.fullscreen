@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.220
+- pre-find program images (up,down,left,right of current program)
+
 version 0.0.219
 - Stream Setup \ Browse \ Alt Stream
 
