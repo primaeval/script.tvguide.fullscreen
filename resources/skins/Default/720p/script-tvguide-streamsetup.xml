@@ -1064,14 +1064,14 @@
             <control type="button" id="4005">
                 <posx>450</posx>
                 <posy>530</posy>
-                <width>170</width>
+                <width>140</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
                 <font>font13</font>
                 <textcolor>white</textcolor>
                 <focusedcolor>black</focusedcolor>
-                <label>$ADDON[script.tvguide.fullscreen 30604]</label>
+                <label>Preview</label>
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>104</onup>
@@ -1079,9 +1079,9 @@
                 <onright>4006</onright>
             </control>
             <control type="button" id="4006">
-                <posx>650</posx>
+                <posx>600</posx>
                 <posy>530</posy>
-                <width>170</width>
+                <width>140</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -1096,9 +1096,9 @@
                 <onright>4007</onright>
             </control>
             <control type="button" id="4007">
-                <posx>850</posx>
+                <posx>750</posx>
                 <posy>530</posy>
-                <width>170</width>
+                <width>140</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -1110,12 +1110,29 @@
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>104</onup>
                 <onleft>4006</onleft>
+                <onright>4010</onright>
+            </control>
+            <control type="button" id="4010">
+                <posx>900</posx>
+                <posy>530</posy>
+                <width>140</width>
+                <height>40</height>
+                <align>center</align>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>white</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <label>Alt Stream</label>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                <onup>104</onup>
+                <onleft>4007</onleft>
                 <onright>4009</onright>
             </control>
             <control type="button" id="4009">
                 <posx>1050</posx>
                 <posy>530</posy>
-                <width>170</width>
+                <width>140</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
@@ -1126,7 +1143,7 @@
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onup>104</onup>
-                <onleft>4007</onleft>
+                <onleft>4010</onleft>
             </control>
         </control>
 
