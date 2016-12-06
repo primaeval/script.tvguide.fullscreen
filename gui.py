@@ -2819,7 +2819,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             items.append(item)
         listControl = self.getControl(self.C_POPUP_CATEGORY)
         listControl.addItems(items)
-        if self.category:
+        if self.category and self.category in categories:
             index = categories.index(self.category)
             if index >= 0:
                 listControl.selectItem(index)
