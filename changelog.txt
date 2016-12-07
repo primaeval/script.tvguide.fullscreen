@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
 
+version 0.0.221
+- unique alternative streams
+- feedback on Alt Stream button
+- categeories menu in main epg (m, menu) [Thanks Team iVue]
+
 version 0.0.220
 - pre-find program images (up,down,left,right of current program)
 
