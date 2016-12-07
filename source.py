@@ -1033,7 +1033,7 @@ class Database(object):
         if not channel:
             return
         c = self.conn.cursor()
-        c.execute("SELECT stream_url, title FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+        c.execute("SELECT DISTINCT stream_url, title FROM alt_custom_stream_url WHERE channel=?", [channel.id])
         stream_url = []
         for row in c:
             stream_url.append((row["stream_url"],row["title"]))
@@ -1173,19 +1173,16 @@ class Database(object):
                 c.execute(
                     "CREATE TABLE IF NOT EXISTS autoplaywiths(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
             if version < [1, 3, 4]:
-                # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=4')
                 c.execute('DROP TABLE programs')
                 c.execute(
                     'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, UNIQUE (channel, start_date, end_date), FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
             if version < [1, 3, 5]:
-                # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=5')
                 c.execute('DROP TABLE channels')
                 c.execute(
                     'CREATE TABLE channels(id TEXT, title TEXT, logo TEXT, stream_url TEXT, source TEXT, lineup TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
             if version < [1, 3, 6]:
-                # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=6')
                 c.execute('DROP TABLE programs')
                 c.execute(
@@ -1194,14 +1191,18 @@ class Database(object):
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
             if version < [1, 3, 7]:
-                # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=7')
                 c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, stream_url TEXT)')
             if version < [1, 3, 8]:
-                # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=8')
                 c.execute('DROP TABLE alt_custom_stream_url')
                 c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, title TEXT, stream_url TEXT)')
+            if version < [1, 3, 9]:
+                c.execute('UPDATE version SET major=1, minor=3, patch=9')
+                c.execute('ALTER TABLE alt_custom_stream_url RENAME TO alt_custom_stream_url_old')
+                c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, title TEXT, stream_url TEXT, PRIMARY KEY (channel, stream_url))')
+                c.execute('INSERT INTO alt_custom_stream_url SELECT * FROM alt_custom_stream_url_old')
+                c.execute('DROP TABLE alt_custom_stream_url_old')
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])

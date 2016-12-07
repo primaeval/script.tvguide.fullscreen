@@ -1266,7 +1266,7 @@ class TVGuide(xbmcgui.WindowXML):
                         year = match.group(2)
                     threading.Thread(target=self.getImage,args=(program.title,title,year,season,episode,movie,True)).start()
 
-            for control in [self._findControlBelow(self.focusPoint), self._findControlOnRight(self.focusPoint), 
+            for control in [self._findControlBelow(self.focusPoint), self._findControlOnRight(self.focusPoint),
             self._findControlAbove(self.focusPoint),self._findControlOnRight(self.focusPoint)]:
                 prog = self._getProgramFromControl(control)
                 if prog:
@@ -3592,6 +3592,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = item.getProperty('stream')
                 title = item.getLabel()
                 self.database.setAltCustomStreamUrl(self.channel, title, stream)
+                d = xbmcgui.Dialog()
+                d.notification("TV Guide Fullscreen", title, sound=False, time=500)
 
         elif controlId == self.C_STREAM_BROWSE_OK:
             listControl = self.getControl(self.C_STREAM_BROWSE_STREAMS)
@@ -3607,6 +3609,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = item.getProperty('stream')
                 title = item.getLabel()
                 self.database.setAltCustomStreamUrl(self.channel, title, stream)
+                d = xbmcgui.Dialog()
+                d.notification("TV Guide Fullscreen", title, sound=False, time=500)
 
 
         elif controlId == self.C_STREAM_FAVOURITES_OK:
@@ -3623,6 +3627,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 stream = item.getProperty('stream')
                 title = item.getLabel()
                 self.database.setAltCustomStreamUrl(self.channel, title, stream)
+                d = xbmcgui.Dialog()
+                d.notification("TV Guide Fullscreen", title, sound=False, time=500)
 
         elif controlId == self.C_STREAM_STRM_OK:
             self.database.setCustomStreamUrl(self.channel, self.strmFile)
