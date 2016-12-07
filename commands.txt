@@ -13,7 +13,8 @@ EPG Window
 - reminders list (5)
 - autoplays (6)
 - Extended Info (i,info)
-- delete unwanted IMDB/TVDB image (m, menu)
+- delete unwanted IMDB/TVDB image (ACTION_DELETE_ITEM)
+- categories menu (m, menu)
 
 Main Menu
 - exit to epg (esc, back)

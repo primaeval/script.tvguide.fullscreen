@@ -71,6 +71,8 @@ ACTION_STOP = 13
 ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
 ACTION_SHOW_CODEC = 27
+ACTION_SHOW_FULLSCREEN = 36
+ACTION_DELETE_ITEM = 80
 ACTION_MENU = 163
 ACTION_LAST_PAGE = 160
 ACTION_PLAY = 68
@@ -663,11 +665,13 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program:
                 self.playWithChannel(program.channel)
-        elif action.getId() == ACTION_MENU:
+        elif action.getId() == ACTION_DELETE_ITEM:
             program = self._getProgramFromControl(controlInFocus)
             if program:
                 self.tvdb_urls[program.title] = ''
                 self.setControlImage(self.C_MAIN_IMAGE, self.tvdb_urls[program.title])
+        elif action.getId() == ACTION_MENU:
+            self._showCatMenu()
         elif action.getId() in [ACTION_SHOW_INFO]:
             program = self._getProgramFromControl(controlInFocus)
             title = program.title
@@ -1141,6 +1145,24 @@ class TVGuide(xbmcgui.WindowXML):
                 xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s)' % (title))
             elif selection == 1:
                 xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s)' % (program.title))
+
+    def _showCatMenu(self):
+        #self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
+        d = CatMenu(self.database, self.category, self.categories)
+        d.doModal()
+        buttonClicked = d.buttonClicked
+        self.category = d.category
+        ADDON.setSetting('category',self.category)
+        #self.setControlLabel(self.C_MAIN_CAT_LABEL, '[B]%s[/B]' % self.category)
+        self.database.setCategory(self.category)
+        self.categories = d.categories
+        del d
+
+        if buttonClicked == CatMenu.C_CAT_CATEGORY:
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+        elif buttonClicked == CatMenu.C_CAT_QUIT:
+            self.close()
 
     def setFocusId(self, controlId):
         control = self.getControl(controlId)
@@ -4138,3 +4160,163 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
     def close(self):
         super(ProgramListDialog, self).close()
 
+class CatMenu(xbmcgui.WindowXMLDialog):
+    C_CAT_QUIT = 7003
+    C_CAT_CATEGORY = 7004
+    C_CAT_SET_CATEGORY = 7005
+
+    def __new__(
+        cls,
+        database,
+        category,
+        categories,
+        ):
+
+        # Skin in resources
+        # return super(CatMenu, cls).__new__(cls, 'script-tvguide-categories.xml', ADDON.getAddonInfo('path'), SKIN)
+        # Skin in user settings
+
+        return super(CatMenu, cls).__new__(cls, 'script-tvguide-categories.xml', SKIN_PATH, SKIN)
+
+    def __init__(
+        self,
+        database,
+        category,
+        categories,
+        ):
+        """
+
+........@type database: source.Database
+........"""
+
+        super(CatMenu, self).__init__()
+        self.database = database
+        self.buttonClicked = None
+        self.category = category
+        self.categories = categories
+
+    def onInit(self):
+
+        items = list()
+        categories = ["All Channels"] + list(self.categories)
+        for label in categories:
+            item = xbmcgui.ListItem(label)
+
+            items.append(item)
+        listControl = self.getControl(self.C_CAT_CATEGORY)
+        listControl.addItems(items)
+        if self.category:
+            index = categories.index(self.category)
+            if not index == 0:
+                listControl.selectItem(index)
+
+    def onAction(self, action):
+        if action.getId() in [KEY_CONTEXT_MENU]:
+            kodi = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
+            dialog = xbmcgui.Dialog()
+            if kodi < 16:
+                dialog.ok('TV Guide Fullscreen', 'Editing categories in Kodi %s is currently not supported.' % kodi)
+            else:
+                cList = self.getControl(self.C_CAT_CATEGORY)
+                item = cList.getSelectedItem()
+                if item:
+                    self.category = item.getLabel()
+                if self.category == "All Channels":
+                    return
+                dialog = xbmcgui.Dialog()
+                ret = dialog.select("%s" % self.category, ["Add Channels","Remove Channels","Clear Channels"])
+                if ret < 0:
+                    return
+
+                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+                lines = f.read().splitlines()
+                f.close()
+                categories = {}
+                categories[self.category] = []
+                for line in lines:
+                    if '=' in line:
+                        name,cat = line.strip().split('=')
+                        if cat not in categories:
+                            categories[cat] = []
+                        categories[cat].append(name)
+
+                if ret == 0:
+                    #categories = sorted(self.categories)
+                    channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
+                    str = 'Add Channels To %s' % self.category
+                    ret = dialog.multiselect(str, channelList)
+                    if ret is None:
+                        return
+                    if not ret:
+                        ret = []
+                    channels = []
+                    for i in ret:
+                        channels.append(channelList[i])
+
+                    for channel in channels:
+                        if channel not in categories[self.category]:
+                            categories[self.category].append(channel)
+
+                elif ret == 1:
+                    channelList = sorted(categories[self.category])
+                    str = 'Remove Channels From %s' % self.category
+                    ret = dialog.multiselect(str, channelList)
+                    if ret is None:
+                        return
+                    if not ret:
+                        ret = []
+                    channels = []
+                    for i in ret:
+                        channelList[i] = ""
+                    categories[self.category] = []
+                    for name in channelList:
+                        if name:
+                            categories[self.category].append(name)
+
+                elif ret == 2:
+                    categories[self.category] = []
+
+                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
+                for cat in categories:
+                    channels = categories[cat]
+                    for channel in channels:
+                        f.write("%s=%s\n" % (channel.encode("utf8"),cat))
+                f.close()
+                self.categories = [category for category in categories if category]
+        elif action.getId() in [ACTION_MENU, ACTION_PARENT_DIR, KEY_NAV_BACK]:
+            self.close()
+            return
+
+    def onClick(self, controlId):
+        if controlId == self.C_CAT_CATEGORY:
+            cList = self.getControl(self.C_CAT_CATEGORY)
+            item = cList.getSelectedItem()
+            if item:
+                self.category = item.getLabel()
+            self.buttonClicked = controlId
+            self.close()
+        elif controlId == 80005:
+            kodi = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
+            dialog = xbmcgui.Dialog()
+            if kodi < 16:
+                dialog.ok('TV Guide Fullscreen', 'Editing categories in Kodi %s is currently not supported.' % kodi)
+            else:
+                cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
+                if cat:
+                    categories = set(self.categories)
+                    categories.add(cat)
+                    self.categories = list(set(categories))
+                    items = list()
+                    categories = ["All Channels"] + list(self.categories)
+                    for label in categories:
+                        item = xbmcgui.ListItem(label)
+                        items.append(item)
+                    listControl = self.getControl(self.C_CAT_CATEGORY)
+                    listControl.reset()
+                    listControl.addItems(items)
+        else:
+            self.buttonClicked = controlId
+            self.close()
+
+    def onFocus(self, controlId):
+        pass
