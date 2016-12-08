@@ -1245,9 +1245,9 @@
                 <control type="button" id="4301">
                     <description>navigate to now</description>
                     <posx>430</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>NOW</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1261,9 +1261,9 @@
                 <control type="button" id="4302">
                     <description>navigate left</description>
                     <posx>530</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>LEFT</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1276,9 +1276,9 @@
                 <control type="button" id="4303">
                     <description>navigate up</description>
                     <posx>630</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>UP</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1291,9 +1291,9 @@
                 <control type="button" id="4304">
                     <description>navigate down</description>
                     <posx>730</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>DOWN</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1306,9 +1306,9 @@
                 <control type="button" id="4305">
                     <description>navigate right</description>
                     <posx>830</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>RIGHT</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1321,9 +1321,9 @@
                 <control type="button" id="4307">
                     <description>menu</description>
                     <posx>930</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>MENU</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1336,9 +1336,9 @@
                 <control type="button" id="4308">
                     <description>categories</description>
                     <posx>1030</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>160</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>CATEGORIES</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1351,9 +1351,9 @@
                 <control type="button" id="4306">
                     <description>exit</description>
                     <posx>1200</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>80</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>QUIT</label>
                     <font>font13</font>
                     <aligny>center</aligny>

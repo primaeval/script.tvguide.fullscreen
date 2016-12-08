@@ -15,7 +15,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>30</height>
-            <texture>white.png</texture>
+            <texture>grey.png</texture>
             <visible>true</visible>
         </control>
 
