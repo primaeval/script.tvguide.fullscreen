@@ -2872,16 +2872,18 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
         #playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
         playControl.setLabel("Watch Channel")
-        if not self.program.channel.isPlayable():
+        if self.program.channel and not self.program.channel.isPlayable():
             #playControl.setEnabled(False)
             self.setFocusId(self.C_POPUP_CHOOSE_STREAM)
         if self.database.getCustomStreamUrl(self.program.channel):
             chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
             chooseStrmControl.setLabel(strings(REMOVE_STRM_FILE))
 
-        if self.program.channel.logo is not None:
+        if self.program.channel and self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
-        channelTitleControl.setLabel(self.program.channel.title)
+
+        if self.program.channel:
+            channelTitleControl.setLabel(self.program.channel.title)
         programTitleControl.setLabel(self.program.title)
 
         label = ""
@@ -2910,9 +2912,9 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             autoplayControl.setEnabled(True)
             autoplaywithControl.setEnabled(True)
             if self.showRemind:
-                remindControl.setLabel(strings(REMIND_PROGRAM))
+                remindControl.setLabel("Remind")
             else:
-                remindControl.setLabel(strings(DONT_REMIND_PROGRAM))
+                remindControl.setLabel("Don't Remind")
             if self.showAutoplay:
                 autoplayControl.setLabel("AutoPlay")
             else:
@@ -2921,10 +2923,26 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 autoplaywithControl.setLabel("AutoPlayWith")
             else:
                 autoplaywithControl.setLabel("Don't AutoPlayWith")
-        else:
+
+        log(self.program)
+        if not self.program.title:
+            labelControl.setEnabled(False)
+            programLabelControl.setEnabled(False)
+            programDateControl.setEnabled(False)
+            programImageControl.setEnabled(False)
+            playControl.setEnabled(False)
             remindControl.setEnabled(False)
             autoplayControl.setEnabled(False)
             autoplaywithControl.setEnabled(False)
+            channelLogoControl.setEnabled(False)
+            channelTitleControl.setEnabled(False)
+            programTitleControl.setEnabled(False)
+            programPlayBeginningControl.setEnabled(False)
+            programSuperFavourites.setEnabled(False)
+            self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
+            self.getControl(self.C_POPUP_STREAM_SETUP).setEnabled(False)
+            self.getControl(self.C_POPUP_EXTENDED).setEnabled(False)
+            self.getControl(self.C_POPUP_CHOOSE_ALT).setEnabled(False)
 
     def formatDateTodayTomorrow(self, timestamp):
         if timestamp:
