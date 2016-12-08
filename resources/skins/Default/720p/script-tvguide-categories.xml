@@ -19,6 +19,22 @@
             <visible>true</visible>
         </control>
 
+        <control type="button" id="7003">
+            <description>quit</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <label></label>
+            <font>font13</font>
+            <aligny>center</aligny>
+            <align>center</align>
+            <textcolor>grey</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <texturefocus>tvg-transparent.png</texturefocus>
+            <texturenofocus>tvg-transparent.png</texturenofocus>
+        </control>
+
         <control type="list" id="7004">
             <description>categories</description>
             <left>0</left>

@@ -179,6 +179,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_DOWN = 4304
     C_MAIN_MOUSE_RIGHT = 4305
     C_MAIN_MOUSE_EXIT = 4306
+    C_MAIN_MOUSE_MENU = 4307
+    C_MAIN_MOUSE_CATEGORIES = 4308
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -783,7 +785,15 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate += datetime.timedelta(hours=2)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             return
-
+        elif controlId == self.C_MAIN_MOUSE_MENU:
+            program = utils.Program(channel='', title='', startDate=None, endDate=None, description='')
+            program.autoplayScheduled = False
+            program.autoplaywithScheduled = False
+            self._showContextMenu(program)
+            return
+        elif controlId == self.C_MAIN_MOUSE_CATEGORIES:
+            self._showCatMenu()
+            return
         program = self._getProgramFromControl(self.getControl(controlId))
         if self.mode == MODE_QUICK_EPG:
             program = self._getQuickProgramFromControl(self.getControl(controlId))
@@ -1161,8 +1171,8 @@ class TVGuide(xbmcgui.WindowXML):
         if buttonClicked == CatMenu.C_CAT_CATEGORY:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        elif buttonClicked == CatMenu.C_CAT_QUIT:
-            self.close()
+        #elif buttonClicked == CatMenu.C_CAT_QUIT:
+        #    self.close()
 
     def setFocusId(self, controlId):
         control = self.getControl(controlId)
@@ -2166,7 +2176,7 @@ class TVGuide(xbmcgui.WindowXML):
             program = src.Program(channel, "", None, None, None)
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
-        top = self.epgView.cellHeight * len(channels)
+        top = self.epgView.top + self.epgView.cellHeight * len(channels)
         height = 720 - top
         control = self.getControl(self.C_MAIN_FOOTER)
         if control:
@@ -2175,7 +2185,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
-            control.setHeight(top-2)
+            control.setHeight(top - self.epgView.top - 2)
             color = colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))]
             control.setColorDiffuse(color)
         self.getControl(self.C_QUICK_EPG_TIMEBAR).setColorDiffuse(colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))])
@@ -4221,6 +4231,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
             index = categories.index(self.category)
             if not index == 0:
                 listControl.selectItem(index)
+        self.setFocus(listControl)
 
     def onAction(self, action):
         if action.getId() in [KEY_CONTEXT_MENU]:
