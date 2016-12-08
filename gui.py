@@ -1348,7 +1348,8 @@ class TVGuide(xbmcgui.WindowXML):
                 url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=episode&Season=%s&Episode=%s' % (urllib.quote_plus(title),season,episode)
             else:
                 url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
-            data = requests.get(url).content
+            try: data = requests.get(url).content
+            except: data = ''
 
             if data:
                 try:
@@ -1370,7 +1371,8 @@ class TVGuide(xbmcgui.WindowXML):
             if not img and imdbID:
                 url = 'http://www.imdb.com/title/%s/' % imdbID
                 headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
-                html = requests.get(url,headers=headers).content
+                try:html = requests.get(url,headers=headers).content
+                except: html = ''
                 match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
                 if match:
                     img = match.group(1)
@@ -1379,8 +1381,11 @@ class TVGuide(xbmcgui.WindowXML):
 
                 if not movie:
                     tvdb_url = "http://thetvdb.com/api/GetSeriesByRemoteID.php?imdbid=%s" % imdbID
-                    r = requests.get(tvdb_url)
-                    tvdb_html = r.text
+                    try:
+                        r = requests.get(tvdb_url)
+                        tvdb_html = r.text
+                    except:
+                        return
                     tvdb_match = re.search(re.compile(r'<seriesid>(.*?)</seriesid>', flags=(re.DOTALL | re.MULTILINE)), tvdb_html)
                     if tvdb_match:
                         tvdb_id = tvdb_match.group(1)
@@ -1416,7 +1421,8 @@ class TVGuide(xbmcgui.WindowXML):
             url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=episode&Season=%s&Episode=%s' % (urllib.quote_plus(title),season,episode)
         else:
             url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
-        data = requests.get(url).content
+        try: data = requests.get(url).content
+        except: return
         try:
             j = json.loads(data)
         except:
@@ -1445,7 +1451,10 @@ class TVGuide(xbmcgui.WindowXML):
         try: title = title.encode("utf8")
         except: title = unicode(title)
         url = "http://thetvdb.com/?string=%s&searchseriesid=&tab=listseries&function=Search" % urllib.quote_plus(title)
-        html = requests.get(url).content
+        try:
+            html = requests.get(url).content
+        except:
+            return
         match = re.search('<a href="(/\?tab=series&amp;id=.*?)">(.*?)</a>',html)
         tvdb_url = ''
         if match:
@@ -1471,7 +1480,10 @@ class TVGuide(xbmcgui.WindowXML):
             elif tvdb_match == "2":
                 found = True
             if found:
-                html = requests.get(url).content
+                try:
+                    html = requests.get(url).content
+                except:
+                    return
                 for type in ["fanart/original","posters","graphical"]:
                     match = re.search('<img src="(/banners/_cache/%s/.*?\.jpg)"' % type,html)
                     if match:
@@ -1491,7 +1503,8 @@ class TVGuide(xbmcgui.WindowXML):
         except: utf_title = unicode(utf_title)
         headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
         url = "http://www.bing.com/search?q=site%%3Aimdb.com+%s" % urllib.quote_plus(utf_title)
-        html = requests.get(url).content
+        try: html = requests.get(url).content
+        except: return
 
         match = re.search('href="(http://www.imdb.com/title/tt.*?/)".*?<strong>(.*?)</strong>',html)
         tvdb_url = ''
@@ -1520,7 +1533,8 @@ class TVGuide(xbmcgui.WindowXML):
             elif imdb_match == "2":
                 found = True
             if found:
-                html = requests.get(url,headers=headers).content
+                try: html = requests.get(url,headers=headers).content
+                except: return
                 match = re.search('Poster".*?src="(.*?)"',html,flags=(re.DOTALL | re.MULTILINE))
                 if match:
                     tvdb_url = match.group(1)
@@ -2834,7 +2848,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programSuperFavourites = self.getControl(self.C_POPUP_SUPER_FAVOURITES)
 
         items = list()
-        categories = ["Any"] + list(self.categories)
+        categories = ["All Channels"] + sorted(list(self.categories), key=lambda x: x.lower())
         for label in categories:
             item = xbmcgui.ListItem(label)
 
@@ -2924,7 +2938,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             item = cList.getSelectedItem()
             if item:
                 self.category = item.getLabel()
-            if self.category == "Any":
+            if self.category == "All Channels":
                 return
             dialog = xbmcgui.Dialog()
             ret = dialog.select("%s" % self.category, ["Add Channels","Remove Channels","Clear Channels"])
@@ -2943,7 +2957,6 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 categories[cat].append(name)
 
             if ret == 0:
-                #categories = sorted(self.categories)
                 channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
                 str = 'Add Channels To %s' % self.category
                 ret = dialog.multiselect(str, channelList)
@@ -3010,7 +3023,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 categories.add(cat)
                 self.categories = list(set(categories))
                 items = list()
-                categories = ["Any"] + list(self.categories)
+                categories = ["All Channels"] + sorted(list(self.categories), key=lambda x: x.lower())
                 for label in categories:
                     item = xbmcgui.ListItem(label)
                     items.append(item)
@@ -4198,10 +4211,9 @@ class CatMenu(xbmcgui.WindowXMLDialog):
     def onInit(self):
 
         items = list()
-        categories = ["All Channels"] + list(self.categories)
+        categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
         for label in categories:
             item = xbmcgui.ListItem(label)
-
             items.append(item)
         listControl = self.getControl(self.C_CAT_CATEGORY)
         listControl.addItems(items)
@@ -4222,9 +4234,11 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                 if item:
                     self.category = item.getLabel()
                 if self.category == "All Channels":
-                    return
+                    selection = ["Add Category"]
+                else:
+                    selection = ["Add Category","Add Channels","Remove Channels","Clear Channels"]
                 dialog = xbmcgui.Dialog()
-                ret = dialog.select("%s" % self.category, ["Add Channels","Remove Channels","Clear Channels"])
+                ret = dialog.select("%s" % self.category, selection)
                 if ret < 0:
                     return
 
@@ -4232,7 +4246,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                 lines = f.read().splitlines()
                 f.close()
                 categories = {}
-                categories[self.category] = []
+                if self.category not in ["Any", "All Channels"]:
+                    categories[self.category] = []
                 for line in lines:
                     if '=' in line:
                         name,cat = line.strip().split('=')
@@ -4240,8 +4255,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                             categories[cat] = []
                         categories[cat].append(name)
 
-                if ret == 0:
-                    #categories = sorted(self.categories)
+                if ret == 1:
                     channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
                     str = 'Add Channels To %s' % self.category
                     ret = dialog.multiselect(str, channelList)
@@ -4257,7 +4271,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                         if channel not in categories[self.category]:
                             categories[self.category].append(channel)
 
-                elif ret == 1:
+                elif ret == 2:
                     channelList = sorted(categories[self.category])
                     str = 'Remove Channels From %s' % self.category
                     ret = dialog.multiselect(str, channelList)
@@ -4273,8 +4287,23 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                         if name:
                             categories[self.category].append(name)
 
-                elif ret == 2:
+                elif ret == 3:
                     categories[self.category] = []
+
+                elif ret == 0:
+                    dialog = xbmcgui.Dialog()
+                    cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
+                    if cat:
+                        if cat not in categories:
+                            categories[cat] = []
+                        items = list()
+                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
+                        for label in new_categories:
+                            item = xbmcgui.ListItem(label)
+                            items.append(item)
+                        listControl = self.getControl(self.C_CAT_CATEGORY)
+                        listControl.reset()
+                        listControl.addItems(items)
 
                 f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
                 for cat in categories:
