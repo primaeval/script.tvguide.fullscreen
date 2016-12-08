@@ -15,12 +15,13 @@
     <category label="Optional">
         <setting id="authentication" label="Authentication" type="bool" default="false" />
         <setting id="user" label="User" type="text" visible="eq(-1,true)" default="" />
-        <setting id="password" label="Password" type="text" visible="eq(-2,true)" option="hidden" default=""/> 
+        <setting id="password" label="Password" type="text" visible="eq(-2,true)" option="hidden" default=""/>
         <setting type="lsep" label="Import addons.ini will overwrite added addon folders!"/>
         <setting id="addons.ini.enabled" label="Import addons.ini" type="bool" default="false" />
         <setting id="addons.ini.type" label="addons.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="addons.ini" default=''/>
         <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
+        <setting id="addons.ini.overwrite" label="Overwrite or Merge Local addons.ini" type="enum" visible="eq(-4,true)" default='0' values="Overwrite|Merge"/>
         <setting type="lsep" label="Refresh may take some time!"/>
         <setting label="Refresh Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />
         <setting type="lsep" label="Categories can be created via context menu"/>

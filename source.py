@@ -54,6 +54,8 @@ from utils import *
 
 SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder', 'logos.source', 'logos.folder', 'logos.url', 'source.source', 'yo.countries' , 'tvguide.co.uk.systemid']
 
+def log(x):
+    xbmc.log(repr(x))
 
 class Channel2(object):
     def __init__(self, id, title, lineup, logo=None, streamUrl=None, visible=True, weight=-1):
@@ -1525,7 +1527,10 @@ class XMLTVSource(Source):
             if customFile:
                 self.updateLocalFile(customFile, addon, True, force=force)
 
-        # make sure the ini file is fetched as well if necessary
+        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+        if not xbmcvfs.exists(path):
+            f = xbmcvfs.File(path,"w")
+            f.close()
 
         if addon.getSetting('addons.ini.enabled') == 'true':
             if self.addonsType == XMLTVSource.INI_TYPE_FILE:
@@ -1533,13 +1538,45 @@ class XMLTVSource(Source):
             else:
                 customFile = str(addon.getSetting('addons.ini.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True, force=force)
+                addons_ini = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+                addons_ini_local = addons_ini+".local"
+                success = xbmcvfs.copy(addons_ini,addons_ini_local)
+                path = self.updateLocalFile(customFile, addon, True, force=force)
+                if path and (ADDON.getSetting('addons.ini.overwrite') == "1"):
+                    streams = {}
+                    for file in [addons_ini_local,path]:
+                        f = xbmcvfs.File(addons_ini_local,"rb")
+                        if f:
+                            data = f.read()
+                            f.close()
+                        else:
+                            continue
+                        if not data:
+                            continue
+                        lines = data.splitlines()
+                        for line in lines:
+                            match = re.search('^\[(.*?)\]$',line)
+                            if match:
+                                addon = match.group(1)
+                                if addon not in streams:
+                                    streams[addon] = {}
+                            elif line.startswith('#'):
+                                pass
+                            else:
+                                name_stream = line.split('=',1)
+                                if len(name_stream) == 2:
+                                    (name,stream) = name_stream
+                                    streams[addon][name] = stream
 
-
-        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
-        if not xbmcvfs.exists(path):
-            f = xbmcvfs.File(path,"w")
-            f.close()
+                    f = xbmcvfs.File(addons_ini,"wb")
+                    for addon in sorted(streams):
+                        s = "[%s]\n" % addon
+                        f.write(s)
+                        for name in sorted(streams[addon]):
+                            stream = streams[addon][name]
+                            s = "%s=%s\n" % (name,stream)
+                            f.write(s)
+                    f.close()
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
