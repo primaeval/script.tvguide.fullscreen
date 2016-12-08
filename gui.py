@@ -4042,6 +4042,12 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 f.write(write_str)
         f.close()
 
+        d = xbmcgui.Dialog()
+        if add:
+            title = "Added Folder"
+        else:
+            title = "Removed Folder"
+        d.notification("TV Guide Fullscreen", title, sound=False, time=500)
 
 
 class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
