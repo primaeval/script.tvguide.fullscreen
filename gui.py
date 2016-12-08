@@ -3795,6 +3795,10 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl.addItems(items)
 
     def updateDirsInfo(self):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/folders.list'
+        f = xbmcvfs.File(file_name)
+        folders = f.read().splitlines()
+        f.close()
         listControl = self.getControl(self.C_STREAM_BROWSE_ADDONS)
         item = listControl.getSelectedItem()
         if item is None:
@@ -3822,7 +3826,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         item.setProperty('stream', path)
         items.append(item)
         for stream in sorted(dirs, key=lambda x: dirs[x]):
-            label = dirs[stream]
+            label = remove_formatting(dirs[stream])
+            if stream in folders:
+                label = '[COLOR fuchsia]%s[/COLOR]' % label
             if item.getProperty('addon_id') == "plugin.video.meta":
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
@@ -3843,6 +3849,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
 
     def updateBrowseInfo(self):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/folders.list'
+        f = xbmcvfs.File(file_name)
+        folders = f.read().splitlines()
         listControl = self.getControl(self.C_STREAM_BROWSE_DIRS)
         item = listControl.getSelectedItem()
         if item is None:
@@ -3853,7 +3862,10 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         self.previousDirsId = item.getProperty('stream')
 
         path = self.previousDirsId
-
+        if path in folders:
+            self.getControl(self.C_STREAM_BROWSE_FOLDER).setLabel('Remove Folder')
+        else:
+            self.getControl(self.C_STREAM_BROWSE_FOLDER).setLabel('Add Folder')
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
         files = response["files"]
         dirs = dict([[f["file"],f["label"]] for f in files if f["filetype"] == "directory"])
@@ -3876,7 +3888,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         items.append(item)
 
         for stream in sorted(dirs, key=lambda x: dirs[x]):
-            label = dirs[stream]
+            label = remove_formatting(dirs[stream])
+            if stream in folders:
+                label = '[COLOR fuchsia]%s[/COLOR]' % label
             item = xbmcgui.ListItem(label)
             item.setProperty('stream', stream)
             items.append(item)
@@ -3905,17 +3919,19 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         f = xbmcvfs.File(file_name)
         items = f.read().splitlines()
         f.close()
-        items.append(self.previousDirsId)
+        if self.previousDirsId in items:
+            items.remove(self.previousDirsId)
+            add = False
+        else:
+            items.append(self.previousDirsId)
+            add = True
         unique = set(items)
         f = xbmcvfs.File(file_name,"w")
         lines = "\n".join(unique)
         f.write(lines)
         f.close()
 
-        self.previousDirsId
-
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
-
         f = xbmcvfs.File(file_name)
         items = f.read().splitlines()
         f.close()
@@ -3945,7 +3961,16 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             name = listItem.getLabel()
             stream = listItem.getProperty('stream')
             if stream:
-                streams[addonId][name] = stream
+                if add:
+                    streams[addonId][name] = stream
+                else:
+                    for k,v in streams[addonId].items():
+                        if v == stream:
+                           del streams[addonId][k]
+
+        for addon in streams.keys():
+            if len(streams[addon]) == 0:
+                del streams[addon]
 
         f = xbmcvfs.File(file_name,'w')
         write_str = "# WARNING Make a copy of this file.\n# It will be overwritten on the next folder add.\n\n"

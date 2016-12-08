@@ -1132,7 +1132,7 @@
             <control type="button" id="4009">
                 <posx>1050</posx>
                 <posy>530</posy>
-                <width>140</width>
+                <width>160</width>
                 <height>40</height>
                 <align>center</align>
                 <aligny>center</aligny>
