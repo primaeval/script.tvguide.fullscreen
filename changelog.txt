@@ -5,7 +5,13 @@ USAGE NOTES:
 - click to load in addon browse dialog
 - right click to add channels to categories
 - reload all folders in settings
-- use Spoyser's repo for Super Favourites or MySearch (now at DixieDean's repo)
+- use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
+
+version 0.0.222
+- Categories menu - Add Category item (context menu)
+- Touch Controls - added Menu, Categories, Quit
+- Stream Setup \ Browse \ Remove Folder (fuchsia if folder already added)
+- Settings \ Optional \ Import addons.ini \ Overwrite or Merge Local addons.ini
 
 version 0.0.221
 - unique alternative streams
