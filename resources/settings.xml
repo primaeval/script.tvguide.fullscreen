@@ -32,8 +32,12 @@
         <setting type="lsep" label="Channel Mappings"/>
         <setting id="mapping.ini.enabled" label="Import mapping.ini" type="bool" default="false" />
         <setting id="mapping.ini.type" label="mapping.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
-        <setting id="mapping.ini.file" label="mapping.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="mapping.ini" default=''/>
+        <setting id="mapping.ini.file" label="mapping.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="*.ini" default=''/>
         <setting id="mapping.ini.url" label="mapping.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
+        <setting id="mapping.m3u.enabled" label="Import m3u" type="bool" default="false" />
+        <setting id="mapping.m3u.type" label="m3u Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
+        <setting id="mapping.m3u.file" label="m3u File" type="file" visible="eq(-2,true) + eq(-1,0)"  default=''/>
+        <setting id="mapping.m3u.url" label="m3u Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
     </category>
 
     <category label="Logos">

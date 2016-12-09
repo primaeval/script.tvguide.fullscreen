@@ -1487,6 +1487,7 @@ class XMLTVSource(Source):
         self.addonsType = int(addon.getSetting('addons.ini.type'))
         self.categoriesType = int(addon.getSetting('categories.ini.type'))
         self.mappingType = int(addon.getSetting('mapping.ini.type'))
+        self.m3uType = int(addon.getSetting('mapping.m3u.type'))
 
         # make sure the folder in the user's profile exists or create it!
         if not os.path.exists(XMLTVSource.PLUGIN_DATA):
@@ -1548,6 +1549,13 @@ class XMLTVSource(Source):
                 customFile = str(addon.getSetting('mapping.ini.file'))
             else:
                 customFile = str(addon.getSetting('mapping.ini.url'))
+            if customFile:
+                self.updateLocalFile(customFile, addon, True, force=force)
+        if addon.getSetting('mapping.m3u.enabled') == 'true':
+            if self.m3uType == XMLTVSource.INI_TYPE_FILE:
+                customFile = str(addon.getSetting('mapping.m3u.file'))
+            else:
+                customFile = str(addon.getSetting('mapping.m3u.url'))
             if customFile:
                 self.updateLocalFile(customFile, addon, True, force=force)
 
