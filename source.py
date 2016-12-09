@@ -1515,22 +1515,25 @@ class XMLTVSource(Source):
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.file'), addon, force=force)
         else:
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon, force=force)
-        if self.xmltv2Type == XMLTVSource.XMLTV_SOURCE_FILE:
-            '''
-            customFile = str(addon.getSetting('xmltv2.file'))
-            if os.path.exists(customFile):
-                # uses local file provided by user!
-                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
-                self.xmltv2File = customFile
+
+        self.xmltv2File = ''
+        if ADDON.getSetting('xmltv2.enabled') == 'true':
+            if self.xmltv2Type == XMLTVSource.XMLTV_SOURCE_FILE:
+                '''
+                customFile = str(addon.getSetting('xmltv2.file'))
+                if os.path.exists(customFile):
+                    # uses local file provided by user!
+                    xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+                    self.xmltv2File = customFile
+                else:
+                    # Probably a remote file
+                    xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+                    self.updateLocalFile(customFile, addon, force=force)
+                    self.xmltv2File = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+                '''
+                self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.file'), addon, force=force)
             else:
-                # Probably a remote file
-                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-                self.updateLocalFile(customFile, addon, force=force)
-                self.xmltv2File = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
-            '''
-            self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.file'), addon, force=force)
-        else:
-            self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.url'), addon, force=force)
+                self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.url'), addon, force=force)
 
         if addon.getSetting('categories.ini.enabled') == 'true':
             if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
@@ -1619,7 +1622,7 @@ class XMLTVSource(Source):
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
         if not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
-        if xbmcvfs.exists(self.xmltv2File):
+        if (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
             for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
                 yield v
         else:

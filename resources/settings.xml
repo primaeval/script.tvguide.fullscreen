@@ -175,10 +175,13 @@
         <setting label="Delete lineup" type="action" action="RunScript($CWD/editor.py, 4)" />
         <setting id="sd.range" label="Days of guide data to load" type="slider" default="3" range="1,1,14" option="int" />
         <setting id="sd.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
+    </category>
+    <category label="Lab3">
         <setting type="lsep" label="Secondary XMLTV File"/>
-        <setting id="xmltv2.type" label="XMLTV Secondary Source" type="enum" enable="true" visible="true" default="0" values="File|Url" />
-        <setting id="xmltv2.file" label="XMLTV Secondary File" type="file" visible="eq(-1,0)" />
-        <setting id="xmltv2.url" label="XMLTV Secondary Url" type="text" visible="eq(-2,1)" />
+        <setting id="xmltv2.enabled" label="XMLTV Secondary Source" type="bool" default="false" />
+        <setting id="xmltv2.type" label="XMLTV Secondary Source Type" type="enum" enable="true" visible="eq(-1,true)" default="0" values="File|Url" />
+        <setting id="xmltv2.file" label="XMLTV Secondary File" type="file" visible="eq(-2,true) + eq(-1,0)" />
+        <setting id="xmltv2.url" label="XMLTV Secondary Url" type="text" visible="eq(-3,true) + eq(-2,1)"  />
     </category>
     <category label="Backup">
         <setting label="Export Channel Mappings" type="action" action="RunScript($CWD/backup.py,1)" />
