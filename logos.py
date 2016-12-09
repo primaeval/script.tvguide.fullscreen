@@ -43,9 +43,9 @@ for path in unique:
     for file in thumbnails:
         thumb = thumbnails[file]
         thumbs[file] = thumb
-logo_folder = 'special://profile/addon_data/script.tvguide.fullscreen/logos/'
+logo_folder = 'special://profile/addon_data/script.tvguide.fullscreen/addon_logos/'
 for addonId in sorted(logos):
-    folder = 'special://profile/addon_data/script.tvguide.fullscreen/logos/%s' % addonId
+    folder = 'special://profile/addon_data/script.tvguide.fullscreen/addon_logos/%s' % addonId
     xbmcvfs.mkdirs(folder)
     addonLogos = logos[addonId]
     for label in sorted(addonLogos):
@@ -59,7 +59,6 @@ for addonId in sorted(logos):
             logo = urllib.unquote_plus(logo)
             logo = logo.strip('/')
             file_name = "%s/%s.png" % (folder,label)
-            logos_file_name = "%s/%s.png" % (logo_folder,label)
             if not xbmcvfs.exists(file_name):
                 try:
                     r = requests.get(logo)
@@ -71,8 +70,6 @@ for addonId in sorted(logos):
                         f.close()
                 except Exception as detail:
                     xbmcvfs.copy(logo,file_name)
-            xbmcvfs.copy(file_name,logos_file_name)
-
 
 
 dialog = xbmcgui.Dialog()

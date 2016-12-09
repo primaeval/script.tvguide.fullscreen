@@ -5,9 +5,164 @@ USAGE NOTES:
 - click to load in addon browse dialog
 - right click to add channels to categories
 - reload all folders in settings
-- use Spoyser's repo for Super Favourites (now at DixieDean's repo)
+- use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
-version 0.0.153-154
+version 0.0.223-224
+- Settings \ Background \ Categories Background Colour
+- Settings \ Playback \ Always Choose Channel if Alternative Streams Exist
+- Settings \ Lab3 \ Secondary XMLTV File (WARNING: very experimental)
+
+version 0.0.222
+- Categories menu - Add Category item (context menu)
+- Touch Controls - added Menu, Categories, Quit
+- Stream Setup \ Browse \ Remove Folder (fuchsia if folder already added)
+- Settings \ Optional \ Import addons.ini \ Overwrite or Merge Local addons.ini
+
+version 0.0.221
+- unique alternative streams
+- feedback on Alt Stream button
+- categeories menu in main epg (m, menu) [Thanks Team iVue]
+
+version 0.0.220
+- pre-find program images (up,down,left,right of current program)
+
+version 0.0.219
+- Stream Setup \ Browse \ Alt Stream
+
+version 0.0.218
+- OMDb option as part of program image search options
+- Settings \ Source \ Treat 4 Digit Program Date as Movie
+- Settings \ Lab1 \ Use Better Resolution IMDb Image (takes longer)
+
+version 0.0.217
+- cancel channel selection
+
+version 0.0.216
+- handle server compression
+
+version 0.0.214-215
+- combined program image search in Settings \ Lab1 \ Find Program Images from OMDb/TVDb/IMDb
+- fix for yo.tv & tvguide.co.uk around midnight wrong day error
+
+version 0.0.212-213
+- OMDb images and missing plot
+
+version 0.0.211
+- autosaves channel mapping on exit to 
+    userdata\addon_data\script.tvguide.fullscreen\custom_stream_urls_autosave.ini
+
+version 0.0.206-210
+- highlight all programs in currently playing channel
+- yo.tv temporary fix to add 1 day to program data
+
+version 0.0.205
+- yo.tv Providers (usually needs a zip code)
+- background progress dialogs
+
+version 0.0.201-204
+- Movie Year regex fix
+- persistant Last Channel
+- hide epg on play same channel as now playing
+
+version 0.0.200
+- Listings Views speed-up
+- Authentication option in Settings \ Optional
+- Menu buttons re-ordered (program, scheduler, channels, actions)
+
+version 0.0.199
+- Last Channel fix - Remote 0 in TV Mode
+
+version 0.0.196-198
+- Menu \ Add Alt Stream - uses the Choose Stream dialog to add a new alternative stream
+
+version 0.0.195
+- Import Channel Mapping - Settings \ Optional \ Channel Mapping (mapping.ini = separator)
+
+version 0.0.194
+- Background Update Service independent of File Download Interval now
+- Notify after Background Update setting
+- md5 fixes
+- Video Favourites option
+
+version 0.0.191-193
+- Settings \ Lab1 \ Use Program Image from Source
+- Settings \ Backup \ Download All Channel Logos
+- Settings \ Lab1 \ md5 Check
+
+version 0.0.190
+- Settings \ Favourite Favourites = Favourites|Simple Favourites|Super Favourites
+
+version 0.0.189
+- Fall back to Channel Logo for Program Image in Settings\Lab1
+- Delete TheLogoDB.com Cache in Settings\Logos
+- !The Fall Back setting will use full size logos from TheLogoDB and might look bad in the epg
+
+version 0.0.186-188
+- Mulitple Alternative Streams
+
+version 0.0.185
+- Alternative Stream in Stream Setup \ Favourites | Addons
+- Clear Alt Stream in Stream Setup \ strm|m3u
+
+version 0.0.184
+- Show Channel Logo in EPG in Settings \ Appearance
+
+version 0.0.182-183
+- play minimized in background/window in Settings \ Playback
+
+version 0.0.181
+- Settings \ Logos \ Keep Last Channel Logo Mapping (if you change the logos in Channels)
+
+version 0.0.180
+- Backup/Restore Channel Stream Mappings
+- BBC Source fix
+
+version 0.0.179
+- movie match if xmltv program has a <date>YYYY field
+
+version 0.0.178
+- User Skins (Settings \ Appearance \ Skin Type = Yours)
+- Skin Name (your top folder name in userdata\addon_data\script.tvguide.fullscreen\resources\skins)
+- make sure you make the directories resources\skins on top of your skin
+
+version 0.0.175-177
+- channel images from TheLogoDB.com (Settings \ Logos \ TheLogoDB)
+- also searchable in Context Menu \ Channels \ Logo
+
+version 0.0.173-174
+- show Stream Setup if no channel matches
+
+version 0.0.172
+- fuzzy program image matching in Settings\Lab1
+
+version 0.0.171
+- Extended Info in menu and with (info,i) (needs script.extendedinfo)
+
+version 0.0.170
+- clear unwanted IMDB/TVDB image in main epg (m, menu)
+
+version 0.0.167-169
+- IMDB/TVDB image search Setting in Lab1
+
+version 0.0.165-166
+- url for epg background (change it to file to use your old image)
+
+version 0.0.164
+- yo.tv full data source in Lab
+
+version 0.0.159-163
+- tvguide.co.uk full data source in Lab
+-   only bbc1 is visible by default (use channels menu for others)
+
+version 0.0.157-158
+- persistant category
+- category arg for favourites - RunScript(script.tvguide.fullscreen,your category here)
+
+version 0.0.156
+- experimental BBC data source (lots of pictures, short descriptions)
+- MySearch version of iSearch (Settings\Appearance)
+
+version 0.0.153-155
 - tweaks and fixes
 
 version 0.0.152

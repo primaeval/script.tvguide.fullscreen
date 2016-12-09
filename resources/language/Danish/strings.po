@@ -1,7 +1,7 @@
 # XBMC Media Center language file
-# Addon Name: FTV Guide
-# Addon id: script.ftvguide
-# Addon Provider: rayw1986, bluezed
+# Addon Name: TV Guide Fullscreen
+# Addon id: script.tvguide.fullscreen
+# Addon Provider: primaeval
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC Addons\n"
@@ -177,16 +177,16 @@ msgid "It looks like your current skin has a special"
 msgstr "Det ser ud til dit nuværende skin har en special"
 
 msgctxt "#30155"
-msgid "version of the FTV Guide skin that is not up-to-date."
-msgstr "version af FTV Guide skinnet som ikke er opdateret."
+msgid "version of the TV Guide Fullscreen skin that is not up-to-date."
+msgstr "version af TV Guide Fullscreen skinnet som ikke er opdateret."
 
 msgctxt "#30156"
 msgid "Please try with a different skin..."
 msgstr "Prøv med et andet skin..."
 
 msgctxt "#30157"
-msgid "It looks like the FTV Guide database is broken."
-msgstr "Det ser ud til FTV Guidens database er gået i stykker."
+msgid "It looks like the TV Guide Fullscreen database is broken."
+msgstr "Det ser ud til TV Guide Fullscreenns database er gået i stykker."
 
 msgctxt "#30158"
 msgid "The database will be deleted and recreated."
@@ -313,8 +313,8 @@ msgid "Play channels using the Weeb.Tv addon"
 msgstr "Afspil kanaler via Weeb.Tv addon"
 
 msgctxt "#30802"
-msgid "FTV Guide is configured to stream using Weeb.Tv"
-msgstr "FTV Guiden er indstillet til at streame TV via Weeb.Tv,"
+msgid "TV Guide Fullscreen is configured to stream using Weeb.Tv"
+msgstr "TV Guide Fullscreenn er indstillet til at streame TV via Weeb.Tv,"
 
 msgctxt "#30803"
 msgid "addon which is not installed."

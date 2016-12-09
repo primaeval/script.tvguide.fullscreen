@@ -1,7 +1,7 @@
 # XBMC Media Center language file
-# Addon Name: FTV Guide
-# Addon id: script.ftvguide
-# Addon Provider: rayw1986, bluezed
+# Addon Name: TV Guide Fullscreen
+# Addon id: script.tvguide.fullscreen
+# Addon Provider: primaeval
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC Addons\n"
@@ -161,12 +161,12 @@ msgid "URL"
 msgstr "URL"
 
 msgctxt "#30126"
-msgid "FTV (All)"
-msgstr "FTV (Alle)"
+msgid "TV (All)"
+msgstr "TV (Alle)"
 
 msgctxt "#30127"
-msgid "FTV (Basic)"
-msgstr "FTV (Basis)"
+msgid "TV (Basic)"
+msgstr "TV (Basis)"
 
 msgctxt "#30128"
 msgid "File download interval"
@@ -229,8 +229,8 @@ msgid "Custom File"
 msgstr "Eigene Datei"
 
 msgctxt "#30143"
-msgid "FTV Guide"
-msgstr "FTV Guide"
+msgid "TV Guide Fullscreen"
+msgstr "TV Guide Fullscreen"
 
 msgctxt "#30144"
 msgid "addons.ini selection"
@@ -277,15 +277,15 @@ msgid "It looks like your current skin has a special"
 msgstr "Es sieht so aus als ob die aktivierte Skin eine spezielle"
 
 msgctxt "#30155"
-msgid "version of the FTV Guide skin that is not up-to-date."
-msgstr "Version der FTV Guide Skin benutzt, die nicht aktuell ist."
+msgid "version of the TV Guide Fullscreen skin that is not up-to-date."
+msgstr "Version der TV Guide Fullscreen Skin benutzt, die nicht aktuell ist."
 
 msgctxt "#30156"
 msgid "Please try with a different skin..."
 msgstr "Bitte verwenden Sie ein anderes Skin..."
 
 msgctxt "#30157"
-msgid "It looks like the FTV Guide database is broken."
+msgid "It looks like the TV Guide Fullscreen database is broken."
 msgstr "Die Programmdatenbank ist fehlerhaft."
 
 msgctxt "#30158"
@@ -441,8 +441,8 @@ msgid "Play channels using the Weeb.Tv addon"
 msgstr "Sender mit Weeb.Tv addon abspielen"
 
 msgctxt "#30802"
-msgid "FTV Guide is configured to stream using Weeb.Tv"
-msgstr "FTV Guide verwendet Weed.Tv zum Abspielen von Streams"
+msgid "TV Guide Fullscreen is configured to stream using Weeb.Tv"
+msgstr "TV Guide Fullscreen verwendet Weed.Tv zum Abspielen von Streams"
 
 msgctxt "#30803"
 msgid "addon which is not installed."
@@ -453,7 +453,7 @@ msgid "Streaming using that addon is now disabled."
 msgstr "Streaming mit diesem Addon ist jetzt deaktiviert."
 
 msgctxt "#30900"
-msgid "Autostart FTV Guide when Kodi starts up"
+msgid "Autostart TV Guide Fullscreen when Kodi starts up"
 msgstr "Beim Start von Kodi automatisch starten"
 
 msgctxt "#31000"

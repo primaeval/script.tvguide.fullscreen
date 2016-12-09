@@ -6,7 +6,7 @@
 #      Modified for FTV Guide (09/2014 onwards)
 #      by Thomas Geppert [bluezed] - bluezed.apps@gmail.com
 #
-#      Modified for TV Guide Fullscren (2016)
+#      Modified for TV Guide Fullscreen (2016)
 #      by primaeval - primaeval.dev@gmail.com
 #
 #  This Program is free software; you can redistribute it and/or modify
@@ -78,17 +78,18 @@ class StreamsService(object):
     def getAddonStreams(self, id):
         return self.addonsParser.items(id)
 
-    def detectStream(self, channel):
+    def detectStream(self, channel, try_favourites=True):
         """
         @param channel:
         @type channel: source.Channel
         """
-        favourites = self.loadFavourites()
+        if try_favourites:
+            favourites = self.loadFavourites()
 
-        # First check favourites, if we get exact match we use it
-        for label, stream in favourites:
-            if label == channel.title:
-                return stream
+            # First check favourites, if we get exact match we use it
+            for label, stream in favourites:
+                if label == channel.title:
+                    return stream
 
 
         # Second check all addons and return all matches
@@ -114,11 +115,17 @@ class StreamsService(object):
                 if int(self.addon.getSetting('addon.match')) > 0:
                     labelx = re.sub(r' ','',label.lower())
                     title = re.sub(r' ','',channel.title.lower())
+                    title = re.sub(re.compile(r'hd$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'london$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'england$',flags=re.I),'',title)
                     titleRe = r".*%s.*" % re.escape(title)
                     if re.match(titleRe,labelx):
                         sub_matches.append((id, label, stream))
                 if int(self.addon.getSetting('addon.match')) > 1:
                     title = re.sub(r' ','',channel.title.lower())
+                    title = re.sub(re.compile(r'hd$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'london$',flags=re.I),'',title)
+                    title = re.sub(re.compile(r'england$',flags=re.I),'',title)
                     titleRe = r".*%s.*" % re.escape(title)
                     numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine" , "ten"]
                     for num in range(1,11):

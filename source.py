@@ -6,7 +6,7 @@
 #      Modified for FTV Guide (09/2014 onwards)
 #      by Thomas Geppert [bluezed] - bluezed.apps@gmail.com
 #
-#      Modified for TV Guide Fullscren (2016)
+#      Modified for TV Guide Fullscreen (2016)
 #      by primaeval - primaeval.dev@gmail.com
 #
 #  This Program is free software; you can redistribute it and/or modify
@@ -43,6 +43,9 @@ import xbmcvfs
 import xbmcaddon
 import sqlite3
 import HTMLParser
+import xml.etree.ElementTree as ET
+import requests
+from itertools import chain
 
 import resources.lib.pytz
 from resources.lib.pytz import timezone
@@ -50,8 +53,10 @@ from resources.lib.pytz import timezone
 from sdAPI import SdAPI
 from utils import *
 
-SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder', 'logos.source', 'logos.folder', 'logos.url', 'source.source', 'yo.country' ]
+SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder', 'logos.source', 'logos.folder', 'logos.url', 'source.source', 'yo.countries' , 'tvguide.co.uk.systemid']
 
+def log(x):
+    xbmc.log(repr(x))
 
 class Channel2(object):
     def __init__(self, id, title, lineup, logo=None, streamUrl=None, visible=True, weight=-1):
@@ -93,8 +98,14 @@ class Program(object):
         self.startDate = startDate
         self.endDate = endDate
         self.description = description
-        self.imageLarge = imageLarge
-        self.imageSmall = imageSmall
+        if imageLarge and imageLarge.startswith('http'):
+            self.imageLarge = re.sub(' ','+',imageLarge)
+        else:
+            self.imageLarge = imageLarge
+        if imageSmall and imageSmall.startswith('http'):
+            self.imageSmall = re.sub(' ','+',imageSmall)
+        else:
+            self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
         self.autoplayScheduled = autoplayScheduled
         self.autoplaywithScheduled = autoplaywithScheduled
@@ -131,13 +142,13 @@ class Database(object):
     SOURCE_DB = 'source.db'
     CHANNELS_PER_PAGE = int(ADDON.getSetting('channels.per.page'))
 
-    def __init__(self):
+    def __init__(self,force=False):
         self.conn = None
         self.eventQueue = list()
         self.event = threading.Event()
         self.eventResults = dict()
 
-        self.source = instantiateSource()
+        self.source = instantiateSource(force)
 
         self.updateInProgress = False
         self.updateFailed = False
@@ -152,6 +163,7 @@ class Database(object):
         self.databasePath = os.path.join(profilePath, Database.SOURCE_DB)
 
         threading.Thread(name='Database Event Loop', target=self.eventLoop).start()
+
 
     def eventLoop(self):
         print 'Database.eventLoop() >>>>>>>>>> starting...'
@@ -320,7 +332,8 @@ class Database(object):
         # check if program data is up-to-date in database
         dateStr = date.strftime('%Y-%m-%d')
         c = self.conn.cursor()
-        c.execute('SELECT programs_updated FROM updates WHERE source=? AND date=?', [self.source.KEY, dateStr])
+        #c.execute('SELECT programs_updated FROM updates WHERE source=? AND date=?', [self.source.KEY, dateStr])
+        c.execute('SELECT programs_updated FROM updates WHERE source=?', [self.source.KEY])
         row = c.fetchone()
         if row:
             programsLastUpdated = row['programs_updated']
@@ -341,7 +354,13 @@ class Database(object):
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
 
-        if not self._isCacheExpired(date) and not self.source.needReset:
+        lock = 'special://profile/addon_data/script.tvguide.fullscreen/db.lock'
+        if xbmcvfs.exists(lock):
+            return
+
+        isCacheExpired = self._isCacheExpired(date)
+        needReset = self.source.needReset
+        if not isCacheExpired and not needReset:
             return
         else:
             # if the xmltv data needs to be loaded the database
@@ -353,7 +372,7 @@ class Database(object):
             self.conn.commit()
             c.close()
             self.source.needReset = False
-
+        xbmcvfs.File(lock,'wb')
         self.updateInProgress = True
         self.updateFailed = False
         dateStr = date.strftime('%Y-%m-%d')
@@ -362,6 +381,15 @@ class Database(object):
             xbmc.log('[script.tvguide.fullscreen] Updating caches...', xbmc.LOGDEBUG)
             if progress_callback:
                 progress_callback(0)
+
+            getData = True
+            ch_list = []
+            if self.source.KEY == "sdirect":
+                ch_list = self._getChannelList(onlyVisible=False)
+                if len(ch_list) == 0:
+                    getData = False
+            else:
+                ch_list = self._getChannelList(onlyVisible=True)
 
             if self.settingsChanged:
                 c.execute('DELETE FROM channels WHERE source=?', [self.source.KEY])
@@ -382,12 +410,7 @@ class Database(object):
             updatesId = c.lastrowid
 
             imported = imported_channels = imported_programs = 0
-            getData = True
-            ch_list = []
-            if self.source.KEY == "sdirect":
-                ch_list = self._getChannelList(onlyVisible=False)
-                if len(ch_list) == 0:
-                    getData = False
+
             if getData == True:
                 for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
                     imported += 1
@@ -403,10 +426,16 @@ class Database(object):
                             [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
                              self.source.KEY, channel.weight, self.source.KEY])
                         if not c.rowcount:
-                            c.execute(
-                                'UPDATE channels SET title=?, logo=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
-                                [channel.title, channel.logo, channel.streamUrl, channel.weight, channel.visible,
-                                 channel.weight, channel.weight, channel.id, self.source.KEY])
+                            if ADDON.getSetting('logos.keep') == 'true':
+                                c.execute(
+                                    'UPDATE channels SET title=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
+                                    [channel.title, channel.streamUrl, channel.weight, channel.visible,
+                                     channel.weight, channel.weight, channel.id, self.source.KEY])
+                            else:
+                                c.execute(
+                                    'UPDATE channels SET title=?, logo=?, stream_url=?, visible=(CASE ? WHEN -1 THEN visible ELSE ? END), weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
+                                    [channel.title, channel.logo, channel.streamUrl, channel.weight, channel.visible,
+                                     channel.weight, channel.weight, channel.id, self.source.KEY])
 
                     elif isinstance(item, Program):
                         imported_programs += 1
@@ -460,7 +489,7 @@ class Database(object):
         finally:
             self.updateInProgress = False
             c.close()
-
+        xbmcvfs.delete(lock)
 
     def setCategory(self,category):
         self.category = category
@@ -723,10 +752,13 @@ class Database(object):
         return self._invokeAndBlockForResult(self._getChannelListing, channel)
 
     def _getChannelListing(self, channel):
+        now = datetime.datetime.now()
+        days = int(ADDON.getSetting('listing.days'))
+        endTime = now + datetime.timedelta(days=days)
         programList = []
         c = self.conn.cursor()
-        try: c.execute('SELECT * FROM programs WHERE channel=?',
-                  [channel.id])
+        try: c.execute('SELECT * FROM programs WHERE channel=? AND end_date>? AND start_date<?',
+                  [channel.id,now,endTime])
         except: return
         for row in c:
             program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
@@ -743,18 +775,29 @@ class Database(object):
     def _getNowList(self):
         programList = []
         now = datetime.datetime.now()
+        channels = self._getChannelList(True)
+        channelIds = [c.id for c in channels]
+        channelMap = dict()
+        for c in channels:
+            if c.id:
+                channelMap[c.id] = c
+
         c = self.conn.cursor()
-        channelList = self._getChannelList(True)
-        for channel in channelList:
-            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date <= ? AND end_date >= ?',
-                      [channel.id, self.source.KEY,now,now])
-            except: return
-            row = c.fetchone()
-            if row:
-                program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
+        c.execute(
+            'SELECT DISTINCT p.*' +
+            'FROM programs p, channels c WHERE p.channel IN (\'' + ('\',\''.join(channelIds)) + '\') AND p.channel=c.id AND p.source=? AND p.end_date >= ? AND p.start_date <= ?' +
+            'ORDER BY c.weight',
+            [self.source.KEY, now, now])
+
+        for row in c:
+            notification_scheduled = ''
+            autoplay_scheduled = ''
+            autoplaywith_scheduled = ''
+            program = Program(channelMap[row['channel']], title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
-                              is_movie=row['is_movie'], language=row['language'])
-                programList.append(program)
+                              is_movie=row['is_movie'], language=row['language'],
+                              notificationScheduled=notification_scheduled, autoplayScheduled=autoplay_scheduled, autoplaywithScheduled=autoplaywith_scheduled)
+            programList.append(program)
         c.close()
         return programList
 
@@ -778,6 +821,7 @@ class Database(object):
                 programList.append(program)
         c.close()
         return programList
+
 
     def getCurrentProgram(self, channel):
         return self._invokeAndBlockForResult(self._getCurrentProgram, channel)
@@ -940,6 +984,35 @@ class Database(object):
             self.conn.commit()
             c.close()
 
+    def setAltCustomStreamUrl(self, channel, title, stream_url):
+        if stream_url is not None:
+            self._invokeAndBlockForResult(self._setAltCustomStreamUrl, channel, title, stream_url)
+            # no result, but block until operation is done
+
+    def _setAltCustomStreamUrl(self, channel, title, stream_url):
+        if stream_url is not None:
+            c = self.conn.cursor()
+            #c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+            c.execute("INSERT OR REPLACE INTO alt_custom_stream_url(channel, title, stream_url) VALUES(?, ?, ?)",
+                      [channel.id, title.decode('utf-8', 'ignore'), stream_url.decode('utf-8', 'ignore')])
+            self.conn.commit()
+            c.close()
+
+    def setCustomStreamUrls(self, stream_urls):
+        if stream_urls is not None:
+            self._invokeAndBlockForResult(self._setCustomStreamUrls, stream_urls)
+            # no result, but block until operation is done
+
+    def _setCustomStreamUrls(self, stream_urls):
+        if stream_urls is not None:
+            c = self.conn.cursor()
+            for (id,stream_url) in stream_urls:
+                c.execute("DELETE FROM custom_stream_url WHERE channel=?", [id])
+                c.execute("INSERT OR REPLACE INTO custom_stream_url(channel, stream_url) VALUES(?, ?)",
+                          [id, stream_url.decode('utf-8', 'ignore')])
+            self.conn.commit()
+            c.close()
+
     def getCustomStreamUrl(self, channel):
         return self._invokeAndBlockForResult(self._getCustomStreamUrl, channel)
 
@@ -956,6 +1029,41 @@ class Database(object):
         else:
             return None
 
+    def getAltCustomStreamUrl(self, channel):
+        return self._invokeAndBlockForResult(self._getAltCustomStreamUrl, channel)
+
+    def _getAltCustomStreamUrl(self, channel):
+        if not channel:
+            return
+        c = self.conn.cursor()
+        c.execute("SELECT DISTINCT stream_url, title FROM alt_custom_stream_url WHERE channel=?", [channel.id])
+        stream_url = []
+        for row in c:
+            stream_url.append((row["stream_url"],row["title"]))
+        return stream_url
+
+    def getCustomStreamUrls(self):
+        return self._invokeAndBlockForResult(self._getCustomStreamUrls)
+
+    def _getCustomStreamUrls(self):
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM custom_stream_url")
+        stream_urls = []
+        for row in c:
+            stream_urls.append((row["channel"],row["stream_url"]))
+        return stream_urls
+
+    def getAltCustomStreamUrls(self):
+        return self._invokeAndBlockForResult(self._getCustomStreamUrls)
+
+    def _getAltCustomStreamUrls(self):
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM alt_custom_stream_url")
+        stream_urls = []
+        for row in c:
+            stream_urls.append((row["channel"],row["stream_url"]))
+        return stream_urls
+
     def deleteCustomStreamUrl(self, channel):
         self.eventQueue.append([self._deleteCustomStreamUrl, None, channel])
         self.event.set()
@@ -963,6 +1071,16 @@ class Database(object):
     def _deleteCustomStreamUrl(self, channel):
         c = self.conn.cursor()
         c.execute("DELETE FROM custom_stream_url WHERE channel=?", [channel.id])
+        self.conn.commit()
+        c.close()
+
+    def deleteAltCustomStreamUrl(self, url):
+        self.eventQueue.append([self._deleteAltCustomStreamUrl, None, url])
+        self.event.set()
+
+    def _deleteAltCustomStreamUrl(self, url):
+        c = self.conn.cursor()
+        c.execute("DELETE FROM alt_custom_stream_url WHERE stream_url=?", [url])
         self.conn.commit()
         c.close()
 
@@ -977,6 +1095,9 @@ class Database(object):
             return streamUrl
 
         return None
+
+    def getAltStreamUrl(self, channel):
+        return self.getAltCustomStreamUrl(channel)
 
     @staticmethod
     def adapt_datetime(ts):
@@ -1055,17 +1176,36 @@ class Database(object):
                 c.execute(
                     "CREATE TABLE IF NOT EXISTS autoplaywiths(channel TEXT, program_title TEXT, source TEXT, start_date TIMESTAMP, type TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
             if version < [1, 3, 4]:
-                # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=4')
                 c.execute('DROP TABLE programs')
                 c.execute(
                     'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, UNIQUE (channel, start_date, end_date), FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
             if version < [1, 3, 5]:
-                # Recreate tables with seasons, episodes and is_movie
                 c.execute('UPDATE version SET major=1, minor=3, patch=5')
                 c.execute('DROP TABLE channels')
                 c.execute(
                     'CREATE TABLE channels(id TEXT, title TEXT, logo TEXT, stream_url TEXT, source TEXT, lineup TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+            if version < [1, 3, 6]:
+                c.execute('UPDATE version SET major=1, minor=3, patch=6')
+                c.execute('DROP TABLE programs')
+                c.execute(
+                    'CREATE TABLE programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, season TEXT, episode TEXT, is_movie TEXT, language TEXT, source TEXT, updates_id INTEGER, UNIQUE (channel, start_date, end_date), FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+                c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
+                c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
+                c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
+            if version < [1, 3, 7]:
+                c.execute('UPDATE version SET major=1, minor=3, patch=7')
+                c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, stream_url TEXT)')
+            if version < [1, 3, 8]:
+                c.execute('UPDATE version SET major=1, minor=3, patch=8')
+                c.execute('DROP TABLE alt_custom_stream_url')
+                c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, title TEXT, stream_url TEXT)')
+            if version < [1, 3, 9]:
+                c.execute('UPDATE version SET major=1, minor=3, patch=9')
+                c.execute('ALTER TABLE alt_custom_stream_url RENAME TO alt_custom_stream_url_old')
+                c.execute('CREATE TABLE IF NOT EXISTS alt_custom_stream_url(channel TEXT, title TEXT, stream_url TEXT, PRIMARY KEY (channel, stream_url))')
+                c.execute('INSERT INTO alt_custom_stream_url SELECT * FROM alt_custom_stream_url_old')
+                c.execute('DROP TABLE alt_custom_stream_url_old')
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -1335,16 +1475,18 @@ class XMLTVSource(Source):
     CATEGORIES_TYPE_FILE = 0
     CATEGORIES_TYPE_URL = 1
 
-    def __init__(self, addon):
+    def __init__(self, addon, force):
         #gType = GuideTypes()
 
         self.needReset = False
         self.fetchError = False
         self.xmltvType = int(addon.getSetting('xmltv.type'))
+        self.xmltv2Type = int(addon.getSetting('xmltv2.type'))
         self.xmltvInterval = int(addon.getSetting('xmltv.interval'))
         self.logoSource = int(addon.getSetting('logos.source'))
         self.addonsType = int(addon.getSetting('addons.ini.type'))
         self.categoriesType = int(addon.getSetting('categories.ini.type'))
+        self.mappingType = int(addon.getSetting('mapping.ini.type'))
 
         # make sure the folder in the user's profile exists or create it!
         if not os.path.exists(XMLTVSource.PLUGIN_DATA):
@@ -1358,7 +1500,8 @@ class XMLTVSource(Source):
             self.logoFolder = ""
 
         if self.xmltvType == XMLTVSource.XMLTV_SOURCE_FILE:
-            customFile = str(addon.getSetting('xmltv.file'))
+            #customFile = str(addon.getSetting('xmltv.file'))
+            '''
             if os.path.exists(customFile):
                 # uses local file provided by user!
                 xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
@@ -1366,10 +1509,31 @@ class XMLTVSource(Source):
             else:
                 # Probably a remote file
                 xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
-                self.updateLocalFile(customFile, addon)
+                self.updateLocalFile(customFile, addon, force=force)
                 self.xmltvFile = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+            '''
+            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.file'), addon, force=force)
         else:
-            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon)
+            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon, force=force)
+
+        self.xmltv2File = ''
+        if ADDON.getSetting('xmltv2.enabled') == 'true':
+            if self.xmltv2Type == XMLTVSource.XMLTV_SOURCE_FILE:
+                '''
+                customFile = str(addon.getSetting('xmltv2.file'))
+                if os.path.exists(customFile):
+                    # uses local file provided by user!
+                    xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+                    self.xmltv2File = customFile
+                else:
+                    # Probably a remote file
+                    xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+                    self.updateLocalFile(customFile, addon, force=force)
+                    self.xmltv2File = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+                '''
+                self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.file'), addon, force=force)
+            else:
+                self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.url'), addon, force=force)
 
         if addon.getSetting('categories.ini.enabled') == 'true':
             if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
@@ -1377,10 +1541,20 @@ class XMLTVSource(Source):
             else:
                 customFile = str(addon.getSetting('categories.ini.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True)
+                self.updateLocalFile(customFile, addon, True, force=force)
 
+        if addon.getSetting('mapping.ini.enabled') == 'true':
+            if self.mappingType == XMLTVSource.INI_TYPE_FILE:
+                customFile = str(addon.getSetting('mapping.ini.file'))
+            else:
+                customFile = str(addon.getSetting('mapping.ini.url'))
+            if customFile:
+                self.updateLocalFile(customFile, addon, True, force=force)
 
-        # make sure the ini file is fetched as well if necessary
+        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+        if not xbmcvfs.exists(path):
+            f = xbmcvfs.File(path,"w")
+            f.close()
 
         if addon.getSetting('addons.ini.enabled') == 'true':
             if self.addonsType == XMLTVSource.INI_TYPE_FILE:
@@ -1388,36 +1562,79 @@ class XMLTVSource(Source):
             else:
                 customFile = str(addon.getSetting('addons.ini.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True)
+                addons_ini = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+                addons_ini_local = addons_ini+".local"
+                success = xbmcvfs.copy(addons_ini,addons_ini_local)
+                path = self.updateLocalFile(customFile, addon, True, force=force)
+                if path and (ADDON.getSetting('addons.ini.overwrite') == "1"):
+                    streams = {}
+                    for file in [addons_ini_local,path]:
+                        f = xbmcvfs.File(addons_ini_local,"rb")
+                        if f:
+                            data = f.read()
+                            f.close()
+                        else:
+                            continue
+                        if not data:
+                            continue
+                        lines = data.splitlines()
+                        for line in lines:
+                            match = re.search('^\[(.*?)\]$',line)
+                            if match:
+                                addon = match.group(1)
+                                if addon not in streams:
+                                    streams[addon] = {}
+                            elif line.startswith('#'):
+                                pass
+                            else:
+                                name_stream = line.split('=',1)
+                                if len(name_stream) == 2:
+                                    (name,stream) = name_stream
+                                    streams[addon][name] = stream
 
-
-        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
-        if not xbmcvfs.exists(path):
-            f = xbmcvfs.File(path,"w")
-            f.close()
+                    f = xbmcvfs.File(addons_ini,"wb")
+                    for addon in sorted(streams):
+                        s = "[%s]\n" % addon
+                        f.write(s)
+                        for name in sorted(streams[addon]):
+                            stream = streams[addon][name]
+                            s = "%s=%s\n" % (name,stream)
+                            f.write(s)
+                    f.close()
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
+        #if not self.xmltv2File or not xbmcvfs.exists(self.xmltv2File):
+        #    raise SourceNotConfiguredException()
 
-
-    def updateLocalFile(self, name, addon, isIni=False):
+    def updateLocalFile(self, name, addon, isIni=False, force=False):
         fileName = os.path.basename(name)
         path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
         fetcher = FileFetcher(name, addon)
-        retVal = fetcher.fetchFile()
+        retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True
         elif retVal == fetcher.FETCH_ERROR:
             xbmcgui.Dialog().ok(strings(FETCH_ERROR_TITLE), strings(FETCH_ERROR_LINE1), strings(FETCH_ERROR_LINE2))
-
         return path
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
-        f = FileWrapper(self.xmltvFile)
-        context = ElementTree.iterparse(f, events=("start", "end"))
-        size = f.size
+        if not xbmcvfs.exists(self.xmltvFile):
+            raise SourceNotConfiguredException()
+        if (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
+                yield v
+        else:
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback)):
+                yield v
 
-        return self.parseXMLTV(context, f, size, self.logoFolder, progress_callback)
+    def getDataFromExternal2(self, xmltvFile, date, ch_list, progress_callback=None):
+        if xbmcvfs.exists(xmltvFile):
+            f = FileWrapper(xmltvFile)
+            if f:
+                context = ElementTree.iterparse(f, events=("start", "end"))
+                size = f.size
+                return self.parseXMLTV(context, f, size, self.logoFolder, progress_callback)
 
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if channelsLastUpdated is None or not xbmcvfs.exists(self.xmltvFile):
@@ -1491,12 +1708,15 @@ class XMLTVSource(Source):
         if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
+        d = xbmcgui.DialogProgressBG()
+        d.create('TV Guide Fullscreen', "parsing xmltv")
         for event, elem in context:
             if event == "end":
                 result = None
                 if elem.tag == "programme":
                     channel = elem.get("channel").replace("'", "")  # Make ID safe to use as ' can cause crashes!
                     description = elem.findtext("desc")
+                    date = elem.findtext("date")
                     iconElement = elem.find("icon")
                     icon = None
                     if iconElement is not None:
@@ -1507,6 +1727,10 @@ class XMLTVSource(Source):
                     season = None
                     episode = None
                     is_movie = None
+                    title = elem.findtext('title')
+                    if ADDON.getSetting('xmltv.date') == 'true' and date and re.match("^[0-9]{4}$",date):
+                        is_movie = "Movie"
+                        title = "%s (%s)" % (title,date)
                     language = elem.find("title").get("lang")
                     if meta_installed == True:
                         episode_num = elem.findtext("episode-num")
@@ -1539,36 +1763,45 @@ class XMLTVSource(Source):
                                 season = int(re.sub(pattern, r"\1", episode_num))
                                 episode = (re.sub(pattern, r"\2", episode_num))
 
-                    result = Program(channel, elem.findtext('title'), self.parseXMLTVDate(elem.get('start')),
+                    result = Program(channel, title, self.parseXMLTVDate(elem.get('start')),
                                      self.parseXMLTVDate(elem.get('stop')), description, imageSmall=icon,
                                      season = season, episode = episode, is_movie = is_movie, language= language)
 
                 elif elem.tag == "channel":
+                    logo = ''
                     cid = elem.get("id").replace("'", "")  # Make ID safe to use as ' can cause crashes!
                     title = elem.findtext("display-name")
-                    iconElement = elem.find("icon")
-                    icon = None
-                    if iconElement is not None:
-                        icon = iconElement.get("src")
-                    logo = None
-                    if icon and ADDON.getSetting('xmltv.logos'):
-                        logo = icon
-                    if logoFolder:
-                        logoFile = os.path.join(logoFolder, title + '.png')
-                        if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
-                            logo = logoFile.replace(' ', '%20')
-                        #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
-                        #    logo = logoFile
-                        else:
-                            #TODO use hash or db
-                            t = re.sub(r' ','',title.lower())
-                            t = re.escape(t)
-                            titleRe = "^%s" % t
-                            for l in sorted(logos):
-                                logox = re.sub(r' ','',l.lower())
-                                if re.match(titleRe,logox):
-                                    logo = os.path.join(logoFolder, l + '.png')
-                                    break
+                    use_thelogodb = False
+                    if ADDON.getSetting('thelogodb') == "2":
+                        use_thelogodb = True
+                    else:
+                        iconElement = elem.find("icon")
+                        icon = None
+                        if iconElement is not None:
+                            icon = iconElement.get("src")
+                        logo = ''
+                        if icon and ADDON.getSetting('xmltv.logos'):
+                            logo = icon
+                        if logoFolder:
+                            logoFile = os.path.join(logoFolder, title + '.png')
+                            if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
+                                logo = logoFile.replace(' ', '%20')
+                            #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
+                            #    logo = logoFile
+                            else:
+                                #TODO use hash or db
+                                t = re.sub(r' ','',title.lower())
+                                t = re.escape(t)
+                                titleRe = "^%s" % t
+                                for l in sorted(logos):
+                                    logox = re.sub(r' ','',l.lower())
+                                    if re.match(titleRe,logox):
+                                        logo = os.path.join(logoFolder, l + '.png')
+                                        break
+
+                    if use_thelogodb or (not logo and ADDON.getSetting('thelogodb') == "1"):
+                        if ADDON.getSetting('logos.keep') == 'false':
+                            logo = getLogo(title,False,False)
 
                     streamElement = elem.find("stream")
                     streamUrl = None
@@ -1580,16 +1813,21 @@ class XMLTVSource(Source):
                     else:
                         visible = True
                     result = Channel(cid, title, '', logo, streamUrl, visible)
+                    channel = title
 
                 if result:
                     elements_parsed += 1
                     if progress_callback and elements_parsed % 500 == 0:
-                        if not progress_callback(100.0 / size * f.tell()):
+                        percent = 100.0 / size * f.tell()
+                        d.update(int(percent), message=channel)
+                        if not progress_callback(percent):
                             raise SourceUpdateCanceledException()
                     yield result
 
             root.clear()
         f.close()
+        d.update(100, message="Done")
+        d.close()
 
 
 class FileWrapper(object):
@@ -1614,6 +1852,8 @@ class TVGUKSource(Source):
     def __init__(self, addon):
         self.needReset = False
         self.done = False
+        self.start = True
+        self.channelsLastUpdated = None
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
         """
@@ -1624,20 +1864,250 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
-        r = requests.get('http://www.tvguide.co.uk/mobile/')
+        systemid = {
+            "Popular":"7",
+            "Sky":"5",
+            "Virgin M+":"2",
+            "Virgin XL":"25",
+            "BT":"22",
+            "Freeview":"3",
+            "Virgin M":"27",
+            "Virgin L":"24",
+            "Freesat":"19",
+        }
+        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
+        r = requests.get('http://www.tvguide.co.uk/?systemid=%s' % id)
         html = r.text
-        #xbmc.log("[script.tvguide.fullscreen] Loading tvguide.co.uk")
-        #xbmc.log(repr(html))
+
+        match = re.search(r'<select name="channelid">(.*?)</select>',html,flags=(re.DOTALL | re.MULTILINE))
+        if not match:
+            return
+        channels = re.findall(r'<option value=(.*?)>(.*?)</option>',match.group(1),flags=(re.DOTALL | re.MULTILINE))
+
+        if ch_list:
+            visible_channels = [c.id for c in ch_list]
+        else:
+            visible_channels = ["86"]
+        channel_number = {}
+        for channel in channels:
+            channel_name = channel[1]
+            number = channel[0]
+
+            thumb = "http://my.tvguide.co.uk/channel_logos/60x35/%s.png" % number
+            url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
+            visible = False
+            if number in visible_channels:
+                visible = True
+            if ADDON.getSetting("greedy") == 'true':
+                if not ('HD' in channel_name or '+1' in channel_name  or '+ 1' in channel_name or channel_name.startswith('ITV ')or channel_name.startswith('BBC1 ')or channel_name.startswith('BBC2 ')):
+                    visible = True
+            while channel_name in channel_number:
+                channel_name = channel_name + " "
+            channel_number[number] = channel_name
+            c = Channel(number, channel_name, '', thumb, "", visible)
+            yield c
+            program = channel_name
+            start = datetime.datetime.now()
+            end = start + datetime.timedelta(hours=1)
+            #if visible:
+            #    visible_channels.append(number)
+
+        elements_parsed = 0
+        for id in visible_channels:
+            listing_url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % id
+            programs = []
+            for day in range(int(ADDON.getSetting('tvguide.co.uk.days'))):
+                r = requests.get(listing_url)
+                html = r.text
+                match = re.search(r'<span class=programmeheading>(.*?), (.*?) (.*?), (.*?)</span>.*?<a href=\'(.*?)\'>previous</a>.*?<a href=\'(.*?)\'.*?>next</a>',html,flags=(re.DOTALL | re.MULTILINE))
+                day =''
+                month=''
+                year=''
+                if match:
+                    year = match.group(4)
+                    month = match.group(2)
+                    day = match.group(3)
+                    next = 'http://my.tvguide.co.uk%s' % match.group(6)
+                    previous = 'http://my.tvguide.co.uk%s' % match.group(5)
+                    next_day = ''
+                    match = re.search(r'cTime=(.*?) ',next)
+                    if match:
+                        next_day = match.group(1)
+                        listing_url = "%s&cTime=%s" % (listing_url,next_day)
+                    previous_day = ''
+                    match = re.search(r'cTime=(.*?) ',previous)
+                    if match:
+                        previous_day = match.group(1)
+
+                tables = html.split('<table')
+
+
+                for table in tables:
+                    thumb = ''
+                    match = re.search(r'background-image: url\((.*?)\)',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        thumb = match.group(1)
+                        if not thumb.endswith('.jpg'):
+                            thumb = ''
+                    match = re.search(r'<a href="(http://www.tvguide.co.uk/detail/.*?)"',table,flags=(re.DOTALL | re.MULTILINE))
+                    path = ''
+                    if match:
+                        detail = url=match.group(1).encode("utf8")
+
+                    season = ''
+                    episode = ''
+                    match = re.search(r'<b><span class="season">Season (.*?) </span> <span class="season">Episode (.*?) of (.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        season = match.group(1)
+                        episode = match.group(2)
+
+                    genre = ''
+                    match = re.search(r'<span class="tvchannel">Category </span><span class="programmetext">(.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        genre = match.group(1)
+
+                    ttime = ''
+                    title = ''
+                    plot = ''
+                    match = re.search(r'<span class="season">(.*?) </span>.*?<span class="programmeheading" >(.*?)</span>.*?<span class="programmetext">(.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
+                    if match:
+                        ttime = match.group(1)
+                        title = match.group(2)
+                        plot = match.group(3)
+                        mon = {'January':0,'February':1,'March':2,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
+                        start = self.local_time(ttime,year,mon[month],day)
+                        programs.append((title,start,plot,season,episode,thumb))
+
+            offset = None
+            if programs:
+                diff = programs[0][1].replace(tzinfo=None) - datetime.datetime.now()
+                if diff > datetime.timedelta(hours=0):
+                    offset =  datetime.timedelta(days=1)
+
+            last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
+            for index in range(len(programs)):
+                (title,start,plot,season,episode,thumb) = programs[index]
+                if start < last_start:
+                    start = start + datetime.timedelta(days=1)
+                last_start = start
+                if index < len(programs)-1:
+                    end = programs[index+1][1]
+                else:
+                    end = start + datetime.timedelta(hours=1,minutes=6)
+                if end < start:
+                    end = end  + datetime.timedelta(days=1)
+                if offset:
+                    start = start - offset
+                    end = end - offset
+                yield Program(id, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
+
+            elements_parsed += 1
+            total = len(visible_channels)
+            if progress_callback:
+                percent = 100.0 * elements_parsed / len(visible_channels)
+                if not progress_callback(percent):
+                    raise SourceUpdateCanceledException()
+
+        self.channelsLastUpdated = datetime.datetime.now()
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        if self.channelsLastUpdated == None:
+            self.channelsLastUpdated = channelsLastUpdated
+        elif channelsLastUpdated > self.channelsLastUpdated:
+            return True
+
+        if channelsLastUpdated is None or programsLastUpdated is None:
+            return True
+
+        update = False
+        interval = int(ADDON.getSetting('xmltv.interval'))
+        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
+            self.start = False
+            return True
+        modTime = programsLastUpdated
+        td = datetime.datetime.now() - modTime
+        # need to do it this way cause Android doesn't support .total_seconds() :(
+        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
+                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+            update = True
+        return update
+
+    def local_time_offset(self,t=None):
+        """Return offset of local zone from GMT, either at present or at time t."""
+        # python2.3 localtime() can't take None
+        if t is None:
+            t = time.time()
+        if time.localtime(t).tm_isdst and time.daylight:
+            return -time.altzone
+        else:
+            return -time.timezone
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+            london = timezone('Europe/London')
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
+            loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
+            return loc_dt
+        return
+
+class TVGUKNowSource(Source):
+    KEY = 'tvguide.co.uk.now'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+        systemid = {
+            "Popular":"7",
+            "Sky":"5",
+            "Virgin M+":"2",
+            "Virgin XL":"25",
+            "BT":"22",
+            "Freeview":"3",
+            "Virgin M":"27",
+            "Virgin L":"24",
+            "Freesat":"19",
+        }
+        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
+        r = requests.get('http://www.tvguide.co.uk/mobile/?systemid=%s' % id)
+        html = r.text
 
         channels = html.split('<div class="div-channel-progs">')
 
+        channel_numbers = {}
         for channel in channels:
             img_url = ''
-            name = ''
+            channel_name = ''
             img_match = re.search(r'<img class="img-channel-logo" width="50" src="(.*?)"\s*?alt="(.*?) TV Listings" />', channel)
             if img_match:
                 img_url = img_match.group(1)
-                name = img_match.group(2)
+                orig_channel_name = img_match.group(2)
+                channel_name = orig_channel_name
+            while channel_name in channel_numbers:
+                channel_name = channel_name + " "
 
             channel_number = '0'
             match = re.search(r'href="http://www\.tvguide\.co\.uk/mobile/channellisting\.asp\?ch=(.*?)"', channel)
@@ -1645,7 +2115,8 @@ class TVGUKSource(Source):
                 channel_number=match.group(1)
             else:
                 continue
-            c = Channel(name, name, '', img_url, "", True)
+            channel_numbers[channel_number] = channel_name
+            c = Channel(channel_number, channel_name, '', img_url, "", True)
             yield c
             start = ''
             program = ''
@@ -1657,6 +2128,7 @@ class TVGUKSource(Source):
             if match:
                 #TODO fix around midnight
                 now = datetime.datetime.now()
+                tomorrow = now + datetime.timedelta(days=1)
                 year = now.year
                 month = now.month
                 day = now.day
@@ -1681,6 +2153,10 @@ class TVGUKSource(Source):
                 match = re.search('<img.*?>&nbsp;(.*)',after_program)
                 if match:
                     after_program = match.group(1)
+                if after_start.replace(tzinfo=None) > tomorrow:
+                    start = start - datetime.timedelta(days=1)
+                    next_start = next_start - datetime.timedelta(days=1)
+                    after_start = after_start - datetime.timedelta(days=1)
                 yield Program(c, program, start, next_start, "", imageSmall="",
                      season = "", episode = "", is_movie = "", language= "")
                 yield Program(c, next_program, next_start, after_start, "", imageSmall="",
@@ -1697,6 +2173,16 @@ class TVGUKSource(Source):
             return True
         return False
 
+    def local_time_offset(self,t=None):
+        """Return offset of local zone from GMT, either at present or at time t."""
+        # python2.3 localtime() can't take None
+        if t is None:
+            t = time.time()
+        if time.localtime(t).tm_isdst and time.daylight:
+            return -time.altzone
+        else:
+            return -time.timezone
+
     def local_time(self,ttime,year,month,day):
         match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
         if match:
@@ -1710,18 +2196,220 @@ class TVGUKSource(Source):
             else:
                 if hour == 12:
                     hour = 0
-
             london = timezone('Europe/London')
-            utc = timezone('UTC')
-            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=utc)
-            loc_dt = utc_dt.astimezone(london)
-            return utc_dt
-            #ttime = "%02d:%02d" % (loc_dt.hour,loc_dt.minute)
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
+            loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
+            return loc_dt
+        return
 
-        return ttime
 
 class YoSource(Source):
-    KEY = '%s.yo.tv' % ADDON.getSetting("yo.country")
+    KEY = 'yo.tv'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+        self.start = True
+        self.channelsLastUpdated = None
+
+    def get_url(self,url):
+        headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+        try:
+            r = requests.get(url,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+            return html
+        except:
+            return ''
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+
+        if ch_list:
+            visible_channels = [c.id for c in ch_list]
+        else:
+            visible_channels = []
+        elements_parsed = 0
+
+        country_ids = ADDON.getSetting("yo.countries").split(',')
+        for country_id in country_ids:
+            s = requests.Session()
+            headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+            headend = ADDON.getSetting("yo.%s.headend" % country_id)
+            if headend:
+                r = s.get('http://%s.yo.tv/settings/headend/%s' % (country_id,headend),verify=False,stream=True,headers=headers)
+            r = s.get('http://%s.yo.tv/' % country_id,verify=False,stream=True,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+
+            channels = html.split('<li><a data-ajax="false"')
+            channel_numbers = {}
+            first = True
+            for channel in channels:
+                img_url = ''
+
+                img_match = re.search(r'<img class="lazy" src="/Content/images/yo/program_logo.gif" data-original="(.*?)"', channel)
+                if img_match:
+                    img_url = img_match.group(1)
+
+                channel_name = ''
+                channel_number = ''
+                name_match = re.search(r'href="/tv_guide/channel/(.*?)/(.*?)"', channel)
+                if name_match:
+                    channel_number = name_match.group(1)
+                    orig_channel_name = name_match.group(2)
+                    channel_name = re.sub("_"," ",orig_channel_name)
+                    while channel_name in channel_numbers:
+                        channel_name = "%s " % channel_name
+                    channel_numbers[channel_name] = channel_number
+                    visible = False
+                    if channel_number in visible_channels:
+                        visible = True
+                    if first == True:
+                        visible = True
+                        first = False
+                        visible_channels.append(channel_number)
+                    c = Channel(channel_number, channel_name, '', img_url, "", visible)
+                    yield c
+                else:
+                    continue
+
+                if channel_number in visible_channels:
+                    channel_url = 'http://%s.yo.tv/tv_guide/channel/%s/%s' % (country_id,channel_number,orig_channel_name)
+                    r = s.get(channel_url,verify=False,stream=True,headers=headers)
+                    html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+                    now = datetime.datetime.now()
+                    year = now.year
+                    month = now.month
+                    day = now.day
+
+                    tables = html.split('<a data-ajax="false"')
+                    programs = []
+                    for table in tables:
+                        thumb = ''
+                        season = ''
+                        episode = ''
+                        episode_title = ''
+                        genre = ''
+                        plot = ''
+                        match = re.search(r'<span class="episode">Season (.*?) Episode (.*?)<span>(.*?)</span>.*?</span>(.*?)<',table,flags=(re.DOTALL | re.MULTILINE))
+                        if match:
+                            season = match.group(1).strip('\n\r\t ')
+                            episode = match.group(2).strip('\n\r\t ')
+                            episode_title = match.group(3).strip('\n\r\t ')
+                            plot = match.group(4).strip('\n\r\t ')
+                        else:
+                            match = re.search(r'<div class="desc">(.*?)<',table,flags=(re.DOTALL | re.MULTILINE))
+                            if match:
+                                plot = match.group(1).strip()
+
+                        start = ''
+                        match = re.search(r'<span class="time">(.*?)</span>',table)
+                        if match:
+                            start = self.local_time(match.group(1),year,month,day)
+
+                        title = ''
+                        match = re.search(r'<h2>(.*?)</h2>',table)
+                        if match:
+                            title = match.group(1)
+                            title = re.sub('<i.*?</i>','',title).strip()
+                            title = re.sub('<span.*?</span>','',title).strip()
+                            title = re.sub('<.*?</.*?>','',title).strip()
+                        else:
+                            title = "UNKNOWN"
+
+                        if start:
+                            programs.append((title,start,plot,season,episode,thumb))
+
+                    offset = 0
+                    if programs:
+                        diff = programs[0][1].replace(tzinfo=None) - datetime.datetime.now()
+                        if diff > datetime.timedelta(hours=0):
+                            offset =  datetime.timedelta(days=1)
+
+                    last_start = datetime.datetime.now() - datetime.timedelta(days=7)
+                    for index in range(len(programs)):
+                        (title,start,plot,season,episode,thumb) = programs[index]
+                        while (start < last_start):
+                            start = start + datetime.timedelta(days=1)
+                        last_start = start
+                        if index < len(programs)-1:
+                            end = programs[index+1][1]
+                        else:
+                            end = start + datetime.timedelta(hours=1,minutes=6)
+                        while (end < start):
+                            end = end  + datetime.timedelta(days=1)
+                        if offset:
+                            start = start - offset
+                            end = end - offset
+                        yield Program(channel_number, title, start, end, plot, imageSmall=thumb, season = season, episode = episode, is_movie = "", language= "en")
+
+                    elements_parsed += 1
+                    total = len(visible_channels)
+                    if progress_callback:
+                        percent = 100.0 * elements_parsed / len(visible_channels)
+                        if not progress_callback(percent):
+                            raise SourceUpdateCanceledException()
+
+        self.channelsLastUpdated = datetime.datetime.now()
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        if self.channelsLastUpdated == None:
+            self.channelsLastUpdated = channelsLastUpdated
+        elif channelsLastUpdated > self.channelsLastUpdated:
+            return True
+
+        if channelsLastUpdated is None or programsLastUpdated is None:
+            return True
+
+        update = False
+        interval = int(ADDON.getSetting('xmltv.interval'))
+        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
+            self.start = False
+            return True
+        modTime = programsLastUpdated
+        td = datetime.datetime.now() - modTime
+        # need to do it this way cause Android doesn't support .total_seconds() :(
+        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
+                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+            update = True
+        return update
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2}) {0,1}(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+
+            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
+            loc_dt = self.utc2local(utc_dt)
+            return loc_dt
+
+        return
+
+    def utc2local (self,utc):
+        epoch = time.mktime(utc.timetuple())
+        offset = datetime.datetime.fromtimestamp (epoch) - datetime.datetime.utcfromtimestamp (epoch)
+        return utc + offset
+
+class YoNowSource(Source):
+    KEY = 'yo.tv.now'
 
     def __init__(self, addon):
         self.needReset = False
@@ -1749,10 +2437,16 @@ class YoSource(Source):
 
         country_ids = ADDON.getSetting("yo.countries").split(',')
         for country_id in country_ids:
-            html = self.get_url('http://%s.yo.tv/' % country_id)
-
+            #html = self.get_url('http://%s.yo.tv/' % country_id)
+            s = requests.Session()
+            headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+            headend = ADDON.getSetting("yo.%s.headend" % country_id)
+            if headend:
+                r = s.get('http://%s.yo.tv/settings/headend/%s' % (country_id,headend),verify=False,stream=True,headers=headers)
+            r = s.get('http://%s.yo.tv/' % country_id,verify=False,stream=True,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
             channels = html.split('<li><a data-ajax="false"')
-
+            channel_numbers = {}
             for channel in channels:
                 img_url = ''
 
@@ -1766,7 +2460,10 @@ class YoSource(Source):
                 if name_match:
                     channel_number = name_match.group(1)
                     channel_name = re.sub("_"," ",name_match.group(2))
-                    c = Channel(channel_name, channel_name, '', img_url, "", True)
+                    while channel_name in channel_numbers:
+                        channel_name = "%s " % channel_name
+                    channel_numbers[channel_name] = channel_number
+                    c = Channel(channel_number, channel_name, '', img_url, "", True)
                     yield c
                 else:
                     continue
@@ -1780,6 +2477,7 @@ class YoSource(Source):
                 match = re.search(r'<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>.*?<li><span class="pt">(.*?)</span>.*?<span class="pn">(.*?)</span>.*?</li>', channel,flags=(re.DOTALL | re.MULTILINE))
                 if match:
                     now = datetime.datetime.now()
+                    tomorrow = now + datetime.timedelta(days=1)
                     year = now.year
                     month = now.month
                     day = now.day
@@ -1793,6 +2491,10 @@ class YoSource(Source):
                     if after_start < start:
                         after_start = after_start + datetime.timedelta(days=1)
                     after_program = match.group(6)
+                    if after_start.replace(tzinfo=None) > tomorrow:
+                        start = start - datetime.timedelta(days=1)
+                        next_start = next_start - datetime.timedelta(days=1)
+                        after_start = after_start - datetime.timedelta(days=1)
                     yield Program(c, program, start, next_start, "", imageSmall="",
                          season = "", episode = "", is_movie = "", language= "")
                     yield Program(c, next_program, next_start, after_start, "", imageSmall="",
@@ -1865,13 +2567,13 @@ class DirectScheduleSource(Source):
             else:
                 # Probably a remote file
                 xbmc.log('[%s] Use remote file: %s' % (ADDON.getAddonInfo('id'), customFile), xbmc.LOGDEBUG)
-                self.updateLocalFile(customFile, addon, True)
+                self.updateLocalFile(customFile, addon, True, force=force)
         '''
 
-    def updateLocalFile(self, name, addon, isIni=False):
+    def updateLocalFile(self, name, addon, isIni=False, force=False):
         path = os.path.join(self.PLUGIN_DATA, name)
         fetcher = FileFetcher(name, addon)
-        retVal = fetcher.fetchFile()
+        retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True
         elif retVal == fetcher.FETCH_ERROR:
@@ -1951,13 +2653,209 @@ class DirectScheduleSource(Source):
         t_local = utc + td_local
         return t_local
 
-def instantiateSource():
-    source = ADDON.getSetting("source.source")
+class BBCSource(Source):
+    KEY = 'bbc'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+        self.start = True
+
+    def get_url(self,url):
+        #headers = {'user-agent': 'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+'}
+        headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+        try:
+            r = requests.get(url,headers=headers)
+            html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+            return html
+        except:
+            return ''
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+        channels = [
+        ("BBC One", "http://www.bbc.co.uk/bbcone/programmes/schedules/hd/this_week.xml"),
+        ("BBC Two", "http://www.bbc.co.uk/bbctwo/programmes/schedules/hd/this_week.xml"),
+        ("BBC Four", "http://www.bbc.co.uk/bbcfour/programmes/schedules/this_week.xml"),
+        ("BBC News", "http://www.bbc.co.uk/bbcnews/programmes/schedules/this_week.xml"),
+        ("BBC Parliament", "http://www.bbc.co.uk/bbcparliament/programmes/schedules/this_week.xml"),
+
+        ("CBBC", "http://www.bbc.co.uk/cbbc/programmes/schedules/this_week.xml"),
+        ("CBeebies", "http://www.bbc.co.uk/cbeebies/programmes/schedules/this_week.xml"),
+
+        ("BBC Radio 1", "http://www.bbc.co.uk/radio1/programmes/schedules/england/this_week.xml"),
+        ("BBC Radio 1Xtra", "http://www.bbc.co.uk/1xtra/programmes/schedules/this_week.xml"),
+        ("BBC Radio 2", "http://www.bbc.co.uk/radio2/programmes/schedules/this_week.xml"),
+        ("BBC Radio 3", "http://www.bbc.co.uk/radio3/programmes/schedules/this_week.xml"),
+        ("BBC Radio 4", "http://www.bbc.co.uk/radio4/programmes/schedules/fm/this_week.xml"),
+        ("BBC Radio 4 Extra", "http://www.bbc.co.uk/radio4extra/programmes/schedules/this_week.xml"),
+
+        ("BBC Radio 5 Live", "http://www.bbc.co.uk/5live/programmes/schedules/this_week.xml"),
+        ("BBC Radio 5 Live Sports Extra", "http://www.bbc.co.uk/5livesportsextra/programmes/schedules/this_week.xml"),
+        ("BBC Radio 6 Music", "http://www.bbc.co.uk/6music/programmes/schedules/this_week.xml"),
+        ("BBC Radio Asian Network", "http://www.bbc.co.uk/asiannetwork/programmes/schedules/this_week.xml"),
+        ]
+        self.logoSource = int(ADDON.getSetting('logos.source'))
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
+            self.logoFolder = ADDON.getSetting('logos.folder')
+        elif self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
+            self.logoFolder = ADDON.getSetting('logos.url')
+        else:
+            self.logoFolder = ""
+        if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
+            dirs, files = xbmcvfs.listdir(self.logoFolder)
+            logos = [file[:-4] for file in files if file.endswith(".png")]
+
+        for title,url in channels:
+            logo = ''
+            if self.logoFolder:
+                logoFile = os.path.join(self.logoFolder, title + '.png')
+                if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
+                    logo = logoFile.replace(' ', '%20')
+                #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
+                #    logo = logoFile
+                else:
+                    #TODO use hash or db
+                    t = re.sub(r' ','',title.lower())
+                    t = re.escape(t)
+                    titleRe = "^%s" % t
+                    for l in sorted(logos):
+                        logox = re.sub(r' ','',l.lower())
+                        if re.match(titleRe,logox):
+                            logo = os.path.join(self.logoFolder, l + '.png')
+                            break
+            c = Channel(title, title, '', logo, "", True)
+            yield c
+
+
+        elements_parsed = 0
+        for channel,url in channels:
+            for week in ["this","next"]:
+            #for week in ["this"]:
+                u = re.sub("this",week,url)
+                data = requests.get(u).content
+                root = ET.fromstring(data)
+
+                for p in root.getiterator('broadcast'):
+                    programme  = p.find('programme')
+
+                    display_titles = programme.find('display_titles')
+                    title = display_titles.find('title').text
+                    title = re.sub('&','and',title)
+                    subtitle = display_titles.find('subtitle').text
+
+                    start = p.find('start').text
+                    end = p.find('end').text
+
+                    image = programme.find('image')
+                    icon = ""
+                    if image:
+                        icon = image.find('pid').text
+                        icon = "http://ichef.bbci.co.uk/images/ic/480xn/%s.jpg" % icon
+
+                    short_synopsis = programme.find('short_synopsis')
+                    description = short_synopsis.text
+                    if description:
+                        description = re.sub('&','and',description)
+
+                    start = re.sub('[-:TZ]','',start)
+                    start = re.sub('\+',' +',start)
+                    end = re.sub('[-:TZ]','',end)
+                    end = re.sub('\+',' +',end)
+
+                    type = programme.get('type')
+                    series = '0'
+                    if type == "episode":
+                        episode = programme.find('position').text
+                        #BUG python 2.6 fix
+                        #ps = programme.find("programme[@type='series']")
+                        ps = ''
+                        progs = programme.findall('programme')
+                        for prog in progs:
+                            type = prog.get('type')
+                            if type == "series":
+                                ps = prog
+                                break
+                        if ps:
+                            try:
+                                series = ps.find('position').text
+                            except: pass
+                    if episode and not series:
+                        series = "1"
+                    yield Program(channel, title, self.parseXMLTVDate(start), self.parseXMLTVDate(end), description, imageSmall=icon,
+                         season = series, episode = episode, is_movie = "", language= "")
+
+            elements_parsed += 1
+            total = len(channels)
+            if progress_callback:
+                percent = 100.0 * elements_parsed / len(channels)
+                if not progress_callback(percent):
+                    raise SourceUpdateCanceledException()
+
+
+
+    def isUpdated(self, channelsLastUpdated, programLastUpdate):
+        if channelsLastUpdated is None or programLastUpdate is None:
+            return True
+
+        update = False
+        interval = int(ADDON.getSetting('xmltv.interval'))
+        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
+            self.start = False
+            return True
+        modTime = programLastUpdate
+        td = datetime.datetime.now() - modTime
+        # need to do it this way cause Android doesn't support .total_seconds() :(
+        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+
+        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
+                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+            update = True
+
+        return update
+
+    def parseXMLTVDate(self, origDateString):
+        #BUG http://forum.kodi.tv/showthread.php?tid=112916
+        try:
+            t = datetime.datetime.strptime(origDateString, '%Y%m%d%H%M%S')
+        except TypeError:
+            t = datetime.datetime(*(time.strptime(origDateString, '%Y%m%d%H%M%S')[0:6]))
+
+        # get the local timezone offset in seconds
+        is_dst = time.daylight and time.localtime().tm_isdst > 0
+        utc_offset = - (time.altzone if is_dst else time.timezone)
+        td_local = datetime.timedelta(seconds=utc_offset)
+
+        t = t + td_local
+        return t
+
+
+
+def instantiateSource(force):
+    source_arg = ADDON.getSetting("source")
+    if source_arg:
+        source = source_arg
+    else:
+        source = ADDON.getSetting("source.source")
     if source == "xmltv":
-        return XMLTVSource(ADDON)
+        return XMLTVSource(ADDON,force)
     elif source == "tvguide.co.uk":
         return TVGUKSource(ADDON)
+    elif source == "tvguide.co.uk now":
+        return TVGUKNowSource(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
+    elif source == "yo.tv now":
+        return YoNowSource(ADDON)
+    elif source == "bbc":
+        return BBCSource(ADDON)
     else:
         return DirectScheduleSource(ADDON)

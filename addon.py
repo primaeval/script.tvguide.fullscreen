@@ -6,7 +6,7 @@
 #      Modified for FTV Guide (09/2014 onwards)
 #      by Thomas Geppert [bluezed] - bluezed.apps@gmail.com
 #
-#      Modified for TV Guide Fullscren (2016)
+#      Modified for TV Guide Fullscreen (2016)
 #      by primaeval - primaeval.dev@gmail.com
 #
 #  This Program is free software; you can redistribute it and/or modify
@@ -24,9 +24,32 @@
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 #
-import gui
+
+import sys
+import xbmc,xbmcaddon,xbmcvfs
+
+ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
+
+if len(sys.argv) > 1:
+    category = sys.argv[1]
+    if category:
+        ADDON.setSetting('category',category)
+ADDON.setSetting('source','')
+if len(sys.argv) > 2:
+    source = sys.argv[2]
+    if source:
+        ADDON.setSetting('source',source)
+
+assets = [
+('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/sunburst.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/sunburst.png'),
+('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/charcoal.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/charcoal.png'),
+]
+for (dst,src) in assets:
+    if not xbmcvfs.exists(dst):
+        xbmcvfs.copy(src,dst)
 
 try:
+    import gui
     w = gui.TVGuide()
     w.doModal()
     del w

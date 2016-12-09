@@ -145,7 +145,7 @@
             <height>720</height>
             <colordiffuse>white</colordiffuse>
             <texture>black.png</texture>
-            <visible></visible>
+            <visible>!Player.HasMedia</visible>
             <aspectratio>scale</aspectratio>
             <align>center</align>
             <aligny>center</aligny>
@@ -179,9 +179,9 @@
         <control type="group">
             <description>TV Guide group</description>
             <posx>0</posx>
-            <posy>30</posy>
+            <posy>0</posy>
             <width>1280</width>
-            <height>690</height>
+            <height>720</height>
             <visible>!Control.IsVisible(5000)</visible>
 
             <control type="button" id="5001">
@@ -191,13 +191,14 @@
                 <width>1100</width>
                 <height>450</height>
                 <visible>false</visible>
+                <texture>background-cover2.png</texture>
             </control>
 
 
             <control type="image">
                 <description>background</description>
                 <posx>0</posx>
-                <posy>-2</posy>
+                <posy>30</posy>
                 <width>1280</width>
                 <height>450</height>
                 <texture>black-back.png</texture>
@@ -213,27 +214,27 @@
             <control type="image" id="4601">
                 <description>header</description>
                 <posx>0</posx>
-                <posy>-30</posy>
+                <posy>0</posy>
                 <width>1280</width>
                 <height>28</height>
                 <texture>tvg-program-nofocus.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>200</fadetime>
+
 
             </control>
             <control type="image" id="4602">
                 <description>footer</description>
                 <posx>0</posx>
-                <posy>450</posy>
+                <posy>510</posy>
                 <width>1280</width>
                 <height>220</height>
                 <texture>tvg-program-nofocus.png</texture>
                 <aspectratio>-</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
-                <fadetime>200</fadetime>
+
 
                 <visible>True</visible>
             </control>
@@ -241,7 +242,7 @@
             <control type="image" id="4100">
                 <description>time bar</description>
                 <posx>180</posx>
-                <posy>0</posy>
+                <posy>30</posy>
                 <width>-2</width>
                 <height>446</height>
                 <visible>Control.IsVisible(4200)</visible>
@@ -252,7 +253,7 @@
             <control type="image">
                 <description>channels background</description>
                 <posx>2</posx>
-                <posy>0</posy>
+                <posy>30</posy>
                 <width>176</width>
                 <height>558</height>
                 <visible>false</visible>
@@ -294,7 +295,7 @@
             <!-- Date and time row -->
             <control type="group">
                 <posx>0</posx>
-                <posy>-40</posy>
+                <posy>0</posy>
                 <width>1280</width>
                 <height>40</height>
                 <visible>true</visible>
@@ -321,20 +322,18 @@
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
-
                     <visible>false</visible>
                 </control>
 
                 <control type="label" id="3999">
                     <description>Displays date</description>
-                    <posx>0</posx>
+                    <posx>10r</posx>
                     <posy>0</posy>
-                    <width>180</width>
-                    <height>50</height>
+                    <width>270</width>
+                    <height>30</height>
                     <textcolor>white</textcolor>
-
-                    <font>font10_title</font>
-                    <align>center</align>
+                    <font>font10</font>
+                    <align>right</align>
                     <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
@@ -342,7 +341,7 @@
                 <control type="label">
                     <description>Displays todays date</description>
                     <posx>5r</posx>
-                    <posy>-15</posy>
+                    <posy>0</posy>
                     <width>280</width>
                     <height>20</height>
                     <textcolor>white</textcolor>
@@ -350,18 +349,18 @@
                     <font>font10</font>
                     <align>right</align>
                     <aligny>center</aligny>
-                    <visible>true</visible>
+                    <visible>false</visible>
                     <label>$INFO[System.Date]</label>
                 </control>
 
                 <control type="label">
                     <description>time label</description>
-                    <right>20</right>
+                    <posx>0</posx>
                     <posy>0</posy>
-                    <width>270</width>
-                    <height>50</height>
+                    <width>180</width>
+                    <height>30</height>
                     <font>font13_title</font>
-                    <align>right</align>
+                    <align>center</align>
                     <aligny>center</aligny>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
@@ -389,7 +388,7 @@
                     <posx>180</posx>
                     <posy>0</posy>
                     <width>270</width>
-                    <height>50</height>
+                    <height>30</height>
                     <textcolor>white</textcolor>
                     <font>font12</font>
                     <aligny>center</aligny>
@@ -399,7 +398,7 @@
                     <posx>455</posx>
                     <posy>0</posy>
                     <width>270</width>
-                    <height>50</height>
+                    <height>30</height>
                     <textcolor>white</textcolor>
                     <font>font12</font>
                     <aligny>center</aligny>
@@ -409,7 +408,7 @@
                     <posx>730</posx>
                     <posy>0</posy>
                     <width>270</width>
-                    <height>50</height>
+                    <height>30</height>
                     <textcolor>white</textcolor>
                     <font>font12</font>
                     <aligny>center</aligny>
@@ -419,7 +418,7 @@
                     <posx>1005</posx>
                     <posy>0</posy>
                     <width>270</width>
-                    <height>50</height>
+                    <height>30</height>
                     <textcolor>white</textcolor>
                     <font>font12</font>
                     <aligny>center</aligny>
@@ -429,7 +428,7 @@
             <!-- Channels column -->
             <control type="group">
                 <posx>0</posx>
-                <posy>0</posy>
+                <posy>30</posy>
                 <width>180</width>
                 <height>640</height>
                 <visible>true</visible>
@@ -1021,9 +1020,9 @@
             <control type="label" id="7025">
                 <description>Channel name</description>
                 <posx>430</posx>
-                <posy>470</posy>
+                <posy>500</posy>
                 <width>650</width>
-                <height>50</height>
+                <height>30</height>
                 <textcolor>grey</textcolor>
 
                 <font>font13</font>
@@ -1035,9 +1034,9 @@
             <control type="label" id="7020">
                 <description>Program title</description>
                 <posx>430</posx>
-                <posy>500</posy>
+                <posy>530</posy>
                 <width>845</width>
-                <height>50</height>
+                <height>30</height>
                 <textcolor>white</textcolor>
 
                 <font>font13</font>
@@ -1050,9 +1049,9 @@
             <control type="label" id="7021">
                 <description>Program time</description>
                 <posx>1260</posx>
-                <posy>470</posy>
+                <posy>500</posy>
                 <width>1090</width>
-                <height>50</height>
+                <height>40</height>
                 <textcolor>white</textcolor>
 
                 <font>font13</font>
@@ -1062,19 +1061,19 @@
             </control>
             <control type="progress" id="7026">
                 <posx>430</posx>
-                <posy>10r</posy>
+                <posy>490</posy>
                 <width>845</width>
-                <height>5</height>
+                <height>3</height>
                 <lefttexture />
                 <righttexture />
-                <texturebg  colordiffuse="white">black.png</texturebg>
-                <midtexture colordiffuse="grey">grey.png</midtexture>
+                <texturebg  colordiffuse="white">tvg-button-nofocus.png</texturebg>
+                <midtexture colordiffuse="grey">tvg-button-focus.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
             <control type="textbox" id="7022">
                 <description>Program description</description>
                 <posx>430</posx>
-                <posy>530</posy>
+                <posy>560</posy>
                 <width>845</width>
                 <height>140</height>
                 <textcolor>white</textcolor>
@@ -1088,12 +1087,11 @@
             <control type="image" id="7023">
                 <description>Program logo / Source logo</description>
                 <posx>0</posx>
-                <posy>450</posy>
+                <posy>480</posy>
                 <width>425</width>
                 <height>240</height>
                 <aligny>top</aligny>
-                <aspectratio>scale</aspectratio>
-
+                <aspectratio>keep</aspectratio>
                 <fadetime>0</fadetime>
                 <texture>-</texture>
                 <visible>true</visible>
@@ -1101,13 +1099,13 @@
             <control type="image" id="7024">
                 <description>Channel logo</description>
                 <posx>0</posx>
-                <posy>50r</posy>
-                <width>160</width>
-                <height>40</height>
+                <posy>43r</posy>
+                <width>176</width>
+                <height>43</height>
                 <aspectratio>keep</aspectratio>
                 <align>left</align>
                 <fadetime>0</fadetime>
-                <visible>false</visible>
+                <visible>true</visible>
                 <!-- unused in default skin -->
             </control>
 
@@ -1125,10 +1123,10 @@
 
                 <control type="image">
                     <description>loading background</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
                     <posx>-340</posx>
-                    <posy>-310</posy>
-                    <width>1280</width>
-                    <height>720</height>
+                    <posy>-280</posy>
                     <texture>black.png</texture>
                 </control>
 
@@ -1178,7 +1176,6 @@
                     <width>150</width>
                     <height>50</height>
                     <label>$ADDON[script.tvguide.fullscreen 30008]</label>
-                    <textcolor>ffffffff</textcolor>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1199,7 +1196,7 @@
             <control type="group">
                 <visible>true</visible>
                 <posx>0</posx>
-                <posy>-30</posy>
+                <posy>0</posy>
                 <width>1280</width>
                 <height>720</height>
                 <visible>!Control.IsVisible(4300)</visible>
@@ -1247,90 +1244,124 @@
 
                 <control type="button" id="4301">
                     <description>navigate to now</description>
-                    <posx>580</posx>
-                    <posy>0</posy>
-                    <width>100</width>
-                    <height>40</height>
-                    <label>$ADDON[script.tvguide.fullscreen 30006]</label>
-                    <textcolor>yellow</textcolor>
+                    <posx>430</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>NOW</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
 
                 <control type="button" id="4302">
                     <description>navigate left</description>
-                    <posx>300</posx>
-                    <posy>0</posy>
-                    <width>100</width>
-                    <height>40</height>
-                    <textcolor>yellow</textcolor>
+                    <posx>530</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>LEFT</label>
                     <font>font13</font>
-                    <label>&lt;</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
                 <control type="button" id="4303">
                     <description>navigate up</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
-                    <width>50</width>
-                    <height>40</height>
-                    <textcolor>yellow</textcolor>
+                    <posx>630</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>UP</label>
                     <font>font13</font>
-                    <label>^</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
                 <control type="button" id="4304">
                     <description>navigate down</description>
-                    <posx>0</posx>
-                    <posy>40r</posy>
-                    <width>50</width>
-                    <height>40</height>
-                    <textcolor>yellow</textcolor>
+                    <posx>730</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>DOWN</label>
                     <font>font13</font>
-                    <label>v</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
                 <control type="button" id="4305">
                     <description>navigate right</description>
-                    <posx>850</posx>
-                    <posy>0</posy>
-                    <width>100</width>
-                    <height>40</height>
-                    <textcolor>yellow</textcolor>
+                    <posx>830</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>RIGHT</label>
                     <font>font13</font>
-                    <label>&gt;</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
-
+                <control type="button" id="4307">
+                    <description>menu</description>
+                    <posx>930</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>MENU</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                </control>
+                <control type="button" id="4308">
+                    <description>categories</description>
+                    <posx>1030</posx>
+                    <posy>20r</posy>
+                    <width>160</width>
+                    <height>20</height>
+                    <label>CATEGORIES</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                </control>
                 <control type="button" id="4306">
                     <description>exit</description>
-                    <posx>1120</posx>
-                    <posy>0</posy>
-                    <width>100</width>
-                    <height>40</height>
-                    <textcolor>yellow</textcolor>
+                    <posx>1200</posx>
+                    <posy>20r</posy>
+                    <width>80</width>
+                    <height>20</height>
+                    <label>QUIT</label>
                     <font>font13</font>
-                    <label>x</label>
                     <aligny>center</aligny>
                     <align>center</align>
-                    <texturefocus>tvguide-program-grey-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
-                    <visible>false</visible>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
 
             </control>
@@ -1386,7 +1417,7 @@
                 <posx>30</posx>
                 <posy>30</posy>
                 <width>850</width>
-                <height>50</height>
+                <height>30</height>
                 <label>[B]Title[/B]</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
@@ -1394,10 +1425,10 @@
 
             <control type="label" id="6002">
                 <description>Program time</description>
-                <posx>1255</posx>
+                <posx>10r</posx>
                 <posy>30</posy>
                 <width>240</width>
-                <height>50</height>
+                <height>30</height>
                 <label>[B]18:00 - 20:00[/B]</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
@@ -1443,7 +1474,7 @@
                 <posx>30</posx>
                 <posy>0</posy>
                 <width>850</width>
-                <height>20</height>
+                <height>30</height>
                 <textcolor>grey</textcolor>
                 <font>font13_title</font>
                 <align>left</align>
@@ -1518,7 +1549,7 @@
 
                 <control type="label">
                     <description>time label</description>
-                    <right>20</right>
+                    <posx>10r</posx>
                     <top>-495</top>
                     <width>200</width>
                     <height>30</height>
@@ -1571,7 +1602,7 @@
                 <posx>30</posx>
                 <posy>30</posy>
                 <width>850</width>
-                <height>50</height>
+                <height>30</height>
                 <label>[B]Title[/B]</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
@@ -1580,10 +1611,10 @@
 
             <control type="label" id="8002">
                 <description>Program time</description>
-                <posx>1255</posx>
+                <posx>10r</posx>
                 <posy>30</posy>
                 <width>240</width>
-                <height>50</height>
+                <height>30</height>
                 <label>[B]18:00 - 20:00[/B]</label>
                 <textcolor>ffffffff</textcolor>
                 <font>font13</font>
@@ -1631,7 +1662,7 @@
                 <posx>30</posx>
                 <posy>0</posy>
                 <width>850</width>
-                <height>20</height>
+                <height>30</height>
                 <textcolor>grey</textcolor>
                 <font>font13_title</font>
                 <align>left</align>
@@ -1640,10 +1671,10 @@
             </control>
             <control type="label">
                 <description>Last Channel</description>
-                <posx>1255</posx>
+                <posx>10r</posx>
                 <posy>0</posy>
                 <width>850</width>
-                <height>20</height>
+                <height>30</height>
                 <textcolor>grey</textcolor>
                 <font>font13_title</font>
                 <align>right</align>
@@ -1716,7 +1747,7 @@
 
                 <control type="label">
                     <description>time label</description>
-                    <right>20</right>
+                    <posx>10r</posx>
                     <top>-495</top>
                     <width>200</width>
                     <height>30</height>
@@ -2134,8 +2165,8 @@
 
                 <control type="label">
                     <description>time label</description>
-                    <right>5</right>
-                    <top>5</top>
+                    <posx>10r</posx>
+                    <posy>10</posy>
                     <width>200</width>
                     <height>30</height>
                     <align>right</align>
@@ -2370,7 +2401,7 @@
             </control>
             <control type="label" id="17021">
                 <description>Program time</description>
-                <posx>1260</posx>
+                <posx>10r</posx>
                 <posy>460</posy>
                 <width>1090</width>
                 <height>50</height>
