@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
-version 0.0.223
+version 0.0.223-224
 - Settings \ Background \ Categories Background Colour
 - Settings \ Playback \ Always Choose Channel if Alternative Streams Exist
 - Settings \ Lab3 \ Secondary XMLTV File (WARNING: very experimental)
