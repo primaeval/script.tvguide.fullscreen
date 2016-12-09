@@ -45,6 +45,7 @@ import sqlite3
 import HTMLParser
 import xml.etree.ElementTree as ET
 import requests
+from itertools import chain
 
 import resources.lib.pytz
 from resources.lib.pytz import timezone
@@ -1480,6 +1481,7 @@ class XMLTVSource(Source):
         self.needReset = False
         self.fetchError = False
         self.xmltvType = int(addon.getSetting('xmltv.type'))
+        self.xmltv2Type = int(addon.getSetting('xmltv2.type'))
         self.xmltvInterval = int(addon.getSetting('xmltv.interval'))
         self.logoSource = int(addon.getSetting('logos.source'))
         self.addonsType = int(addon.getSetting('addons.ini.type'))
@@ -1498,7 +1500,8 @@ class XMLTVSource(Source):
             self.logoFolder = ""
 
         if self.xmltvType == XMLTVSource.XMLTV_SOURCE_FILE:
-            customFile = str(addon.getSetting('xmltv.file'))
+            #customFile = str(addon.getSetting('xmltv.file'))
+            '''
             if os.path.exists(customFile):
                 # uses local file provided by user!
                 xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
@@ -1508,8 +1511,26 @@ class XMLTVSource(Source):
                 xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
                 self.updateLocalFile(customFile, addon, force=force)
                 self.xmltvFile = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+            '''
+            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.file'), addon, force=force)
         else:
             self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon, force=force)
+        if self.xmltv2Type == XMLTVSource.XMLTV_SOURCE_FILE:
+            '''
+            customFile = str(addon.getSetting('xmltv2.file'))
+            if os.path.exists(customFile):
+                # uses local file provided by user!
+                xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+                self.xmltv2File = customFile
+            else:
+                # Probably a remote file
+                xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+                self.updateLocalFile(customFile, addon, force=force)
+                self.xmltv2File = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+            '''
+            self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.file'), addon, force=force)
+        else:
+            self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.url'), addon, force=force)
 
         if addon.getSetting('categories.ini.enabled') == 'true':
             if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
@@ -1580,7 +1601,8 @@ class XMLTVSource(Source):
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
-
+        #if not self.xmltv2File or not xbmcvfs.exists(self.xmltv2File):
+        #    raise SourceNotConfiguredException()
 
     def updateLocalFile(self, name, addon, isIni=False, force=False):
         fileName = os.path.basename(name)
@@ -1589,17 +1611,28 @@ class XMLTVSource(Source):
         retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True
+            return path
         elif retVal == fetcher.FETCH_ERROR:
             xbmcgui.Dialog().ok(strings(FETCH_ERROR_TITLE), strings(FETCH_ERROR_LINE1), strings(FETCH_ERROR_LINE2))
-
-        return path
+            return ''
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
-        f = FileWrapper(self.xmltvFile)
-        context = ElementTree.iterparse(f, events=("start", "end"))
-        size = f.size
+        if not xbmcvfs.exists(self.xmltvFile):
+            raise SourceNotConfiguredException()
+        if xbmcvfs.exists(self.xmltv2File):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
+                yield v
+        else:
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback)):
+                yield v
 
-        return self.parseXMLTV(context, f, size, self.logoFolder, progress_callback)
+    def getDataFromExternal2(self, xmltvFile, date, ch_list, progress_callback=None):
+        if xbmcvfs.exists(xmltvFile):
+            f = FileWrapper(xmltvFile)
+            if f:
+                context = ElementTree.iterparse(f, events=("start", "end"))
+                size = f.size
+                return self.parseXMLTV(context, f, size, self.logoFolder, progress_callback)
 
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if channelsLastUpdated is None or not xbmcvfs.exists(self.xmltvFile):
@@ -1785,8 +1818,8 @@ class XMLTVSource(Source):
                     if progress_callback and elements_parsed % 500 == 0:
                         percent = 100.0 / size * f.tell()
                         d.update(int(percent), message=channel)
-                        if not progress_callback(percent):
-                            raise SourceUpdateCanceledException()
+                        #if not progress_callback(percent):
+                        #    raise SourceUpdateCanceledException()
                     yield result
 
             root.clear()
