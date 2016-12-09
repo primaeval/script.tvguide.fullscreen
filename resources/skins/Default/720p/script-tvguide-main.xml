@@ -1063,7 +1063,7 @@
                 <posx>430</posx>
                 <posy>490</posy>
                 <width>845</width>
-                <height>5</height>
+                <height>3</height>
                 <lefttexture />
                 <righttexture />
                 <texturebg  colordiffuse="white">tvg-button-nofocus.png</texturebg>
