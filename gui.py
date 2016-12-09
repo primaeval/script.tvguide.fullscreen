@@ -4233,6 +4233,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         super(ProgramListDialog, self).close()
 
 class CatMenu(xbmcgui.WindowXMLDialog):
+    C_CAT_BACKGROUND = 7000
     C_CAT_QUIT = 7003
     C_CAT_CATEGORY = 7004
     C_CAT_SET_CATEGORY = 7005
@@ -4268,7 +4269,6 @@ class CatMenu(xbmcgui.WindowXMLDialog):
         self.categories = categories
 
     def onInit(self):
-
         items = list()
         categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
         for label in categories:
@@ -4281,6 +4281,10 @@ class CatMenu(xbmcgui.WindowXMLDialog):
             if not index == 0:
                 listControl.selectItem(index)
         self.setFocus(listControl)
+        name = remove_formatting(ADDON.getSetting('categories.background.color'))
+        color = colors.color_name[name]
+        control = self.getControl(self.C_CAT_BACKGROUND)
+        control.setColorDiffuse(color)
 
     def onAction(self, action):
         if action.getId() in [KEY_CONTEXT_MENU]:

@@ -10,12 +10,12 @@
 
     <controls>
 
-        <control type="image">
+        <control type="image" id="7000">
             <posx>0</posx>
             <posy>0</posy>
             <width>1280</width>
             <height>30</height>
-            <texture>grey.png</texture>
+            <texture>white.png</texture>
             <visible>true</visible>
         </control>
 
