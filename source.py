@@ -1821,8 +1821,8 @@ class XMLTVSource(Source):
                     if progress_callback and elements_parsed % 500 == 0:
                         percent = 100.0 / size * f.tell()
                         d.update(int(percent), message=channel)
-                        #if not progress_callback(percent):
-                        #    raise SourceUpdateCanceledException()
+                        if not progress_callback(percent):
+                            raise SourceUpdateCanceledException()
                     yield result
 
             root.clear()
