@@ -4279,10 +4279,9 @@ class CatMenu(xbmcgui.WindowXMLDialog):
             items.append(item)
         listControl = self.getControl(self.C_CAT_CATEGORY)
         listControl.addItems(items)
-        if self.category:
-            index = categories.get(self.category,0)
-            if not index == 0:
-                listControl.selectItem(index)
+        if self.category and self.category in categories:
+            index = categories.index(self.category)
+            listControl.selectItem(index)
         self.setFocus(listControl)
         name = remove_formatting(ADDON.getSetting('categories.background.color'))
         color = colors.color_name[name]
