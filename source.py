@@ -1614,10 +1614,9 @@ class XMLTVSource(Source):
         retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True
-            return path
         elif retVal == fetcher.FETCH_ERROR:
             xbmcgui.Dialog().ok(strings(FETCH_ERROR_TITLE), strings(FETCH_ERROR_LINE1), strings(FETCH_ERROR_LINE2))
-            return ''
+        return path
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
         if not xbmcvfs.exists(self.xmltvFile):
