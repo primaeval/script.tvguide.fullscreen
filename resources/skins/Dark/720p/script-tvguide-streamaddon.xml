@@ -18,7 +18,7 @@
             <top>0</top>
             <width>1280</width>
             <height>720</height>
-			<texture fallback="charcoal.png">$VAR[GlobalFanartVar]</texture>
+			<texture fallback="special://profile/addon_data/script.tvguide.fullscreen/backgrounds/charcoal.png">$VAR[GlobalFanartVar]</texture>
         </control>
         <!-- Mount image-->	
 		<control type="image">

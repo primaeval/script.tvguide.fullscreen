@@ -1336,7 +1336,10 @@ class TVGuide(xbmcgui.WindowXML):
                 if image:
                     self.setControlImage(self.C_MAIN_BACKGROUND, image)
                 else:
-                    self.setControlImage(self.C_MAIN_BACKGROUND, "white.png")
+                    if ADDON.getSetting("program.background.flat") == 'true':
+                        self.setControlImage(self.C_MAIN_BACKGROUND, "white.png")
+                    else:
+                        self.setControlImage(self.C_MAIN_BACKGROUND, "special://profile/addon_data/script.tvguide.fullscreen/backgrounds/sunburst.png")
                     name = remove_formatting(ADDON.getSetting('program.background.color'))
                     color = colors.color_name[name]
 
@@ -4277,7 +4280,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
         listControl = self.getControl(self.C_CAT_CATEGORY)
         listControl.addItems(items)
         if self.category:
-            index = categories.index(self.category)
+            index = categories.get(self.category,0)
             if not index == 0:
                 listControl.selectItem(index)
         self.setFocus(listControl)

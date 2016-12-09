@@ -26,7 +26,7 @@
 #
 
 import sys
-import xbmc,xbmcaddon
+import xbmc,xbmcaddon,xbmcvfs
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
@@ -39,6 +39,14 @@ if len(sys.argv) > 2:
     source = sys.argv[2]
     if source:
         ADDON.setSetting('source',source)
+
+assets = [
+('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/sunburst.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/sunburst.png'),
+('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/charcoal.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/charcoal.png'),
+]
+for (dst,src) in assets:
+    if not xbmcvfs.exists(dst):
+        xbmcvfs.copy(src,dst)
 
 try:
     import gui
