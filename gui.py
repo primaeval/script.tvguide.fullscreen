@@ -1714,9 +1714,11 @@ class TVGuide(xbmcgui.WindowXML):
     def playChannel(self, channel, program = None):
         url = self.database.getStreamUrl(channel)
         alt_url = self.database.getAltStreamUrl(channel)
+        self.alt_urls = []
         if url and alt_url:
             d = xbmcgui.Dialog()
             alt_urls = [url] + [x[0] for x in alt_url]
+            self.alt_urls = alt_urls
             names = []
             alt_url = [(url,channel.title)] + alt_url
             for u in alt_url:
@@ -1731,6 +1733,7 @@ class TVGuide(xbmcgui.WindowXML):
             result = d.select("%s" % channel.title, names)
             if result > -1:
                 url = alt_urls[result]
+                self.alt_urls.remove(url)
             else:
                 return True
         if self.currentChannel:
@@ -1812,13 +1815,32 @@ class TVGuide(xbmcgui.WindowXML):
                 return
             if self.tryingToPlay == False:
                 return
-
-        #TODO find a way to compare requested channel to playing channel
-        if not self.osdActive:
-            self._hideOsd()
-        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
         dialog = xbmcgui.Dialog()
         dialog.notification('Stream Failed', title, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
+
+        if ADDON.getSetting('play.alt.continue') == 'true':
+            url = self.alt_urls.pop(0)
+            #TODO meta
+            if url[0:9] == 'plugin://':
+                if self.alternativePlayback:
+                    xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
+                elif self.osdEnabled:
+                    xbmc.executebuiltin('PlayMedia(%s,1)' % url)
+                else:
+                    xbmc.executebuiltin('PlayMedia(%s)' % url)
+            else:
+                self.player.play(item=url, windowed=self.osdEnabled)
+            self.tryingToPlay = True
+            if ADDON.getSetting('play.minimized') == 'false':
+                self._hideEpg()
+                self._hideQuickEpg()
+            threading.Timer(1, self.waitForPlayBackStopped, [title]).start()
+        else:
+            #TODO find a way to compare requested channel to playing channel
+            if not self.osdActive:
+                self._hideOsd()
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
 
     def _updateNextUpInfo(self,firstTime):
         if self.currentProgram and self.lastOsdProgram and self.currentProgram != self.lastOsdProgram:
