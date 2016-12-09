@@ -51,6 +51,8 @@
         <setting label="Delete TheLogoDB.com Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 4)" />
     </category>
     <category label="Playback">
+        <setting id="play.alt.choose" label="Always Choose Channel if Alternative Streams Exist" type="bool" default="false" />
+        <setting type="sep"/>
         <setting label="30119" type="lsep" />
         <setting id="enable.osd" label="30118" type="bool" default="true" />
         <setting id="alternative.playback" label="30120" type="bool" default="false" />

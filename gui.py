@@ -802,7 +802,7 @@ class TVGuide(xbmcgui.WindowXML):
         if program is None:
             return
 
-        if self.player.isPlaying() and self.currentChannel and program.channel.id == self.currentChannel.id:
+        if self.player.isPlaying() and self.currentChannel and (program.channel.id == self.currentChannel.id) and (ADDON.getSetting('play.alt.choose') == 'false'):
                 self._hideEpg()
                 self._hideQuickEpg()
                 return
