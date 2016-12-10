@@ -3940,6 +3940,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         previousDirsId = self.previousDirsId
 
         self.previousDirsId = item.getProperty('stream')
+        self.folder = item.getLabel()
 
         path = self.previousDirsId
         if path in folders:
@@ -4042,6 +4043,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             stream = listItem.getProperty('stream')
             if stream:
                 if add:
+                    if ADDON.getSetting('append.folder') == 'true':
+                        name = "%s (%s)" % (name,self.folder)
                     streams[addonId][name] = stream
                 else:
                     for k,v in streams[addonId].items():

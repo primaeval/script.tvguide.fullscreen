@@ -20,20 +20,22 @@ ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 d = xbmcgui.Dialog()
 
 if location == "both":
-    where = d.select("Image Search",["Local","Pixabay"])
+    places = ["Local","Pixabay"]
 elif location == "remote":
-    where = d.select("Image Search",["Pixabay"])
+    places = ["Pixabay"]
 else:
-    where = d.select("Image Search",["Local"])
+    places = ["Local"]
+
+where = d.select("Image Search",places)
 if where == -1:
      quit()
-
-if where == 0:
+place = places[where]
+if place == "Local":
     image = d.browse(2, 'Image', 'files', '', True, False)
     if image:
         ADDON.setSetting(setting,image)
 
-elif where == 1:
+elif place == "Pixabay":
     what = d.input("PixaBay Image Search","background")
     if not what:
         quit()

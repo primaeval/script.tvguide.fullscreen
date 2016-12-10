@@ -15,6 +15,7 @@ EPG Window
 - Extended Info (i,info)
 - delete unwanted IMDB/TVDB image (ACTION_DELETE_ITEM)
 - categories menu (m, menu)
+- Choose Stream (play)
 
 Main Menu
 - exit to epg (esc, back)
