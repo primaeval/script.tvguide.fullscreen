@@ -1561,7 +1561,7 @@ class XMLTVSource(Source):
 
         d = xbmcgui.Dialog()
         subscription_streams = {}
-        if (ADDON.getSetting('addons.ini.enabled') == "false") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
+        if (ADDON.getSetting('addons.ini.subscriptions') == "true"):
             file_name = 'special://profile/addon_data/script.tvguide.fullscreen/subscriptions.ini'
             f = xbmcvfs.File(file_name,"rb")
             data = f.read()
@@ -1596,10 +1596,15 @@ class XMLTVSource(Source):
             if customFile:
                 success = xbmcvfs.copy(addons_ini,addons_ini_local)
                 success = xbmcvfs.copy(customFile,addons_ini)
-        if (ADDON.getSetting('addons.ini.enabled') == "false") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
+
+        if (ADDON.getSetting('addons.ini.subscriptions') == "true") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
             streams = {}
             streams["script.tvguide.fullscreen"] = {}
-            for filename in [addons_ini_local,addons_ini]:
+            if (ADDON.getSetting('addons.ini.enabled') == "true") and (ADDON.getSetting('addons.ini.overwrite') == "1"):
+                filenames = [addons_ini_local,addons_ini]
+            else:
+                filenames = [addons_ini]
+            for filename in filenames:
                 f = xbmcvfs.File(filename,"rb")
                 if f:
                     data = f.read()
@@ -1623,14 +1628,16 @@ class XMLTVSource(Source):
                             (name,stream) = name_stream
                             streams[addon][name] = stream
 
-            for name in subscription_streams:
-                if name:
-                    streams["script.tvguide.fullscreen"][name] = subscription_streams[name]
+            if (ADDON.getSetting('addons.ini.subscriptions') == "true"):
+                for name in subscription_streams:
+                    if name:
+                        streams["script.tvguide.fullscreen"][name] = subscription_streams[name]
 
             f = xbmcvfs.File(addons_ini,"wb")
             for addon in sorted(streams):
-                s = "[%s]\n" % addon
-                f.write(s)
+                if streams[addon]:
+                    s = "[%s]\n" % addon
+                    f.write(s)
                 for name in sorted(streams[addon]):
                     stream = streams[addon][name]
                     s = "%s=%s\n" % (name,stream)
