@@ -21,7 +21,8 @@
         <setting id="addons.ini.type" label="addons.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="addons.ini" default=''/>
         <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
-        <setting id="addons.ini.overwrite" label="Overwrite or Merge Local addons.ini" type="enum" visible="eq(-4,true)" default='0' values="Overwrite|Merge"/>
+        <setting id="addons.ini.overwrite" label="Overwrite or Merge Local addons.ini" type="enum" visible="eq(-4,true)" default='1' values="Overwrite|Merge"/>
+        <setting label="Manage addons.ini Playlist Subscriptions" type="action" enable="eq(-5,false) | eq(-1,1)" action="RunScript($CWD/subscriptions.py)" />
         <setting type="lsep" label="Refresh may take some time!"/>
         <setting label="Refresh Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />
         <setting type="lsep" label="Categories can be created via context menu"/>
@@ -38,6 +39,7 @@
         <setting id="mapping.m3u.type" label="m3u Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="mapping.m3u.file" label="m3u File" type="file" visible="eq(-2,true) + eq(-1,0)"  default=''/>
         <setting id="mapping.m3u.url" label="m3u Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
+
     </category>
 
     <category label="Logos">
