@@ -1559,6 +1559,7 @@ class XMLTVSource(Source):
             if customFile:
                 self.updateLocalFile(customFile, addon, True, force=force)
 
+        d = xbmcgui.Dialog()
         subscription_streams = {}
         if (ADDON.getSetting('addons.ini.enabled') == "false") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
             file_name = 'special://profile/addon_data/script.tvguide.fullscreen/subscriptions.ini'
@@ -1572,6 +1573,8 @@ class XMLTVSource(Source):
                     continue
                 data = f.read()
                 f.close
+                if not data:
+                    d.notification("TV Guide Fullscreen","%s - %s" % (name,sub), xbmcgui.NOTIFICATION_ERROR)
                 name_stream = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
                 for name,stream in name_stream:
                     if name and stream:
