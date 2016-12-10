@@ -9,7 +9,8 @@ import json
 import sys
 from rpc import RPC
 
-setting = sys.argv[1]
+location = sys.argv[1]
+setting = sys.argv[2]
 
 def log(x):
     xbmc.log(repr(x))
@@ -18,7 +19,12 @@ ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
 d = xbmcgui.Dialog()
 
-where = d.select("Image Search",["Local","Pixabay"])
+if location == "both":
+    where = d.select("Image Search",["Local","Pixabay"])
+elif location == "remote":
+    where = d.select("Image Search",["Pixabay"])
+else:
+    where = d.select("Image Search",["Local"])
 if where == -1:
      quit()
 
@@ -35,7 +41,6 @@ elif where == 1:
     url = "https://pixabay.com/api/?key=3974133-0e761ef66bcfb72c6a8ac8f4e&q=%s&image_type=photo&pretty=true&orientation=horizontal&per_page=200" % what
     r = requests.get(url)
     j = json.loads(r.content)
-    log(j)
     if not 'hits' in j:
         quit()
 
@@ -43,7 +48,6 @@ elif where == 1:
     for f in files:
         path = 'special://profile/addon_data/script.tvguide.fullscreen/pick/'+f
         success = xbmcvfs.delete(path)
-        log((success,path))
 
     hits = j['hits']
     images = {}
@@ -66,6 +70,5 @@ elif where == 1:
 
     what = d.browse(2, 'Image', 'files', '', True, False, 'special://profile/addon_data/script.tvguide.fullscreen/pick/')
     image = images.get(what,'')
-    log(image)
     if image:
         ADDON.setSetting(setting,image)
