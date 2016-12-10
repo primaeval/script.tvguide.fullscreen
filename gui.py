@@ -80,6 +80,13 @@ ACTION_PLAYER_PLAY = 79
 ACTION_PLAYER_PLAYPAUSE = 229
 ACTION_RECORD = 170
 
+ACTION_PAUSE = 12
+ACTION_PLAY = 68
+ACTION_PLAYER_FORWARD = 77
+ACTION_PLAYER_PLAY = 79
+ACTION_PLAYER_PLAYPAUSE = 229
+ACTION_PLAYER_REWIND = 78
+
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
 ACTION_MOUSE_MOVE = 107
@@ -587,6 +594,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     # epg mode
     def onActionEPGMode(self, action):
+        log(action.getId())
         if action.getId() in [ACTION_PARENT_DIR]:
             self.close()
             return
@@ -675,6 +683,29 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_IMAGE, self.tvdb_urls[program.title])
         elif action.getId() == ACTION_MENU:
             self._showCatMenu()
+        elif action.getId() == ACTION_PLAYER_PLAY:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                result = self.streamingService.detectStream(program.channel)
+                if not result:
+                    # could not detect stream, show stream setup
+                    d = StreamSetupDialog(self.database, program.channel)
+                    d.doModal()
+                    del d
+                    self.streamingService = streaming.StreamsService(ADDON)
+                    self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+                elif type(result) == str:
+                    # one single stream detected, save it and start streaming
+                    self.database.setCustomStreamUrl(program.channel, result)
+                    self.playChannel(program.channel, program)
+                else:
+                    # multiple matches, let user decide
+
+                    d = ChooseStreamAddonDialog(result)
+                    d.doModal()
+                    if d.stream is not None:
+                        self.database.setCustomStreamUrl(program.channel, d.stream)
+                        self.playChannel(program.channel, program)
         elif action.getId() in [ACTION_SHOW_INFO]:
             program = self._getProgramFromControl(controlInFocus)
             title = program.title
