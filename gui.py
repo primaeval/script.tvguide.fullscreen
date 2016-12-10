@@ -1339,7 +1339,7 @@ class TVGuide(xbmcgui.WindowXML):
                     if ADDON.getSetting("program.background.flat") == 'true':
                         self.setControlImage(self.C_MAIN_BACKGROUND, "white.png")
                     else:
-                        self.setControlImage(self.C_MAIN_BACKGROUND, "special://profile/addon_data/script.tvguide.fullscreen/backgrounds/sunburst.png")
+                        self.setControlImage(self.C_MAIN_BACKGROUND, ADDON.getSetting("program.background.texture.url"))
                     name = remove_formatting(ADDON.getSetting('program.background.color'))
                     color = colors.color_name[name]
 
