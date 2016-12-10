@@ -4315,6 +4315,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
         self.database = database
         self.buttonClicked = None
         self.category = category
+        self.selected_category = category
         self.categories = categories
 
     def onInit(self):
@@ -4325,8 +4326,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
             items.append(item)
         listControl = self.getControl(self.C_CAT_CATEGORY)
         listControl.addItems(items)
-        if self.category and self.category in categories:
-            index = categories.index(self.category)
+        if self.selected_category and self.selected_category in categories:
+            index = categories.index(self.selected_category)
             listControl.selectItem(index)
         self.setFocus(listControl)
         name = remove_formatting(ADDON.getSetting('categories.background.color'))
@@ -4344,13 +4345,13 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                 cList = self.getControl(self.C_CAT_CATEGORY)
                 item = cList.getSelectedItem()
                 if item:
-                    self.category = item.getLabel()
-                if self.category == "All Channels":
+                    self.selected_category = item.getLabel()
+                if self.selected_category == "All Channels":
                     selection = ["Add Category"]
                 else:
                     selection = ["Add Category","Add Channels","Remove Channels","Clear Channels"]
                 dialog = xbmcgui.Dialog()
-                ret = dialog.select("%s" % self.category, selection)
+                ret = dialog.select("%s" % self.selected_category, selection)
                 if ret < 0:
                     return
 
@@ -4358,8 +4359,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                 lines = f.read().splitlines()
                 f.close()
                 categories = {}
-                if self.category not in ["Any", "All Channels"]:
-                    categories[self.category] = []
+                if self.selected_category not in ["Any", "All Channels"]:
+                    categories[self.selected_category] = []
                 for line in lines:
                     if '=' in line:
                         name,cat = line.strip().split('=')
@@ -4369,7 +4370,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
 
                 if ret == 1:
                     channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
-                    str = 'Add Channels To %s' % self.category
+                    str = 'Add Channels To %s' % self.selected_category
                     ret = dialog.multiselect(str, channelList)
                     if ret is None:
                         return
@@ -4380,12 +4381,12 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                         channels.append(channelList[i])
 
                     for channel in channels:
-                        if channel not in categories[self.category]:
-                            categories[self.category].append(channel)
+                        if channel not in categories[self.selected_category]:
+                            categories[self.selected_category].append(channel)
 
                 elif ret == 2:
-                    channelList = sorted(categories[self.category])
-                    str = 'Remove Channels From %s' % self.category
+                    channelList = sorted(categories[self.selected_category])
+                    str = 'Remove Channels From %s' % self.selected_category
                     ret = dialog.multiselect(str, channelList)
                     if ret is None:
                         return
@@ -4394,13 +4395,13 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                     channels = []
                     for i in ret:
                         channelList[i] = ""
-                    categories[self.category] = []
+                    categories[self.selected_category] = []
                     for name in channelList:
                         if name:
-                            categories[self.category].append(name)
+                            categories[self.selected_category].append(name)
 
                 elif ret == 3:
-                    categories[self.category] = []
+                    categories[self.selected_category] = []
 
                 elif ret == 0:
                     dialog = xbmcgui.Dialog()
@@ -4433,7 +4434,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
             cList = self.getControl(self.C_CAT_CATEGORY)
             item = cList.getSelectedItem()
             if item:
-                self.category = item.getLabel()
+                self.selected_category = item.getLabel()
+                self.category = self.selected_category
             self.buttonClicked = controlId
             self.close()
         elif controlId == 80005:
