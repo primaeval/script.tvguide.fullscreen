@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.227
+- Settings \ Optional \ Manage addons.ini m3u Playlist Subscriptions (merge m3u playlists into addons.ini)
+
 version 0.0.226
 - Settings \ Optional \ Import m3u (use an m3u playlist for custom primary channel mapping)
 
