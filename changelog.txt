@@ -7,6 +7,12 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.228
+- Choose Stream with Play button from main EPG (ACTION_PLAYER_PLAY)
+- Settings \ Lab1 \ Append (Folder) to Name on Add Folder
+- Settings \ Background \ Background Image Texture (choose your own if you are using the solid colour background)
+- Pick Image dialog - Local, Pixabay (with thumbnail previews)
+
 version 0.0.227
 - Settings \ Optional \ Manage addons.ini m3u Playlist Subscriptions (merge m3u playlists into addons.ini)
 
