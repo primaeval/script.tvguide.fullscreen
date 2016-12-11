@@ -919,7 +919,13 @@ class TVGuide(xbmcgui.WindowXML):
 
     def programSearch(self):
         d = xbmcgui.Dialog()
-        search = d.input("Program Search")
+        controlInFocus = self.getFocus()
+        title = ''
+        if controlInFocus:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                title = program.title
+        search = d.input("Program Search",title)
         if not search:
             return
         programList = self.database.programSearch(search)
