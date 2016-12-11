@@ -602,7 +602,6 @@ class TVGuide(xbmcgui.WindowXML):
 
     # epg mode
     def onActionEPGMode(self, action):
-        log(action.getId())
         if action.getId() in [ACTION_PARENT_DIR]:
             self.close()
             return
