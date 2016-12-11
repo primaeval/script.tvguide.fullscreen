@@ -1060,9 +1060,9 @@
                 <visible>true</visible>
             </control>
             <control type="progress" id="7026">
-                <posx>430</posx>
-                <posy>490</posy>
-                <width>845</width>
+                <posx>1130</posx>
+                <posy>530</posy>
+                <width>130</width>
                 <height>3</height>
                 <lefttexture />
                 <righttexture />
