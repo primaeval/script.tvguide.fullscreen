@@ -3024,7 +3024,6 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programLabelControl.setEnabled(False)
             programDateControl.setEnabled(False)
             programImageControl.setEnabled(False)
-            playControl.setEnabled(False)
             remindControl.setEnabled(False)
             autoplayControl.setEnabled(False)
             autoplaywithControl.setEnabled(False)
@@ -3033,9 +3032,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programTitleControl.setEnabled(False)
             programPlayBeginningControl.setEnabled(False)
             programSuperFavourites.setEnabled(False)
+            self.getControl(self.C_POPUP_EXTENDED).setEnabled(False)
+        if not self.program.channel:
+            playControl.setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
             self.getControl(self.C_POPUP_STREAM_SETUP).setEnabled(False)
-            self.getControl(self.C_POPUP_EXTENDED).setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_ALT).setEnabled(False)
 
     def formatDateTodayTomorrow(self, timestamp):
