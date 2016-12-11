@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.230
+- longer timebar for AM/PM
+
 version 0.0.229
 - timebar shrink
 

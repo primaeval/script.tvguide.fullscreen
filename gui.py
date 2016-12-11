@@ -424,6 +424,14 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.updateTimebar()
 
+        programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
+        if programprogresscontrol:
+            pos = programprogresscontrol.getPosition()
+            format = xbmc.getRegion('time')
+            if pos == [1130,530] and format.endswith('p'):
+                programprogresscontrol.setPosition(1060,530)
+                programprogresscontrol.setWidth(200)
+
     def onAction(self, action):
         debug('Mode is: %s' % self.mode)
 
