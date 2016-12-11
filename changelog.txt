@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.231
+- Menu fix if no epg data
+- Program Search fills in current program name
+
 version 0.0.230
 - longer timebar for AM/PM
 

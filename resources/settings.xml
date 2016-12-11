@@ -105,7 +105,7 @@
 
     <category label="Background">
         <setting id="program.background.enabled" label="Enable Background Program Image" type="bool" default="false" />
-        <setting id="program.background.image.source" label="Background Image Source" type="enum" default="0" values="None|File|Url" visible="true" />
+        <setting id="program.background.image.source" label="Background Image Source" type="enum" default="2" values="None|File|Url" visible="true" />
         <setting id="program.background.image" label="Background Image File" type="image" visible="eq(-1,1)" />
         <setting id="program.background.image.url" label="Background Image Url" type="text" visible="eq(-2,2)" default="http://i.imgur.com/yQTvmIA.jpg"/>
         <setting label="Pick Image" type="action" visible="eq(-3,2)" action="RunScript($CWD/PickImage.py,remote,program.background.image.url)" />
