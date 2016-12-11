@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.229
+- timebar shrink
+
 version 0.0.228
 - Choose Stream with Play button from main EPG (ACTION_PLAYER_PLAY)
 - Settings \ Lab1 \ Append (Folder) to Name on Add Folder
