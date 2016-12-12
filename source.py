@@ -1820,7 +1820,7 @@ class XMLTVSource(Source):
                                 match = re.search(pattern,episode_num)
                                 if match:
                                     season = int(match.group(1))
-                                    episode = int(match.group(1))
+                                    episode = int(match.group(2))
 
                     result = Program(channel, title, self.parseXMLTVDate(elem.get('start')),
                                      self.parseXMLTVDate(elem.get('stop')), description, imageSmall=icon,
