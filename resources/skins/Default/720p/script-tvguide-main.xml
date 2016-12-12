@@ -1096,6 +1096,18 @@
                 <texture>-</texture>
                 <visible>true</visible>
             </control>
+            <control type="image" id="7027">
+                <description>Program logo / Source logo</description>
+                <posx>0</posx>
+                <posy>480</posy>
+                <width>425</width>
+                <height>240</height>
+                <aligny>top</aligny>
+                <aspectratio>scale</aspectratio>
+                <fadetime>0</fadetime>
+                <texture>-</texture>
+                <visible>true</visible>
+            </control>
             <control type="image" id="7024">
                 <description>Channel logo</description>
                 <posx>0</posx>

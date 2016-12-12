@@ -979,6 +979,15 @@
                 <aspectratio>keep</aspectratio>
 				<visible>true</visible>
             </control>
+			<control type="image" id="7027">
+                <description>Programme image</description>
+                <top>590</top>
+                <left>1030</left>
+                <width>220</width>
+                <height>120</height>
+                <aspectratio>scale</aspectratio>
+				<visible>true</visible>
+            </control>
 			<control type="image">
 				<description>Programme image backup</description>
                 <left>1030</left>

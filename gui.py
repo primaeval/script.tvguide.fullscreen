@@ -170,7 +170,10 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_TITLE = 7020
     C_MAIN_TIME = 7021
     C_MAIN_DESCRIPTION = 7022
-    C_MAIN_IMAGE = 7023
+    if ADDON.getSetting('program.image.scale') == 'true':
+        C_MAIN_IMAGE = 7027
+    else:
+        C_MAIN_IMAGE = 7023
     C_MAIN_LOGO = 7024
     C_MAIN_CHANNEL = 7025
     C_MAIN_PROGRESS = 7026
