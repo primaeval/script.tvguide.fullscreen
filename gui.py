@@ -1270,7 +1270,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         title = '[B]%s[/B]' % program.title
         if program.season and program.episode:
-            title += " [B]S%sE%s[/B]" % (program.season, program.episode)
+            title += " S%sE%s" % (program.season, program.episode)
         #if program.is_movie == "Movie":
         #    title += " [B](Movie)[/B]"
 
@@ -2993,7 +2993,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             season = self.program.season
             episode = self.program.episode
             if season and episode:
-                label = " - S%sE%s" % (season,episode)
+                label = " S%sE%s" % (season,episode)
         except:
             pass
         programLabelControl.setLabel(self.program.title+label)
@@ -4218,6 +4218,15 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         for program in self.programs:
 
             label = program.title
+            se_label = ""
+            try:
+                season = program.season
+                episode = program.episode
+                if season and episode:
+                    se_label = " S%sE%s" % (season,episode)
+            except:
+                pass
+            label = label + se_label
             name = ""
             icon = program.channel.logo
             item = xbmcgui.ListItem(label, name, icon)
