@@ -737,9 +737,14 @@ class Database(object):
         channelList = self._getChannelList(True)
         for channel in channelList:
             search = "%%%s%%" % search
-            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ?',
-                      [channel.id, self.source.KEY,search])
-            except: return
+            if ADDON.getSetting('program.search.plot') == 'true':
+                try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ? OR description LIKE ?',
+                          [channel.id, self.source.KEY,search,search])
+                except: return
+            else:
+                try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ?',
+                          [channel.id, self.source.KEY,search])
+                except: return
             for row in c:
                 program = Program(channel, title=row['title'], startDate=row['start_date'], endDate=row['end_date'], description=row['description'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],

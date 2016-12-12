@@ -78,6 +78,8 @@
         <setting type="sep"/>
         <setting id="program.image.scale" label="Scale Program Image" type="bool" default="true" />
         <setting type="sep"/>
+        <setting id="program.search.plot" label="Program Search in Synopsis/Title" type="bool" default="false" />        
+        <setting type="sep"/>
         <setting id="listing.days" label="Listing View Days" default="1" type="number"  visible="true"/>
         <setting type="sep"/>
         <!--TODO REMOVED UNTIL STABLE

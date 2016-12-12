@@ -7,6 +7,11 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.232
+- different play method that works with Radio too (might break some addons)
+- Settings \ Appearance \ Scale Program Image (turn off for previous behaviour)
+- Settings \ Appearance \ Program Search in Synopsis/Title
+
 version 0.0.231
 - Menu fix if no epg data
 - Program Search fills in current program name
