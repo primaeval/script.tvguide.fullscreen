@@ -7,6 +7,10 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.233
+- Settings \ Lab1 \ EPG Font (look in your Kodi Skin's Font.xml file for alternatives)
+- Program Search now searches from 6 hours ago to Settings \ Appearance \ Listing View Days
+
 version 0.0.232
 - different play method that works with Radio too (might break some addons)
 - Settings \ Appearance \ Scale Program Image (turn off for previous behaviour)
