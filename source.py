@@ -733,13 +733,16 @@ class Database(object):
     def _programSearch(self, search):
         programList = []
         now = datetime.datetime.now()
+        days = int(ADDON.getSetting('listing.days'))
+        startTime = now - datetime.timedelta(hours=6)
+        endTime = now + datetime.timedelta(days=days)
         c = self.conn.cursor()
         channelList = self._getChannelList(True)
         for channel in channelList:
             search = "%%%s%%" % search
             if ADDON.getSetting('program.search.plot') == 'true':
-                try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ? OR description LIKE ?',
-                          [channel.id, self.source.KEY,search,search])
+                try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date>=? AND end_date<=? AND (title LIKE ? OR description LIKE ?)',
+                          [channel.id, self.source.KEY, startTime, endTime, search, search])
                 except: return
             else:
                 try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND title LIKE ?',

@@ -2174,6 +2174,7 @@ class TVGuide(xbmcgui.WindowXML):
         color = colors.color_name[name]
         focusColor = color
 
+        font = ADDON.getSetting('epg.font')
         isPlaying = self.player.isPlaying()
         for program in programs:
             idx = channels.index(program.channel)
@@ -2227,7 +2228,8 @@ class TVGuide(xbmcgui.WindowXML):
                     focusedColor=focusColor,
                     textColor=noFocusColor,
                     noFocusTexture=noFocusTexture,
-                    focusTexture=focusTexture
+                    focusTexture=focusTexture,
+                    font=font
                 )
 
                 self.controlAndProgramList.append(ControlAndProgram(control, program))
@@ -2245,7 +2247,8 @@ class TVGuide(xbmcgui.WindowXML):
                 focusedColor=focusColor,
                 textColor=noFocusColor,
                 noFocusTexture=noFocusTexture,
-                focusTexture=focusTexture
+                focusTexture=focusTexture,
+                font=font
             )
 
             program = src.Program(channel, "", None, None, None)
