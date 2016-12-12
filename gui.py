@@ -1800,9 +1800,11 @@ class TVGuide(xbmcgui.WindowXML):
                 if self.alternativePlayback:
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
                 elif self.osdEnabled:
-                    xbmc.executebuiltin('PlayMedia(%s,1)' % url)
+                    #xbmc.executebuiltin('PlayMedia(%s,1)' % url)
+                    self.player.play(item=url, windowed=self.osdEnabled)
                 else:
-                    xbmc.executebuiltin('PlayMedia(%s)' % url)
+                    #xbmc.executebuiltin('PlayMedia(%s)' % url)
+                    self.player.play(item=url, windowed=self.osdEnabled)
             else:
                 self.player.play(item=url, windowed=self.osdEnabled)
 
