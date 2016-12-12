@@ -1816,9 +1816,11 @@ class XMLTVSource(Source):
                                 episode = int(re.sub(pattern, r"\2", episode_num))
 
                             else:
-                                pattern = re.compile(r"S(\d+)E(\d+)",re.I|re.U)
-                                season = int(re.sub(pattern, r"\1", episode_num))
-                                episode = int(re.sub(pattern, r"\2", episode_num))
+                                pattern = re.compile(r"S([0-9]+)E([0-9]+)",re.I|re.U)
+                                match = re.search(pattern,episode_num)
+                                if match:
+                                    season = int(match.group(1))
+                                    episode = int(match.group(1))
 
                     result = Program(channel, title, self.parseXMLTVDate(elem.get('start')),
                                      self.parseXMLTVDate(elem.get('stop')), description, imageSmall=icon,
