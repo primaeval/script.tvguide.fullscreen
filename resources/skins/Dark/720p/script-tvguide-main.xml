@@ -937,6 +937,19 @@
             </control>
 
 			<!-- Footer - Selected Programme information -->
+            <control type="label" id="7028">
+                <description>Category name</description>
+                <posx>1260</posx>
+                <posy>480</posy>
+                <width>650</width>
+                <height>30</height>
+                <textcolor>grey</textcolor>
+                <font>font13</font>
+                <align>right</align>
+                <visible>false</visible>
+                <scroll>true</scroll>
+                <label>-</label>
+            </control>            
 			<control type="label" id="7025">
                 <description>Station name</description>
                 <left>640</left>
