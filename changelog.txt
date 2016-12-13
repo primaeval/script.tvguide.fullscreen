@@ -7,6 +7,9 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
+version 0.0.240
+- SchedulesDirect logos will use Logos Folder or Url if Logos Source is Folder|Url
+
 version 0.0.238-239
 - Program Category Search in Program Search (4 or Menu \ Lists \ Program Search)
 - sub-title in main Program Title in EPG
