@@ -347,7 +347,6 @@ class TVGuide(xbmcgui.WindowXML):
         try:
             return super(TVGuide, self).getControl(controlId)
         except Exception as detail:
-            log(detail)
             xbmc.log("EXCEPTION: (script.tvguide.fullscreen) TVGuide.getControl %s" % detail, xbmc.LOGERROR)
             if controlId in self.ignoreMissingControlIds:
                 return None

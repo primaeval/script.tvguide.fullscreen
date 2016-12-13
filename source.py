@@ -606,12 +606,10 @@ class Database(object):
 
 
     def getChannelList(self, onlyVisible=True, all=False):
-        log(("getChannelList",onlyVisible,all))
         result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible, all)
         return result
 
     def _getChannelList(self, onlyVisible, all=False):
-        log(("_getChannelList",onlyVisible,all))
         c = self.conn.cursor()
         channelList = list()
         if onlyVisible:
