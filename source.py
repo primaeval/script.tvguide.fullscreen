@@ -861,7 +861,7 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.endDate])
             row = c.fetchone()
             if row:
-                nextProgram = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
+                nextProgram = Program(program.channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
                               description=row['description'], categories=row['categories'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
                               is_movie=row['is_movie'], language=row['language'])
@@ -883,7 +883,7 @@ class Database(object):
                 [program.channel.id, self.source.KEY, program.startDate])
             row = c.fetchone()
             if row:
-                previousProgram = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
+                previousProgram = Program(program.channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
                               description=row['description'], categories=row['categories'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
                               is_movie=row['is_movie'], language=row['language'])

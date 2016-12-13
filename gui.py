@@ -467,8 +467,6 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [REMOTE_3, ACTION_JUMP_SMS3]:
             self.showNext()
         elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
-            #self.programSearch()
-            #self.programCategorySearch()
             self.programSearchSelect()
         elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
             self.showFullReminders()
@@ -1121,7 +1119,7 @@ class TVGuide(xbmcgui.WindowXML):
             elif list == 2:
                 self.showNext()
             elif list == 3:
-                self.programSearch()
+                self.programSearchSelect()
             elif list == 4:
                 self.showFullReminders()
             elif list == 5:
