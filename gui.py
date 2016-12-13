@@ -747,11 +747,17 @@ class TVGuide(xbmcgui.WindowXML):
             id = ''
             if results:
                 if len(results) > 1:
-                    names = ["%s (%s)" % (x.get('name'),x.get('first_air_date')) for x in results]
+                    names = ["%s (%s)" % (x.get('name') or x.get('title'),x.get('first_air_date') or x.get('release_date')) for x in results]
                     what = xbmcgui.Dialog().select(title,names)
                     if what > -1:
                         id = results[what].get('id')
                         type = results[what].get('media_type')
+                        log((what,id,type,title,program.title))
+                        if type not in ["movie","tv"]:
+                            if selection == 0:
+                                type = "movie"
+                            else:
+                                type = "tv"
                         if type == 'movie':
                             xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s,id=%s)' % (title,id))
                         elif type == 'tv':
@@ -765,6 +771,7 @@ class TVGuide(xbmcgui.WindowXML):
                         xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s)' % (program.title))
             else:
                 xbmcgui.Dialog().notification("TV Guide Fullscreen", "Couldn't find: %s" % title)
+
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -1286,11 +1293,17 @@ class TVGuide(xbmcgui.WindowXML):
             id = ''
             if results:
                 if len(results) > 1:
-                    names = ["%s (%s)" % (x.get('name'),x.get('first_air_date')) for x in results]
+                    names = ["%s (%s)" % (x.get('name') or x.get('title'),x.get('first_air_date') or x.get('release_date')) for x in results]
                     what = xbmcgui.Dialog().select(title,names)
                     if what > -1:
                         id = results[what].get('id')
                         type = results[what].get('media_type')
+                        log((what,id,type,title,program.title))
+                        if type not in ["movie","tv"]:
+                            if selection == 0:
+                                type = "movie"
+                            else:
+                                type = "tv"
                         if type == 'movie':
                             xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s,id=%s)' % (title,id))
                         elif type == 'tv':
