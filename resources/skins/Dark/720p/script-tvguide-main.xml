@@ -144,6 +144,12 @@
         </control>
 
 		<!-- Background Video-->
+        <control type="label" id="5003">
+            <description>visibility marker for EPG background video</description>
+        </control>
+        <control type="label" id="5002">
+            <description>visibility marker for pip</description>
+        </control>
         <control type="videowindow">
             <description>Video window dimensions</description>
             <left>0</left>
@@ -949,7 +955,7 @@
                 <visible>false</visible>
                 <scroll>true</scroll>
                 <label>-</label>
-            </control>            
+            </control>
 			<control type="label" id="7025">
                 <description>Station name</description>
                 <left>640</left>
@@ -992,15 +998,6 @@
                 <aspectratio>keep</aspectratio>
 				<visible>true</visible>
             </control>
-			<control type="image" id="7027">
-                <description>Programme image</description>
-                <top>590</top>
-                <left>1030</left>
-                <width>220</width>
-                <height>120</height>
-                <aspectratio>scale</aspectratio>
-				<visible>true</visible>
-            </control>
 			<control type="image">
 				<description>Programme image backup</description>
                 <left>1030</left>
@@ -1010,7 +1007,17 @@
                 <aspectratio>keep</aspectratio>
                 <texture>tv.png</texture>
                 <visible>StringCompare(Control.GetLabel(7023),)</visible>
-			</control>
+			</control>            
+			<control type="image" id="7027">
+                <description>Programme image</description>
+                <top>590</top>
+                <left>1030</left>
+                <width>220</width>
+                <height>120</height>
+                <aspectratio>scale</aspectratio>
+				<visible>true</visible>
+            </control>
+
 			<control type="label" id="7021">
                 <description>Programme scheduled time</description>
                 <left>1010</left>

@@ -145,7 +145,7 @@
             <height>720</height>
             <colordiffuse>white</colordiffuse>
             <texture>black.png</texture>
-            <visible>!Player.HasMedia</visible>
+            <visible>true</visible>
             <aspectratio>scale</aspectratio>
             <align>center</align>
             <aligny>center</aligny>
@@ -161,6 +161,9 @@
             <visible>Control.IsVisible(5000)</visible>
         </control>
         <!-- Background -->
+        <control type="label" id="5003">
+            <description>visibility marker for EPG background video</description>
+        </control>
         <control type="videowindow">
             <description>video window</description>
             <posx>0</posx>
@@ -170,7 +173,7 @@
             <!--<animation type="Conditional" condition="!Control.IsVisible(5000)">
                 <effect type="zoom" end="25" center="1250,690" time="500" />
             </animation>-->
-            <visible>true</visible>
+            <visible>Control.IsVisible(5000)|Control.IsVisible(5003)</visible>
         </control>
 
         <control type="label" id="5000">
@@ -193,7 +196,6 @@
                 <visible>false</visible>
                 <texture>background-cover2.png</texture>
             </control>
-
 
             <control type="image">
                 <description>background</description>
@@ -1390,7 +1392,10 @@
             </control>
 
         </control>
-        <!-- id="5000" -->
+
+        <control type="label" id="5002">
+            <description>visibility marker for pip</description>
+        </control>
         <control type="videowindow">
             <description>video window</description>
             <posx>0</posx>
@@ -1398,8 +1403,8 @@
             <width>424</width>
             <height>240</height>
             <aligny>top</aligny>
-            <aspectratio>scale</aspectratio>
-            <visible>false</visible>
+            <aspectratio>keep</aspectratio>
+            <visible>!Control.IsVisible(5000)+Control.IsVisible(5002)</visible>
         </control>
 
         <control type="label" id="6000">

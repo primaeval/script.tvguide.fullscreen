@@ -197,6 +197,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_FOOTER = 4602
     C_MAIN_EPG = 5000
     C_MAIN_EPG_VIEW_MARKER = 5001
+    C_MAIN_PIP = 5002
+    C_MAIN_VIDEO = 5003
     C_QUICK_EPG = 10000
     C_QUICK_EPG_VIEW_MARKER = 10001
     C_QUICK_EPG_DATE = 14000
@@ -345,6 +347,7 @@ class TVGuide(xbmcgui.WindowXML):
         try:
             return super(TVGuide, self).getControl(controlId)
         except Exception as detail:
+            log(detail)
             xbmc.log("EXCEPTION: (script.tvguide.fullscreen) TVGuide.getControl %s" % detail, xbmc.LOGERROR)
             if controlId in self.ignoreMissingControlIds:
                 return None
@@ -381,6 +384,13 @@ class TVGuide(xbmcgui.WindowXML):
                 super(TVGuide, self).close()
 
     def onInit(self):
+        if ADDON.getSetting('epg.video.pip') == 'true':
+            self.getControl(self.C_MAIN_PIP).setVisible(True)
+            self.getControl(self.C_MAIN_VIDEO).setVisible(False)
+        else:
+            self.getControl(self.C_MAIN_PIP).setVisible(False)
+            self.getControl(self.C_MAIN_VIDEO).setVisible(True)
+
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS, self.C_MAIN_OSD)
         self._hideControl(self.C_MAIN_LAST_PLAYED)
         self._hideControl(self.C_UP_NEXT)
