@@ -739,11 +739,32 @@ class TVGuide(xbmcgui.WindowXML):
             elif program.season:
                 selection = 1
             else:
-                selection = xbmcgui.Dialog().select("Choose media type",["Search as Movie", "Search as TV Show"])
-            if selection == 0:
-                xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s)' % (title))
-            elif selection == 1:
-                xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s)' % (program.title))
+                selection = xbmcgui.Dialog().select("Choose media type",["Search as Movie", "Search as TV Show", "Search as Either"])
+            where = ["movie","tv","multi"]
+            url = "https://api.themoviedb.org/3/search/%s?query=%s&api_key=d69992ec810d0f414d3de4a2294b8700&include_adult=false&page=1" % (where[selection],title)
+            r = requests.get(url)
+            data = json.loads(r.content)
+            results = data.get('results')
+            id = ''
+            if results:
+                if len(results) > 1:
+                    names = ["%s (%s)" % (x.get('name'),x.get('first_air_date')) for x in results]
+                    what = xbmcgui.Dialog().select(title,names)
+                    if what > -1:
+                        id = results[what].get('id')
+                        if selection == 0:
+                            xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s,id=%s)' % (title,id))
+                        elif selection == 1:
+                            xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s,id=%s)' % (program.title,id))
+                    else:
+                        xbmcgui.Dialog().notification("TV Guide Fullscreen", "Couldn't find: %s" % title)
+                else:
+                    if selection == 0:
+                        xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s)' % (title))
+                    elif selection == 1:
+                        xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s)' % (program.title))
+            else:
+                xbmcgui.Dialog().notification("TV Guide Fullscreen", "Couldn't find: %s" % title)
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
