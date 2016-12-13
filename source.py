@@ -671,6 +671,7 @@ class Database(object):
 
     #TODO hangs on second call from _getNowList. use _getChannelList instead
     def getChannelList(self, onlyVisible=True, all=False):
+        log(all)
         if not self.channelList or not onlyVisible:
             result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible, all)
             if not onlyVisible:
@@ -682,7 +683,7 @@ class Database(object):
         c = self.conn.cursor()
         channelList = list()
         if onlyVisible:
-            c.execute('SELECT * FROM channels WHERE source=? AND visible=? ORDER BY weight', [self.source.KEY, True])
+            c.execute('SELECT * FROM channels WHERE source=? AND visible=? ORDER BY weight', [self.source.KEY, 1])
         else:
             c.execute('SELECT * FROM channels WHERE source=? ORDER BY weight', [self.source.KEY])
         for row in c:

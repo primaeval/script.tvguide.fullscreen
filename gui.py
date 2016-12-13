@@ -3094,7 +3094,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 categories[cat].append(name)
 
             if ret == 0:
-                channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
+                channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=True,all=True)])
+                channelList = [c for c in channelList if c not in categories[self.category]]
                 str = 'Add Channels To %s' % self.category
                 ret = dialog.multiselect(str, channelList)
                 if ret is None:
@@ -4441,7 +4442,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                         categories[cat].append(name)
 
                 if ret == 1:
-                    channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=False,all=True)])
+                    channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=True,all=True)])
+                    channelList = [c for c in channelList if c not in categories[self.selected_category]]
                     str = 'Add Channels To %s' % self.selected_category
                     ret = dialog.multiselect(str, channelList)
                     if ret is None:
@@ -4497,7 +4499,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                         f.write("%s=%s\n" % (channel.encode("utf8"),cat))
                 f.close()
                 self.categories = [category for category in categories if category]
-        elif action.getId() in [ACTION_MENU, ACTION_PARENT_DIR, KEY_NAV_BACK]:
+        elif action.getId() in [ACTION_MENU, ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_ESC]:
             self.close()
             return
 
