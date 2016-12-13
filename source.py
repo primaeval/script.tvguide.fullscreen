@@ -669,17 +669,13 @@ class Database(object):
         f.close()
 
 
-    #TODO hangs on second call from _getNowList. use _getChannelList instead
     def getChannelList(self, onlyVisible=True, all=False):
-        log(all)
-        if not self.channelList or not onlyVisible:
-            result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible, all)
-            if not onlyVisible:
-                return result
-            self.channelList = result
-        return self.channelList
+        log(("getChannelList",onlyVisible,all))
+        result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible, all)
+        return result
 
     def _getChannelList(self, onlyVisible, all=False):
+        log(("_getChannelList",onlyVisible,all))
         c = self.conn.cursor()
         channelList = list()
         if onlyVisible:
@@ -689,6 +685,7 @@ class Database(object):
         for row in c:
             channel = Channel(row['id'], row['title'], row['lineup'], row['logo'], row['stream_url'], row['visible'], row['weight'])
             channelList.append(channel)
+
         if all == False and self.category and self.category != "Any":
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
             lines = f.read().splitlines()
