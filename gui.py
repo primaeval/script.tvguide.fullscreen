@@ -467,7 +467,9 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in [REMOTE_3, ACTION_JUMP_SMS3]:
             self.showNext()
         elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
-            self.programSearch()
+            #self.programSearch()
+            #self.programCategorySearch()
+            self.programSearchSelect()
         elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
             self.showFullReminders()
         elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
@@ -839,7 +841,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             return
         elif controlId == self.C_MAIN_MOUSE_MENU:
-            program = utils.Program(channel='', title='', startDate=None, endDate=None, description='')
+            program = utils.Program(channel='', title='', sub_title='', startDate=None, endDate=None, description='', categories='')
             program.autoplayScheduled = False
             program.autoplaywithScheduled = False
             self._showContextMenu(program)
@@ -930,6 +932,19 @@ class TVGuide(xbmcgui.WindowXML):
                 self.playChannel(programList[index].channel, programList[index])
 
 
+    def programSearchSelect(self):
+        d = xbmcgui.Dialog()
+        what = d.select("Seach",["Title","Synopsis","Category"])
+        if what == -1:
+            return
+        if what == 0:
+            self.programSearch()
+        elif what == 1:
+            self.descriptionSearch()
+        elif what == 2:
+            self.categorySearch()
+
+
     def programSearch(self):
         d = xbmcgui.Dialog()
         controlInFocus = self.getFocus()
@@ -943,6 +958,40 @@ class TVGuide(xbmcgui.WindowXML):
             return
         programList = self.database.programSearch(search)
         title = "Program Search"
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
+        if index > -1:
+            self._showContextMenu(programList[index])
+
+    def descriptionSearch(self):
+        d = xbmcgui.Dialog()
+        search = d.input("Synopsis Search")
+        if not search:
+            return
+        programList = self.database.descriptionSearch(search)
+        title = "Program Search"
+        d = ProgramListDialog(title,programList)
+        d.doModal()
+        index = d.index
+        if index > -1:
+            self._showContextMenu(programList[index])
+
+    def categorySearch(self):
+        d = xbmcgui.Dialog()
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/category_count.ini',"rb")
+        category_count = [x.split("=",1) for x in f.read().splitlines()]
+        f.close()
+        categories = []
+        for (c,v) in category_count:
+            s = "%s (%s)" % (c,v)
+            categories.append(s)
+        which = d.select("Program Category Search",categories)
+        if which == -1:
+            return
+        category = category_count[which][0]
+        programList = self.database.programCategorySearch(category)
+        title = "Category - %s" % category
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
@@ -1279,7 +1328,10 @@ class TVGuide(xbmcgui.WindowXML):
         if program is None:
             return
 
-        title = '[B]%s[/B]' % program.title
+        if program.sub_title:
+            title = '[B]%s - %s[/B]' % (program.title, program.sub_title)
+        else:
+            title = '[B]%s[/B]' % program.title
         if program.season and program.episode:
             title += " S%sE%s" % (program.season, program.episode)
         #if program.is_movie == "Movie":
@@ -2268,7 +2320,7 @@ class TVGuide(xbmcgui.WindowXML):
                 font=font
             )
 
-            program = src.Program(channel, "", None, None, None)
+            program = src.Program(channel, "", '', None, None, None, '')
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
         top = self.epgView.top + self.epgView.cellHeight * len(channels)
@@ -2473,7 +2525,7 @@ class TVGuide(xbmcgui.WindowXML):
                 focusTexture=focusTexture
             )
 
-            program = src.Program(channel, "", None, None, None)
+            program = src.Program(channel, "", '', None, None, None, '')
             self.quickControlAndProgramList.append(ControlAndProgram(control, program))
 
         top = self.quickEpgView.cellHeight * len(channels)
@@ -4292,7 +4344,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
                 item.setProperty('When', when_str)
 
             if elapsed.seconds > 0:
-                progress = 100.0 * float(timedelta_total_seconds(elapsed)) / float(duration.seconds)
+                progress = 100.0 * float(timedelta_total_seconds(elapsed)) / float(duration.seconds+0.001)
                 progress = str(int(progress))
             else:
                 #TODO hack for progress bar with 0 time

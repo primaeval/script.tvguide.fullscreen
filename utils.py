@@ -71,10 +71,8 @@ class Channel(object):
 
 
 class Program(object):
-    def __init__(self, channel, title, startDate, endDate, description, imageLarge=None,
-                 imageSmall=None,
-                 notificationScheduled=None, season=None, episode=None, is_movie=False,
-                 language="en"):
+    def __init__(self, channel, title, sub_title, startDate, endDate, description, categories, imageLarge=None, imageSmall=None,
+                 notificationScheduled=None, autoplayScheduled=None, autoplaywithScheduled=None, season=None, episode=None, is_movie = False, language = "en"):
         """
 
         @param channel:
@@ -88,22 +86,33 @@ class Program(object):
         """
         self.channel = channel
         self.title = title
+        self.sub_title = sub_title
         self.startDate = startDate
         self.endDate = endDate
         self.description = description
-        self.imageLarge = imageLarge
-        self.imageSmall = imageSmall
+        self.categories = categories
+        if imageLarge and imageLarge.startswith('http'):
+            self.imageLarge = re.sub(' ','+',imageLarge)
+        else:
+            self.imageLarge = imageLarge
+        if imageSmall and imageSmall.startswith('http'):
+            self.imageSmall = re.sub(' ','+',imageSmall)
+        else:
+            self.imageSmall = imageSmall
         self.notificationScheduled = notificationScheduled
+        self.autoplayScheduled = autoplayScheduled
+        self.autoplaywithScheduled = autoplaywithScheduled
         self.season = season
         self.episode = episode
         self.is_movie = is_movie
         self.language = language
 
     def __repr__(self):
-        return 'Program(channel=%s, title=%s, startDate=%s, endDate=%s, description=%s, ' \
-               'imageLarge=%s, imageSmall=%s, episode=%s, season=%s, is_movie=%s)' % (
-                   self.channel, self.title, self.startDate, self.endDate, self.description,
-                   self.imageLarge, self.imageSmall, self.season, self.episode, self.is_movie)
+        return 'Program(channel=%s, title=%s, sub_title=%s, startDate=%s, endDate=%s, description=%s, categories=%s, imageLarge=%s, ' \
+               'imageSmall=%s, episode=%s, season=%s, is_movie=%s)' % (self.channel, self.title, self.sub_title, self.startDate,
+                                                                       self.endDate, self.description, self.categories, self.imageLarge,
+                                                                       self.imageSmall, self.season, self.episode,
+                                                                       self.is_movie)
 
 
 def save_setting(key, value, is_list=False):
