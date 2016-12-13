@@ -934,7 +934,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def programSearchSelect(self):
         d = xbmcgui.Dialog()
-        what = d.select("Seach",["Title","Synopsis","Category"])
+        what = d.select("Search",["Title","Synopsis","Category"])
         if what == -1:
             return
         if what == 0:
