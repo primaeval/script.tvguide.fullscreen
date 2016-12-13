@@ -172,6 +172,12 @@ class SdAPI(object):
                 logo = ''
                 if 'logo' in station and 'URL' in station['logo']:
                     logo = station['logo']['URL']
+                logo_type = int(ADDON.getSetting('logos.source'))
+                if logo_type == 1:
+                    logo = "%s%s.png" % (ADDON.getSetting('logos.folder'),station['name'])
+                elif logo_type == 2:
+                    url = ADDON.getSetting('logos.url').rstrip('/')
+                    logo = "%s/%s.png" % (url,station['name'].replace(' ','%20'))
                 channel = Channel(station['stationID'], station['name'], lineup, logo)
                 stations.append(channel)
         return stations

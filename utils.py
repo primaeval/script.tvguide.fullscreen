@@ -186,7 +186,7 @@ def grouper(n, iterable, fillvalue=None):
     args = [iter(iterable)] * n
     return izip_longest(fillvalue=fillvalue, *args)
 
-
+#TODO this is wrong
 def get_logo(channel):
     logo = channel.logo
     logo_type = int(ADDON.getSetting('logos.source'))
