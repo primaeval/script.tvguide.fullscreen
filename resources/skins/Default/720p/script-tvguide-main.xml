@@ -1107,7 +1107,7 @@
                 <aspectratio>keep</aspectratio>
                 <fadetime>0</fadetime>
                 <texture>-</texture>
-                <visible>true</visible>
+                <visible>!Player.HasMedia</visible>
             </control>
             <control type="image" id="7027">
                 <description>Program logo / Source logo</description>
@@ -1119,7 +1119,7 @@
                 <aspectratio>scale</aspectratio>
                 <fadetime>0</fadetime>
                 <texture>-</texture>
-                <visible>true</visible>
+                <visible>!Player.HasMedia</visible>
             </control>
             <control type="image" id="7024">
                 <description>Channel logo</description>
