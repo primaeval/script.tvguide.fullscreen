@@ -1975,7 +1975,7 @@ class TVGuide(xbmcgui.WindowXML):
         time.sleep(0.5)
         self._showOsd()
         self.osdActive = False
-        time.sleep(2)
+        time.sleep(int(ADDON.getSetting('playback.osd.timeout')))
 
         countdown = int(ADDON.getSetting('playback.timeout'))
         while countdown:

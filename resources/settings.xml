@@ -64,7 +64,8 @@
         <setting label="30119" type="lsep" />
         <setting id="enable.osd" label="30118" type="bool" default="true" />
         <setting id="alternative.playback" label="30120" type="bool" default="false" />
-        <setting type="sep"/>
+        <setting type="lsep" label="Playback OSD and Timeout are Cumulative"/>
+        <setting id="playback.osd.timeout" label="Playback OSD (seconds)" type="labelenum" default="2" values="0|1|2|3|4|5|10|15|20|30"/>
         <setting id="playback.timeout" label="Playback Timeout (seconds)" type="labelenum" default="5" values="0|1|2|3|4|5|10|15|20|30"/>
         <setting type="sep"/>
         <setting id="stop.on.exit" label="Stop Playing on Exit" type="bool" default="true" />
