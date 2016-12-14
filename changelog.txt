@@ -7,7 +7,7 @@ USAGE NOTES:
 - reload all folders in settings
 - use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
 
-version 0.0.244
+version 0.0.244-245
 - Settings \ Playback \ Playback OSD (seconds) - (Playback OSD and Timeout are Cumulative)
 
 version 0.0.241-243
