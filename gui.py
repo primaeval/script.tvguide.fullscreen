@@ -751,16 +751,15 @@ class TVGuide(xbmcgui.WindowXML):
                     what = xbmcgui.Dialog().select(title,names)
                     if what > -1:
                         id = results[what].get('id')
-                        type = results[what].get('media_type')
-                        log((what,id,type,title,program.title))
-                        if type not in ["movie","tv"]:
+                        result_type = results[what].get('media_result_type')
+                        if result_type not in ["movie","tv"]:
                             if selection == 0:
-                                type = "movie"
+                                result_type = "movie"
                             else:
-                                type = "tv"
-                        if type == 'movie':
+                                result_type = "tv"
+                        if result_type == 'movie':
                             xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedinfo,name=%s,id=%s)' % (title,id))
-                        elif type == 'tv':
+                        elif result_type == 'tv':
                             xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s,id=%s)' % (program.title,id))
                     else:
                         xbmcgui.Dialog().notification("TV Guide Fullscreen", "Couldn't find: %s" % title)
