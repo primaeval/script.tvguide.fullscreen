@@ -27,7 +27,9 @@ for path in unique:
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
     except:
         continue
-    files = response["files"]
+    files = response.get("files")
+    if not files:
+        continue
     dirs = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "directory"])
     links = dict([[f["label"], f["file"]] for f in files if f["filetype"] == "file"])
     thumbnails = dict([[f["file"], f["thumbnail"]] for f in files if f["filetype"] == "file"])
