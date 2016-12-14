@@ -80,6 +80,8 @@ ACTION_PLAYER_PLAY = 79
 ACTION_PLAYER_PLAYPAUSE = 229
 ACTION_RECORD = 170
 
+ACTION_CREATE_BOOKMARK = 96
+
 ACTION_PAUSE = 12
 ACTION_PLAY = 68
 ACTION_PLAYER_FORWARD = 77
@@ -706,6 +708,50 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_IMAGE, self.tvdb_urls[program.title])
         elif action.getId() == ACTION_MENU:
             self._showCatMenu()
+        elif action.getId() == ACTION_CREATE_BOOKMARK:
+            program = self._getProgramFromControl(controlInFocus)
+            d = xbmcgui.Dialog()
+
+            if not program.notificationScheduled:
+                remind = "Remind"
+            else:
+                remind = "Don't Remind"
+            if not program.autoplayScheduled:
+                autoplay = "AutoPlay"
+            else:
+                autoplay = "Don't AutoPlay"
+            if not program.autoplaywithScheduled:
+                autoplaywith = "AutoPlayWith"
+            else:
+                autoplaywith = "Don't AutoPlayWith"
+            schedulers = [remind,autoplay,autoplaywith]
+            what = d.select("Schedule", schedulers)
+            if what > -1:
+                if what == 0:
+                    if program.notificationScheduled:
+                        self.notification.removeNotification(program)
+                    else:
+                        times = ["once","always"]
+                        when = d.select("%s When" % schedulers[what], times)
+                        if when > -1:
+                            self.notification.addNotification(program, when)
+                elif what == 1:
+                    if program.autoplayScheduled:
+                        self.autoplay.removeAutoplay(program)
+                    else:
+                        times = ["once","always"]
+                        when = d.select("%s When" % schedulers[what], times)
+                        if when > -1:
+                            self.autoplay.addAutoplay(program, when)
+                elif what == 2:
+                    if program.autoplaywithScheduled:
+                        self.autoplaywith.removeAutoplaywith(program)
+                    else:
+                        times = ["once","always"]
+                        when = d.select("%s When" % schedulers[what], times)
+                        if when > -1:
+                            self.autoplaywith.addAutoplaywith(program, when)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
         elif action.getId() == ACTION_PLAYER_PLAY:
             program = self._getProgramFromControl(controlInFocus)
             if program:
