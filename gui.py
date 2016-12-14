@@ -1944,7 +1944,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def playWithChannel(self, channel, program = None):
         if ADDON.getSetting('epg.video.pip') == 'true':
-            self.getControl(self.C_MAIN_IMAGE).setVisible(False)    
+            self.getControl(self.C_MAIN_IMAGE).setVisible(False)
         if self.currentChannel:
             self.lastChannel = self.currentChannel
         self.currentChannel = channel
@@ -1991,25 +1991,31 @@ class TVGuide(xbmcgui.WindowXML):
         dialog = xbmcgui.Dialog()
         dialog.notification('Stream Failed', title, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
 
+        finish = False
         if ADDON.getSetting('play.alt.continue') == 'true':
-            url = self.alt_urls.pop(0)
-            #TODO meta
-            if url[0:9] == 'plugin://':
-                if self.alternativePlayback:
-                    xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
-                elif self.osdEnabled:
-                    xbmc.executebuiltin('PlayMedia(%s,1)' % url)
+            if self.alt_urls:
+                url = self.alt_urls.pop(0)
+                #TODO meta
+                if url[0:9] == 'plugin://':
+                    if self.alternativePlayback:
+                        xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
+                    elif self.osdEnabled:
+                        xbmc.executebuiltin('PlayMedia(%s,1)' % url)
+                    else:
+                        xbmc.executebuiltin('PlayMedia(%s)' % url)
                 else:
-                    xbmc.executebuiltin('PlayMedia(%s)' % url)
+                    self.player.play(item=url, windowed=self.osdEnabled)
+                self.tryingToPlay = True
+                if ADDON.getSetting('play.minimized') == 'false':
+                    self._hideEpg()
+                    self._hideQuickEpg()
+                threading.Timer(1, self.waitForPlayBackStopped, [title]).start()
             else:
-                self.player.play(item=url, windowed=self.osdEnabled)
-            self.tryingToPlay = True
-            if ADDON.getSetting('play.minimized') == 'false':
-                self._hideEpg()
-                self._hideQuickEpg()
-            threading.Timer(1, self.waitForPlayBackStopped, [title]).start()
+                finish = True
         else:
-            #TODO find a way to compare requested channel to playing channel
+            finish = True
+
+        if finish:
             if not self.osdActive:
                 self._hideOsd()
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
@@ -2224,7 +2230,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         # remove existing controls
         self._clearEpg()
-        
+
         if ADDON.getSetting('epg.video.pip') == 'true' and self.player.isPlaying():
             self.getControl(self.C_MAIN_IMAGE).setVisible(False)
 
