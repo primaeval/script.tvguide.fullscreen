@@ -445,6 +445,8 @@ class TVGuide(xbmcgui.WindowXML):
                 programprogresscontrol.setPosition(1060,530)
                 programprogresscontrol.setWidth(200)
 
+        self.getControl(self.C_MAIN_IMAGE).setVisible(True)
+
     def onAction(self, action):
         debug('Mode is: %s' % self.mode)
 
@@ -460,6 +462,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                      seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            self.getControl(self.C_MAIN_IMAGE).setVisible(True)
 
         if action.getId() in [REMOTE_2,ACTION_JUMP_SMS2]:
             self.showNow()
@@ -1880,6 +1883,8 @@ class TVGuide(xbmcgui.WindowXML):
         self.playChannel(channel, program)
 
     def playChannel(self, channel, program = None):
+        if ADDON.getSetting('epg.video.pip') == 'true':
+            self.getControl(self.C_MAIN_IMAGE).setVisible(False)
         url = self.database.getStreamUrl(channel)
         alt_url = self.database.getAltStreamUrl(channel)
         self.alt_urls = []
@@ -1938,6 +1943,8 @@ class TVGuide(xbmcgui.WindowXML):
         return url is not None
 
     def playWithChannel(self, channel, program = None):
+        if ADDON.getSetting('epg.video.pip') == 'true':
+            self.getControl(self.C_MAIN_IMAGE).setVisible(False)    
         if self.currentChannel:
             self.lastChannel = self.currentChannel
         self.currentChannel = channel
@@ -2217,6 +2224,9 @@ class TVGuide(xbmcgui.WindowXML):
 
         # remove existing controls
         self._clearEpg()
+        
+        if ADDON.getSetting('epg.video.pip') == 'true' and self.player.isPlaying():
+            self.getControl(self.C_MAIN_IMAGE).setVisible(False)
 
         try:
             self.channelIdx, channels, programs = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False, category=self.category)
