@@ -1297,7 +1297,6 @@ class TVGuide(xbmcgui.WindowXML):
                     if what > -1:
                         id = results[what].get('id')
                         type = results[what].get('media_type')
-                        log((what,id,type,title,program.title))
                         if type not in ["movie","tv"]:
                             if selection == 0:
                                 type = "movie"
@@ -1929,7 +1928,7 @@ class TVGuide(xbmcgui.WindowXML):
                     self.player.play(item=url, windowed=self.osdEnabled)
                 else:
                     #xbmc.executebuiltin('PlayMedia(%s)' % url)
-                    self.player.play(item=url, windowed=self.osdEnabled)
+                    self.player.play(item=url, windowed=False)
             else:
                 self.player.play(item=url, windowed=self.osdEnabled)
 
