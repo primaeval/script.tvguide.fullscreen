@@ -364,6 +364,14 @@ def getCommandActions():
     if j:
         commands = json.loads(j)
         return commands
+    else:
+        commands = COMMANDS.copy()
+        for command in commands:
+            actions = commands[command]
+            #log(actions)
+            actions = [ACTIONS[x] for x in actions]
+            commands[command] = actions
+        return commands
 
 def translateActions(commands):
     ACTIONS_VALUES = {v: k for k, v in ACTIONS.iteritems()}
@@ -374,7 +382,13 @@ def translateActions(commands):
         new_commands[c] = new_actions
     return new_commands
 
-
+def loadCommandActions():
+    commands = getCommandActions()
+    if commands:
+        edit_commands = translateActions(commands)
+    else:
+        edit_commands = COMMANDS
+    return edit_commands
 
 if __name__ == '__main__':
     v = ACTIONS.values()
@@ -387,11 +401,7 @@ if __name__ == '__main__':
                 count[x] = 1
         xbmcgui.Dialog().notification("TV Guide Fullscreen", "ACTIONS not unique")
 
-    commands = getCommandActions()
-    if commands:
-        edit_commands = translateActions(commands)
-    else:
-        edit_commands = COMMANDS
+    edit_commands = loadCommandActions()
     #log(edit_commands)
 
     d = xbmcgui.Dialog()
