@@ -4425,8 +4425,6 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
         items = list()
         index = 0
 
-        if self.sort_time == True:
-            self.programs = sorted(self.programs, key=lambda x: x.startDate)
         for program in self.programs:
 
             label = program.title
@@ -4448,6 +4446,7 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
 
             item.setProperty('ChannelName', program.channel.title)
             item.setProperty('Plot', program.description)
+            item.setProperty('startDate', str(time.mktime(program.startDate.timetuple())))
 
             start = program.startDate
             end = program.endDate
@@ -4498,6 +4497,9 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
             program_image = program.imageSmall if program.imageSmall else program.imageLarge
             item.setProperty('ProgramImage', program_image)
             items.append(item)
+
+        if self.sort_time == True:
+            items = sorted(items, key=lambda x: x.getProperty('startDate'))
 
         listControl = self.getControl(ProgramListDialog.C_PROGRAM_LIST)
         listControl.addItems(items)
