@@ -1065,7 +1065,7 @@ class TVGuide(xbmcgui.WindowXML):
             return
         category = category_count[which][0]
         programList = self.database.programCategorySearch(category)
-        title = "Category - %s" % category
+        title = "%s" % category
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index

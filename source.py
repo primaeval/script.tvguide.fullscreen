@@ -702,8 +702,8 @@ class Database(object):
         channelList = self._getChannelList(True)
         for channel in channelList:
             search = "%%%s%%" % search
-            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND description LIKE ?',
-                      [channel.id, self.source.KEY,search])
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND description LIKE ? AND start_date>=? AND end_date<=? ',
+                      [channel.id, self.source.KEY,search, startTime, endTime])
             except: return
             for row in c:
                 program = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
@@ -727,8 +727,8 @@ class Database(object):
         channelList = self._getChannelList(True)
         for channel in channelList:
             search = "%%%s%%" % search
-            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND categories LIKE ?',
-                      [channel.id, self.source.KEY,search])
+            try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND categories LIKE ? AND start_date>=? AND end_date<=? ',
+                      [channel.id, self.source.KEY,search, startTime, endTime])
             except: return
             for row in c:
                 program = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
