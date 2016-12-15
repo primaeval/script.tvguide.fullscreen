@@ -1,11 +1,7 @@
-USAGE NOTES:
-- see Help in Settings for Command Keys
-- "Import addons.ini" will overwrite addon folders on next update timer
-- use pip theme with 8 channels per page to match original tv guide icon layout
-- click to load in addon browse dialog
-- right click to add channels to categories
-- reload all folders in settings
-- use Spoyser's repo for Super Favourites or MySearch (SF is now at DixieDean's repo)
+version 0.0.249
+- Settings \ Appearance \ Sort Listings Views by Time (off for Sort by Channel)
+- Settings \ Appearance \ Listing View Previous Hours (search past programs or long running programs)
+- Listings View default action is now Play (usually). context menu for Menu
 
 version 0.0.248
 - ACTION_CREATE_BOOKMARK to bring up Schedulers Dialog (Remind|Autoplay|Autoplaywith)
