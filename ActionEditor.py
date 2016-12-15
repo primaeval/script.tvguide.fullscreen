@@ -368,7 +368,6 @@ def getCommandActions():
         commands = COMMANDS.copy()
         for command in commands:
             actions = commands[command]
-            #log(actions)
             actions = [ACTIONS[x] for x in actions]
             commands[command] = actions
         return commands
@@ -402,19 +401,15 @@ if __name__ == '__main__':
         xbmcgui.Dialog().notification("TV Guide Fullscreen", "ACTIONS not unique")
 
     edit_commands = loadCommandActions()
-    #log(edit_commands)
 
     d = xbmcgui.Dialog()
     while True:
-        #log(("OUT",edit_commands))
         main_action = d.select("Command Editor",["Edit","Defaults","Save"])
         if main_action == -1:
             quit()
 
         if main_action == 0:
             while True:
-                #log(("IN",edit_commands))
-
                 labels = []
                 command_keys = sorted(edit_commands.keys())
                 for command in command_keys:
@@ -436,19 +431,14 @@ if __name__ == '__main__':
                     add_actions = sorted([x for x in ACTIONS.keys() if x not in actions])
                     selected_actions = d.multiselect(command,add_actions)
                     if selected_actions:
-                        #og(selected_actions)
                         actions = actions + [add_actions[x] for x in selected_actions]
-                        #log(actions)
                         edit_commands[command] = actions
                 elif edit_action == 1:
                     command = command_keys[command_index]
                     actions = edit_commands[command]
-                    #d_actions = sorted([x for x in ACTIONS.keys() if x not in actions])
                     selected_actions = d.multiselect(command,actions)
                     if selected_actions:
-                        #log(selected_actions)
                         new_actions = [actions[x] for x in range(len(actions)) if x not in selected_actions]
-                        #log(new_actions)
                         edit_commands[command] = new_actions
         elif main_action == 1:
             edit_commands = COMMANDS
@@ -456,7 +446,6 @@ if __name__ == '__main__':
             save_commands = edit_commands.copy()
             for command in save_commands:
                 actions = save_commands[command]
-                #log(actions)
                 actions = [ACTIONS[x] for x in actions]
                 save_commands[command] = actions
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/commands.json','wb')
