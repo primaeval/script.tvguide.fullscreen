@@ -666,7 +666,7 @@ class Database(object):
         programList = []
         now = datetime.datetime.now()
         days = int(ADDON.getSetting('listing.days'))
-        startTime = now - datetime.timedelta(hours=6)
+        startTime = now - datetime.timedelta(hours=int(ADDON.getSetting('listing.hours')))
         endTime = now + datetime.timedelta(days=days)
         c = self.conn.cursor()
         channelList = self._getChannelList(True)
@@ -696,7 +696,7 @@ class Database(object):
         programList = []
         now = datetime.datetime.now()
         days = int(ADDON.getSetting('listing.days'))
-        startTime = now - datetime.timedelta(hours=6)
+        startTime = now - datetime.timedelta(hours=int(ADDON.getSetting('listing.hours')))
         endTime = now + datetime.timedelta(days=days)
         c = self.conn.cursor()
         channelList = self._getChannelList(True)
@@ -721,7 +721,7 @@ class Database(object):
         programList = []
         now = datetime.datetime.now()
         days = int(ADDON.getSetting('listing.days'))
-        startTime = now - datetime.timedelta(hours=6)
+        startTime = now - datetime.timedelta(hours=int(ADDON.getSetting('listing.hours')))
         endTime = now + datetime.timedelta(days=days)
         c = self.conn.cursor()
         channelList = self._getChannelList(True)

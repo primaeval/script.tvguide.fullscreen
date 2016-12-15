@@ -1032,7 +1032,7 @@ class TVGuide(xbmcgui.WindowXML):
             return
         programList = self.database.programSearch(search)
         title = "Program Search"
-        d = ProgramListDialog(title,programList)
+        d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
         action = d.action
@@ -1055,7 +1055,7 @@ class TVGuide(xbmcgui.WindowXML):
             return
         programList = self.database.descriptionSearch(search)
         title = "Program Search"
-        d = ProgramListDialog(title,programList)
+        d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
         action = d.action
@@ -1085,7 +1085,7 @@ class TVGuide(xbmcgui.WindowXML):
         category = category_count[which][0]
         programList = self.database.programCategorySearch(category)
         title = "%s" % category
-        d = ProgramListDialog(title,programList)
+        d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
         action = d.action
@@ -1103,7 +1103,7 @@ class TVGuide(xbmcgui.WindowXML):
     def showReminders(self):
         programList = self.database.getNotifications()
         title = "Reminders"
-        d = ProgramListDialog(title,programList)
+        d = ProgramListDialog(title,programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
         if index > -1:
@@ -1112,7 +1112,7 @@ class TVGuide(xbmcgui.WindowXML):
     def showFullReminders(self):
         programList = self.database.getFullNotifications()
         title = "Reminders"
-        d = ProgramListDialog(title,programList)
+        d = ProgramListDialog(title,programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
         if index > -1:
@@ -1137,7 +1137,7 @@ class TVGuide(xbmcgui.WindowXML):
     def showFullAutoplays(self):
         programList = self.database.getFullAutoplays()
         title = "AutoPlays"
-        d = ProgramListDialog(title,programList)
+        d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
         if index > -1:
@@ -1162,7 +1162,7 @@ class TVGuide(xbmcgui.WindowXML):
     def showFullAutoplaywiths(self):
         programList = self.database.getFullAutoplaywiths()
         title = "AutoPlayWiths"
-        d = ProgramListDialog(title,programList)
+        d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
         if index > -1:
@@ -4407,15 +4407,16 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
     C_PROGRAM_LIST = 1000
     C_PROGRAM_LIST_TITLE = 1001
 
-    def __new__(cls,title,programs):
+    def __new__(cls,title,programs,sort_time=False):
         return super(ProgramListDialog, cls).__new__(cls, 'script-tvguide-programlist.xml', SKIN_PATH, SKIN)
 
-    def __init__(self,title,programs):
+    def __init__(self,title,programs,sort_time=False):
         super(ProgramListDialog, self).__init__()
         self.title = title
         self.programs = programs
         self.index = -1
         self.action = None
+        self.sort_time = sort_time
 
     def onInit(self):
         control = self.getControl(ProgramListDialog.C_PROGRAM_LIST_TITLE)
@@ -4423,6 +4424,9 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
 
         items = list()
         index = 0
+
+        if self.sort_time == True:
+            self.programs = sorted(self.programs, key=lambda x: x.startDate)
         for program in self.programs:
 
             label = program.title
