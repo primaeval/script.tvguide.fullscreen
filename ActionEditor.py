@@ -3,6 +3,7 @@ import xbmc
 import xbmcgui
 import xbmcaddon
 import xbmcvfs
+import json
 
 ACTIONS = {
 "ACTION_ANALOG_FORWARD" : 113,
@@ -90,7 +91,6 @@ ACTIONS = {
 "ACTION_MOUSE_MIDDLE_CLICK" : 102,
 "ACTION_MOUSE_MOVE" : 107,
 "ACTION_MOUSE_RIGHT_CLICK" : 101,
-"ACTION_MOUSE_START" : 100,
 "ACTION_MOUSE_WHEEL_DOWN" : 105,
 "ACTION_MOUSE_WHEEL_UP" : 104,
 "ACTION_MOVE_DOWN" : 4,
@@ -214,30 +214,6 @@ ACTIONS = {
 "ACTION_ZOOM_LEVEL_9" : 46,
 "ACTION_ZOOM_LEVEL_NORMAL" : 37,
 "ACTION_ZOOM_OUT" : 30,
-"ALPHANUM_HIDE_INPUT" : 2,
-"CONTROL_TEXT_OFFSET_X" : 10,
-"CONTROL_TEXT_OFFSET_Y" : 2,
-"ICON_OVERLAY_HD" : 6,
-"ICON_OVERLAY_LOCKED" : 3,
-"ICON_OVERLAY_NONE" : 0,
-"ICON_OVERLAY_RAR" : 1,
-"ICON_OVERLAY_UNWATCHED" : 4,
-"ICON_OVERLAY_WATCHED" : 5,
-"ICON_OVERLAY_ZIP" : 2,
-"ICON_TYPE_FILES" : 106,
-"ICON_TYPE_MUSIC" : 103,
-"ICON_TYPE_NONE" : 101,
-"ICON_TYPE_PICTURES" : 104,
-"ICON_TYPE_PROGRAMS" : 102,
-"ICON_TYPE_SETTINGS" : 109,
-"ICON_TYPE_VIDEOS" : 105,
-"ICON_TYPE_WEATHER" : 107,
-"INPUT_ALPHANUM" : 0,
-"INPUT_DATE" : 2,
-"INPUT_IPADDRESS" : 4,
-"INPUT_NUMERIC" : 1,
-"INPUT_PASSWORD" : 5,
-"INPUT_TIME" : 3,
 "KEY_APPCOMMAND" : 53248,
 "KEY_ASCII" : 61696,
 "KEY_BUTTON_A" : 256,
@@ -268,6 +244,7 @@ ACTIONS = {
 "KEY_BUTTON_WHITE" : 261,
 "KEY_BUTTON_X" : 258,
 "KEY_BUTTON_Y" : 259,
+"KEY_ESC" : 61467,
 "KEY_INVALID" : 65535,
 "KEY_MOUSE_CLICK" : 57344,
 "KEY_MOUSE_DOUBLE_CLICK" : 57360,
@@ -278,19 +255,14 @@ ACTIONS = {
 "KEY_MOUSE_LONG_CLICK" : 57376,
 "KEY_MOUSE_MIDDLECLICK" : 57346,
 "KEY_MOUSE_MOVE" : 57603,
-"KEY_MOUSE_NOOP" : 61439,
 "KEY_MOUSE_RDRAG" : 57607,
 "KEY_MOUSE_RDRAG_END" : 57609,
 "KEY_MOUSE_RDRAG_START" : 57608,
 "KEY_MOUSE_RIGHTCLICK" : 57345,
-"KEY_MOUSE_START" : 57344,
 "KEY_MOUSE_WHEEL_DOWN" : 57602,
 "KEY_MOUSE_WHEEL_UP" : 57601,
 "KEY_TOUCH" : 61440,
 "KEY_UNICODE" : 61952,
-"KEY_VKEY" : 61440,
-"KEY_VMOUSE" : 61439,
-"PASSWORD_VERIFY" : 1,
 "REMOTE_0" : 58,
 "REMOTE_1" : 59,
 "REMOTE_2" : 60,
@@ -314,48 +286,48 @@ COMMANDS = {
 
 "TV_MODE_CHANNEL_UP": ["ACTION_PAGE_UP"],
 "TV_MODE_CHANNEL_DOWN": ["ACTION_PAGE_DOWN"],
-"TV_MODE_CLOSE": ["ACTION_PARENT_DIR", "KEY_NAV_BACK", "ACTION_PREVIOUS_MENU"],
-"TV_MODE_SHOW_MENU": ["KEY_CONTEXT_MENU"],
+"TV_MODE_CLOSE": ["ACTION_PARENT_DIR", "ACTION_NAV_BACK", "ACTION_PREVIOUS_MENU"],
+"TV_MODE_SHOW_MENU": ["ACTION_CONTEXT_MENU"],
 "TV_MODE_SHOW_OSD": ["ACTION_SHOW_INFO"],
 "TV_MODE_PLAY_LAST_CHANNEL": ["REMOTE_0"],
-"TV_MODE_SHOW_LAST_CHANNEL": ["ACTION_LEFT"],
-"TV_MODE_FULLSCREEN_MODE": ["ACTION_RIGHT"],
-"TV_MODE_SHOW_NOW_LISTING": ["ACTION_UP"],
-"TV_MODE_SHOW_QUICK_EPG": ["ACTION_DOWN"],
+"TV_MODE_SHOW_LAST_CHANNEL": ["ACTION_MOVE_LEFT"],
+"TV_MODE_FULLSCREEN_MODE": ["ACTION_MOVE_RIGHT"],
+"TV_MODE_SHOW_NOW_LISTING": ["ACTION_MOVE_UP"],
+"TV_MODE_SHOW_QUICK_EPG": ["ACTION_MOVE_DOWN"],
 "TV_MODE_HIDE_QUICK_EPG": ["ACTION_SELECT_ITEM"],
 "TV_MODE_SHOW_CHANNEL_LISTING": ["REMOTE_1"],
 
 "OSD_MODE_HIDE": ["ACTION_SHOW_INFO"],
-"OSD_MODE_CLOSE": ["ACTION_PARENT_DIR", "KEY_NAV_BACK", "ACTION_PREVIOUS_MENU"],
+"OSD_MODE_CLOSE": ["ACTION_PARENT_DIR", "ACTION_NAV_BACK", "ACTION_PREVIOUS_MENU"],
 "OSD_MODE_PLAY": ["ACTION_SELECT_ITEM"],
-"OSD_MODE_MENU": ["KEY_CONTEXT_MENU"],
+"OSD_MODE_MENU": ["ACTION_CONTEXT_MENU"],
 "OSD_MODE_CHANNEL_UP": ["ACTION_PAGE_UP"],
 "OSD_MODE_CHANNEL_DOWN": ["ACTION_PAGE_DOWN"],
-"OSD_MODE_PREV_CHANNEL": ["ACTION_UP"],
-"OSD_MODE_NEXT_CHANNEL": ["ACTION_DOWN"],
-"OSD_MODE_PREV_PROGRAM": ["ACTION_LEFT"],
-"OSD_MODE_NEXT_PROGRAM": ["ACTION_RIGHT"],
+"OSD_MODE_PREV_CHANNEL": ["ACTION_MOVE_UP"],
+"OSD_MODE_NEXT_CHANNEL": ["ACTION_MOVE_DOWN"],
+"OSD_MODE_PREV_PROGRAM": ["ACTION_MOVE_LEFT"],
+"OSD_MODE_NEXT_PROGRAM": ["ACTION_MOVE_RIGHT"],
 "OSD_MODE_SHOW_CHANNEL_LISTING": ["REMOTE_1"],
 
-"LAST_PLAYED_MODE_HIDE": ["ACTION_SHOW_INFO,ACTION_LEFT,ACTION_RIGHT"],
-"LAST_PLAYED_MODE_CLOSE": ["ACTION_PARENT_DIR", "KEY_NAV_BACK", "ACTION_PREVIOUS_MENU"],
-"LAST_PLAYED_MODE_MENU": ["KEY_CONTEXT_MENU"],
+"LAST_PLAYED_MODE_HIDE": ["ACTION_SHOW_INFO", "ACTION_MOVE_LEFT", "ACTION_MOVE_RIGHT"],
+"LAST_PLAYED_MODE_CLOSE": ["ACTION_PARENT_DIR", "ACTION_NAV_BACK", "ACTION_PREVIOUS_MENU"],
+"LAST_PLAYED_MODE_MENU": ["ACTION_CONTEXT_MENU"],
 "LAST_PLAYED_MODE_PLAY": ["ACTION_SELECT_ITEM"],
 
 "EPG_MODE_HIDE": ["ACTION_PARENT_DIR"],
 "EPG_MODE_CLOSE": ["ACTION_PREVIOUS_MENU"],
 "EPG_MODE_SHOW_TOUCH_CONTROLS": ["ACTION_MOUSE_MOVE"],
-"EPG_MODE_EXIT": ["KEY_NAV_BACK"],
-"EPG_MODE_LEFT": ["ACTION_LEFT"],
-"EPG_MODE_RIGHT": ["ACTION_RIGHT"],
-"EPG_MODE_UP": ["ACTION_UP"],
-"EPG_MODE_DOWN": ["ACTION_DOWN"],
+"EPG_MODE_EXIT": ["ACTION_NAV_BACK"],
+"EPG_MODE_LEFT": ["ACTION_MOVE_LEFT"],
+"EPG_MODE_RIGHT": ["ACTION_MOVE_RIGHT"],
+"EPG_MODE_UP": ["ACTION_MOVE_UP"],
+"EPG_MODE_DOWN": ["ACTION_MOVE_DOWN"],
 "EPG_MODE_NEXT_DAY": ["ACTION_NEXT_ITEM"],
 "EPG_MODE_PREV_DAY": ["ACTION_PREV_ITEM"],
 "EPG_MODE_MOVE_UP": ["ACTION_PAGE_UP"],
 "EPG_MODE_MOVE_DOWN": ["ACTION_PAGE_DOWN"],
-"EPG_MODE_NOW": ["KEY_HOME"],
-"EPG_MODE_MENU": ["KEY_CONTEXT_MENU", "ACTION_PREVIOUS_MENU"],
+"EPG_MODE_NOW": ["ACTION_FIRST_PAGE"],
+"EPG_MODE_MENU": ["ACTION_CONTEXT_MENU", "ACTION_PREVIOUS_MENU"],
 "EPG_MODE_CHANNEL_LISTING": ["REMOTE_1"],
 "EPG_MODE_STOP_AUTOPLAYWITH": ["REMOTE_8", "ACTION_JUMP_SMS8"],
 "EPG_MODE_START_AUTOPLAYWITH": ["REMOTE_9", "ACTION_JUMP_SMS9"],
@@ -365,61 +337,118 @@ COMMANDS = {
 "EPG_MODE_CHOOSE_STREAM": ["ACTION_PLAYER_PLAY"],
 "EPG_MODE_EXTENDED_INFO": ["ACTION_SHOW_INFO"],
 
-"QUICK_EPG_MODE_CLOSE": ["ACTION_PARENT_DIR", "KEY_NAV_BACK"],
+"QUICK_EPG_MODE_CLOSE": ["ACTION_PARENT_DIR", "ACTION_NAV_BACK"],
 "QUICK_EPG_MODE_EXIT": ["ACTION_PREVIOUS_MENU"],
 "QUICK_EPG_MODE_INFO": ["ACTION_SHOW_INFO"],
-"QUICK_EPG_MODE_LEFT": ["ACTION_LEFT"],
-"QUICK_EPG_MODE_RIGHT": ["ACTION_RIGHT"],
-"QUICK_EPG_MODE_UP": ["ACTION_UP"],
-"QUICK_EPG_MODE_DOWN": ["ACTION_DOWN"],
+"QUICK_EPG_MODE_LEFT": ["ACTION_MOVE_LEFT"],
+"QUICK_EPG_MODE_RIGHT": ["ACTION_MOVE_RIGHT"],
+"QUICK_EPG_MODE_UP": ["ACTION_MOVE_UP"],
+"QUICK_EPG_MODE_DOWN": ["ACTION_MOVE_DOWN"],
 "QUICK_MODE_NEXT_DAY": ["ACTION_NEXT_ITEM"],
 "QUICK_MODE_PREV_DAY": ["ACTION_PREV_ITEM"],
 "QUICK_MODE_MOVE_UP": ["ACTION_PAGE_UP"],
 "QUICK_MODE_MOVE_DOWN": ["ACTION_PAGE_DOWN"],
 "QUICK_EPG_MODE_PLAY": ["ACTION_SELECT_ITEM"],
 "QUICK_EPG_MODE_CHANNEL_LISTING": ["REMOTE_1"],
-"QUICK_EPG_MODE_MENU": ["KEY_CONTEXT_MENU"],
+"QUICK_EPG_MODE_MENU": ["ACTION_CONTEXT_MENU"],
 
 }
 
 def log(x):
     xbmc.log(repr(x))
 
+def getCommandActions():
+    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/commands.json','rb')
+    j = f.read()
+    f.close()
+    if j:
+        commands = json.loads(j)
+        return commands
 
-while True:
+def translateActions(commands):
+    ACTIONS_VALUES = {v: k for k, v in ACTIONS.iteritems()}
+    new_commands = commands
+    for c in commands:
+        actions = commands[c]
+        new_actions = [ACTIONS_VALUES[x] for x in actions]
+        new_commands[c] = new_actions
+    return new_commands
+
+
+
+if __name__ == '__main__':
+    v = ACTIONS.values()
+    if len(v) != len(set(v)):
+        count = {}
+        for x in ACTIONS.values():
+            if x in count:
+                log(x)
+            else:
+                count[x] = 1
+        xbmcgui.Dialog().notification("TV Guide Fullscreen", "ACTIONS not unique")
+
+    commands = getCommandActions()
+    if commands:
+        edit_commands = translateActions(commands)
+    else:
+        edit_commands = COMMANDS
+    #log(edit_commands)
+
     d = xbmcgui.Dialog()
-    labels = []
-    command_keys = sorted(COMMANDS.keys())
-    for command in command_keys:
-        actions = ','.join(COMMANDS[command])
-        label = "%s [COLOR dimgray]%s[/COLOR]" % (command.lower().replace('_',' '), actions)
-        labels.append(label)
-    command_index = d.select("Commands",labels)
+    while True:
+        #log(("OUT",edit_commands))
+        main_action = d.select("Command Editor",["Edit","Defaults","Save"])
+        if main_action == -1:
+            quit()
 
-    if command == -1:
-        quit()
+        if main_action == 0:
+            while True:
+                #log(("IN",edit_commands))
 
-    what = d.select(command_keys[command_index],["Add","Remove"])
-    if what == -1:
-        quit()
+                labels = []
+                command_keys = sorted(edit_commands.keys())
+                for command in command_keys:
+                    actions = ','.join(edit_commands[command])
+                    label = "%s [COLOR dimgray]%s[/COLOR]" % (command.lower().replace('_',' '), actions)
+                    labels.append(label)
+                command_index = d.select("Commands",labels)
 
-    if what == 0:
-        command = command_keys[command_index]
-        actions = COMMANDS[command]
-        add_actions = sorted([x for x in ACTIONS.keys() if x not in actions])
-        selected_actions = d.multiselect(command,add_actions)
-        if selected_actions:
-            log(selected_actions)
-            actions = actions + [add_actions[x] for x in selected_actions]
-            log(actions)
-            COMMANDS[command] = actions
-    elif what == 1:
-        command = command_keys[command_index]
-        actions = COMMANDS[command]
-        #d_actions = sorted([x for x in ACTIONS.keys() if x not in actions])
-        selected_actions = d.multiselect(command,actions)
-        if selected_actions:
-            log(selected_actions)
-            new_actions = [actions[x] for x in range(len(actions)) if x not in selected_actions]
-            log(new_actions)
-            COMMANDS[command] = new_actions
+                if command == -1:
+                    break
+
+                edit_action = d.select(command_keys[command_index],["Add","Remove"])
+                if edit_action == -1:
+                    break
+
+                elif edit_action == 0:
+                    command = command_keys[command_index]
+                    actions = edit_commands[command]
+                    add_actions = sorted([x for x in ACTIONS.keys() if x not in actions])
+                    selected_actions = d.multiselect(command,add_actions)
+                    if selected_actions:
+                        #og(selected_actions)
+                        actions = actions + [add_actions[x] for x in selected_actions]
+                        #log(actions)
+                        edit_commands[command] = actions
+                elif edit_action == 1:
+                    command = command_keys[command_index]
+                    actions = edit_commands[command]
+                    #d_actions = sorted([x for x in ACTIONS.keys() if x not in actions])
+                    selected_actions = d.multiselect(command,actions)
+                    if selected_actions:
+                        #log(selected_actions)
+                        new_actions = [actions[x] for x in range(len(actions)) if x not in selected_actions]
+                        #log(new_actions)
+                        edit_commands[command] = new_actions
+        elif main_action == 1:
+            edit_commands = COMMANDS
+        elif main_action == 2:
+            save_commands = edit_commands.copy()
+            for command in save_commands:
+                actions = save_commands[command]
+                #log(actions)
+                actions = [ACTIONS[x] for x in actions]
+                save_commands[command] = actions
+            f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/commands.json','wb')
+            f.write(json.dumps(save_commands,indent=2))
+            f.close()
