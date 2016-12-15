@@ -179,6 +179,8 @@
         <setting type="sep"/>
         <setting id="append.folder" label="Append (Folder) to Name on Add Folder" type="bool" default="false" />
         <setting id="epg.font" label="EPG Font" type="text" default="font13" />
+        <setting type="sep"/>
+        <setting label="Action Editor" type="action" action="RunScript($CWD/ActionEditor.py)" />
     </category>
     <category label="Lab2">
         <setting type="lsep" label="Experimental Alternative Data Sources"/>
