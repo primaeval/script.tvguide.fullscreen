@@ -1035,8 +1035,18 @@ class TVGuide(xbmcgui.WindowXML):
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
-        if index > -1:
-            self._showContextMenu(programList[index])
+        action = d.action
+        if action == ACTION_RIGHT:
+            self.showNext()
+        elif action == ACTION_LEFT:
+            self.showListing(programList[index].channel)
+        elif action == KEY_CONTEXT_MENU:
+            if index > -1:
+                self._showContextMenu(programList[index])
+        else:
+            if index > -1:
+                self.playChannel(programList[index].channel, programList[index])
+
 
     def descriptionSearch(self):
         d = xbmcgui.Dialog()
@@ -1048,8 +1058,17 @@ class TVGuide(xbmcgui.WindowXML):
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
-        if index > -1:
-            self._showContextMenu(programList[index])
+        action = d.action
+        if action == ACTION_RIGHT:
+            self.showNext()
+        elif action == ACTION_LEFT:
+            self.showListing(programList[index].channel)
+        elif action == KEY_CONTEXT_MENU:
+            if index > -1:
+                self._showContextMenu(programList[index])
+        else:
+            if index > -1:
+                self.playChannel(programList[index].channel, programList[index])
 
     def categorySearch(self):
         d = xbmcgui.Dialog()
@@ -1069,8 +1088,17 @@ class TVGuide(xbmcgui.WindowXML):
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
-        if index > -1:
-            self._showContextMenu(programList[index])
+        action = d.action
+        if action == ACTION_RIGHT:
+            self.showNext()
+        elif action == ACTION_LEFT:
+            self.showListing(programList[index].channel)
+        elif action == KEY_CONTEXT_MENU:
+            if index > -1:
+                self._showContextMenu(programList[index])
+        else:
+            if index > -1:
+                self.playChannel(programList[index].channel, programList[index])
 
     def showReminders(self):
         programList = self.database.getNotifications()
