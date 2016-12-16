@@ -1678,12 +1678,14 @@ class TVGuide(xbmcgui.WindowXML):
         img = ''
         imdbID = ''
         plot = ''
+        unique = False
         if ADDON.getSetting('omdb') == 'true':
             if year:
                 url = 'http://www.omdbapi.com/?t=%s&y=%s&plot=short&r=json&type=movie' % (urllib.quote_plus(title),year)
             elif movie:
                 url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=movie' % (urllib.quote_plus(title))
             elif season and episode:
+                unique = True
                 url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=episode&Season=%s&Episode=%s' % (urllib.quote_plus(title),season,episode)
             else:
                 url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
@@ -1707,7 +1709,7 @@ class TVGuide(xbmcgui.WindowXML):
                     pass
 
 
-            if not img and imdbID:
+            if not img and imdbID and (ADDON.getSetting('tvdb.imdb') == 'true'):
                 url = 'http://www.imdb.com/title/%s/' % imdbID
                 headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
                 try:html = requests.get(url,headers=headers).content
@@ -1735,10 +1737,11 @@ class TVGuide(xbmcgui.WindowXML):
                             img = "http://thetvdb.com%s" % re.sub('amp;','',match.group(1))
 
             if img:
-                self.tvdb_urls[program_title] = img
+                if not unique:
+                    self.tvdb_urls[program_title] = img
                 #log(("omdb",program_title,img))
 
-        if not img:
+        if not img and (ADDON.getSetting('tvdb.imdb') == 'true'):
             if not (year or movie):
                 self.getTVDBImage(program_title, season, episode, load)
             else:
