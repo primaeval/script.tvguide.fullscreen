@@ -661,9 +661,9 @@ class TVGuide(xbmcgui.WindowXML):
     # epg mode
     def onActionEPGMode(self, action):
         #if action.getId() in [ACTION_PARENT_DIR]:
-        if action.getId() in COMMAND_ACTIONS["EXIT"]:
-            self.close()
-            return
+        #if action.getId() in COMMAND_ACTIONS["EXIT"]:
+        #    self.close()
+        #    return
 
         # catch the ESC key
         #elif action.getId() == ACTION_PREVIOUS_MENU and action.getButtonCode() == KEY_ESC:
@@ -671,7 +671,7 @@ class TVGuide(xbmcgui.WindowXML):
         #    self.close()
         #    return
 
-        elif action.getId() == ACTION_MOUSE_MOVE:
+        if action.getId() == ACTION_MOUSE_MOVE:
         #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
             if ADDON.getSetting('mouse.controls') == "true":
                 self._showControl(self.C_MAIN_MOUSE_CONTROLS)
