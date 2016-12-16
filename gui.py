@@ -639,7 +639,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         #elif action.getId() in [KEY_CONTEXT_MENU]:
-        elif action.getId() in COMMAND_ACTIONS["SHOW_MENU"]:
+        elif action.getId() in COMMAND_ACTIONS["MENU"]:
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             if self.currentProgram is not None:
                 self._showContextMenu(self.currentProgram)
