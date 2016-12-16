@@ -374,6 +374,7 @@ class TVGuide(xbmcgui.WindowXML):
             f.close()
 
             file_name = 'special://profile/addon_data/script.tvguide.fullscreen/custom_stream_urls_autosave.ini'
+            xbmcvfs.copy(file_name,file_name+".last")
             f = xbmcvfs.File(file_name,'wb')
             if self.database:
                 stream_urls = self.database.getCustomStreamUrls()
