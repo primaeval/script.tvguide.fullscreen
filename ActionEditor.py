@@ -276,6 +276,45 @@ ACTIONS = {
 }
 
 COMMANDS = {
+"EXIT": [],
+"CLOSE": ["ACTION_NAV_BACK", "ACTION_PARENT_DIR", "ACTION_PREVIOUS_MENU"],
+"LEFT": ["ACTION_MOVE_LEFT"],
+"RIGHT": ["ACTION_MOVE_RIGHT"],
+"UP": ["ACTION_MOVE_UP"],
+"DOWN": ["ACTION_MOVE_DOWN"],
+"PAGE_DOWN": ["ACTION_PAGE_DOWN"],
+"PAGE_UP": ["ACTION_PAGE_UP"],
+"NEXT_DAY": ["ACTION_NEXT_ITEM"],
+"PREV_DAY": ["ACTION_PREV_ITEM"],
+"PRESS": ["ACTION_SELECT_ITEM"],
+"PLAY": ["ACTION_SELECT_ITEM"],
+"STOP": ["ACTION_STOP"],
+"PLAY_CHOOSE": ["ACTION_PLAY", "ACTION_PLAYER_PLAY"],
+"GO_TO_NOW": ["ACTION_FIRST_PAGE"],
+"NOW_LISTING": ["REMOTE_2", "ACTION_JUMP_SMS2"],
+"NEXT_LISTING": ["REMOTE_3", "ACTION_JUMP_SMS3"],
+"CHANNEL_LISTING": ["REMOTE_1"],
+"SEARCH": ["REMOTE_4", "ACTION_JUMP_SMS4"],
+"REMINDERS": ["REMOTE_5", "ACTION_JUMP_SMS5"],
+"AUTOPLAYS": ["REMOTE_6", "ACTION_JUMP_SMS6"],
+"AUTOPLAYWITHS": ["REMOTE_7", "ACTION_JUMP_SMS6"],
+"PLAY_NEXT_CHANNEL": ["ACTION_PAGE_UP"],
+"PLAY_PREV_CHANNEL": ["ACTION_PAGE_DOWN"],
+"PLAY_LAST_CHANNEL": ["REMOTE_0"],
+"MENU": ["ACTION_CONTEXT_MENU"],
+"LAST_CHANNEL": ["ACTION_MOVE_LEFT"],
+"OSD": ["ACTION_SHOW_INFO"],
+"QUICK_EPG": ["ACTION_MOVE_DOWN"],
+"CATEGORIES": ["ACTION_MENU"],
+"SCHEDULERS_MENU": ["ACTION_CREATE_BOOKMARK"],
+"INFO": ["ACTION_SHOW_INFO"],
+"EXTENDED_INFO": ["ACTION_SHOW_INFO"],
+"DELETE_PROGRAM_IMAGE": ["ACTION_DELETE_ITEM"],
+"PLAY_AUTOPLAYWITH": ["ACTION_JUMP_SMS9"],
+"STOP_AUTOPLAYWITH": ["ACTION_JUMP_SMS8"],
+"FULLSCREEN": ["ACTION_MOVE_RIGHT"],
+}
+'''
 "GLOBAL_STOP": ["ACTION_STOP"],
 "GLOBAL_LISTING_NOW": ["REMOTE_2", "ACTION_JUMP_SMS2"],
 "GLOBAL_LISTING_NEXT": ["REMOTE_3", "ACTION_JUMP_SMS3"],
@@ -351,26 +390,26 @@ COMMANDS = {
 "QUICK_EPG_MODE_PLAY": ["ACTION_SELECT_ITEM"],
 "QUICK_EPG_MODE_CHANNEL_LISTING": ["REMOTE_1"],
 "QUICK_EPG_MODE_MENU": ["ACTION_CONTEXT_MENU"],
+'''
 
-}
 
 def log(x):
     xbmc.log(repr(x))
 
 def getCommandActions():
+    commands = COMMANDS.copy()
+    for command in commands:
+        actions = commands[command]
+        actions = [ACTIONS[x] for x in actions]
+        commands[command] = actions
     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/commands.json','rb')
     j = f.read()
     f.close()
     if j:
-        commands = json.loads(j)
-        return commands
-    else:
-        commands = COMMANDS.copy()
-        for command in commands:
-            actions = commands[command]
-            actions = [ACTIONS[x] for x in actions]
-            commands[command] = actions
-        return commands
+        new_commands = json.loads(j)
+        #commands.update(new_commands)
+    return commands
+
 
 def translateActions(commands):
     ACTIONS_VALUES = {v: k for k, v in ACTIONS.iteritems()}
