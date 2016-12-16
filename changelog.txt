@@ -1,3 +1,6 @@
+version 0.0.253
+- Settings \ Lab1 \ TVDb/IMDb Image Search (allows for OMDb only)
+
 version 0.0.251-252
 - Settings \ Lab1 \ Action Editor (most actions are now customisable)
 
