@@ -335,7 +335,7 @@ def getCommandActions():
 
 
 def translateActions(commands):
-    ACTIONS_VALUES = dict((value(s), key(s)) for s in ACTIONS)
+    ACTIONS_VALUES = dict((ACTIONS[s], s) for s in ACTIONS)
     new_commands = commands
     for c in commands:
         actions = commands[c]
