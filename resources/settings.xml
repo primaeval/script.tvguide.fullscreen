@@ -165,8 +165,8 @@
     </category>
     <category label="Lab1">
         <setting id="find.program.images" label="Find Program Images from OMDb/TVDb/IMDb" type="bool" default="false" />
-        <setting id="omdb" label="OMDb Image and Plot if Missing" type="bool" enable="eq(-1,true)" default="false" />
-        <setting id="tvdb.imdb" label="TVDb/IMDb Image" type="bool" enable="eq(-2,true)" default="false" />
+        <setting id="omdb" label="OMDb Image and Plot Search" type="bool" enable="eq(-1,true)" default="false" />
+        <setting id="tvdb.imdb" label="TVDb/IMDb Image Search" type="bool" enable="eq(-2,true)" default="false" />
         <setting id="tvdb.match" label="TVDb Matching" type="enum" default="1" enable="eq(-3,true)" values="Exact|Containing|Any"/>
         <setting id="imdb.match" label="IMDb Matching" type="enum" default="1" enable="eq(-4,true)" values="Exact|Containing|Any"/>
         <setting id="imdb.big" label="Use Better Resolution IMDb Image (takes longer)" type="bool" default="true" />
