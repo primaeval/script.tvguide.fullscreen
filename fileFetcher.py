@@ -124,7 +124,7 @@ class FileFetcher(object):
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 total = 0
                 try:
-                    r = requests.get(self.fileUrl,auth=(user, password), stream=True)
+                    r = requests.get(self.fileUrl,auth=(user, password), stream=True, verify=False)
                     if r.status_code != requests.codes.ok:
                         xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
                         return self.FETCH_NOT_NEEDED
