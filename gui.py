@@ -390,11 +390,11 @@ class TVGuide(xbmcgui.WindowXML):
 
     def onInit(self):
         if ADDON.getSetting('epg.video.pip') == 'true':
-            self.getControl(self.C_MAIN_PIP).setVisible(True)
-            self.getControl(self.C_MAIN_VIDEO).setVisible(False)
+            self.setControlVisible(self.C_MAIN_PIP,True)
+            self.setControlVisible(self.C_MAIN_VIDEO,False)
         else:
-            self.getControl(self.C_MAIN_PIP).setVisible(False)
-            self.getControl(self.C_MAIN_VIDEO).setVisible(True)
+            self.setControlVisible(self.C_MAIN_PIP,False)
+            self.setControlVisible(self.C_MAIN_VIDEO,True)
 
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS, self.C_MAIN_OSD)
         self._hideControl(self.C_MAIN_LAST_PLAYED)
@@ -451,7 +451,7 @@ class TVGuide(xbmcgui.WindowXML):
                 programprogresscontrol.setPosition(1060,530)
                 programprogresscontrol.setWidth(200)
 
-        self.getControl(self.C_MAIN_IMAGE).setVisible(True)
+        self.setControlVisible(self.C_MAIN_IMAGE,True)
 
     def onAction(self, action):
         debug('Mode is: %s' % self.mode)
@@ -469,7 +469,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                      seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-            self.getControl(self.C_MAIN_IMAGE).setVisible(True)
+            self.setControlVisible(self.C_MAIN_IMAGE,True)
 
         #if action.getId() in [REMOTE_2,ACTION_JUMP_SMS2]:
         if action.getId() in COMMAND_ACTIONS["NOW_LISTING"]:
@@ -899,7 +899,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["INFO"]:
             control = self.getControl(self.C_QUICK_EPG_DESCRIPTION)
             self.quickEpgShowInfo = not self.quickEpgShowInfo
-            control.setVisible(self.quickEpgShowInfo)
+            self.setControlVisible(control,self.quickEpgShowInfo)
 
         controlInFocus = None
         currentFocus = self.quickFocusPoint
@@ -1596,9 +1596,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_LOGO, '')
             control = self.getControl(self.C_MAIN_LOGO)
             if ADDON.getSetting('channel.logo') == "true":
-                control.setVisible(True)
+                self.setControlVisible(control,True)
             else:
-                control.setVisible(False)
+                self.setControlVisible(control,False)
 
             program_image = ''
             if ADDON.getSetting('program.image') == 'true':
@@ -2041,7 +2041,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def playChannel(self, channel, program = None):
         if ADDON.getSetting('epg.video.pip') == 'true':
-            self.getControl(self.C_MAIN_IMAGE).setVisible(False)
+            self.setControlVisible(self.C_MAIN_IMAGE,True)
         url = self.database.getStreamUrl(channel)
         alt_url = self.database.getAltStreamUrl(channel)
         self.alt_urls = []
@@ -2101,7 +2101,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def playWithChannel(self, channel, program = None):
         if ADDON.getSetting('epg.video.pip') == 'true':
-            self.getControl(self.C_MAIN_IMAGE).setVisible(False)
+            self.setControlVisible(self.C_MAIN_IMAGE,False)
         if self.currentChannel:
             self.lastChannel = self.currentChannel
         self.currentChannel = channel
@@ -2389,7 +2389,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._clearEpg()
 
         if ADDON.getSetting('epg.video.pip') == 'true' and self.player.isPlaying():
-            self.getControl(self.C_MAIN_IMAGE).setVisible(False)
+            self.setControlVisible(self.C_MAIN_IMAGE,False)
 
         try:
             self.channelIdx, channels, programs = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False, category=self.category)
@@ -2421,10 +2421,10 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
                 control = self.getControl(4210 + idx)
-                control.setVisible(False)
+                self.setControlVisible(control,False)
             else:
                 control = self.getControl(4210 + idx)
-                control.setVisible(True)
+                self.setControlVisible(control,True)
                 channel = channels[idx]
                 self.setControlLabel(4010 + idx, channel.title)
                 if (channel.logo is not None and showLogo == True):
@@ -2602,7 +2602,7 @@ class TVGuide(xbmcgui.WindowXML):
         self._clearQuickEpg()
 
         control = self.getControl(self.C_QUICK_EPG_DESCRIPTION)
-        control.setVisible(self.quickEpgShowInfo)
+        self.setControlVisible(control,self.quickEpgShowInfo)
 
         try:
             self.quickChannelIdx, channels, programs = self.database.getQuickEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False, category=self.category)
@@ -2629,10 +2629,10 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(14110 + idx, ' ')
                 self.setControlLabel(14010 + idx, ' ')
                 control = self.getControl(14210 + idx)
-                control.setVisible(False)
+                self.setControlVisible(control,False)
             else:
                 control = self.getControl(14210 + idx)
-                control.setVisible(True)
+                self.setControlVisible(control,True)
                 channel = channels[idx]
                 self.setControlLabel(14010 + idx, channel.title)
                 if (channel.logo is not None and showLogo == True):
@@ -3068,7 +3068,7 @@ class TVGuide(xbmcgui.WindowXML):
         for controlId in controlIds:
             control = self.getControl(controlId)
             if control:
-                control.setVisible(True)
+                self.setControlVisible(control,True)
 
     def _showControl(self, *controlIds):
         """
@@ -3077,7 +3077,7 @@ class TVGuide(xbmcgui.WindowXML):
         for controlId in controlIds:
             control = self.getControl(controlId)
             if control:
-                control.setVisible(False)
+                self.setControlVisible(control,False)
 
     def formatTime(self, timestamp):
         if timestamp:
@@ -3134,6 +3134,11 @@ class TVGuide(xbmcgui.WindowXML):
 
         return False
 
+    def setControlVisible(self, controlId, visible):
+        control = self.getControl(controlId)
+        if control:
+            control.setVisible(visible)
+
     def setControlImage(self, controlId, image):
         control = self.getControl(controlId)
         if control:
@@ -3158,7 +3163,7 @@ class TVGuide(xbmcgui.WindowXML):
             try:
                 # Sometimes raises:
                 # exceptions.RuntimeError: Unknown exception thrown from the call "setVisible"
-                control.setVisible(timeDelta.days == 0)
+                self.setControlVisible(control,timeDelta.days == 0)
                 control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
             except:
                 pass
@@ -3175,7 +3180,7 @@ class TVGuide(xbmcgui.WindowXML):
             try:
                 # Sometimes raises:
                 # exceptions.RuntimeError: Unknown exception thrown from the call "setVisible"
-                control.setVisible(timeDelta.days == 0)
+                self.setControlVisible(control,timeDelta.days == 0)
             except:
                 pass
             control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
@@ -3499,11 +3504,11 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
             buttonControl = self.getControl(self.C_CHANNELS_SELECTION)
             buttonControl.setLabel('[B]%s[/B]' % self.channelList[idx].title)
 
-            self.getControl(self.C_CHANNELS_SELECTION_VISIBLE).setVisible(False)
+            self.setControlVisible(self.C_CHANNELS_SELECTION_VISIBLE,False)
             self.setFocusId(self.C_CHANNELS_SELECTION)
 
         elif self.getFocusId() == self.C_CHANNELS_SELECTION and action.getId() in [ACTION_RIGHT, ACTION_SELECT_ITEM]:
-            self.getControl(self.C_CHANNELS_SELECTION_VISIBLE).setVisible(True)
+            self.setControlVisible(self.C_CHANNELS_SELECTION_VISIBLE,True)
             xbmc.sleep(350)
             self.setFocusId(self.C_CHANNELS_LIST)
 
@@ -3511,7 +3516,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
             listControl = self.getControl(self.C_CHANNELS_LIST)
             idx = listControl.getSelectedPosition()
             self.swapChannels(self.selectedChannel, idx)
-            self.getControl(self.C_CHANNELS_SELECTION_VISIBLE).setVisible(True)
+            self.setControlVisible(self.C_CHANNELS_SELECTION_VISIBLE,True)
             xbmc.sleep(350)
             self.setFocusId(self.C_CHANNELS_LIST)
 
