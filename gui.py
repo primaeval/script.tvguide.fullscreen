@@ -23,6 +23,7 @@
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 #
+import traceback
 import datetime
 import thread
 import threading
@@ -349,9 +350,12 @@ class TVGuide(xbmcgui.WindowXML):
                 except: pass
 
     def getControl(self, controlId):
+        if not controlId:
+            return None
         try:
             return super(TVGuide, self).getControl(controlId)
         except Exception as detail:
+            log(traceback.print_stack())
             xbmc.log("EXCEPTION: (script.tvguide.fullscreen) TVGuide.getControl %s" % detail, xbmc.LOGERROR)
             if controlId in self.ignoreMissingControlIds:
                 return None
@@ -897,9 +901,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         #elif action.getId() in [ACTION_SHOW_INFO]:
         elif action.getId() in COMMAND_ACTIONS["INFO"]:
-            control = self.getControl(self.C_QUICK_EPG_DESCRIPTION)
             self.quickEpgShowInfo = not self.quickEpgShowInfo
-            self.setControlVisible(control,self.quickEpgShowInfo)
+            self.setControlVisible(self.C_QUICK_EPG_DESCRIPTION,self.quickEpgShowInfo)
 
         controlInFocus = None
         currentFocus = self.quickFocusPoint
@@ -1594,11 +1597,10 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
             else:
                 self.setControlImage(self.C_MAIN_LOGO, '')
-            control = self.getControl(self.C_MAIN_LOGO)
             if ADDON.getSetting('channel.logo') == "true":
-                self.setControlVisible(control,True)
+                self.setControlVisible(self.C_MAIN_LOGO,True)
             else:
-                self.setControlVisible(control,False)
+                self.setControlVisible(self.C_MAIN_LOGO,False)
 
             program_image = ''
             if ADDON.getSetting('program.image') == 'true':
@@ -2420,11 +2422,9 @@ class TVGuide(xbmcgui.WindowXML):
             if idx >= len(channels):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
-                control = self.getControl(4210 + idx)
-                self.setControlVisible(control,False)
+                self.setControlVisible(4210 + idx,False)
             else:
-                control = self.getControl(4210 + idx)
-                self.setControlVisible(control,True)
+                self.setControlVisible(4210 + idx,True)
                 channel = channels[idx]
                 self.setControlLabel(4010 + idx, channel.title)
                 if (channel.logo is not None and showLogo == True):
@@ -2601,8 +2601,7 @@ class TVGuide(xbmcgui.WindowXML):
         # remove existing controls
         self._clearQuickEpg()
 
-        control = self.getControl(self.C_QUICK_EPG_DESCRIPTION)
-        self.setControlVisible(control,self.quickEpgShowInfo)
+        self.setControlVisible(self.C_QUICK_EPG_DESCRIPTION,self.quickEpgShowInfo)
 
         try:
             self.quickChannelIdx, channels, programs = self.database.getQuickEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList=False, category=self.category)
@@ -2628,11 +2627,9 @@ class TVGuide(xbmcgui.WindowXML):
             if idx >= len(channels):
                 self.setControlImage(14110 + idx, ' ')
                 self.setControlLabel(14010 + idx, ' ')
-                control = self.getControl(14210 + idx)
-                self.setControlVisible(control,False)
+                self.setControlVisible(14210 + idx,False)
             else:
-                control = self.getControl(14210 + idx)
-                self.setControlVisible(control,True)
+                self.setControlVisible(14210 + idx,True)
                 channel = channels[idx]
                 self.setControlLabel(14010 + idx, channel.title)
                 if (channel.logo is not None and showLogo == True):
@@ -3066,18 +3063,14 @@ class TVGuide(xbmcgui.WindowXML):
         Visibility is inverted in skin
         """
         for controlId in controlIds:
-            control = self.getControl(controlId)
-            if control:
-                self.setControlVisible(control,True)
+            self.setControlVisible(controlId,True)
 
     def _showControl(self, *controlIds):
         """
         Visibility is inverted in skin
         """
         for controlId in controlIds:
-            control = self.getControl(controlId)
-            if control:
-                self.setControlVisible(control,False)
+            self.setControlVisible(controlId,False)
 
     def formatTime(self, timestamp):
         if timestamp:
@@ -3135,6 +3128,8 @@ class TVGuide(xbmcgui.WindowXML):
         return False
 
     def setControlVisible(self, controlId, visible):
+        if not controlId:
+            return
         control = self.getControl(controlId)
         if control:
             control.setVisible(visible)
@@ -3163,7 +3158,7 @@ class TVGuide(xbmcgui.WindowXML):
             try:
                 # Sometimes raises:
                 # exceptions.RuntimeError: Unknown exception thrown from the call "setVisible"
-                self.setControlVisible(control,timeDelta.days == 0)
+                self.setControlVisible(self.C_MAIN_TIMEBAR,timeDelta.days == 0)
                 control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
             except:
                 pass
@@ -3180,7 +3175,7 @@ class TVGuide(xbmcgui.WindowXML):
             try:
                 # Sometimes raises:
                 # exceptions.RuntimeError: Unknown exception thrown from the call "setVisible"
-                self.setControlVisible(control,timeDelta.days == 0)
+                self.setControlVisible(self.C_QUICK_EPG_TIMEBAR,timeDelta.days == 0)
             except:
                 pass
             control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
