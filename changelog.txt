@@ -1,4 +1,4 @@
-version 0.0.258
+version 0.0.258-259
 - ESC fix
 - big invisible buttons in main epg (up/down on channels, left/now/right on program description)
 
