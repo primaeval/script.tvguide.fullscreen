@@ -195,6 +195,11 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_UP = 4303
     C_MAIN_MOUSE_DOWN = 4304
     C_MAIN_MOUSE_RIGHT = 4305
+    C_MAIN_MOUSE_HOME_BIG = 44301
+    C_MAIN_MOUSE_LEFT_BIG = 44302
+    C_MAIN_MOUSE_UP_BIG = 44303
+    C_MAIN_MOUSE_DOWN_BIG = 44304
+    C_MAIN_MOUSE_RIGHT_BIG = 44305
     C_MAIN_MOUSE_EXIT = 4306
     C_MAIN_MOUSE_MENU = 4307
     C_MAIN_MOUSE_CATEGORIES = 4308
@@ -974,22 +979,22 @@ class TVGuide(xbmcgui.WindowXML):
         if self.isClosing:
             return
 
-        if controlId == self.C_MAIN_MOUSE_HOME:
+        if controlId in [self.C_MAIN_MOUSE_HOME, self.C_MAIN_MOUSE_HOME_BIG]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30, seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             return
-        elif controlId == self.C_MAIN_MOUSE_LEFT:
+        elif controlId in [self.C_MAIN_MOUSE_LEFT, self.C_MAIN_MOUSE_LEFT_BIG]:
             self.viewStartDate -= datetime.timedelta(hours=2)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             return
-        elif controlId == self.C_MAIN_MOUSE_UP:
+        elif controlId in [self.C_MAIN_MOUSE_UP, self.C_MAIN_MOUSE_UP_BIG]:
             self._moveUp(count=CHANNELS_PER_PAGE)
             return
-        elif controlId == self.C_MAIN_MOUSE_DOWN:
+        elif controlId in [self.C_MAIN_MOUSE_DOWN, self.C_MAIN_MOUSE_DOWN_BIG]:
             self._moveDown(count=CHANNELS_PER_PAGE)
             return
-        elif controlId == self.C_MAIN_MOUSE_RIGHT:
+        elif controlId in [self.C_MAIN_MOUSE_RIGHT, self.C_MAIN_MOUSE_RIGHT_BIG]:
             self.viewStartDate += datetime.timedelta(hours=2)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             return
