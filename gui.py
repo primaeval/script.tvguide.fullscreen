@@ -3139,6 +3139,16 @@ class TVGuide(xbmcgui.WindowXML):
         if control:
             control.setVisible(visible)
 
+    def getControl(self, controlId):
+        if not controlId:
+            return None
+        try:
+            return super(TVGuide, self).getControl(controlId)
+        except Exception as detail:
+            if not self.isClosing:
+                self.close()
+            return None
+
     def setControlImage(self, controlId, image):
         control = self.getControl(controlId)
         if control:
@@ -3667,6 +3677,13 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
 
     def onFocus(self, controlId):
         pass
+
+    def setControlVisible(self, controlId, visible):
+        if not controlId:
+            return
+        control = self.getControl(controlId)
+        if control:
+            control.setVisible(visible)
 
     def updateChannelList(self):
         listControl = self.getControl(self.C_CHANNELS_LIST)
