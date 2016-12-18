@@ -664,16 +664,16 @@ class TVGuide(xbmcgui.WindowXML):
 
     # epg mode
     def onActionEPGMode(self, action):
-        #if action.getId() in [ACTION_PARENT_DIR]:
+        if action.getId() in [ACTION_PARENT_DIR]:
         #if action.getId() in COMMAND_ACTIONS["EXIT"]:
-        #    self.close()
-        #    return
+            self.close()
+            return
 
         # catch the ESC key
-        #elif action.getId() == ACTION_PREVIOUS_MENU and action.getButtonCode() == KEY_ESC:
+        elif action.getId() == ACTION_PREVIOUS_MENU and action.getButtonCode() == KEY_ESC:
         #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_CLOSE"] and action.getButtonCode() == KEY_ESC:
-        #    self.close()
-        #    return
+            self.close()
+            return
 
         if action.getId() == ACTION_MOUSE_MOVE:
         #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
