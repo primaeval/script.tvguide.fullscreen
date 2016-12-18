@@ -31,8 +31,12 @@ import os
 import urllib2
 import datetime,time
 import zlib
+import gzip
 import requests
 import hashlib
+
+def log(x):
+    xbmc.log(repr(x))
 
 
 class FileFetcher(object):
@@ -101,7 +105,6 @@ class FileFetcher(object):
                 user = self.addon.getSetting('user')
                 password = self.addon.getSetting('password')
             tmpFile = os.path.join(self.basePath, self.fileName+'.tmp')
-            xbmc.log(tmpFile)
             if self.fileType == self.TYPE_DEFAULT:
                 xbmc.log('[script.tvguide.fullscreen] file is in remote location: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 if not xbmcvfs.copy(self.fileUrl, tmpFile):
@@ -109,9 +112,13 @@ class FileFetcher(object):
             else:
                 new_md5 = ''
                 if self.addon.getSetting('md5') == 'true':
-                    file = self.filePath+".md5"
+                    if self.filePath.endswith('.gz'):
+                        file = self.filePath[:-3] + ".md5"
+                        url = self.fileUrl[:-3] + ".md5"
+                    else:
+                        file = self.filePath+".md5"
+                        url = self.fileUrl+".md5"
                     old_md5 = xbmcvfs.File(file,"rb").read()
-                    url = self.fileUrl+".md5"
                     try:
                         r = requests.get(url,auth=(user, password))
                         if r.status_code == requests.codes.ok:
@@ -181,7 +188,13 @@ class FileFetcher(object):
                 except:
                     return self.FETCH_NOT_NEEDED
             try:
-                os.rename(tmpFile, self.filePath)
+                magic = xbmcvfs.File(tmpFile,"rb").read(3)
+                if magic == "\x1f\x8b\x08":
+                    g = gzip.open(tmpFile)
+                    xbmcvfs.File(self.filePath,"wb").write(g.read())
+                else:
+                    xbmcvfs.copy(tmpFile, self.filePath)
+                xbmcvfs.delete(tmpFile)
             except:
                 return self.FETCH_NOT_NEEDED
             retVal = self.FETCH_OK
