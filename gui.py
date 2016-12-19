@@ -3431,7 +3431,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             for cat in categories:
                 channels = categories[cat]
                 for channel in channels:
-                    f.write("%s=%s\n" % (channel.encode("utf8"),cat))
+                    s = "%s=%s\n" % (channel.encode("utf8"),cat)
+                    f.write(s)
             f.close()
             self.categories = [category for category in categories if category]
 

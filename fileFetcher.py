@@ -27,6 +27,7 @@
 import xbmc
 import xbmcvfs
 import xbmcgui
+import xbmcaddon
 import os
 import urllib2
 import datetime,time
@@ -34,6 +35,8 @@ import zlib
 import gzip
 import requests
 import hashlib
+
+ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
 def log(x):
     xbmc.log(repr(x))
@@ -112,12 +115,8 @@ class FileFetcher(object):
             else:
                 new_md5 = ''
                 if self.addon.getSetting('md5') == 'true':
-                    if self.filePath.endswith('.gz'):
-                        file = self.filePath[:-3] + ".md5"
-                        url = self.fileUrl[:-3] + ".md5"
-                    else:
-                        file = self.filePath+".md5"
-                        url = self.fileUrl+".md5"
+                    file = self.filePath+".md5"
+                    url = self.fileUrl+".md5"
                     old_md5 = xbmcvfs.File(file,"rb").read()
                     try:
                         r = requests.get(url,auth=(user, password))
@@ -125,63 +124,57 @@ class FileFetcher(object):
                             new_md5 = r.text.encode('ascii', 'ignore')[:32]
                     except Exception as detail:
                         xbmc.log('[script.tvguide.fullscreen] Missing md5: %s.md5 (%s)' % (self.fileUrl,detail), xbmc.LOGERROR)
+                    log((old_md5,new_md5))
                     if old_md5 and (old_md5 == new_md5) and (self.addon.getSetting('xmltv.refresh') == 'false'):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
                 xbmc.log('[script.tvguide.fullscreen] file is on the internet: %s' % self.fileUrl, xbmc.LOGDEBUG)
                 total = 0
+                fileUrl = self.fileUrl
+                if ADDON.getSetting('gz') == 'true':
+                    fileUrl = fileUrl + '.gz'
                 try:
-                    r = requests.get(self.fileUrl,auth=(user, password), stream=True, verify=False)
+                    log("get")
+                    r = requests.get(fileUrl,auth=(user, password), stream=True, verify=False)
                     if r.status_code != requests.codes.ok:
-                        xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
-                        return self.FETCH_NOT_NEEDED
+                        log("fail")
+                        if ADDON.getSetting('gz') == 'true':
+                            log("try again")
+                            r = requests.get(self.fileUrl,auth=(user, password), stream=True, verify=False)
+                            if r.status_code != requests.codes.ok:
+                                log("fail again")
+                                xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
+                                xbmcgui.Dialog().notification("TV Guide Fullscreen", "bad status code %s" % self.fileUrl,xbmcgui.NOTIFICATION_ERROR)                            
+                        else:
+                            xbmc.log('[script.tvguide.fullscreen] no file: %s' % fileUrl, xbmc.LOGERROR)
+                            xbmcgui.Dialog().notification("TV Guide Fullscreen", "bad status code %s " % fileUrl,xbmcgui.NOTIFICATION_ERROR)
+                            return self.FETCH_NOT_NEEDED
                     if "Content-Length" in r.headers:
                         total = int(r.headers['Content-Length'])
                 except Exception as detail:
-                    xbmc.log('[script.tvguide.fullscreen] bad request: %s (%s)' % (self.fileUrl,detail), xbmc.LOGERROR)
+                    xbmc.log('[script.tvguide.fullscreen] bad request: %s (%s)' % (fileUrl,detail), xbmc.LOGERROR)
+                    xbmcgui.Dialog().notification("TV Guide Fullscreen", "failed to download %s " % fileUrl,xbmcgui.NOTIFICATION_ERROR)
                     return self.FETCH_NOT_NEEDED
 
                 d = xbmcgui.DialogProgressBG()
-                title = self.fileUrl.split('/')[-1]
+                title = fileUrl.split('/')[-1]
                 d.create('TV Guide Fullscreen', 'downloading %s' % title)
                 chunk_size = 16 * 1024
                 size = 0
                 oldtime = time.time()
-                if new_md5 and (self.addon.getSetting('md5') == 'true'):
-                    md5 = hashlib.md5()
-                    for chunk in r.iter_content(chunk_size):
-                        f.write(chunk)
-                        md5.update(chunk)
-                        size = size + chunk_size
-                        if total:
-                            percent = 100.0 * size / total
-                            now = time.time()
-                            diff = now - oldtime
-                            if diff > 1:
-                                d.update(int(percent))
-                                oldtime = now
-                    f.close()
-                    d.update(100, message="Done")
-                    d.close()
-                    md5_file = md5.hexdigest()
-                    if md5_file != new_md5:
-                        xbmc.log('[script.tvguide.fullscreen] md5 mismatch: %s calculated:%s server:%s' % (self.fileUrl,md5_file,new_md5), xbmc.LOGERROR)
-                    else:
-                        xbmcvfs.File(self.filePath+".md5","wb").write(new_md5)
-                else:
-                    for chunk in r.iter_content(chunk_size):
-                        f.write(chunk)
-                        size = size + chunk_size
-                        if total:
-                            percent = 100.0 * size / total
-                            now = time.time()
-                            diff = now - oldtime
-                            if diff > 1:
-                                d.update(int(percent))
-                                oldtime = now
-                    f.close()
-                    d.update(100, message="Done")
-                    d.close()
+                for chunk in r.iter_content(chunk_size):
+                    f.write(chunk)
+                    size = size + chunk_size
+                    if total:
+                        percent = 100.0 * size / total
+                        now = time.time()
+                        diff = now - oldtime
+                        if diff > 1:
+                            d.update(int(percent))
+                            oldtime = now
+                f.close()
+                d.update(100, message="Done")
+                d.close()
             if os.path.exists(self.filePath):
                 try:
                     os.remove(self.filePath)
@@ -191,12 +184,22 @@ class FileFetcher(object):
                 magic = xbmcvfs.File(tmpFile,"rb").read(3)
                 if magic == "\x1f\x8b\x08":
                     g = gzip.open(tmpFile)
-                    xbmcvfs.File(self.filePath,"wb").write(g.read())
+                    data = g.read()
+                    xbmcvfs.File(self.filePath,"wb").write(data)
                 else:
                     xbmcvfs.copy(tmpFile, self.filePath)
                 xbmcvfs.delete(tmpFile)
             except:
                 return self.FETCH_NOT_NEEDED
+            if new_md5 and (self.addon.getSetting('md5') == 'true'):
+                md5 = hashlib.md5()
+                md5.update(xbmcvfs.File(self.filePath,"rb").read())
+                md5_file = md5.hexdigest()
+                if md5_file != new_md5:
+                    xbmc.log('[script.tvguide.fullscreen] md5 mismatch: %s calculated:%s server:%s' % (self.fileUrl,md5_file,new_md5), xbmc.LOGERROR)
+                    xbmcgui.Dialog().notification("TV Guide Fullscreen", "failed md5 check %s",xbmcgui.NOTIFICATION_ERROR)
+                else:
+                    xbmcvfs.File(self.filePath+".md5","wb").write(new_md5)
             retVal = self.FETCH_OK
             xbmc.log('[script.tvguide.fullscreen] file %s was downloaded' % self.filePath, xbmc.LOGDEBUG)
         return retVal
