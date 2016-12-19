@@ -3145,8 +3145,8 @@ class TVGuide(xbmcgui.WindowXML):
         try:
             return super(TVGuide, self).getControl(controlId)
         except Exception as detail:
-            if not self.isClosing:
-                self.close()
+            #if not self.isClosing:
+            #    self.close()
             return None
 
     def setControlImage(self, controlId, image):
