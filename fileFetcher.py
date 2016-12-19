@@ -124,7 +124,7 @@ class FileFetcher(object):
                             new_md5 = r.text.encode('ascii', 'ignore')[:32]
                     except Exception as detail:
                         xbmc.log('[script.tvguide.fullscreen] Missing md5: %s.md5 (%s)' % (self.fileUrl,detail), xbmc.LOGERROR)
-                    log((old_md5,new_md5))
+                    #log((old_md5,new_md5))
                     if old_md5 and (old_md5 == new_md5) and (self.addon.getSetting('xmltv.refresh') == 'false'):
                         return self.FETCH_NOT_NEEDED
                 f = open(tmpFile, 'wb')
@@ -134,15 +134,11 @@ class FileFetcher(object):
                 if ADDON.getSetting('gz') == 'true':
                     fileUrl = fileUrl + '.gz'
                 try:
-                    log("get")
                     r = requests.get(fileUrl,auth=(user, password), stream=True, verify=False)
                     if r.status_code != requests.codes.ok:
-                        log("fail")
                         if ADDON.getSetting('gz') == 'true':
-                            log("try again")
                             r = requests.get(self.fileUrl,auth=(user, password), stream=True, verify=False)
                             if r.status_code != requests.codes.ok:
-                                log("fail again")
                                 xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
                                 xbmcgui.Dialog().notification("TV Guide Fullscreen", "bad status code %s" % self.fileUrl,xbmcgui.NOTIFICATION_ERROR)                            
                         else:
