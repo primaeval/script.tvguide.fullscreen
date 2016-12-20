@@ -104,6 +104,7 @@ class FileFetcher(object):
         if fetch:
             user = ''
             password = ''
+            new_md5 = ''
             if self.addon.getSetting('authentication') == 'true':
                 user = self.addon.getSetting('user')
                 password = self.addon.getSetting('password')
@@ -113,7 +114,7 @@ class FileFetcher(object):
                 if not xbmcvfs.copy(self.fileUrl, tmpFile):
                     xbmc.log('[script.tvguide.fullscreen] Remote file couldn\'t be copied: %s' % self.fileUrl, xbmc.LOGERROR)
             else:
-                new_md5 = ''
+
                 if self.addon.getSetting('md5') == 'true':
                     file = self.filePath+".md5"
                     url = self.fileUrl+".md5"
@@ -140,7 +141,7 @@ class FileFetcher(object):
                             r = requests.get(self.fileUrl,auth=(user, password), stream=True, verify=False)
                             if r.status_code != requests.codes.ok:
                                 xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
-                                xbmcgui.Dialog().notification("TV Guide Fullscreen", "bad status code %s" % self.fileUrl,xbmcgui.NOTIFICATION_ERROR)                            
+                                xbmcgui.Dialog().notification("TV Guide Fullscreen", "bad status code %s" % self.fileUrl,xbmcgui.NOTIFICATION_ERROR)
                         else:
                             xbmc.log('[script.tvguide.fullscreen] no file: %s' % fileUrl, xbmc.LOGERROR)
                             xbmcgui.Dialog().notification("TV Guide Fullscreen", "bad status code %s " % fileUrl,xbmcgui.NOTIFICATION_ERROR)
@@ -152,8 +153,8 @@ class FileFetcher(object):
                     xbmcgui.Dialog().notification("TV Guide Fullscreen", "failed to download %s " % fileUrl,xbmcgui.NOTIFICATION_ERROR)
                     return self.FETCH_NOT_NEEDED
 
-                d = xbmcgui.DialogProgressBG()
                 title = fileUrl.split('/')[-1]
+                d = xbmcgui.DialogProgressBG()
                 d.create('TV Guide Fullscreen', 'downloading %s' % title)
                 chunk_size = 16 * 1024
                 size = 0
