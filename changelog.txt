@@ -1,4 +1,4 @@
-version 0.0.260
+version 0.0.260-261
 - Settings \ Source \ Look for .gz Files (Urls only)
 - Settings \ Source \ md5 Check (Urls only)
 - md5 needs to be of the uncompressed file
