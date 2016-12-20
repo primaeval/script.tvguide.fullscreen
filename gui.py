@@ -316,6 +316,8 @@ class TVGuide(xbmcgui.WindowXML):
             categories.add(cat)
         categories = sorted(categories)
         self.categories = categories
+        if self.category not in self.categories:
+            self.category = ""
 
         self.osdEnabled = False
         self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
