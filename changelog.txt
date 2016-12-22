@@ -1,4 +1,7 @@
 version 0.0.263
+- Add Folder will prefix folder with @ if added with alternative streaming option in folders.list
+
+version 0.0.263
 - alternative streaming option in Add Folder and Stream Setup \ Addons (toggle channels)
 - alternative streaming in addons.ini if stream starts with @ (eg BBC 1=@plugin.video.bbc/...)
 - pip toggle (Thanks Andy)
