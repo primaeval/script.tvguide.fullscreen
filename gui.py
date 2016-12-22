@@ -79,9 +79,6 @@ ACTION_SHOW_FULLSCREEN = 36
 ACTION_DELETE_ITEM = 80
 ACTION_MENU = 163
 ACTION_LAST_PAGE = 160
-ACTION_PLAY = 68
-ACTION_PLAYER_PLAY = 79
-ACTION_PLAYER_PLAYPAUSE = 229
 ACTION_RECORD = 170
 
 ACTION_CREATE_BOOKMARK = 96
@@ -2111,7 +2108,9 @@ class TVGuide(xbmcgui.WindowXML):
                 import urllib
                 title = urllib.quote(program.title)
                 url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
-            if url[0:9] == 'plugin://':
+            if url.startswith('@'):
+                xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
+            elif url[0:9] == 'plugin://':
                 if self.alternativePlayback:
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
                 else:
@@ -3912,7 +3911,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     pass
 
     def onAction(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU]:
+        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
             self.close()
             return
         elif self.getFocusId() == self.C_STREAM_ADDONS:
@@ -4364,6 +4363,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         else:
             items.append(self.previousDirsId)
             add = True
+            method = xbmcgui.Dialog().select("Play Method",["Default","Alternative Streaming Method"])
+            if method == -1:
+                return
         unique = set(items)
         f = xbmcvfs.File(file_name,"w")
         lines = "\n".join(unique)
@@ -4403,6 +4405,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 if add:
                     if ADDON.getSetting('append.folder') == 'true':
                         name = "%s (%s)" % (name,self.folder)
+                    if (method == 1):
+                        stream = "@%s" % stream
                     streams[addonId][name] = stream
                 else:
                     for k,v in streams[addonId].items():
