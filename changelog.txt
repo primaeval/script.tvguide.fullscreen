@@ -1,3 +1,9 @@
+version 0.0.263
+- alternative streaming option in Add Folder and Stream Setup \ Addons (toggle channels)
+- alternative streaming in addons.ini if stream starts with @ (eg BBC 1=@plugin.video.bbc/...)
+- pip toggle (Thanks Andy)
+- channel Categories menu in all epg views (epg, tv, osd ,quick epg, last channel)
+
 version 0.0.262
 - autoplaywith fix (Thanks FXB78)
 - reset category to All Channels if category missing
