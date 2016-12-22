@@ -1342,13 +1342,29 @@
                     <texturenofocus></texturenofocus>
                 </control>
 
+                <control type="button" id="4309">
+                    <description>pip toggle</description>
+                    <posx>0</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>PIP</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                </control>
+
                 <control type="button" id="4301">
                     <description>navigate to now</description>
                     <posx>430</posx>
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>NOW</label>
+                    <label>HOME</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>

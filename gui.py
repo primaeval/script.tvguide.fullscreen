@@ -203,6 +203,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_EXIT = 4306
     C_MAIN_MOUSE_MENU = 4307
     C_MAIN_MOUSE_CATEGORIES = 4308
+    C_MAIN_MOUSE_PIP = 4309
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -973,6 +974,22 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             xbmc.log('[script.tvguide.fullscreen] quick epg Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
+    def pip_toggle(self):
+        if ADDON.getSetting('epg.video.pip') == 'false':
+            ADDON.setSetting('epg.video.pip', 'true')
+        elif ADDON.getSetting('epg.video.pip') == 'true':
+            ADDON.setSetting('epg.video.pip', 'false')
+        self.reopen()
+
+    def reopen(self):
+        import gui
+        xbmc.executebuiltin('XBMC.ActivateWindow(home)')
+        xbmc.sleep(350)
+        w = gui.TVGuide()
+        w.doModal()
+        xbmc.sleep(350)
+        del w
+
     def onClick(self, controlId):
         if controlId in [self.C_MAIN_LOADING_CANCEL, self.C_MAIN_MOUSE_EXIT]:
             self.close()
@@ -1008,6 +1025,9 @@ class TVGuide(xbmcgui.WindowXML):
             return
         elif controlId == self.C_MAIN_MOUSE_CATEGORIES:
             self._showCatMenu()
+            return
+        elif controlId == self.C_MAIN_MOUSE_PIP:
+            self.pip_toggle()
             return
         program = self._getProgramFromControl(self.getControl(controlId))
         if self.mode == MODE_QUICK_EPG:
