@@ -23,6 +23,11 @@ if int(ADDON.getSetting('addons.ini.type')) == 1:
 plugins = {}
 logos = {}
 for path in unique:
+    if path.startswith('@'):
+        method = 1
+        path = path[1:]
+    else:
+        method = 0
     try:
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
     except:
@@ -72,6 +77,8 @@ for addonId in sorted(plugins):
             continue
         if not stream:
             stream = 'nothing'
+        if method == 1:
+            stream = "@"+stream
         write_str = "%s=%s\n" % (name,stream)
         f.write(write_str.encode("utf8"))
 f.close()

@@ -4258,7 +4258,13 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     def updateDirsInfo(self):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/folders.list'
         f = xbmcvfs.File(file_name)
-        folders = f.read().splitlines()
+        lines = f.read().splitlines()
+        folders = []
+        for folder in lines:
+            if folder.startswith('@'):
+                folders.append(folder[1:])
+            else:
+                folders.append(folder)
         f.close()
         listControl = self.getControl(self.C_STREAM_BROWSE_ADDONS)
         item = listControl.getSelectedItem()
@@ -4312,7 +4318,13 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     def updateBrowseInfo(self):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/folders.list'
         f = xbmcvfs.File(file_name)
-        folders = f.read().splitlines()
+        lines = f.read().splitlines()
+        folders = []
+        for folder in lines:
+            if folder.startswith('@'):
+                folders.append(folder[1:])
+            else:
+                folders.append(folder)
         listControl = self.getControl(self.C_STREAM_BROWSE_DIRS)
         item = listControl.getSelectedItem()
         if item is None:
@@ -4379,17 +4391,28 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     def addBrowseFolder(self):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/folders.list'
         f = xbmcvfs.File(file_name)
-        items = f.read().splitlines()
+        lines = f.read().splitlines()
+        folders = []
+        for folder in lines:
+            if folder.startswith('@'):
+                folders.append(folder[1:])
+            else:
+                folders.append(folder)
+        items = folders
         f.close()
         if self.previousDirsId in items:
             items.remove(self.previousDirsId)
             add = False
         else:
-            items.append(self.previousDirsId)
+
             add = True
             method = xbmcgui.Dialog().select("Play Method",["Default","Alternative Streaming Method"])
             if method == -1:
                 return
+            if method == 0:
+                items.append(self.previousDirsId)
+            else:
+                items.append("@"+self.previousDirsId)
         unique = set(items)
         f = xbmcvfs.File(file_name,"w")
         lines = "\n".join(unique)
