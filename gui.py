@@ -4403,8 +4403,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         if self.previousDirsId in items:
             items.remove(self.previousDirsId)
             add = False
+            self.getControl(self.C_STREAM_BROWSE_FOLDER).setLabel('Add Folder')
         else:
-
+            self.getControl(self.C_STREAM_BROWSE_FOLDER).setLabel('Remove Folder')
             add = True
             method = xbmcgui.Dialog().select("Play Method",["Default","Alternative Streaming Method"])
             if method == -1:
@@ -4457,7 +4458,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     streams[addonId][name] = stream
                 else:
                     for k,v in streams[addonId].items():
-                        if v == stream:
+                        if v == stream or v == "@"+stream:
                            del streams[addonId][k]
 
         for addon in streams.keys():
