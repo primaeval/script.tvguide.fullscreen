@@ -4078,6 +4078,28 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                         f.write(write_str)
             f.close()
 
+        elif controlId == self.C_STREAM_ADDONS_STREAMS:
+            listControl = self.getControl(self.C_STREAM_ADDONS)
+            item = listControl.getSelectedItem()
+            addon = item.getProperty('addon_id')
+            listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
+            item = listControl.getSelectedItem()
+            if item:
+                stream = item.getProperty('stream')
+                if stream.startswith("@"):
+                    stream = stream[1:]
+                    item.setProperty('stream',stream)
+                    label = remove_formatting(item.getLabel())
+                    item.setLabel(label)
+                else:
+                    stream = "@%s" % stream
+                    item.setProperty('stream',stream)
+                    label = item.getLabel()
+                    label = "[COLOR green]%s[/COLOR]" % label
+                    item.setLabel(label)
+                name = remove_formatting(item.getLabel())
+                self.streamingService.setAddonStream(addon, name, stream)
+
         elif controlId == self.C_STREAM_ADDONS_OK:
             listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
             item = listControl.getSelectedItem()
@@ -4222,6 +4244,8 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             if item.getProperty('addon_id') == "plugin.video.meta":
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
+            if stream.startswith('@'):
+                label = "[COLOR green]%s[/COLOR]" % label
             item = xbmcgui.ListItem(label)
             if type(stream) is list:
                 stream = stream[0]

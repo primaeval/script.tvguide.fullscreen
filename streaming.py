@@ -24,7 +24,7 @@
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 #
-import xbmc
+import xbmc,xbmcvfs
 from xml.etree import ElementTree
 import ConfigParser
 import os
@@ -35,11 +35,11 @@ import xbmcaddon
 class StreamsService(object):
     def __init__(self, addon):
         self.addon = addon
-        path = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen', 'addons.ini'))
+        self.path = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen', 'addons.ini'))
         self.addonsParser = ConfigParser.ConfigParser(dict_type=OrderedDict)
         self.addonsParser.optionxform = lambda option: option
         try:
-            self.addonsParser.read(path)
+            self.addonsParser.read(self.path)
         except:
             print 'unable to parse addons.ini'
 
@@ -77,6 +77,10 @@ class StreamsService(object):
 
     def getAddonStreams(self, id):
         return self.addonsParser.items(id)
+
+    def setAddonStream(self, section, id, stream):
+        self.addonsParser.set(section, id, stream)
+        self.addonsParser.write(xbmcvfs.File(self.path,"wb"))
 
     def detectStream(self, channel, try_favourites=True):
         """
