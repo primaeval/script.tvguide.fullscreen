@@ -498,6 +498,9 @@ class TVGuide(xbmcgui.WindowXML):
         #elif action.getId() in [REMOTE_7, ACTION_JUMP_SMS6]:
         elif action.getId() in COMMAND_ACTIONS["AUTOPLAYWITHS"]:
             self.showFullAutoplaywiths()
+        #elif action.getId() == ACTION_MENU:
+        elif action.getId() in COMMAND_ACTIONS["CATEGORIES"]:
+            self._showCatMenu()
 
         if self.mode == MODE_TV:
             self.onActionTVMode(action)
@@ -773,9 +776,6 @@ class TVGuide(xbmcgui.WindowXML):
             if program:
                 self.tvdb_urls[program.title] = ''
                 self.setControlImage(self.C_MAIN_IMAGE, self.tvdb_urls[program.title])
-        #elif action.getId() == ACTION_MENU:
-        elif action.getId() in COMMAND_ACTIONS["CATEGORIES"]:
-            self._showCatMenu()
         #elif action.getId() == ACTION_CREATE_BOOKMARK:
         elif action.getId() in COMMAND_ACTIONS["SCHEDULERS_MENU"]:
             program = self._getProgramFromControl(controlInFocus)
