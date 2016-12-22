@@ -2109,7 +2109,7 @@ class TVGuide(xbmcgui.WindowXML):
                 title = urllib.quote(program.title)
                 url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
             if url.startswith('@'):
-                xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
+                xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
             elif url[0:9] == 'plugin://':
                 if self.alternativePlayback:
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
@@ -2181,13 +2181,13 @@ class TVGuide(xbmcgui.WindowXML):
             if self.alt_urls:
                 url = self.alt_urls.pop(0)
                 #TODO meta
-                if url[0:9] == 'plugin://':
+                if url.startswith('@'):
+                    xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
+                elif url[0:9] == 'plugin://':
                     if self.alternativePlayback:
                         xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
-                    elif self.osdEnabled:
-                        xbmc.executebuiltin('PlayMedia(%s,1)' % url)
                     else:
-                        xbmc.executebuiltin('PlayMedia(%s)' % url)
+                        self.player.play(item=url, windowed=self.osdEnabled)
                 else:
                     self.player.play(item=url, windowed=self.osdEnabled)
                 self.tryingToPlay = True
