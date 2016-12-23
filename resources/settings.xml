@@ -26,7 +26,7 @@
         <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="addons.ini" default=''/>
         <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
         <setting id="addons.ini.overwrite" label="Overwrite or Merge Local addons.ini" type="enum" visible="eq(-4,true)" default='1' values="Overwrite|Merge"/>
-        <setting id="addons.ini.subscriptions" label="Enable addons.ini m3u Playlist Subscriptions" type="bool" default='true' />
+        <setting id="addons.ini.subscriptions" label="Enable addons.ini m3u Playlist Subscriptions" type="bool" default='false' />
         <setting label="Manage addons.ini m3u Playlist Subscriptions" type="action" enable="eq(-1,true)" action="RunScript($CWD/subscriptions.py)" />
         <setting type="lsep" label="Refresh may take some time!"/>
         <setting label="Refresh Addon Folders" type="action" action="RunScript($CWD/ReloadAddonFolders.py)" />
@@ -104,7 +104,7 @@
         <setting id="favourites" label="Favourite Favourites" type="select" default="Favourites" values="Favourites|Simple Favourites|Video Favourites|Super Favourites" />
         <setting type="sep"/>
         <setting id="date.long" label="Show Long Date in EPG" type="bool" default="true" />
-        <setting id="mouse.controls" label="Show Touch Control Buttons" type="bool" default="false" />
+        <setting id="mouse.controls" label="Show Touch Control Buttons" type="bool" default="true" />
         <setting id="channel.logo" label="Show Channel Logo in EPG above Program Image" type="bool" default="false" />
         <setting type="sep"/>
         <setting id="channels.per.page" label="Channels per Page" type="labelenum" default="10" values="1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16"/>
