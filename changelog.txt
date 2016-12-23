@@ -1,4 +1,4 @@
-version 0.0.264-266
+version 0.0.264-267
 - Add Folder will prefix folder with @ if added with alternative streaming option in folders.list
 
 version 0.0.263
