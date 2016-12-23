@@ -3965,7 +3965,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     playlist_streams = {}
                     for name,url in matches:
                         name = remove_formatting(name.strip())
-                        name = re.sub(r'[:=]',' ',name)
+                        name = re.sub(r'[,:=]',' ',name)
                         playlist_streams[name] = url.strip()
 
                     #TODO make this a function
@@ -4006,7 +4006,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                             stream = addonStreams[name]
                             if name.startswith(' '):
                                 continue
-                            name = re.sub(r'[:=]',' ',name)
+                            name = re.sub(r'[,:=]',' ',name)
                             if not stream:
                                 stream = 'nothing'
                             write_str = "%s=%s\n" % (name,stream)
@@ -4068,7 +4068,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     stream = addonStreams[name]
                     if name.startswith(' '):
                         continue
-                    name = re.sub(r'[:=]',' ',name)
+                    name = re.sub(r'[,:=]',' ',name)
                     if not stream:
                         stream = 'nothing'
                     write_str = "%s=%s\n" % (name,stream)
@@ -4477,7 +4477,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 #if name.startswith(' '):
                 #    continue
                 name = name.lstrip()
-                name = re.sub(r'[:=]',' ',name)
+                name = re.sub(r'[,:=]',' ',name)
                 if not stream:
                     stream = 'nothing'
                 stream = re.sub('plugin ://','plugin://',stream)

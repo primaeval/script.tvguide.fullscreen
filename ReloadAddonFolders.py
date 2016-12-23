@@ -69,7 +69,7 @@ for addonId in sorted(plugins):
         stream = addonStreams[name]
         if name.startswith(' '):
             continue
-        name = re.sub(r'[:=]',' ',name)
+        name = re.sub(r'[,:=]',' ',name)
         name = re.sub(r'\[.*?\]','',name)
         if not name: #TODO names in brackets
             continue
