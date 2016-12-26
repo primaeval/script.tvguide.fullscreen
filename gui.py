@@ -39,6 +39,7 @@ import colors
 import requests
 import pickle
 import json
+import base64
 from PIL import Image, ImageOps
 import source as src
 from notification import Notification
@@ -860,7 +861,7 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 selection = xbmcgui.Dialog().select("Choose media type",["Search as Movie", "Search as TV Show", "Search as Either"])
             where = ["movie","tv","multi"]
-            url = "https://api.themoviedb.org/3/search/%s?query=%s&api_key=d69992ec810d0f414d3de4a2294b8700&include_adult=false&page=1" % (where[selection],title)
+            url = base64.b64decode("aHR0cHM6Ly9hcGkudGhlbW92aWVkYi5vcmcvMy9zZWFyY2gvJXM/cXVlcnk9JXMmYXBpX2tleT1kNjk5OTJlYzgxMGQwZjQxNGQzZGU0YTIyOTRiODcwMCZpbmNsdWRlX2FkdWx0PWZhbHNlJnBhZ2U9MQ==") % (where[selection],title)
             r = requests.get(url)
             data = json.loads(r.content)
             results = data.get('results')
