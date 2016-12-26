@@ -468,7 +468,6 @@ class TVGuide(xbmcgui.WindowXML):
 
         self._hideControl(self.C_UP_NEXT)
 
-        #if action.getId() in [ACTION_STOP]:
         if action.getId() in COMMAND_ACTIONS["STOP"]:
             self.tryingToPlay = False
             self._hideOsdOnly()
@@ -481,25 +480,18 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             self.setControlVisible(self.C_MAIN_IMAGE,True)
 
-        #if action.getId() in [REMOTE_2,ACTION_JUMP_SMS2]:
         if action.getId() in COMMAND_ACTIONS["NOW_LISTING"]:
             self.showNow()
-        #elif action.getId() in [REMOTE_3, ACTION_JUMP_SMS3]:
         elif action.getId() in COMMAND_ACTIONS["NEXT_LISTING"]:
             self.showNext()
-        #elif action.getId() in [REMOTE_4, ACTION_JUMP_SMS4]:
         elif action.getId() in COMMAND_ACTIONS["SEARCH"]:
             self.programSearchSelect()
-        #elif action.getId() in [REMOTE_5, ACTION_JUMP_SMS5]:
         elif action.getId() in COMMAND_ACTIONS["REMINDERS"]:
             self.showFullReminders()
-        #elif action.getId() in [REMOTE_6, ACTION_JUMP_SMS6]:
         elif action.getId() in COMMAND_ACTIONS["AUTOPLAYS"]:
             self.showFullAutoplays()
-        #elif action.getId() in [REMOTE_7, ACTION_JUMP_SMS6]:
         elif action.getId() in COMMAND_ACTIONS["AUTOPLAYWITHS"]:
             self.showFullAutoplaywiths()
-        #elif action.getId() == ACTION_MENU:
         elif action.getId() in COMMAND_ACTIONS["CATEGORIES"]:
             self._showCatMenu()
 
@@ -515,11 +507,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.onActionLastPlayedMode(action)
 
     def onActionTVMode(self, action):
-        #if action.getId() == ACTION_PAGE_UP:
         if action.getId() in COMMAND_ACTIONS["PLAY_NEXT_CHANNEL"]:
             self._channelUp()
-
-        #elif action.getId() == ACTION_PAGE_DOWN:
         elif action.getId() in COMMAND_ACTIONS["PLAY_PREV_CHANNEL"]:
             self._channelDown()
 
@@ -533,38 +522,27 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        #elif action.getId() in [KEY_CONTEXT_MENU]:
         elif action.getId() in COMMAND_ACTIONS["MENU"]:
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             if self.currentProgram is not None:
                 self._showContextMenu(self.currentProgram)
-        #elif action.getId() == ACTION_SHOW_INFO:
         elif action.getId() in COMMAND_ACTIONS["OSD"]:
             self.osdChannel = self.currentChannel
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
-        #elif action.getId() in [REMOTE_0]: #TODO find libreelec key
         elif action.getId() in COMMAND_ACTIONS["PLAY_LAST_CHANNEL"]:
             self._playLastChannel()
-        #elif action.getId() == ACTION_LEFT:
         elif action.getId() in COMMAND_ACTIONS["LAST_CHANNEL"] + COMMAND_ACTIONS["LEFT"]:
             self._showLastPlayedChannel()
-        #elif action.getId() == ACTION_RIGHT:
         elif action.getId() in COMMAND_ACTIONS["FULLSCREEN"] + COMMAND_ACTIONS["RIGHT"]:
              xbmc.executebuiltin('Action(FullScreen)')
-        #elif action.getId() == ACTION_UP:
         elif action.getId() in COMMAND_ACTIONS["NOW_LISTING"] + COMMAND_ACTIONS["UP"]:
             self.showNow()
-        #elif action.getId() == ACTION_DOWN:
         elif action.getId() in COMMAND_ACTIONS["QUICK_EPG"] + COMMAND_ACTIONS["DOWN"]:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 60, seconds=self.quickViewStartDate.second)
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
-        #elif action.getId() == ACTION_SELECT_ITEM:
-        #elif action.getId() in COMMAND_ACTIONS["PRESS"]:
-        #    self._hideQuickEpg()
-        #elif action.getId() in [REMOTE_1]:
         elif action.getId() in COMMAND_ACTIONS["CHANNEL_LISTING"]:
             self.showListing(self.currentChannel)
 
@@ -582,42 +560,35 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        #elif action.getId() == ACTION_SELECT_ITEM:
         elif action.getId() in COMMAND_ACTIONS["PLAY"]:
             self._hideOsd()
-            self.playChannel(self.osdChannel, self.osdProgram)
+            self.playOrChoose(self.osdProgram)
 
-        #elif action.getId() in [KEY_CONTEXT_MENU]:
         elif action.getId() in COMMAND_ACTIONS["MENU"]:
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             if self.osdProgram is not None:
                 self._showContextMenu(self.osdProgram)
 
-        #elif action.getId() == ACTION_PAGE_UP:
         elif action.getId() in COMMAND_ACTIONS["PLAY_NEXT_CHANNEL"]:
             self._channelUp()
             self._hideOsd()
 
-        #elif action.getId() == ACTION_PAGE_DOWN:
         elif action.getId() in COMMAND_ACTIONS["PLAY_PREV_CHANNEL"]:
             self._channelDown()
             self._hideOsd()
 
-        #elif action.getId() == ACTION_UP:
         elif action.getId() in COMMAND_ACTIONS["UP"]:
             self.osdChannel = self.database.getPreviousChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
             self.osdActive = True
 
-        #elif action.getId() == ACTION_DOWN:
         elif action.getId() in COMMAND_ACTIONS["DOWN"]:
             self.osdChannel = self.database.getNextChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
             self.osdActive = True
 
-        #elif action.getId() == ACTION_LEFT:
         elif action.getId() in COMMAND_ACTIONS["LEFT"]:
             previousProgram = self.database.getPreviousProgram(self.osdProgram)
             if previousProgram:
@@ -625,7 +596,6 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showOsd()
             self.osdActive = True
 
-        #elif action.getId() == ACTION_RIGHT:
         elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
             nextProgram = self.database.getNextProgram(self.osdProgram)
             if nextProgram:
@@ -633,13 +603,11 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showOsd()
             self.osdActive = True
 
-        #elif action.getId() in [REMOTE_1]:
         elif action.getId() in COMMAND_ACTIONS["CHANNEL_LISTING"]:
             self.showListing(self.osdChannel)
 
 
     def onActionLastPlayedMode(self, action):
-        #if action.getId() == ACTION_SHOW_INFO:
         if action.getId() in COMMAND_ACTIONS["LAST_CHANNEL"]:
             self._hideLastPlayed()
 
@@ -651,22 +619,18 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        #elif action.getId() in [KEY_CONTEXT_MENU]:
         elif action.getId() in COMMAND_ACTIONS["MENU"]:
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             if self.currentProgram is not None:
                 self._showContextMenu(self.currentProgram)
 
-        #elif action.getId() == ACTION_SELECT_ITEM:
         elif action.getId() in COMMAND_ACTIONS["PLAY"]:
             self._hideLastPlayed()
-            self.playChannel(self.lastChannel, self.lastProgram)
+            self.playOrChoose(self.lastProgram)
 
-        #elif action.getId() == ACTION_LEFT:
         elif action.getId() in COMMAND_ACTIONS["LEFT"]:
             self._hideLastPlayed()
 
-        #elif action.getId() == ACTION_RIGHT:
         elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
             self._hideLastPlayed()
 
@@ -719,35 +683,26 @@ class TVGuide(xbmcgui.WindowXML):
             if control is not None:
                 #self.setFocus(control)
                 return
-        #if action.getId() == ACTION_LEFT:
         if action.getId() in COMMAND_ACTIONS["LEFT"]:
             self._left(currentFocus)
-        #elif action.getId() == ACTION_RIGHT:
         elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
             self._right(currentFocus)
-        #elif action.getId() == ACTION_UP:
         elif action.getId() in COMMAND_ACTIONS["UP"]:
             self._up(currentFocus)
-        #elif action.getId() == ACTION_DOWN:
         elif action.getId() in COMMAND_ACTIONS["DOWN"]:
             self._down(currentFocus)
-        #elif action.getId() == ACTION_NEXT_ITEM:
         elif action.getId() in COMMAND_ACTIONS["NEXT_DAY"]:
             self._nextDay()
-        #elif action.getId() == ACTION_PREV_ITEM:
         elif action.getId() in COMMAND_ACTIONS["PREV_DAY"]:
             self._previousDay()
-        #elif action.getId() == ACTION_PAGE_UP:
         elif action.getId() in COMMAND_ACTIONS["PAGE_UP"]:
             self._moveUp(CHANNELS_PER_PAGE)
-        #elif action.getId() == ACTION_PAGE_DOWN:
         elif action.getId() in COMMAND_ACTIONS["PAGE_DOWN"]:
             self._moveDown(CHANNELS_PER_PAGE)
         elif action.getId() == ACTION_MOUSE_WHEEL_UP:
             self._moveUp(scrollEvent=True)
         elif action.getId() == ACTION_MOUSE_WHEEL_DOWN:
             self._moveDown(scrollEvent=True)
-        #elif action.getId() == KEY_HOME:
         elif action.getId() in COMMAND_ACTIONS["GO_TO_NOW"]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
@@ -758,26 +713,21 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
-        #elif action.getId() in [REMOTE_1]:
         elif action.getId() in COMMAND_ACTIONS["CHANNEL_LISTING"]:
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
-        #elif action.getId() in [REMOTE_8, ACTION_JUMP_SMS8]:
         elif action.getId() in COMMAND_ACTIONS["STOP_AUTOPLAYWITH"]:
             self.stopWith()
-        #elif action.getId() in [REMOTE_9, ACTION_JUMP_SMS9]:
         elif action.getId() in COMMAND_ACTIONS["PLAY_AUTOPLAYWITH"]:
             program = self._getProgramFromControl(controlInFocus)
             if program:
                 self.playWithChannel(program.channel)
-        #elif action.getId() == ACTION_DELETE_ITEM:
         elif action.getId() in COMMAND_ACTIONS["DELETE_PROGRAM_IMAGE"]:
             program = self._getProgramFromControl(controlInFocus)
             if program:
                 self.tvdb_urls[program.title] = ''
                 self.setControlImage(self.C_MAIN_IMAGE, self.tvdb_urls[program.title])
-        #elif action.getId() == ACTION_CREATE_BOOKMARK:
         elif action.getId() in COMMAND_ACTIONS["SCHEDULERS_MENU"]:
             program = self._getProgramFromControl(controlInFocus)
             d = xbmcgui.Dialog()
@@ -822,7 +772,6 @@ class TVGuide(xbmcgui.WindowXML):
                         if when > -1:
                             self.autoplaywith.addAutoplaywith(program, when)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-        #elif action.getId() == ACTION_PLAYER_PLAY:
         elif action.getId() in COMMAND_ACTIONS["PLAY_CHOOSE"]:
             program = self._getProgramFromControl(controlInFocus)
             if program:
@@ -840,13 +789,11 @@ class TVGuide(xbmcgui.WindowXML):
                     self.playChannel(program.channel, program)
                 else:
                     # multiple matches, let user decide
-
                     d = ChooseStreamAddonDialog(result)
                     d.doModal()
                     if d.stream is not None:
                         self.database.setCustomStreamUrl(program.channel, d.stream)
                         self.playChannel(program.channel, program)
-        #elif action.getId() in [ACTION_SHOW_INFO]:
         elif action.getId() in COMMAND_ACTIONS["EXTENDED_INFO"]:
             program = self._getProgramFromControl(controlInFocus)
             title = program.title
@@ -905,7 +852,6 @@ class TVGuide(xbmcgui.WindowXML):
         #elif action.getId() in COMMAND_ACTIONS["QUICK_EPG_MODE_EXIT"] and action.getButtonCode() == KEY_ESC:
         #    self._hideQuickEpg()
 
-        #elif action.getId() in [ACTION_SHOW_INFO]:
         elif action.getId() in COMMAND_ACTIONS["INFO"]:
             self.quickEpgShowInfo = not self.quickEpgShowInfo
             self.setControlVisible(self.C_QUICK_EPG_DESCRIPTION,self.quickEpgShowInfo)
@@ -927,44 +873,33 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setQuickFocus(control)
                 xbmc.log("exception in onActionQuickEPGMode", xbmc.LOGERROR)
                 return
-        #if action.getId() == ACTION_LEFT:
         if action.getId() in COMMAND_ACTIONS["LEFT"]:
             self._quickLeft(currentFocus)
-        #elif action.getId() == ACTION_RIGHT:
         elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
             self._quickRight(currentFocus)
-        #elif action.getId() == ACTION_UP:
         elif action.getId() in COMMAND_ACTIONS["UP"]:
             self._quickUp(currentFocus)
-        #elif action.getId() == ACTION_DOWN:
         elif action.getId() in COMMAND_ACTIONS["DOWN"]:
             self._quickDown(currentFocus)
-        #elif action.getId() == ACTION_NEXT_ITEM:
         elif action.getId() in COMMAND_ACTIONS["NEXT_DAY"]:
             self._quickNextDay()
-        #elif action.getId() == ACTION_PREV_ITEM:
         elif action.getId() in COMMAND_ACTIONS["PREV_DAY"]:
             self._quickPreviousDay()
-        #elif action.getId() == ACTION_PAGE_UP:
         elif action.getId() in COMMAND_ACTIONS["PAGE_UP"]:
             self._quickMoveUp(3)
-        #elif action.getId() == ACTION_PAGE_DOWN:
         elif action.getId() in COMMAND_ACTIONS["PAGE_DOWN"]:
             self._quickMoveDown(3)
         elif action.getId() == ACTION_MOUSE_WHEEL_UP:
             self._moveUp(scrollEvent=True)
         elif action.getId() == ACTION_MOUSE_WHEEL_DOWN:
             self._moveDown(scrollEvent=True)
-        #elif action.getId() == ACTION_SELECT_ITEM:
         elif action.getId() in COMMAND_ACTIONS["PLAY"]:
             self._hideQuickEpg()
-            self.playChannel(self.osdChannel, self.osdProgram)
-        #elif action.getId() in [REMOTE_1]:
+            self.playOrChoose(self.osdProgram)
         elif action.getId() in COMMAND_ACTIONS["CHANNEL_LISTING"]:
             program = self._getQuickProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
-        #elif action.getId() in [KEY_CONTEXT_MENU] and controlInFocus is not None:
         elif action.getId() in COMMAND_ACTIONS["MENU"]  and controlInFocus is not None:
             program = self._getQuickProgramFromControl(controlInFocus)
             if program is not None:
@@ -1034,7 +969,10 @@ class TVGuide(xbmcgui.WindowXML):
 
         if program is None:
             return
+        self.playOrChoose(program)
 
+
+    def playOrChoose(self,program):
         if self.player.isPlaying() and self.currentChannel and (program.channel.id == self.currentChannel.id) and (ADDON.getSetting('play.alt.choose') == 'false'):
                 self._hideEpg()
                 self._hideQuickEpg()
@@ -1053,10 +991,8 @@ class TVGuide(xbmcgui.WindowXML):
                 # one single stream detected, save it and start streaming
                 self.database.setCustomStreamUrl(program.channel, result)
                 self.playChannel(program.channel, program)
-
             else:
                 # multiple matches, let user decide
-
                 d = ChooseStreamAddonDialog(result)
                 d.doModal()
                 if d.stream is not None:
@@ -1089,7 +1025,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playChannel(programList[index].channel, programList[index])
+                self.playOrChoose(programList[index])
 
     def showNext(self):
         programList = self.database.getNextList()
@@ -1107,7 +1043,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playChannel(programList[index].channel, programList[index])
+                self.playOrChoose(programList[index])
 
 
     def programSearchSelect(self):
@@ -1153,7 +1089,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playChannel(programList[index].channel, programList[index])
+                self.playOrChoose(programList[index])
 
 
     def descriptionSearch(self):
@@ -1176,7 +1112,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playChannel(programList[index].channel, programList[index])
+                self.playOrChoose(programList[index])
 
     def categorySearch(self):
         d = xbmcgui.Dialog()
@@ -1206,7 +1142,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playChannel(programList[index].channel, programList[index])
+                self.playOrChoose(programList[index])
 
     def showReminders(self):
         programList = self.database.getNotifications()
@@ -1373,10 +1309,8 @@ class TVGuide(xbmcgui.WindowXML):
             elif type(result) == str:
                 # one single stream detected, save it and start streaming
                 self.database.setCustomStreamUrl(program.channel, result)
-                #self.playChannel(program.channel, program)
             else:
                 # multiple matches, let user decide
-
                 d = ChooseStreamAddonDialog(result)
                 d.doModal()
                 if d.stream is not None:
@@ -2059,12 +1993,12 @@ class TVGuide(xbmcgui.WindowXML):
     def _channelUp(self):
         channel = self.database.getNextChannel(self.currentChannel)
         program = self.database.getCurrentProgram(channel)
-        self.playChannel(channel, program)
+        self.playOrChoose(program)
 
     def _channelDown(self):
         channel = self.database.getPreviousChannel(self.currentChannel)
         program = self.database.getCurrentProgram(channel)
-        self.playChannel(channel, program)
+        self.playOrChoose(program)
 
     def playChannel(self, channel, program = None):
         if ADDON.getSetting('epg.video.pip') == 'true':
@@ -2375,7 +2309,7 @@ class TVGuide(xbmcgui.WindowXML):
             channel = self.lastChannel
             program = self.database.getCurrentProgram(channel)
             self.lastChannel = self.currentChannel
-            self.playChannel(channel, program)
+            self.playOrChoose(program)
 
     def _hideOsdOnly(self):
         self._hideControl(self.C_MAIN_OSD)
