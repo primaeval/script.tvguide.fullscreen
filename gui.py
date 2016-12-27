@@ -494,7 +494,7 @@ class TVGuide(xbmcgui.WindowXML):
             if code >= 0 and code <= 9:
                 self.channel_number = "%s%d" % (self.channel_number.strip('_'),code)
                 self.getControl(9999).setLabel(self.channel_number)
-                if len(self.channel_number) == 3:
+                if len(self.channel_number) == 4:
                     self.channel_number_input = False
                     self.viewStartDate = datetime.datetime.today()
                     self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
@@ -2415,7 +2415,7 @@ class TVGuide(xbmcgui.WindowXML):
                 channel = channels[idx]
                 self.setControlLabel(4010 + idx, channel.title)
                 if ADDON.getSetting('channel.index') == 'true':
-                    self.setControlLabel(4410 + idx, "%03d" % (self.channelIdx + idx + 1))
+                    self.setControlLabel(4410 + idx, "%04d" % (self.channelIdx + idx + 1))
                 else:
                     self.setControlLabel(4410 + idx, ' ')
                 if (channel.logo is not None and showLogo == True):

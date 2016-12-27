@@ -1026,7 +1026,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1039,7 +1039,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1052,7 +1052,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1065,7 +1065,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1078,7 +1078,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1091,7 +1091,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1104,7 +1104,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1117,7 +1117,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1130,7 +1130,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1143,7 +1143,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1157,7 +1157,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1171,7 +1171,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1184,7 +1184,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1197,7 +1197,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1210,7 +1210,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
@@ -1223,7 +1223,7 @@
                     <height>40</height>
                     <textcolor>white</textcolor>
                     <shadowcolor>black</shadowcolor>
-                    <font>font10</font>
+                    <font>font10_title</font>
                     <align>left</align>
                     <aligny>top</aligny>
                     <visible>true</visible>
