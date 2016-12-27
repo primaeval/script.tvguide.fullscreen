@@ -202,6 +202,9 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_MENU = 4307
     C_MAIN_MOUSE_CATEGORIES = 4308
     C_MAIN_MOUSE_PIP = 4309
+    C_MAIN_MOUSE_NOW = 4310
+    C_MAIN_MOUSE_NEXT = 4311
+    C_MAIN_MOUSE_SEARCH = 4312
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -993,6 +996,15 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId == self.C_MAIN_MOUSE_PIP:
             self.pip_toggle()
             return
+        elif controlId == self.C_MAIN_MOUSE_NOW:
+            self.showNow()
+            return
+        elif controlId == self.C_MAIN_MOUSE_NEXT:
+            self.showNext()
+            return
+        elif controlId == self.C_MAIN_MOUSE_SEARCH:
+            self.programSearchSelect()
+            return
         program = self._getProgramFromControl(self.getControl(controlId))
         if self.mode == MODE_QUICK_EPG:
             program = self._getQuickProgramFromControl(self.getControl(controlId))
@@ -1000,7 +1012,10 @@ class TVGuide(xbmcgui.WindowXML):
 
         if program is None:
             return
-        self.playOrChoose(program)
+        if ADDON.getSetting('play.menu') == 'true':
+            self._showContextMenu(program)
+        else:
+            self.playOrChoose(program)
 
 
     def playOrChoose(self,program):
