@@ -82,6 +82,8 @@
         <setting id="skin.user" label="User Skin Name" type="text" visible="eq(-2,1))" default=''/>
         <setting id="epg.video.pip" label="Small EPG Video Preview Window" type="bool" default="false" />
         <setting type="sep"/>
+        <setting id="channel.index" label="Show Channel Index Numbers" type="bool" default="true" />
+        <setting type="sep"/>
         <setting id="program.image.scale" label="Scale Program Image" type="bool" default="true" />
         <setting type="sep"/>
         <setting id="program.search.plot" label="Program Search in Synopsis/Title" type="bool" default="false" />

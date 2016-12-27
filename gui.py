@@ -291,6 +291,8 @@ class TVGuide(xbmcgui.WindowXML):
         self.loadTVDBImages()
 
         self.mode = MODE_EPG
+        self.channel_number_input = False
+        self.channel_number = ""
         self.currentChannel = None
         s = ADDON.getSetting('last.channel')
         if s:
@@ -464,6 +466,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.setControlVisible(self.C_MAIN_IMAGE,True)
 
     def onAction(self, action):
+        #log((action.getId(),action.getButtonCode()))
         debug('Mode is: %s' % self.mode)
 
         self._hideControl(self.C_UP_NEXT)
@@ -479,6 +482,28 @@ class TVGuide(xbmcgui.WindowXML):
                                                      seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             self.setControlVisible(self.C_MAIN_IMAGE,True)
+
+        if action.getId() in COMMAND_ACTIONS["CHANNEL_NUMBER"]:
+            if not self.channel_number_input:
+                self.channel_number = "_"
+                self.getControl(9999).setLabel(self.channel_number)
+            self.channel_number_input = not self.channel_number_input
+
+        if self.channel_number_input:
+            code = action.getButtonCode() - 61488
+            if code >= 0 and code <= 9:
+                self.channel_number = "%s%d" % (self.channel_number.strip('_'),code)
+                self.getControl(9999).setLabel(self.channel_number)
+                if len(self.channel_number) == 3:
+                    self.channel_number_input = False
+                    self.viewStartDate = datetime.datetime.today()
+                    self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
+                                                             seconds=self.viewStartDate.second)
+                    self.channelIdx = int(self.channel_number) - 1
+                    self.channel_number = ""
+                    self.getControl(9999).setLabel(self.channel_number)
+                    self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            return
 
         if action.getId() in COMMAND_ACTIONS["NOW_LISTING"]:
             self.showNow()
@@ -2383,11 +2408,16 @@ class TVGuide(xbmcgui.WindowXML):
             if idx >= len(channels):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
+                self.setControlLabel(4410 + idx, ' ')
                 self.setControlVisible(4210 + idx,False)
             else:
                 self.setControlVisible(4210 + idx,True)
                 channel = channels[idx]
                 self.setControlLabel(4010 + idx, channel.title)
+                if ADDON.getSetting('channel.index') == 'true':
+                    self.setControlLabel(4410 + idx, "%03d" % (self.channelIdx + idx + 1))
+                else:
+                    self.setControlLabel(4410 + idx, ' ')
                 if (channel.logo is not None and showLogo == True):
                     self.setControlImage(4110 + idx, channel.logo)
                 else:
@@ -2413,6 +2443,11 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setWidth(176)
                 control.setPosition(2,top)
             control = self.getControl(4110 + idx)
+            if control:
+                control.setWidth(176)
+                control.setHeight(self.epgView.cellHeight-2)
+                control.setPosition(2,top)
+            control = self.getControl(4410 + idx)
             if control:
                 control.setWidth(176)
                 control.setHeight(self.epgView.cellHeight-2)
