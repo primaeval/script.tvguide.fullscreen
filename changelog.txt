@@ -1,3 +1,7 @@
+version 0.0.270
+- Settings \ Appearance \ Always Open Menu on Play (good for Touch devices)
+- main EPG touch controls - Now, Next, Search
+
 version 0.0.268-269
 - choose stream if not set from most other lists and views
 - Channel Index Shortcuts - default action is CHANNEL_NUMBER = ACTION_SHIFT (map up Shift to something in Keymap Editor)
@@ -138,7 +142,7 @@ version 0.0.212-213
 - OMDb images and missing plot
 
 version 0.0.211
-- autosaves channel mapping on exit to 
+- autosaves channel mapping on exit to
     userdata\addon_data\script.tvguide.fullscreen\custom_stream_urls_autosave.ini
 
 version 0.0.206-210
