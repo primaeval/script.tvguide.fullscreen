@@ -1,4 +1,4 @@
-version 0.0.268
+version 0.0.268-269
 - choose stream if not set from most other lists and views
 - Channel Index Shortcuts - default action is CHANNEL_NUMBER = ACTION_SHIFT (map up Shift to something in Keymap Editor)
 - Settings \ Appearance \ Show Channel Index Numbers
