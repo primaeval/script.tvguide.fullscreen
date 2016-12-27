@@ -491,8 +491,14 @@ class TVGuide(xbmcgui.WindowXML):
 
         if self.channel_number_input:
             code = action.getButtonCode() - 61488
-            if code >= 0 and code <= 9:
-                self.channel_number = "%s%d" % (self.channel_number.strip('_'),code)
+            action = action.getId() - 58
+            if (code >= 0 and code <= 9) or (action >= 0 and action <= 9):
+                digit = None
+                if (code >= 0 and code <= 9):
+                    digit = code
+                else:
+                    digit = action
+                self.channel_number = "%s%d" % (self.channel_number.strip('_'),digit)
                 self.getControl(9999).setLabel(self.channel_number)
                 if len(self.channel_number) == int(ADDON.getSetting('channel.index.digits')):
                     self.channel_number_input = False
