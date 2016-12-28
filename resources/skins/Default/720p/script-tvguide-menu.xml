@@ -278,6 +278,26 @@
             <visible>true</visible>
         </control>
 
+        <control type="button" id="4015">
+            <description>touch close</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texturefocus></texturefocus>
+            <texturenofocus></texturenofocus>
+            <onup></onup>
+            <ondown></ondown>
+            <onleft></onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label></label>
+            <visible>true</visible>
+        </control>
+
         <control type="button" id="4006">
             <!-- super favourites -->
             <posx>285</posx>
