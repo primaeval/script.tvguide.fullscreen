@@ -1,3 +1,7 @@
+version 0.0.271
+- Channel Search (4)
+- go Left for Channel Listing from Channel Search, c for Program Menu
+
 version 0.0.270
 - Settings \ Appearance \ Always Open Menu on Play (good for Touch devices)
 - main EPG touch controls - Now, Next, Search

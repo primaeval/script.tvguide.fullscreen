@@ -1327,7 +1327,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif buttonClicked == PopupMenu.C_POPUP_LISTS:
             d = xbmcgui.Dialog()
-            list = d.select("Lists", ["Channel Listing","On Now", "On Next", "Program Search", "Reminders", "AutoPlays", "AutoPlayWiths"])
+            list = d.select("Lists", ["Channel Listing","On Now", "On Next", "Search", "Reminders", "AutoPlays", "AutoPlayWiths"])
             if list < 0:
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             if list == 0:
