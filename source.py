@@ -670,8 +670,9 @@ class Database(object):
         endTime = now + datetime.timedelta(days=days)
         c = self.conn.cursor()
         channelList = self._getChannelList(True)
+        search = "%%%s%%" % search
         for channel in channelList:
-            search = "%%%s%%" % search
+
             if ADDON.getSetting('program.search.plot') == 'true':
                 try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date>=? AND end_date<=? AND (title LIKE ? OR description LIKE ?)',
                           [channel.id, self.source.KEY, startTime, endTime, search, search])
@@ -700,8 +701,9 @@ class Database(object):
         endTime = now + datetime.timedelta(days=days)
         c = self.conn.cursor()
         channelList = self._getChannelList(True)
+        search = "%%%s%%" % search
         for channel in channelList:
-            search = "%%%s%%" % search
+
             try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND description LIKE ? AND start_date>=? AND end_date<=? ',
                       [channel.id, self.source.KEY,search, startTime, endTime])
             except: return
@@ -725,8 +727,8 @@ class Database(object):
         endTime = now + datetime.timedelta(days=days)
         c = self.conn.cursor()
         channelList = self._getChannelList(True)
+        search = "%%%s%%" % search
         for channel in channelList:
-            search = "%%%s%%" % search
             try: c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND categories LIKE ? AND start_date>=? AND end_date<=? ',
                       [channel.id, self.source.KEY,search, startTime, endTime])
             except: return
@@ -761,6 +763,32 @@ class Database(object):
 
         return programList
 
+    def channelSearch(self, search):
+        return self._invokeAndBlockForResult(self._channelSearch, search)
+
+    def _channelSearch(self, search):
+        programList = []
+        now = datetime.datetime.now()
+        c = self.conn.cursor()
+        channels = self._getChannelList(True)
+        channelIds = [cc.id for cc in channels]
+        channelMap = dict()
+        for cc in channels:
+            if cc.id:
+                channelMap[cc.id] = cc
+        search = "%%%s%%" % search
+        c.execute('SELECT * FROM programs WHERE channel LIKE ? AND source=? AND start_date<=? AND end_date>=? ',
+                  [search, self.source.KEY, now, now])
+        for row in c:
+            log(row)
+            program = Program(channelMap[row['channel']], title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
+                          description=row['description'], categories=row['categories'],
+                          imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                          is_movie=row['is_movie'], language=row['language'])
+            programList.append(program)
+        c.close()
+        return programList
+
     def getNowList(self):
         return self._invokeAndBlockForResult(self._getNowList)
 
@@ -770,9 +798,9 @@ class Database(object):
         channels = self._getChannelList(True)
         channelIds = [c.id for c in channels]
         channelMap = dict()
-        for c in channels:
-            if c.id:
-                channelMap[c.id] = c
+        for cc in channels:
+            if cc.id:
+                channelMap[cc.id] = cc
 
         c = self.conn.cursor()
         c.execute(

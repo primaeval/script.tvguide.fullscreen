@@ -1094,7 +1094,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def programSearchSelect(self):
         d = xbmcgui.Dialog()
-        what = d.select("Search",["Title","Synopsis","Category"])
+        what = d.select("Search",["Title","Synopsis","Category","Channel"])
         if what == -1:
             return
         if what == 0:
@@ -1103,6 +1103,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.descriptionSearch()
         elif what == 2:
             self.categorySearch()
+        elif what == 3:
+            self.channelSearch()
 
 
     def programSearch(self):
@@ -1175,6 +1177,28 @@ class TVGuide(xbmcgui.WindowXML):
         category = category_count[which][0]
         programList = self.database.programCategorySearch(category)
         title = "%s" % category
+        d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
+        d.doModal()
+        index = d.index
+        action = d.action
+        if action == ACTION_RIGHT:
+            self.showNext()
+        elif action == ACTION_LEFT:
+            self.showListing(programList[index].channel)
+        elif action == KEY_CONTEXT_MENU:
+            if index > -1:
+                self._showContextMenu(programList[index])
+        else:
+            if index > -1:
+                self.playOrChoose(programList[index])
+
+    def channelSearch(self):
+        d = xbmcgui.Dialog()
+        search = d.input("Channel Search")
+        if not search:
+            return
+        programList = self.database.channelSearch(search)
+        title = "Channel Search"
         d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
