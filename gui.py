@@ -509,7 +509,7 @@ class TVGuide(xbmcgui.WindowXML):
                     self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                              seconds=self.viewStartDate.second)
                     if ADDON.getSetting('channel.shortcut') == '2':
-                        channelList = self.database.getChannelList(onlyVisible=True,all=True)
+                        channelList = self.database.getChannelList(onlyVisible=True,all=False)
                         for i in range(len(channelList)):
                             if self.channel_number == channelList[i].id:
                                  self.channelIdx = i
