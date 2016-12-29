@@ -4423,16 +4423,16 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/folders.list'
         f = xbmcvfs.File(file_name)
         lines = f.read().splitlines()
-        folders = []
+        folders = {}
         for folder in lines:
             if folder.startswith('@'):
-                folders.append(folder[1:])
+                path = folder[1:]
+                folders[path] = folder
             else:
-                folders.append(folder)
-        items = folders
+                folders[folder] = folder
         f.close()
-        if self.previousDirsId in items:
-            items.remove(self.previousDirsId)
+        if self.previousDirsId in folders:
+            del folders[self.previousDirsId]
             add = False
             self.getControl(self.C_STREAM_BROWSE_FOLDER).setLabel('Add Folder')
         else:
@@ -4442,12 +4442,11 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             if method == -1:
                 return
             if method == 0:
-                items.append(self.previousDirsId)
+                folders[self.previousDirsId] = self.previousDirsId
             else:
-                items.append("@"+self.previousDirsId)
-        unique = set(items)
+                folders[self.previousDirsId] = "@"+self.previousDirsId
         f = xbmcvfs.File(file_name,"w")
-        lines = "\n".join(unique)
+        lines = "\n".join(folders.values())
         f.write(lines)
         f.close()
 
