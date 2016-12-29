@@ -1,3 +1,6 @@
+version 0.0.273
+- Settings \ Appearance \ Start When Any Number Key Pressed (for Channel Shortcut Numbers)
+
 version 0.0.272
 - Settings \ Appearance \ Channel Shortcut Numbers = None|Index|Id (id is a nummeric id from your xmltv file)
 - New Action "GO_TO_FIRST_CHANNEL": ["ACTION_LAST_PAGE"] which is END in Windows
