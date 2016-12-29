@@ -1,3 +1,6 @@
+version 0.0.274
+- Settings \ Appearance \ Auto-Play Channel On Number Input (for Channel Shortcut Numbers) [Thanks RayW1986]
+
 version 0.0.273
 - Settings \ Appearance \ Start When Any Number Key Pressed (for Channel Shortcut Numbers)
 
