@@ -536,6 +536,8 @@ class TVGuide(xbmcgui.WindowXML):
                     self._hideOsdOnly()
                     self._hideQuickEpg()
                     self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+                    if ADDON.getSetting('channel.shortcut.auto') == 'true':
+                        xbmc.executebuiltin('Action(Select)')
             return
 
         if action.getId() in COMMAND_ACTIONS["NOW_LISTING"]:

@@ -85,6 +85,7 @@
         <setting id="epg.video.pip" label="Small EPG Video Preview Window" type="bool" default="false" />
         <setting type="lsep" label="Channel Shortcuts (xmltv Ids must be Numeric)"/>
         <setting id="channel.shortcut.direct" label="Start When Any Number Key Pressed" type="bool" default="false" />
+        <setting id="channel.shortcut.auto" label="Auto-Play Channel On Number Input" type="bool" default="false" />
         <setting id="channel.shortcut" label="Channel Shortcut Numbers" type="enum" default="None" values="None|Index|Id" />
         <setting id="channel.index.digits" label="Channel Shortcut Digits" default="3" type="number"/>
         <setting type="sep"/>
