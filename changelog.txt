@@ -3,7 +3,7 @@ version 0.0.272
 - New Action "GO_TO_FIRST_CHANNEL": ["ACTION_LAST_PAGE"] which is END in Windows
 - click anywhere in Stream Setup background to Close the dialog
 - Refresh Addon Folders fix for missing addons
-- Add Folder fix for Alterntive Streaming Method
+- Add Folder fix for Alternative Streaming Method
 
 version 0.0.271
 - Channel Search (4)
