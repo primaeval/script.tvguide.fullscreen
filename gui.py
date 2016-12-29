@@ -498,6 +498,7 @@ class TVGuide(xbmcgui.WindowXML):
                     digit = action_code
                 self.channel_number_input = True
                 self.channel_number = str(digit)
+                self.getControl(9999).setLabel(self.channel_number)
         elif action.getId() in COMMAND_ACTIONS["CHANNEL_NUMBER"]:
             if not self.channel_number_input:
                 self.channel_number = "_"
@@ -514,7 +515,8 @@ class TVGuide(xbmcgui.WindowXML):
                         digit = code
                     else:
                         digit = action_code
-                self.channel_number = "%s%d" % (self.channel_number.strip('_'),digit)
+                if digit != None:
+                    self.channel_number = "%s%d" % (self.channel_number.strip('_'),digit)
                 self.getControl(9999).setLabel(self.channel_number)
                 if len(self.channel_number) == int(ADDON.getSetting('channel.index.digits')):
                     self.channel_number_input = False
@@ -531,6 +533,8 @@ class TVGuide(xbmcgui.WindowXML):
                         self.channelIdx = int(self.channel_number) - 1
                     self.channel_number = ""
                     self.getControl(9999).setLabel(self.channel_number)
+                    self._hideOsdOnly()
+                    self._hideQuickEpg()
                     self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             return
 
