@@ -1,4 +1,4 @@
-version 0.0.274
+version 0.0.274-275
 - Settings \ Appearance \ Auto-Play Channel On Number Input (for Channel Shortcut Numbers) [Thanks RayW1986]
 
 version 0.0.273
