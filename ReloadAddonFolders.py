@@ -56,7 +56,10 @@ for path in unique:
     streams = plugins[plugin]
     for label in links:
         file = links[label]
-        streams[label] = file
+        if method == 1:
+            streams[label] = "@"+file
+        else:
+            streams[label] = file
     thumbs = logos[plugin]
     for file in thumbnails:
         thumb = thumbnails[file]
@@ -82,8 +85,6 @@ for addonId in sorted(plugins):
             continue
         if not stream:
             stream = 'nothing'
-        if method == 1:
-            stream = "@"+stream
         write_str = "%s=%s\n" % (name,stream)
         f.write(write_str.encode("utf8"))
 f.close()
