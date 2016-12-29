@@ -1,3 +1,10 @@
+version 0.0.272
+- Settings \ Appearance \ Channel Shortcut Numbers = None|Index|Id (id is a nummeric id from your xmltv file)
+- New Action "GO_TO_FIRST_CHANNEL": ["ACTION_LAST_PAGE"] which is END in Windows
+- click anywhere in Stream Setup background to Close the dialog
+- Refresh Addon Folders fix for missing addons
+- Add Folder fix for Alterntive Streaming Method
+
 version 0.0.271
 - Channel Search (4)
 - go Left for Channel Listing from Channel Search, c for Program Menu
