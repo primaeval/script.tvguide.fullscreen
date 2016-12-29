@@ -486,21 +486,34 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             self.setControlVisible(self.C_MAIN_IMAGE,True)
 
-        if action.getId() in COMMAND_ACTIONS["CHANNEL_NUMBER"]:
+        digit = None
+        if ADDON.getSetting('channel.shortcut.direct') == 'true' and not self.channel_number_input:
+            code = action.getButtonCode() - 61488
+            action_code = action.getId() - 58
+            if (code >= 0 and code <= 9) or (action_code >= 0 and action_code <= 9):
+                digit = None
+                if (code >= 0 and code <= 9):
+                    digit = code
+                else:
+                    digit = action_code
+                self.channel_number_input = True
+                self.channel_number = str(digit)
+        elif action.getId() in COMMAND_ACTIONS["CHANNEL_NUMBER"]:
             if not self.channel_number_input:
                 self.channel_number = "_"
                 self.getControl(9999).setLabel(self.channel_number)
             self.channel_number_input = not self.channel_number_input
 
         if self.channel_number_input:
-            code = action.getButtonCode() - 61488
-            action = action.getId() - 58
-            if (code >= 0 and code <= 9) or (action >= 0 and action <= 9):
-                digit = None
-                if (code >= 0 and code <= 9):
-                    digit = code
-                else:
-                    digit = action
+            if digit == None:
+                code = action.getButtonCode() - 61488
+                action_code = action.getId() - 58
+                if (code >= 0 and code <= 9) or (action_code >= 0 and action_code <= 9):
+                    digit = None
+                    if (code >= 0 and code <= 9):
+                        digit = code
+                    else:
+                        digit = action_code
                 self.channel_number = "%s%d" % (self.channel_number.strip('_'),digit)
                 self.getControl(9999).setLabel(self.channel_number)
                 if len(self.channel_number) == int(ADDON.getSetting('channel.index.digits')):
