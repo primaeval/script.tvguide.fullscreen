@@ -508,7 +508,14 @@ class TVGuide(xbmcgui.WindowXML):
                     self.viewStartDate = datetime.datetime.today()
                     self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                              seconds=self.viewStartDate.second)
-                    self.channelIdx = int(self.channel_number) - 1
+                    if ADDON.getSetting('channel.shortcut') == '2':
+                        channelList = self.database.getChannelList(onlyVisible=True,all=True)
+                        for i in range(len(channelList)):
+                            if self.channel_number == channelList[i].id:
+                                 self.channelIdx = i
+                                 break
+                    else:
+                        self.channelIdx = int(self.channel_number) - 1
                     self.channel_number = ""
                     self.getControl(9999).setLabel(self.channel_number)
                     self.onRedrawEPG(self.channelIdx, self.viewStartDate)
@@ -742,6 +749,11 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                      seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+        elif action.getId() in COMMAND_ACTIONS["GO_TO_FIRST_CHANNEL"]:
+            self.viewStartDate = datetime.datetime.today()
+            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
+                                                     seconds=self.viewStartDate.second)
+            self.onRedrawEPG(0, self.viewStartDate)
         #elif action.getId() in [KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU] and controlInFocus is not None:
         elif action.getId() in COMMAND_ACTIONS["MENU"] and controlInFocus is not None:
             program = self._getProgramFromControl(controlInFocus)
@@ -2460,9 +2472,10 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlVisible(4210 + idx,True)
                 channel = channels[idx]
                 self.setControlLabel(4010 + idx, channel.title)
-                if ADDON.getSetting('channel.index') == 'true':
-
+                if ADDON.getSetting('channel.shortcut') == '1':
                     self.setControlLabel(4410 + idx, channel_index_format % (self.channelIdx + idx + 1))
+                elif ADDON.getSetting('channel.shortcut') == '2':
+                    self.setControlLabel(4410 + idx, channel.id)
                 else:
                     self.setControlLabel(4410 + idx, ' ')
                 if (channel.logo is not None and showLogo == True):
