@@ -28,6 +28,11 @@ for path in unique:
         path = path[1:]
     else:
         method = 0
+    match = re.match(r"plugin://(.*?)/",path)
+    if match:
+        plugin = match.group(1)
+        try: id = xbmcaddon.Addon(plugin).getAddonInfo('id')
+        except: continue
     try:
         response = RPC.files.get_directory(media="files", directory=path, properties=["thumbnail"])
     except:
