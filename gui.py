@@ -536,11 +536,15 @@ class TVGuide(xbmcgui.WindowXML):
                         self.channelIdx = int(self.channel_number) - 1
                     self.channel_number = ""
                     self.getControl(9999).setLabel(self.channel_number)
-                    self._hideOsdOnly()
-                    self._hideQuickEpg()
-                    self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-                    if ADDON.getSetting('channel.shortcut.auto') == 'true':
-                        xbmc.executebuiltin('Action(Select)')
+                    if xbmc.getCondVisibility('Player.HasMedia+Control.IsVisible(5000)'):
+                        self._hideOsdOnly()
+                        self._hideQuickEpg()
+                        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+                        if ADDON.getSetting('channel.shortcut.auto') == 'true': xbmc.executebuiltin('Action(Select)')
+                    else:
+                        self._hideOsdOnly()
+                        self._hideQuickEpg()
+                        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             return
 
         if action.getId() in COMMAND_ACTIONS["NOW_LISTING"]:
