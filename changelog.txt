@@ -1,3 +1,7 @@
+version 0.0.276
+- Settings \ Optional \ Remember Last Category
+- Channel Shortcut Numbers - scroll in epg, play in tv mode
+
 version 0.0.274-275
 - Settings \ Appearance \ Auto-Play Channel On Number Input (for Channel Shortcut Numbers) [Thanks RayW1986]
 
