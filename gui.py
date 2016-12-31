@@ -307,7 +307,6 @@ class TVGuide(xbmcgui.WindowXML):
         self.currentProgram = None
         self.focusedProgram = None
         self.quickEpgShowInfo = False
-        self.category = ADDON.getSetting('category')
 
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
@@ -320,8 +319,12 @@ class TVGuide(xbmcgui.WindowXML):
             categories.add(cat)
         categories = sorted(categories)
         self.categories = categories
-        if self.category not in self.categories:
+        if ADDON.getSetting('categories.remember') == 'false':
             self.category = ""
+        else:
+            self.category = ADDON.getSetting('category')
+            if self.category not in self.categories:
+                self.category = ""
 
         self.osdEnabled = False
         self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
