@@ -1,3 +1,9 @@
+version 0.0.277
+- Settings \ Playback \ Channel Shortcuts \ Auto-Play Channel On Numeric Input = Always Scroll|Scroll in EPG, Play in TV Mode|Always Play
+- Right Click for Menu in EPG (remove ACTION_PREVIOUS_MENU from CLOSE and add to MENU in Settings \ Lab1 \ Action Editor)
+- Local File modified time check (you can set "Settings \ Source \ File download Interval" to "every start" now)
+- File download fix for no authorisation
+
 version 0.0.276
 - Settings \ Optional \ Remember Last Category
 - Channel Shortcut Numbers - scroll in epg, play in tv mode
