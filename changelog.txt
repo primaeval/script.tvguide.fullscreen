@@ -1,3 +1,7 @@
+version 0.0.280
+- Settings \ Playback \ Shortcut Editor (run the guide once to create the file)
+- xmltv loading fix for 0.0.279
+
 version 0.0.279
 - Channel Id to Shortcut map = addon_data/script.tvguide.fullscreen/channel_id_shortcut.ini
 - copy and edit this file that is made on startup - addon_data/script.tvguide.fullscreen/channel_id_title.ini
