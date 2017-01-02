@@ -489,27 +489,9 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             self.setControlVisible(self.C_MAIN_IMAGE,True)
 
-        digit = None
-        if ADDON.getSetting('channel.shortcut.direct') == 'true' and not self.channel_number_input:
-            code = action.getButtonCode() - 61488
-            action_code = action.getId() - 58
-            if (code >= 0 and code <= 9) or (action_code >= 0 and action_code <= 9):
-                digit = None
-                if (code >= 0 and code <= 9):
-                    digit = code
-                else:
-                    digit = action_code
-                self.channel_number_input = True
-                self.channel_number = str(digit)
-                self.getControl(9999).setLabel(self.channel_number)
-        elif action.getId() in COMMAND_ACTIONS["CHANNEL_NUMBER"]:
-            if not self.channel_number_input:
-                self.channel_number = "_"
-                self.getControl(9999).setLabel(self.channel_number)
-            self.channel_number_input = not self.channel_number_input
-
-        if self.channel_number_input:
-            if digit == None:
+        if (ADDON.getSetting('channel.shortcut') != '0'):
+            digit = None
+            if ADDON.getSetting('channel.shortcut.direct') == 'true' and not self.channel_number_input:
                 code = action.getButtonCode() - 61488
                 action_code = action.getId() - 58
                 if (code >= 0 and code <= 9) or (action_code >= 0 and action_code <= 9):
@@ -518,34 +500,55 @@ class TVGuide(xbmcgui.WindowXML):
                         digit = code
                     else:
                         digit = action_code
-                if digit != None:
-                    self.channel_number = "%s%d" % (self.channel_number.strip('_'),digit)
-                self.getControl(9999).setLabel(self.channel_number)
-                if len(self.channel_number) == int(ADDON.getSetting('channel.index.digits')):
-                    self.channel_number_input = False
-                    self.viewStartDate = datetime.datetime.today()
-                    self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
-                                                             seconds=self.viewStartDate.second)
-                    if ADDON.getSetting('channel.shortcut') == '2':
-                        channelList = self.database.getChannelList(onlyVisible=True,all=False)
-                        for i in range(len(channelList)):
-                            if self.channel_number == channelList[i].id:
-                                 self.channelIdx = i
-                                 break
-                    else:
-                        self.channelIdx = int(self.channel_number) - 1
-                    self.channel_number = ""
+                    self.channel_number_input = True
+                    self.channel_number = str(digit)
                     self.getControl(9999).setLabel(self.channel_number)
-                    if xbmc.getCondVisibility('Player.HasMedia+Control.IsVisible(5000)'):
-                        self._hideOsdOnly()
-                        self._hideQuickEpg()
-                        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-                        if ADDON.getSetting('channel.shortcut.auto') == 'true': xbmc.executebuiltin('Action(Select)')
-                    else:
-                        self._hideOsdOnly()
-                        self._hideQuickEpg()
-                        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-            return
+            elif action.getId() in COMMAND_ACTIONS["CHANNEL_NUMBER"]:
+                if not self.channel_number_input:
+                    self.channel_number = "_"
+                    self.getControl(9999).setLabel(self.channel_number)
+                self.channel_number_input = not self.channel_number_input
+
+            if self.channel_number_input:
+                if digit == None:
+                    code = action.getButtonCode() - 61488
+                    action_code = action.getId() - 58
+                    if (code >= 0 and code <= 9) or (action_code >= 0 and action_code <= 9):
+                        digit = None
+                        if (code >= 0 and code <= 9):
+                            digit = code
+                        else:
+                            digit = action_code
+                    if digit != None:
+                        self.channel_number = "%s%d" % (self.channel_number.strip('_'),digit)
+                    self.getControl(9999).setLabel(self.channel_number)
+                    if len(self.channel_number) == int(ADDON.getSetting('channel.index.digits')):
+                        self.channel_number_input = False
+                        self.viewStartDate = datetime.datetime.today()
+                        self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
+                                                                 seconds=self.viewStartDate.second)
+                        if ADDON.getSetting('channel.shortcut') == '2':
+                            channelList = self.database.getChannelList(onlyVisible=True,all=False)
+                            for i in range(len(channelList)):
+                                if self.channel_number == channelList[i].id:
+                                     self.channelIdx = i
+                                     break
+                        else:
+                            self.channelIdx = int(self.channel_number) - 1
+                        self.channel_number = ""
+                        self.getControl(9999).setLabel(self.channel_number)
+
+                        behaviour = int(ADDON.getSetting('channel.shortcut.behaviour'))
+                        if (behaviour == 2) or (behaviour == 1 and self.mode != MODE_EPG):
+                            self._hideOsdOnly()
+                            self._hideQuickEpg()
+                            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+                            xbmc.executebuiltin('Action(Select)')
+                        else:
+                            self._hideOsdOnly()
+                            self._hideQuickEpg()
+                            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+                return
 
         if action.getId() in COMMAND_ACTIONS["NOW_LISTING"]:
             self.showNow()

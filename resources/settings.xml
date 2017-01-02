@@ -63,7 +63,13 @@
         <setting label="Delete TheLogoDB.com Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 4)" />
     </category>
     <category label="Playback">
-        <setting id="play.menu" label="Always Open Menu on Play" type="bool" default="false" />
+        <setting type="lsep" label="Channel Shortcuts (xmltv Ids must be Numeric)"/>
+        <setting id="channel.shortcut" label="Channel Shortcut Type" type="enum" default="None" values="None|Index|xmltv Id" />
+        <setting id="channel.shortcut.direct" label="Start When Any Number Key Pressed (or map Shift Key to start)" visible="!eq(-1,0)" type="bool" default="false" />
+        <setting id="channel.shortcut.behaviour" label="Auto-Play Channel On Numeric Input" visible="!eq(-2,0)" type="enum" default="1" values="Always Scroll|Scroll in EPG, Play in TV Mode|Always Play" />
+        <setting id="channel.index.digits" label="Channel Shortcut Digits" visible="!eq(-3,0)" default="3" type="number"/>
+        <setting type="sep"/>
+        <setting id="play.menu" label="Always Open Menu on Play (Good for Touch Devices)" type="bool" default="false" />
         <setting type="sep"/>
         <setting id="play.alt.choose" label="Always Choose Channel if Alternative Streams Exist" type="bool" default="false" />
         <setting id="play.alt.continue" label="Try Other Alternative Streams if Play Fails" type="bool" default="false" />
@@ -84,11 +90,6 @@
         <setting id="skin" label="Skin" type="fileenum" values="resources/skins" mask="/" default="Default" visible="eq(-1,0)"/>
         <setting id="skin.user" label="User Skin Name" type="text" visible="eq(-2,1))" default=''/>
         <setting id="epg.video.pip" label="Small EPG Video Preview Window" type="bool" default="false" />
-        <setting type="lsep" label="Channel Shortcuts (xmltv Ids must be Numeric)"/>
-        <setting id="channel.shortcut.direct" label="Start When Any Number Key Pressed" type="bool" default="false" />
-        <setting id="channel.shortcut.auto" label="Auto-Play Channel On Number Input" type="bool" default="false" />
-        <setting id="channel.shortcut" label="Channel Shortcut Numbers" type="enum" default="None" values="None|Index|Id" />
-        <setting id="channel.index.digits" label="Channel Shortcut Digits" default="3" type="number"/>
         <setting type="sep"/>
         <setting id="program.image.scale" label="Scale Program Image" type="bool" default="true" />
         <setting type="sep"/>
