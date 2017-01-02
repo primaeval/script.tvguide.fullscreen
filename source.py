@@ -597,13 +597,20 @@ class Database(object):
         self.conn.commit()
 
     def exportChannelList(self):
-        channelsList = self.getChannelList()
+        channelsList = self.getChannelList(False,True)
         channels = [channel.title for channel in channelsList]
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channels.ini','wb')
         for channel in sorted(channels):
             f.write("%s=nothing\n" % channel.encode("utf8"))
         f.close()
 
+    def exportChannelIdList(self):
+        channelsList = self.getChannelList(False,True)
+        channels = [(channel.id,channel.title) for channel in channelsList]
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channel_id_title.ini','wb')
+        for channel in sorted(channels,key=lambda x: x[1].lower()):
+            f.write("%s=%s\n" % (channel[0].encode("utf8"),channel[1].encode("utf8")))
+        f.close()
 
     def getChannelList(self, onlyVisible=True, all=False):
         result = self._invokeAndBlockForResult(self._getChannelList, onlyVisible, all)
@@ -1789,6 +1796,14 @@ class XMLTVSource(Source):
         except Exception:
             pass  # ignore addons that are not installed
 
+        data = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channel_id_shortcut.ini','rb').read()
+        id_shortcuts = {}
+        if data:
+            lines = data.splitlines()
+            for line in lines:
+                id_shortcut = line.split("=")
+                if len(id_shortcut) == 2:
+                    id_shortcuts[id_shortcut[0]] = id_shortcut[1]
         if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
@@ -1866,8 +1881,9 @@ class XMLTVSource(Source):
                                 if match:
                                     season = int(match.group(1))
                                     episode = int(match.group(2))
-
-                    result = Program(channel, title, sub_title, self.parseXMLTVDate(elem.get('start')),
+                    if channel in id_shortcuts:
+                        cid = id_shortcuts[channel]
+                    result = Program(cid, title, sub_title, self.parseXMLTVDate(elem.get('start')),
                                      self.parseXMLTVDate(elem.get('stop')), description, categories, imageSmall=icon,
                                      season = season, episode = episode, is_movie = is_movie, language= language)
 
@@ -1916,6 +1932,8 @@ class XMLTVSource(Source):
                         visible = False
                     else:
                         visible = True
+                    if cid in id_shortcuts:
+                        cid = id_shortcuts[cid]
                     result = Channel(cid, title, '', logo, streamUrl, visible)
                     channel = title
 

@@ -2908,6 +2908,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.autoplaywith = Autoplaywith(self.database, ADDON.getAddonInfo('path'))
             self.onRedrawEPG(0, self.viewStartDate)
             self.database.exportChannelList()
+            self.database.exportChannelIdList()
             self.notification.scheduleNotifications()
             self.autoplay.scheduleAutoplays()
             self.autoplaywith.scheduleAutoplaywiths()
