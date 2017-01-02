@@ -1,4 +1,4 @@
-version 0.0.280
+version 0.0.280-281
 - Settings \ Playback \ Shortcut Editor (run the guide once to create the file)
 - xmltv loading fix for 0.0.279
 
