@@ -1883,6 +1883,8 @@ class XMLTVSource(Source):
                                     episode = int(match.group(2))
                     if channel in id_shortcuts:
                         cid = id_shortcuts[channel]
+                    else:
+                        cid = channel
                     result = Program(cid, title, sub_title, self.parseXMLTVDate(elem.get('start')),
                                      self.parseXMLTVDate(elem.get('stop')), description, categories, imageSmall=icon,
                                      season = season, episode = episode, is_movie = is_movie, language= language)
