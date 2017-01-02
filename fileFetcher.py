@@ -105,9 +105,11 @@ class FileFetcher(object):
             user = ''
             password = ''
             new_md5 = ''
+            auth = None
             if self.addon.getSetting('authentication') == 'true':
                 user = self.addon.getSetting('user')
                 password = self.addon.getSetting('password')
+                auth = (user, password)
             tmpFile = os.path.join(self.basePath, self.fileName+'.tmp')
             if self.fileType == self.TYPE_DEFAULT:
                 xbmc.log('[script.tvguide.fullscreen] file is in remote location: %s' % self.fileUrl, xbmc.LOGDEBUG)
@@ -126,7 +128,7 @@ class FileFetcher(object):
                     url = self.fileUrl+".md5"
                     old_md5 = xbmcvfs.File(file,"rb").read()
                     try:
-                        r = requests.get(url,auth=(user, password))
+                        r = requests.get(url,auth=auth)
                         if r.status_code == requests.codes.ok:
                             new_md5 = r.text.encode('ascii', 'ignore')[:32]
                     except Exception as detail:
@@ -141,10 +143,10 @@ class FileFetcher(object):
                 if ADDON.getSetting('gz') == 'true':
                     fileUrl = fileUrl + '.gz'
                 try:
-                    r = requests.get(fileUrl,auth=(user, password), stream=True, verify=False)
+                    r = requests.get(fileUrl,auth=auth, stream=True, verify=False)
                     if r.status_code != requests.codes.ok:
                         if ADDON.getSetting('gz') == 'true':
-                            r = requests.get(self.fileUrl,auth=(user, password), stream=True, verify=False)
+                            r = requests.get(self.fileUrl,auth=auth, stream=True, verify=False)
                             if r.status_code != requests.codes.ok:
                                 xbmc.log('[script.tvguide.fullscreen] no file: %s' % self.fileUrl, xbmc.LOGERROR)
                                 xbmcgui.Dialog().notification("TV Guide Fullscreen", "bad status code %s" % self.fileUrl,xbmcgui.NOTIFICATION_ERROR)
