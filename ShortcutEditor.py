@@ -42,7 +42,7 @@ while True:
     if which == -1:
         f = xbmcvfs.File(shortcut_file_name,'wb')
         for id in sorted(id_shortcuts):
-            f.write("%s=%s\n" % (id.encode("utf8"),id_shortcuts[id].encode("utf8")))
+            f.write("%s=%s\n" % (id,id_shortcuts[id]))
         f.close()
         break
     id = ids[which]
