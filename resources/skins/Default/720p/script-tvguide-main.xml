@@ -1551,7 +1551,7 @@
                     <textcolor>grey</textcolor>
                     <focusedcolor>black</focusedcolor>
                     <texturefocus></texturefocus>
-                    <texturenofocus>background-cover.png</texturenofocus>
+                    <texturenofocus></texturenofocus>
                 </control>
                 <control type="button" id="44305">
                     <description>navigate right</description>
