@@ -205,6 +205,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_NOW = 4310
     C_MAIN_MOUSE_NEXT = 4311
     C_MAIN_MOUSE_SEARCH = 4312
+    C_MAIN_MOUSE_FIRST = 4313
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -1016,6 +1017,12 @@ class TVGuide(xbmcgui.WindowXML):
         if self.isClosing:
             return
 
+        if controlId in [self.C_MAIN_MOUSE_FIRST]:
+            self.viewStartDate = datetime.datetime.today()
+            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
+                                                     seconds=self.viewStartDate.second)
+            self.onRedrawEPG(0, self.viewStartDate)
+            return
         if controlId in [self.C_MAIN_MOUSE_HOME, self.C_MAIN_MOUSE_HOME_BIG]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30, seconds=self.viewStartDate.second)
