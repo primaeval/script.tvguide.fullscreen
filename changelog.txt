@@ -1,3 +1,6 @@
+version 0.0.284
+- Settings \ Lab2 \ tvguide.co.uk email (overrides Provider)
+
 version 0.0.283
 - Touch Controls - First Channel (clock), Channel Number dialog (NUM), Favourites (FAVS), Stop, Custom (MINE) 
 - Settings \ Lab1 \ Custom Command for MINE 
