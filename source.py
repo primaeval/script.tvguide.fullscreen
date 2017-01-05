@@ -1992,7 +1992,7 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
-        email = ""
+        email = ADDON.getSetting('tvguide.co.uk.email')
         if not email:
             systemid = {
                 "Popular":"7",
@@ -2008,7 +2008,6 @@ class TVGUKSource(Source):
             id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
             r = requests.get('http://www.tvguide.co.uk/?systemid=%s' % id)
             html = r.text
-            log(html)
 
             match = re.search(r'<select name="channelid">(.*?)</select>',html,flags=(re.DOTALL | re.MULTILINE))
             if not match:
@@ -2018,11 +2017,8 @@ class TVGUKSource(Source):
             s = requests.Session()
             r = s.post('http://www.tvguide.co.uk/mychannels.asp',
             data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'})
-            log((r.status_code,r.headers))
             r = s.get('http://www.tvguide.co.uk/')
-            log((r.status_code,r.headers))
             html = r.text
-            log(html)
 
             channels = re.findall(r'"div-epg-channel-name">(.*?)<.*?channellisting\.asp\?ch=(.*?)&',html,flags=(re.DOTALL | re.MULTILINE))
 
@@ -2030,6 +2026,8 @@ class TVGUKSource(Source):
             visible_channels = [c.id for c in ch_list]
         else:
             visible_channels = ["86"]
+        if email:
+            visible_channels = []
         channel_number = {}
         for channel in channels:
             if not email:
@@ -2038,13 +2036,15 @@ class TVGUKSource(Source):
             else:
                 channel_name = channel[0]
                 number = channel[1]
-            log((channel_name,number))
 
             thumb = "http://my.tvguide.co.uk/channel_logos/60x35/%s.png" % number
             url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
             visible = False
             if number in visible_channels:
                 visible = True
+            if email:
+                visible = True
+                visible_channels.append(number)
             if ADDON.getSetting("greedy") == 'true':
                 if not ('HD' in channel_name or '+1' in channel_name  or '+ 1' in channel_name or channel_name.startswith('ITV ')or channel_name.startswith('BBC1 ')or channel_name.startswith('BBC2 ')):
                     visible = True
@@ -2121,7 +2121,7 @@ class TVGUKSource(Source):
                         ttime = match.group(1)
                         title = match.group(2)
                         plot = match.group(3)
-                        mon = {'January':0,'February':1,'March':2,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
+                        mon = {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
                         start = self.local_time(ttime,year,mon[month],day)
                         programs.append((title,start,plot,season,episode,thumb))
 
