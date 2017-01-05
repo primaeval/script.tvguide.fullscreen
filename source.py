@@ -1992,25 +1992,39 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
-        systemid = {
-            "Popular":"7",
-            "Sky":"5",
-            "Virgin M+":"2",
-            "Virgin XL":"25",
-            "BT":"22",
-            "Freeview":"3",
-            "Virgin M":"27",
-            "Virgin L":"24",
-            "Freesat":"19",
-        }
-        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
-        r = requests.get('http://www.tvguide.co.uk/?systemid=%s' % id)
-        html = r.text
+        email = ""
+        if not email:
+            systemid = {
+                "Popular":"7",
+                "Sky":"5",
+                "Virgin M+":"2",
+                "Virgin XL":"25",
+                "BT":"22",
+                "Freeview":"3",
+                "Virgin M":"27",
+                "Virgin L":"24",
+                "Freesat":"19",
+            }
+            id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
+            r = requests.get('http://www.tvguide.co.uk/?systemid=%s' % id)
+            html = r.text
+            log(html)
 
-        match = re.search(r'<select name="channelid">(.*?)</select>',html,flags=(re.DOTALL | re.MULTILINE))
-        if not match:
-            return
-        channels = re.findall(r'<option value=(.*?)>(.*?)</option>',match.group(1),flags=(re.DOTALL | re.MULTILINE))
+            match = re.search(r'<select name="channelid">(.*?)</select>',html,flags=(re.DOTALL | re.MULTILINE))
+            if not match:
+                return
+            channels = re.findall(r'<option value=(.*?)>(.*?)</option>',match.group(1),flags=(re.DOTALL | re.MULTILINE))
+        else:
+            s = requests.Session()
+            r = s.post('http://www.tvguide.co.uk/mychannels.asp',
+            data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'})
+            log((r.status_code,r.headers))
+            r = s.get('http://www.tvguide.co.uk/')
+            log((r.status_code,r.headers))
+            html = r.text
+            log(html)
+
+            channels = re.findall(r'"div-epg-channel-name">(.*?)<.*?channellisting\.asp\?ch=(.*?)&',html,flags=(re.DOTALL | re.MULTILINE))
 
         if ch_list:
             visible_channels = [c.id for c in ch_list]
@@ -2018,8 +2032,13 @@ class TVGUKSource(Source):
             visible_channels = ["86"]
         channel_number = {}
         for channel in channels:
-            channel_name = channel[1]
-            number = channel[0]
+            if not email:
+                channel_name = channel[1]
+                number = channel[0]
+            else:
+                channel_name = channel[0]
+                number = channel[1]
+            log((channel_name,number))
 
             thumb = "http://my.tvguide.co.uk/channel_logos/60x35/%s.png" % number
             url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
