@@ -206,6 +206,10 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_NEXT = 4311
     C_MAIN_MOUSE_SEARCH = 4312
     C_MAIN_MOUSE_FIRST = 4313
+    C_MAIN_MOUSE_CHANNEL_NUMBER = 4314
+    C_MAIN_MOUSE_STOP = 4315
+    C_MAIN_MOUSE_FAVOURITES = 4316
+    C_MAIN_MOUSE_MINE1 = 4317
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -1023,7 +1027,42 @@ class TVGuide(xbmcgui.WindowXML):
                                                      seconds=self.viewStartDate.second)
             self.onRedrawEPG(0, self.viewStartDate)
             return
-        if controlId in [self.C_MAIN_MOUSE_HOME, self.C_MAIN_MOUSE_HOME_BIG]:
+        elif controlId in [self.C_MAIN_MOUSE_CHANNEL_NUMBER]:
+            d = xbmcgui.Dialog()
+            number = d.input("Channel Shortcut Number",type=xbmcgui.INPUT_NUMERIC)
+            if number:
+                self.channel_number = number
+                self.playShortcut()
+            return
+        elif controlId in [self.C_MAIN_MOUSE_STOP]:
+            self.player.stop()
+            self.tryingToPlay = False
+            self._hideOsdOnly()
+            self._hideQuickEpg()
+
+            self.currentChannel = None
+            self.viewStartDate = datetime.datetime.today()
+            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
+                                                     seconds=self.viewStartDate.second)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            self.setControlVisible(self.C_MAIN_IMAGE,True)
+            return
+        elif controlId in [self.C_MAIN_MOUSE_FAVOURITES]:
+            favourites = ADDON.getSetting('favourites')
+            if favourites == 'Simple Favourites':
+                xbmc.executebuiltin("ActivateWindow(10001,plugin://plugin.program.simple.favourites,return)")
+            elif favourites == 'Video Favourites':
+                xbmc.executebuiltin("ActivateWindow(10025,plugin://plugin.video.favourites,return)")
+            elif favourites == 'Super Favourites':
+                xbmc.executebuiltin("ActivateWindow(10001,plugin://plugin.program.super.favourites,return)")
+            elif favourites == 'Favourites':
+                xbmc.executebuiltin("ActivateWindow(10134)")
+            return
+        elif controlId in [self.C_MAIN_MOUSE_MINE1]:
+            command = ADDON.getSetting('mine1')
+            xbmc.executebuiltin(command)
+            return
+        elif controlId in [self.C_MAIN_MOUSE_HOME, self.C_MAIN_MOUSE_HOME_BIG]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30, seconds=self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
@@ -2173,6 +2212,8 @@ class TVGuide(xbmcgui.WindowXML):
                 url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
             if url.startswith('@'):
                 xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
+            elif url[0:14] == "ActivateWindow":
+                xbmc.executebuiltin(url)
             elif url[0:9] == 'plugin://':
                 if self.alternativePlayback:
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
@@ -2246,6 +2287,8 @@ class TVGuide(xbmcgui.WindowXML):
                 #TODO meta
                 if url.startswith('@'):
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
+                elif url[0:14] == "ActivateWindow":
+                    xbmc.executebuiltin(url)
                 elif url[0:9] == 'plugin://':
                     if self.alternativePlayback:
                         xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)

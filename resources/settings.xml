@@ -194,6 +194,7 @@
         <setting id="epg.font" label="EPG Font" type="text" default="font13" />
         <setting type="sep"/>
         <setting label="Action Editor" type="action" action="RunScript($CWD/ActionEditor.py)" />
+        <setting id="mine1" label="Custom Command for MINE" type="text" default="ActivateWindow(Videos,library://video,return)"/>
     </category>
     <category label="Lab2">
         <setting type="lsep" label="Experimental Alternative Data Sources"/>

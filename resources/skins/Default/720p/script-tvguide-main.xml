@@ -1423,6 +1423,20 @@
                 </control>
             </control>
 
+            <control type="label" id="5002">
+                <description>visibility marker for pip</description>
+            </control>
+            <control type="videowindow">
+                <description>video window</description>
+                <posx>0</posx>
+                <posy>240r</posy>
+                <width>424</width>
+                <height>240</height>
+                <aligny>top</aligny>
+                <aspectratio>keep</aspectratio>
+                <visible>!Control.IsVisible(5000)+Control.IsVisible(5002)</visible>
+            </control>
+
             <control type="label" id="4300">
                 <description>visibility marker for mouse control group</description>
                 <posx>0</posx>
@@ -1633,6 +1647,71 @@
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
 
+                <control type="button" id="4314">
+                    <description>channel number</description>
+                    <posx>0</posx>
+                    <posy>480</posy>
+                    <width>90</width>
+                    <height>30</height>
+                    <label>NUM</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                </control>
+
+                <control type="button" id="4315">
+                    <description>stop</description>
+                    <posx>100</posx>
+                    <posy>480</posy>
+                    <width>90</width>
+                    <height>30</height>
+                    <label>STOP</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                </control>
+
+                <control type="button" id="4316">
+                    <description>favourites</description>
+                    <posx>200</posx>
+                    <posy>480</posy>
+                    <width>90</width>
+                    <height>30</height>
+                    <label>FAVS</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                </control>
+
+                <control type="button" id="4317">
+                    <description>spare</description>
+                    <posx>300</posx>
+                    <posy>480</posy>
+                    <width>90</width>
+                    <height>30</height>
+                    <label>MINE</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>true</visible>
+                </control>
+
                 <control type="button" id="4301">
                     <description>navigate to now</description>
                     <posx>430</posx>
@@ -1759,19 +1838,7 @@
 
         </control>
 
-        <control type="label" id="5002">
-            <description>visibility marker for pip</description>
-        </control>
-        <control type="videowindow">
-            <description>video window</description>
-            <posx>0</posx>
-            <posy>240r</posy>
-            <width>424</width>
-            <height>240</height>
-            <aligny>top</aligny>
-            <aspectratio>keep</aspectratio>
-            <visible>!Control.IsVisible(5000)+Control.IsVisible(5002)</visible>
-        </control>
+
 
         <control type="label" id="6000">
             <description>visibility marker for OSD Info bar</description>
