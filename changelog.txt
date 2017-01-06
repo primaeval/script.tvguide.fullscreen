@@ -1,3 +1,6 @@
+version 0.0.287
+- Next/Previous Day invisible buttons (over date)
+
 version 0.0.285
 - saved lists for Title and Synopsis Searches
 
