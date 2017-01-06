@@ -1216,9 +1216,32 @@ class TVGuide(xbmcgui.WindowXML):
         except:
             if self.currentProgram:
                 title = self.currentProgram.title
+        file_name = "special://profile/addon_data/script.tvguide.fullscreen/title_search.list"
+        f = xbmcvfs.File(file_name,"rb")
+        searches = sorted(f.read().splitlines())
+        f.close()
+        actions = ["New Search", "Remove Search"] + searches
+        action = d.select("Program Search: %s" % title, actions)
+        if action == -1:
+            return
+        elif action == 0:
+            pass
+        elif action == 1:
+            which = d.select("Remove Search",searches)
+            if which == -1:
+                return
+            else:
+                del searches[which]
+                return
+        else:
+            title = searches[action-2]
         search = d.input("Program Search",title)
         if not search:
             return
+        searches = list(set([search] + searches))
+        f = xbmcvfs.File(file_name,"wb")
+        f.write('\n'.join(searches))
+        f.close()
         programList = self.database.programSearch(search)
         title = "Program Search"
         d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
