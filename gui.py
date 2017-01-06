@@ -210,6 +210,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_STOP = 4315
     C_MAIN_MOUSE_FAVOURITES = 4316
     C_MAIN_MOUSE_MINE1 = 4317
+    C_MAIN_MOUSE_NEXT_DAY = 4318
+    C_MAIN_MOUSE_PREV_DAY = 4319
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -1080,6 +1082,12 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId in [self.C_MAIN_MOUSE_RIGHT, self.C_MAIN_MOUSE_RIGHT_BIG]:
             self.viewStartDate += datetime.timedelta(hours=2)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            return
+        elif controlId in [self.C_MAIN_MOUSE_NEXT_DAY]:
+            self._nextDay()
+            return
+        elif controlId in [self.C_MAIN_MOUSE_PREV_DAY]:
+            self._previousDay()
             return
         elif controlId == self.C_MAIN_MOUSE_MENU:
             program = utils.Program(channel='', title='', sub_title='', startDate=None, endDate=None, description='', categories='')
