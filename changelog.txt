@@ -1,3 +1,6 @@
+version 0.0.285
+- saved lists for Title and Synopsis Searches
+
 version 0.0.284
 - Settings \ Lab2 \ tvguide.co.uk email (overrides Provider)
 
