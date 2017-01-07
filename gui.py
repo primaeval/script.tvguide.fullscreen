@@ -1583,16 +1583,17 @@ class TVGuide(xbmcgui.WindowXML):
             if not program.language:
                 program.language = "en"
 
+            catchup = ADDON.getSetting('catchup').lower()
             if selection == 0:
-                xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/movies/play_by_name/%s/%s)" % (
-                    title, program.language))
+                xbmc.executebuiltin("RunPlugin(plugin://plugin.video.%s/movies/play_by_name/%s/%s)" % (
+                    catchup, title, program.language))
             elif selection == 1:
                 if program.season and program.episode:
-                    xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/tv/play_by_name/%s/%s/%s/%s)" % (
-                        title, program.season, program.episode, program.language))
+                    xbmc.executebuiltin("RunPlugin(plugin://plugin.video.%s/tv/play_by_name/%s/%s/%s/%s)" % (
+                        catchup, title, program.season, program.episode, program.language))
                 else:
-                    xbmc.executebuiltin("RunPlugin(plugin://plugin.video.meta/tv/play_by_name_only/%s/%s)" % (
-                        title, program.language))
+                    xbmc.executebuiltin("RunPlugin(plugin://plugin.video.%s/tv/play_by_name_only/%s/%s)" % (
+                        catchup, title, program.language))
         elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
             if ADDON.getSetting('search.type') == 'MySearch':
                 script = "special://home/addons/script.tvguide.fullscreen/search.py"

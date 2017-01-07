@@ -319,6 +319,7 @@
 
         <control type="button" id="4005">
             <!-- watch from beginning -->
+            <description>catchup addon</description>
             <posx>285</posx>
             <posy>65</posy>
             <width>200</width>
@@ -333,7 +334,7 @@
             <font>font13</font>
             <textcolor>white</textcolor>
             <focusedcolor>black</focusedcolor>
-            <label>Meta Search</label>
+            <label>Catchup</label>
         </control>
 
         <control type="button" id="4013">
