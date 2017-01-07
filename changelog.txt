@@ -1,3 +1,6 @@
+version 0.0.288
+- Settings \ Playback \ Catchup Addon (Meta, MetalliQ)
+
 version 0.0.287
 - Next/Previous Day invisible buttons (over date)
 
