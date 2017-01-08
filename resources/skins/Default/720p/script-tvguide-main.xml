@@ -1551,7 +1551,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus></texturefocus>
                     <texturenofocus></texturenofocus>
-                </control>  
+                </control>
                 <control type="button" id="4319">
                     <description>prev day</description>
                     <posx>200r</posx>
@@ -1566,7 +1566,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus></texturefocus>
                     <texturenofocus></texturenofocus>
-                </control>   
+                </control>
                 <control type="button" id="44303">
                     <description>navigate up</description>
                     <posx>0</posx>
@@ -1900,6 +1900,22 @@
                 <height>220</height>
                 <texture>black-back.png</texture>
                 <visible>true</visible>
+            </control>
+
+            <control type="button" id="6012">
+                <description>play</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>220</height>
+                <label></label>
+                <font>font13</font>
+                <aligny>center</aligny>
+                <align>center</align>
+                <textcolor>grey</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <texturefocus></texturefocus>
+                <texturenofocus></texturenofocus>
             </control>
 
             <!-- Program description -->

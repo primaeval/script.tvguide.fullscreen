@@ -238,6 +238,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD_CHANNEL_TITLE = 6005
     C_MAIN_OSD_CHANNEL_IMAGE = 6006
     C_MAIN_OSD_PROGRESS = 6011
+    C_MAIN_OSD_PLAY = 6012
     C_NEXT_OSD_DESCRIPTION = 6007
     C_NEXT_OSD_TITLE = 6008
     C_NEXT_OSD_TIME = 6009
@@ -1113,8 +1114,8 @@ class TVGuide(xbmcgui.WindowXML):
         program = self._getProgramFromControl(self.getControl(controlId))
         if self.mode == MODE_QUICK_EPG:
             program = self._getQuickProgramFromControl(self.getControl(controlId))
-
-
+        elif self.mode == MODE_OSD:
+            program = self.osdProgram
         if program is None:
             return
         if ADDON.getSetting('play.menu') == 'true':
