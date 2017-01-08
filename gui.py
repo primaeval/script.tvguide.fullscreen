@@ -983,9 +983,9 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["PAGE_DOWN"]:
             self._quickMoveDown(3)
         elif action.getId() == ACTION_MOUSE_WHEEL_UP:
-            self._moveUp(scrollEvent=True)
+            self._quickMoveUp(1)
         elif action.getId() == ACTION_MOUSE_WHEEL_DOWN:
-            self._moveDown(scrollEvent=True)
+            self._quickMoveDown(1)
         elif action.getId() in COMMAND_ACTIONS["PLAY"]:
             self._hideQuickEpg()
             self.playOrChoose(self.osdProgram)
@@ -1112,10 +1112,13 @@ class TVGuide(xbmcgui.WindowXML):
             self.programSearchSelect()
             return
         program = self._getProgramFromControl(self.getControl(controlId))
-        if self.mode == MODE_QUICK_EPG:
+        if self.mode == MODE_QUICK_EPG :
             program = self._getQuickProgramFromControl(self.getControl(controlId))
         elif self.mode == MODE_OSD:
             program = self.osdProgram
+        elif self.mode == MODE_LASTCHANNEL:
+            self._hideLastPlayed()
+            program = self.lastProgram
         if program is None:
             return
         if ADDON.getSetting('play.menu') == 'true':

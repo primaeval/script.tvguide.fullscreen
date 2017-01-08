@@ -1706,7 +1706,7 @@
                     <posx>0</posx>
                     <posy>480</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>NUM</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1722,7 +1722,7 @@
                     <posx>100</posx>
                     <posy>480</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>STOP</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1738,7 +1738,7 @@
                     <posx>200</posx>
                     <posy>480</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>FAVS</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1754,7 +1754,7 @@
                     <posx>300</posx>
                     <posy>480</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>MINE</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1764,6 +1764,23 @@
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                     <visible>true</visible>
+                </control>
+
+                <control type="button" id="8000053">
+                    <description>plugin.program.fixtures left</description>
+                    <posx>430</posx>
+                    <posy>480</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>SPORT</label>
+                    <font>font13</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <onclick>RunAddon(plugin.program.fixtures)</onclick>
                 </control>
 
                 <control type="button" id="4301">
@@ -1960,8 +1977,8 @@
 
                 <control type="button">
                     <description>Left</description>
-                    <posx>1250</posx>
-                    <posy>35</posy>
+                    <posx>1210</posx>
+                    <posy>0</posy>
                     <width>28</width>
                     <height>28</height>
                     <textcolor>ffffffff</textcolor>
@@ -2026,6 +2043,35 @@
                     <texturefocus>back.png</texturefocus>
                     <texturenofocus>back.png</texturenofocus>
                     <onclick>Back</onclick>
+                </control>
+
+                <control type="button">
+                    <description>OSD Mouse controls Now All Channels</description>
+                    <posx>1150</posx>
+                    <posy>180</posy>
+                    <width>60</width>
+                    <height>28</height>
+                    <textcolor>grey</textcolor>
+                    <font>font10</font>
+                    <label>NOW</label>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>up</onclick>
+                </control>
+                <control type="button">
+                    <description>OSD Mouse controls Last Channel Info</description>
+                    <posx>1200</posx>
+                    <posy>180</posy>
+                    <width>50</width>
+                    <height>28</height>
+                    <textcolor>grey</textcolor>
+                    <font>font10</font>
+                    <label>LAST</label>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>left</onclick>
                 </control>
 
             <!-- Program description -->
@@ -2211,6 +2257,22 @@
                 <height>220</height>
                 <texture>black-back.png</texture>
                 <visible>true</visible>
+            </control>
+
+            <control type="button" id="8012">
+                <description>play</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>220</height>
+                <label></label>
+                <font>font13</font>
+                <aligny>center</aligny>
+                <align>center</align>
+                <textcolor>grey</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <texturefocus></texturefocus>
+                <texturenofocus></texturenofocus>
             </control>
 
             <!-- Program description -->
