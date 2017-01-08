@@ -1,3 +1,10 @@
+version 0.0.289
+- extra 7 and 14 day intervals (not necessary if you use md5 update checks or local files)
+- invisible osd play button (covers lower 200 pixels)
+- osd nav buttons on right
+- invisible info button in TV Mode to bring up osd (lower 200 pixels)
+- invisible back button in all modes (top left 100 pixel square)
+
 version 0.0.288
 - Settings \ Playback \ Catchup Addon (Meta, MetalliQ)
 
