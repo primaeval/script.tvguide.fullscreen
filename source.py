@@ -2178,7 +2178,9 @@ class TVGUKSource(Source):
         diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
         if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
                 (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
-                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800) or
+                (interval == FileFetcher.INTERVAL_7 and diff >= 604800) or
+                (interval == FileFetcher.INTERVAL_14 and diff >= 1209600)):
             update = True
         return update
 
@@ -2526,7 +2528,10 @@ class YoSource(Source):
         diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
         if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
                 (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
-                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800) or
+                (interval == FileFetcher.INTERVAL_7 and diff >= 604800) or
+                (interval == FileFetcher.INTERVAL_14 and diff >= 1209600)):
+
             update = True
         return update
 
@@ -2964,7 +2969,10 @@ class BBCSource(Source):
 
         if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
                 (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
-                (interval == FileFetcher.INTERVAL_48 and diff >= 172800)):
+                (interval == FileFetcher.INTERVAL_48 and diff >= 172800) or
+                (interval == FileFetcher.INTERVAL_7 and diff >= 604800) or
+                (interval == FileFetcher.INTERVAL_14 and diff >= 1209600)):
+
             update = True
 
         return update

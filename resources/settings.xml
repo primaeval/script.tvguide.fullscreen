@@ -11,7 +11,7 @@
         <setting id="gz" label="Look for .gz Files (Urls only)" type="bool" default="false" />
         <setting id="md5" label="md5 Check (Urls only)" type="bool" default="false" />
         <setting id="xmltv.refresh" label="Reset on Start" type="bool" default="false" />
-        <setting id="xmltv.interval" label="30128" type="enum" default="2" lvalues="30129|30130|30131|30132" />
+        <setting id="xmltv.interval" label="30128" type="enum" default="2" values="every start|12 hours|24 hours|48 hours|7 days|14 days" />
         <setting id="xmltv.date" label="Treat 4 Digit Program Date as Movie" type="bool" default="true" />
         <setting type="sep"/>
 
