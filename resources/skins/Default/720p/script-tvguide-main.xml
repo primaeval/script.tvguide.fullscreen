@@ -176,6 +176,17 @@
             <visible>Control.IsVisible(5000)|Control.IsVisible(5003)</visible>
         </control>
 
+        <control type="button">
+            <description>info osd</description>
+            <posx>0</posx>
+            <posy>200r</posy>
+            <width>1280</width>
+            <height>200</height>
+            <onclick>info</onclick>
+            <texturenofocus></texturenofocus>
+            <visible>Control.IsVisible(5000)+Control.IsVisible(6000)+Control.IsVisible(10000)+Control.IsVisible(8000)</visible>
+        </control>
+
         <control type="label" id="5000">
             <description>visibility marker for TV Guide group</description>
         </control>
