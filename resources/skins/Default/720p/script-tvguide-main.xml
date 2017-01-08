@@ -183,8 +183,21 @@
             <width>1280</width>
             <height>200</height>
             <onclick>info</onclick>
+            <texturefocus></texturefocus>
             <texturenofocus></texturenofocus>
             <visible>Control.IsVisible(5000)+Control.IsVisible(6000)+Control.IsVisible(10000)+Control.IsVisible(8000)</visible>
+        </control>
+
+        <control type="button">
+            <description>back</description>
+            <posx>100r</posx>
+            <posy>0</posy>
+            <width>100</width>
+            <height>100</height>
+            <onclick>back</onclick>
+            <texturefocus></texturefocus>
+            <texturenofocus></texturenofocus>
+            <visible>true</visible>
         </control>
 
         <control type="label" id="5000">
@@ -2667,6 +2680,8 @@
                 <fadetime>200</fadetime>
                 <visible>false</visible>
             </control>
+
+
 
             <control type="image" id="14100">
                 <description>time bar</description>
