@@ -1918,6 +1918,92 @@
                 <texturenofocus></texturenofocus>
             </control>
 
+<!-- OSD Mouse controls Vertical-->
+
+                  <control type="button">
+                    <description>Right</description>
+                    <posx>1250</posx>
+                    <posy>0</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_right.png</texturefocus>
+                    <texturenofocus>osd_right.png</texturenofocus>
+                <onclick>Right</onclick>
+                </control>
+
+                <control type="button">
+                    <description>Left</description>
+                    <posx>1250</posx>
+                    <posy>35</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_left.png</texturefocus>
+                    <texturenofocus>osd_left.png</texturenofocus>
+                <onclick>Left</onclick>
+                </control>
+
+                 <control type="button">
+                    <description>Up</description>
+                    <posx>1250</posx>
+                    <posy>70</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_up.png</texturefocus>
+                    <texturenofocus>osd_up.png</texturenofocus>
+                <onclick>Up</onclick>
+                </control>
+
+                <control type="button">
+                    <description>Down</description>
+                    <posx>1250</posx>
+                    <posy>105</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_down.png</texturefocus>
+                    <texturenofocus>osd_down.png</texturenofocus>
+                <onclick>Down</onclick>
+                </control>
+
+                <control type="button">
+                    <description>OK</description>
+                    <posx>1250</posx>
+                    <posy>140</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <texturefocus>button_refresh.png</texturefocus>
+                    <texturenofocus>button_refresh.png</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>down</onclick>
+                </control>
+
+                <control type="button">
+                    <description>Back to Main EPGHome Screen</description>
+                    <posx>1250</posx>
+                    <posy>180</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>back.png</texturefocus>
+                    <texturenofocus>back.png</texturenofocus>
+                    <onclick>Back</onclick>
+                </control>
+
             <!-- Program description -->
             <control type="label" id="6001">
                 <description>Program title</description>
