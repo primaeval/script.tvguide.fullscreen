@@ -1244,6 +1244,9 @@ class TVGuide(xbmcgui.WindowXML):
                 return
             else:
                 del searches[which]
+                f = xbmcvfs.File(file_name,"wb")
+                f.write('\n'.join(searches))
+                f.close()
                 return
         else:
             title = searches[action-2]
@@ -1291,6 +1294,9 @@ class TVGuide(xbmcgui.WindowXML):
                 return
             else:
                 del searches[which]
+                f = xbmcvfs.File(file_name,"wb")
+                f.write('\n'.join(searches))
+                f.close()
                 return
         else:
             title = searches[action-2]
