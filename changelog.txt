@@ -1,4 +1,4 @@
-version 0.0.292
+version 0.0.292-293
 - clear Autoplaywiths fix (thanks FXB78)
 
 version 0.0.290-291
