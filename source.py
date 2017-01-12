@@ -1682,6 +1682,7 @@ class XMLTVSource(Source):
                         name_stream = line.split('=',1)
                         if len(name_stream) == 2:
                             (name,stream) = name_stream
+                            name = name.replace(':','')
                             streams[addon][name] = stream
 
             if (ADDON.getSetting('addons.ini.subscriptions') == "true"):
