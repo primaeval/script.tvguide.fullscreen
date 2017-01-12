@@ -1485,6 +1485,15 @@ class Database(object):
         self.conn.commit()
         c.close()
 
+    def clearAllAutoplaywiths(self):
+        self._invokeAndBlockForResult(self._clearAllAutoplaywiths)
+        # no result, but block until operation is done
+
+    def _clearAllAutoplaywiths(self):
+        c = self.conn.cursor()
+        c.execute('DELETE FROM autoplaywiths')
+        self.conn.commit()
+        c.close()
 
 
 class Source(object):
