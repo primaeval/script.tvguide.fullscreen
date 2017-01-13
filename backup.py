@@ -63,6 +63,19 @@ def setAltCustomStreamUrls(success):
     else:
         database.close()
 
+def clearCustomStreamUrls(success):
+    if success:
+        database.clearCustomStreamUrls()
+        xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), 'Cleared channel mappings')
+    else:
+        database.close()
+
+def clearAltCustomStreamUrls(success):
+    if success:
+        database.clearAltCustomStreamUrls()
+        xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), 'Cleared alternative channel mappings')
+    else:
+        database.close()
 
 if __name__ == '__main__':
     database = source.Database()
@@ -76,3 +89,7 @@ if __name__ == '__main__':
             database.initialize(getAltCustomStreamUrls)
         elif mode in [4]:
             database.initialize(setAltCustomStreamUrls)
+        elif mode in [5]:
+            database.initialize(clearCustomStreamUrls)
+        elif mode in [6]:
+            database.initialize(clearAltCustomStreamUrls)

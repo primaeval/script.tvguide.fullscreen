@@ -225,9 +225,11 @@
         <setting id="xmltv2.url" label="XMLTV Secondary Url" type="text" visible="eq(-3,true) + eq(-2,1)"  />
     </category>
     <category label="Backup">
+        <setting label="Clear Channel Mappings" type="action" action="RunScript($CWD/backup.py,5)" />
         <setting label="Export Channel Mappings" type="action" action="RunScript($CWD/backup.py,1)" />
         <setting label="Import Channel Mappings" type="action" action="RunScript($CWD/backup.py,2)" />
         <setting type="sep"/>
+        <setting label="Clear Alternative Channel Mappings" type="action" action="RunScript($CWD/backup.py,6)" />
         <setting label="Export Alternative Channel Mappings" type="action" action="RunScript($CWD/backup.py,3)" />
         <setting label="Import Alternative Channel Mappings" type="action" action="RunScript($CWD/backup.py,4)" />
         <setting type="sep"/>

@@ -1123,6 +1123,26 @@ class Database(object):
         self.conn.commit()
         c.close()
 
+    def clearCustomStreamUrls(self):
+        self.eventQueue.append([self._clearCustomStreamUrls, None])
+        self.event.set()
+
+    def _clearCustomStreamUrls(self):
+        c = self.conn.cursor()
+        c.execute("DELETE FROM custom_stream_url")
+        self.conn.commit()
+        c.close()
+
+    def clearAltCustomStreamUrls(self):
+        self.eventQueue.append([self._clearAltCustomStreamUrls, None])
+        self.event.set()
+
+    def _clearAltCustomStreamUrls(self):
+        c = self.conn.cursor()
+        c.execute("DELETE FROM alt_custom_stream_url")
+        self.conn.commit()
+        c.close()
+
     def deleteAltCustomStreamUrl(self, url):
         self.eventQueue.append([self._deleteAltCustomStreamUrl, None, url])
         self.event.set()
