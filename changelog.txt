@@ -1,3 +1,6 @@
+version 0.0.295
+- Settings \ Backup \ Clear <Alternative> Channel Mappings
+
 version 0.0.294
 - Settings \ Backup \ Export/Import Alternative Channel Mappings
 - userdata\addon_data\script.tvguide.fullscreen\alt_custom_stream_urls.tsv
