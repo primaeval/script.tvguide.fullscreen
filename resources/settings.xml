@@ -228,6 +228,9 @@
         <setting label="Export Channel Mappings" type="action" action="RunScript($CWD/backup.py,1)" />
         <setting label="Import Channel Mappings" type="action" action="RunScript($CWD/backup.py,2)" />
         <setting type="sep"/>
+        <setting label="Export Alternative Channel Mappings" type="action" action="RunScript($CWD/backup.py,3)" />
+        <setting label="Import Alternative Channel Mappings" type="action" action="RunScript($CWD/backup.py,4)" />
+        <setting type="sep"/>
         <setting label="Download All Addon Folder Logos" type="action" action="RunScript($CWD/logos.py)" />
         <setting label="Download All Channel Logos" type="action" action="RunScript($CWD/channel_logos.py)" />
     </category>

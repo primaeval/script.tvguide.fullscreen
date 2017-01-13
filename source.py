@@ -1046,6 +1046,21 @@ class Database(object):
             self.conn.commit()
             c.close()
 
+    def setAltCustomStreamUrls(self, stream_urls):
+        if stream_urls is not None:
+            self._invokeAndBlockForResult(self._setAltCustomStreamUrls, stream_urls)
+            # no result, but block until operation is done
+
+    def _setAltCustomStreamUrls(self, stream_urls):
+        if stream_urls is not None:
+            c = self.conn.cursor()
+            for (id,title,stream_url) in stream_urls:
+                #c.execute("DELETE FROM alt_custom_stream_url WHERE channel=?", [id])
+                c.execute("INSERT OR REPLACE INTO alt_custom_stream_url(channel, title, stream_url) VALUES(?, ?, ?)",
+                          [id, title.decode('utf-8', 'ignore'), stream_url.decode('utf-8', 'ignore')])
+            self.conn.commit()
+            c.close()
+
     def getCustomStreamUrl(self, channel):
         return self._invokeAndBlockForResult(self._getCustomStreamUrl, channel)
 
@@ -1072,7 +1087,7 @@ class Database(object):
         c.execute("SELECT DISTINCT stream_url, title FROM alt_custom_stream_url WHERE channel=?", [channel.id])
         stream_url = []
         for row in c:
-            stream_url.append((row["stream_url"],row["title"]))
+            stream_url.append((row["stream_url"],row["title"],))
         return stream_url
 
     def getCustomStreamUrls(self):
@@ -1087,14 +1102,15 @@ class Database(object):
         return stream_urls
 
     def getAltCustomStreamUrls(self):
-        return self._invokeAndBlockForResult(self._getCustomStreamUrls)
+        return self._invokeAndBlockForResult(self._getAltCustomStreamUrls)
 
     def _getAltCustomStreamUrls(self):
         c = self.conn.cursor()
         c.execute("SELECT * FROM alt_custom_stream_url")
         stream_urls = []
         for row in c:
-            stream_urls.append((row["channel"],row["stream_url"]))
+            log(row)
+            stream_urls.append((row["channel"],row["title"],row["stream_url"]))
         return stream_urls
 
     def deleteCustomStreamUrl(self, channel):
@@ -1970,7 +1986,7 @@ class XMLTVSource(Source):
 
 class FileWrapper(object):
     def __init__(self, filename):
-        self.vfsfile = xbmcvfs.File(filename)
+        self.vfsfile = xbmcvfs.File(filename,"rb")
         self.size = self.vfsfile.size()
         self.bytesRead = 0
 
