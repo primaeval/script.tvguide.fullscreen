@@ -1,3 +1,8 @@
+version 0.0.294
+- Settings \ Backup \ Export/Import Alternative Channel Mappings
+- userdata\addon_data\script.tvguide.fullscreen\alt_custom_stream_urls.tsv
+- tsv fields (id,name,url)
+
 version 0.0.292-293
 - clear Autoplaywiths fix (thanks FXB78)
 
