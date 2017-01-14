@@ -1,3 +1,6 @@
+version 0.0.296
+- Mouse Move controls for OSD, Last Channel, Quick EPG
+
 version 0.0.295
 - Settings \ Backup \ Clear <Alternative> Channel Mappings
 
