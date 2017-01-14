@@ -1517,7 +1517,7 @@
                     <visible>false</visible>
                 </control>
                 <control type="button" id="44301">
-                    <description>navigate to now</description>
+                    <description>navigate to now BIG</description>
                     <posx>710</posx>
                     <posy>480</posy>
                     <width>288</width>
@@ -1532,7 +1532,7 @@
                     <texturenofocus></texturenofocus>
                 </control>
                 <control type="button" id="44302">
-                    <description>navigate left</description>
+                    <description>navigate left BIG</description>
                     <posx>430</posx>
                     <posy>480</posy>
                     <width>278</width>
@@ -1592,7 +1592,7 @@
                     <texturenofocus></texturenofocus>
                 </control>
                 <control type="button" id="44303">
-                    <description>navigate up</description>
+                    <description>navigate up BIG</description>
                     <posx>0</posx>
                     <posy>30</posy>
                     <width>180</width>
@@ -1607,7 +1607,7 @@
                     <texturenofocus></texturenofocus>
                 </control>
                 <control type="button" id="44304">
-                    <description>navigate down</description>
+                    <description>navigate down BIG</description>
                     <posx>0</posx>
                     <posy>240</posy>
                     <width>180</width>
@@ -1622,7 +1622,7 @@
                     <texturenofocus></texturenofocus>
                 </control>
                 <control type="button" id="44305">
-                    <description>navigate right</description>
+                    <description>navigate right BIG</description>
                     <posx>1000</posx>
                     <posy>480</posy>
                     <width>280</width>
@@ -1986,7 +1986,7 @@
                     <label></label>
                     <texturefocus>osd_right.png</texturefocus>
                     <texturenofocus>osd_right.png</texturenofocus>
-                <onclick>Right</onclick>
+                    <onclick>Right</onclick>
                 </control>
 
                 <control type="button">
@@ -2000,7 +2000,7 @@
                     <label></label>
                     <texturefocus>osd_left.png</texturefocus>
                     <texturenofocus>osd_left.png</texturenofocus>
-                <onclick>Left</onclick>
+                    <onclick>Left</onclick>
                 </control>
 
                  <control type="button">
@@ -2014,7 +2014,7 @@
                     <label></label>
                     <texturefocus>osd_up.png</texturefocus>
                     <texturenofocus>osd_up.png</texturenofocus>
-                <onclick>Up</onclick>
+                    <onclick>Up</onclick>
                 </control>
 
                 <control type="button">
@@ -2028,7 +2028,7 @@
                     <label></label>
                     <texturefocus>osd_down.png</texturefocus>
                     <texturenofocus>osd_down.png</texturenofocus>
-                <onclick>Down</onclick>
+                    <onclick>Down</onclick>
                 </control>
 
                 <control type="button">
