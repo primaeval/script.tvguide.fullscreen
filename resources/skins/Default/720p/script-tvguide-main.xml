@@ -1960,6 +1960,20 @@
             </control>
 
 <!-- OSD Mouse controls Vertical-->
+            <control type="label" id="6300">
+                <description>visibility marker for mouse control group</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>40</width>
+                <height>40</height>
+            </control>
+            <control type="group">
+                <visible>true</visible>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>720</height>
+                <visible>!Control.IsVisible(6300)</visible>
 
                   <control type="button">
                     <description>Right</description>
@@ -2073,7 +2087,8 @@
                     <onclick>info</onclick>
                     <onclick>left</onclick>
                 </control>
-
+            </control>
+            
             <!-- Program description -->
             <control type="label" id="6001">
                 <description>Program title</description>

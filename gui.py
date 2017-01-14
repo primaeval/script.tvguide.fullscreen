@@ -243,6 +243,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_OSD_TITLE = 6008
     C_NEXT_OSD_TIME = 6009
     C_NEXT_OSD_CHANNEL_IMAGE = 6010
+    C_MAIN_OSD_MOUSE_CONTROLS = 6300
     C_MAIN_VIDEO_BACKGROUND = 5555
     C_MAIN_VIDEO_PIP = 6666
     C_MAIN_LAST_PLAYED = 8000
@@ -422,6 +423,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlVisible(self.C_MAIN_PIP,False)
             self.setControlVisible(self.C_MAIN_VIDEO,True)
 
+        self._hideControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS, self.C_MAIN_OSD)
         self._hideControl(self.C_MAIN_LAST_PLAYED)
         self._hideControl(self.C_UP_NEXT)
@@ -636,6 +638,12 @@ class TVGuide(xbmcgui.WindowXML):
 
 
     def onActionOSDMode(self, action):
+        if action.getId() == ACTION_MOUSE_MOVE:
+        #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
+            if ADDON.getSetting('mouse.controls') == "true":
+                self._showControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
+            return
+
         #if action.getId() == ACTION_SHOW_INFO:
         if action.getId() in COMMAND_ACTIONS["OSD"]:
             self._hideOsd()
@@ -1446,6 +1454,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
+        self._hideControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
         if not program.imageSmall and (program.title in self.tvdb_urls):
             program.imageSmall = self.tvdb_urls[program.title]
         d = PopupMenu(self.database, program, not program.notificationScheduled, not program.autoplayScheduled, not program.autoplaywithScheduled, self.category, self.categories)
