@@ -2088,7 +2088,7 @@
                     <onclick>left</onclick>
                 </control>
             </control>
-            
+
             <!-- Program description -->
             <control type="label" id="6001">
                 <description>Program title</description>
@@ -2288,6 +2288,79 @@
                 <focusedcolor>black</focusedcolor>
                 <texturefocus></texturefocus>
                 <texturenofocus></texturenofocus>
+            </control>
+
+            <control type="label" id="8300">
+                <description>visibility marker for mouse control group</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>40</width>
+                <height>40</height>
+            </control>
+            <control type="group">
+                <visible>true</visible>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>720</height>
+                <visible>!Control.IsVisible(8300)</visible>
+
+                <control type="button">
+                    <description>OK</description>
+                    <posx>1250</posx>
+                    <posy>140</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <texturefocus>button_refresh.png</texturefocus>
+                    <texturenofocus>button_refresh.png</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>down</onclick>
+                </control>
+
+                <control type="button">
+                    <description>Back to Main EPGHome Screen</description>
+                    <posx>1250</posx>
+                    <posy>180</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>back.png</texturefocus>
+                    <texturenofocus>back.png</texturenofocus>
+                    <onclick>Back</onclick>
+                </control>
+
+                <control type="button">
+                    <description>OSD Mouse controls Now All Channels</description>
+                    <posx>1150</posx>
+                    <posy>180</posy>
+                    <width>60</width>
+                    <height>28</height>
+                    <textcolor>grey</textcolor>
+                    <font>font10</font>
+                    <label>NOW</label>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>up</onclick>
+                </control>
+                <control type="button">
+                    <description>OSD Mouse controls Last Channel Info</description>
+                    <posx>1200</posx>
+                    <posy>180</posy>
+                    <width>50</width>
+                    <height>28</height>
+                    <textcolor>grey</textcolor>
+                    <font>font10</font>
+                    <label>LAST</label>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>left</onclick>
+                </control>
             </control>
 
             <!-- Program description -->
@@ -2758,7 +2831,142 @@
                 <visible>false</visible>
             </control>
 
+            <control type="label" id="10300">
+                <description>visibility marker for mouse control group</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>40</width>
+                <height>40</height>
+            </control>
+            <control type="group">
+                <visible>true</visible>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>1280</width>
+                <height>720</height>
+                <visible>!Control.IsVisible(10300)</visible>
 
+                  <control type="button">
+                    <description>Right</description>
+                    <posx>1250</posx>
+                    <posy>0</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_right.png</texturefocus>
+                    <texturenofocus>osd_right.png</texturenofocus>
+                    <onclick>Right</onclick>
+                    <visible>false</visible>
+                </control>
+
+                <control type="button">
+                    <description>Left</description>
+                    <posx>1210</posx>
+                    <posy>0</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_left.png</texturefocus>
+                    <texturenofocus>osd_left.png</texturenofocus>
+                    <onclick>Left</onclick>
+                    <visible>false</visible>
+                </control>
+
+                 <control type="button">
+                    <description>Up</description>
+                    <posx>1250</posx>
+                    <posy>70</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_up.png</texturefocus>
+                    <texturenofocus>osd_up.png</texturenofocus>
+                    <onclick>Up</onclick>
+                    <visible>false</visible>
+                </control>
+
+                <control type="button">
+                    <description>Down</description>
+                    <posx>1250</posx>
+                    <posy>105</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>osd_down.png</texturefocus>
+                    <texturenofocus>osd_down.png</texturenofocus>
+                    <onclick>Down</onclick>
+                    <visible>false</visible>
+                </control>
+
+                <control type="button">
+                    <description>OK</description>
+                    <posx>1250</posx>
+                    <posy>140</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <texturefocus>button_refresh.png</texturefocus>
+                    <texturenofocus>button_refresh.png</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>down</onclick>
+                    <visible>false</visible>
+                </control>
+
+                <control type="button">
+                    <description>Back to Main EPGHome Screen</description>
+                    <posx>1250</posx>
+                    <posy>180</posy>
+                    <width>28</width>
+                    <height>28</height>
+                    <textcolor>ffffffff</textcolor>
+                    <font>font13</font>
+                    <label></label>
+                    <texturefocus>back.png</texturefocus>
+                    <texturenofocus>back.png</texturenofocus>
+                    <onclick>Back</onclick>
+                    <visible>false</visible>
+                </control>
+
+                <control type="button">
+                    <description>OSD Mouse controls Now All Channels</description>
+                    <posx>1150</posx>
+                    <posy>180</posy>
+                    <width>60</width>
+                    <height>28</height>
+                    <textcolor>grey</textcolor>
+                    <font>font10</font>
+                    <label>NOW</label>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>up</onclick>
+                    <visible>false</visible>
+                </control>
+                <control type="button">
+                    <description>OSD Mouse controls Last Channel Info</description>
+                    <posx>1200</posx>
+                    <posy>180</posy>
+                    <width>50</width>
+                    <height>28</height>
+                    <textcolor>grey</textcolor>
+                    <font>font10</font>
+                    <label>LAST</label>
+                    <texturefocus>-</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <onclick>info</onclick>
+                    <onclick>left</onclick>
+                    <visible>false</visible>
+                </control>
+            </control>
 
             <control type="image" id="14100">
                 <description>time bar</description>

@@ -221,6 +221,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_VIDEO = 5003
     C_QUICK_EPG = 10000
     C_QUICK_EPG_VIEW_MARKER = 10001
+    C_QUICK_EPG_MOUSE_CONTROLS = 10300
     C_QUICK_EPG_DATE = 14000
     C_QUICK_EPG_TITLE = 17020
     C_QUICK_EPG_TIME = 17021
@@ -258,6 +259,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_LAST_PLAYED_TITLE = 8008
     C_NEXT_LAST_PLAYED_TIME = 8009
     C_NEXT_LAST_PLAYED_CHANNEL_IMAGE = 8010
+    C_MAIN_LAST_PLAYED_MOUSE_CONTROLS = 8300
     C_UP_NEXT = 9000
     C_MAIN_UP_NEXT_TITLE = 9001
     C_MAIN_UP_NEXT_TIME = 9002
@@ -424,6 +426,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlVisible(self.C_MAIN_VIDEO,True)
 
         self._hideControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
+        self._hideControl(self.C_QUICK_EPG_MOUSE_CONTROLS)
+        self._hideControl(self.C_MAIN_LAST_PLAYED_MOUSE_CONTROLS)
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS, self.C_MAIN_OSD)
         self._hideControl(self.C_MAIN_LAST_PLAYED)
         self._hideControl(self.C_UP_NEXT)
@@ -704,6 +708,11 @@ class TVGuide(xbmcgui.WindowXML):
 
 
     def onActionLastPlayedMode(self, action):
+        if action.getId() == ACTION_MOUSE_MOVE:
+        #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
+            if ADDON.getSetting('mouse.controls') == "true":
+                self._showControl(self.C_MAIN_LAST_PLAYED_MOUSE_CONTROLS)
+            return
         if action.getId() in COMMAND_ACTIONS["LAST_CHANNEL"]:
             self._hideLastPlayed()
 
@@ -944,6 +953,11 @@ class TVGuide(xbmcgui.WindowXML):
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
     def onActionQuickEPGMode(self, action):
+        if action.getId() == ACTION_MOUSE_MOVE:
+        #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
+            if ADDON.getSetting('mouse.controls') == "true":
+                self._showControl(self.C_QUICK_EPG_MOUSE_CONTROLS)
+            return
         #if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK]:
         if action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self._hideQuickEpg()
@@ -1455,6 +1469,8 @@ class TVGuide(xbmcgui.WindowXML):
     def _showContextMenu(self, program):
         self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
         self._hideControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
+        self._hideControl(self.C_QUICK_EPG_MOUSE_CONTROLS)
+        self._hideControl(self.C_MAIN_LAST_PLAYED_MOUSE_CONTROLS)
         if not program.imageSmall and (program.title in self.tvdb_urls):
             program.imageSmall = self.tvdb_urls[program.title]
         d = PopupMenu(self.database, program, not program.notificationScheduled, not program.autoplayScheduled, not program.autoplaywithScheduled, self.category, self.categories)
