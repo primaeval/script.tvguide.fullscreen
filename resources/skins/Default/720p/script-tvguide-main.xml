@@ -1651,11 +1651,12 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4310">
                     <description>now list</description>
-                    <posx>100</posx>
+                    <posx>630</posx>
                     <posy>30r</posy>
                     <width>90</width>
                     <height>30</height>
@@ -1670,8 +1671,8 @@
                 </control>
 
                 <control type="button" id="4311">
-                    <description>now list</description>
-                    <posx>200</posx>
+                    <description>next list</description>
+                    <posx>730</posx>
                     <posy>30r</posy>
                     <width>90</width>
                     <height>30</height>
@@ -1686,8 +1687,8 @@
                 </control>
 
                 <control type="button" id="4312">
-                    <description>now list</description>
-                    <posx>300</posx>
+                    <description>search</description>
+                    <posx>830</posx>
                     <posy>30r</posy>
                     <width>90</width>
                     <height>30</height>
@@ -1703,10 +1704,10 @@
 
                 <control type="button" id="4314">
                     <description>channel number</description>
-                    <posx>0</posx>
-                    <posy>480</posy>
+                    <posx>430</posx>
+                    <posy>30r</posy>
                     <width>90</width>
-                    <height>20</height>
+                    <height>30</height>
                     <label>NUM</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1719,10 +1720,10 @@
 
                 <control type="button" id="4315">
                     <description>stop</description>
-                    <posx>100</posx>
-                    <posy>480</posy>
+                    <posx>530</posx>
+                    <posy>30r</posy>
                     <width>90</width>
-                    <height>20</height>
+                    <height>30</height>
                     <label>STOP</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1735,10 +1736,10 @@
 
                 <control type="button" id="4316">
                     <description>favourites</description>
-                    <posx>200</posx>
-                    <posy>480</posy>
+                    <posx>930</posx>
+                    <posy>30r</posy>
                     <width>90</width>
-                    <height>20</height>
+                    <height>30</height>
                     <label>FAVS</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1747,6 +1748,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>true</visible>
                 </control>
 
                 <control type="button" id="4317">
@@ -1763,7 +1765,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-                    <visible>true</visible>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="8000053">
@@ -1781,6 +1783,7 @@
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                     <onclick>RunAddon(plugin.program.fixtures)</onclick>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4301">
@@ -1797,6 +1800,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4302">
@@ -1813,6 +1817,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
                 <control type="button" id="4303">
                     <description>navigate up</description>
@@ -1828,6 +1833,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
                 <control type="button" id="4304">
                     <description>navigate down</description>
@@ -1843,6 +1849,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
                 <control type="button" id="4305">
                     <description>navigate right</description>
@@ -1858,6 +1865,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
                 <control type="button" id="4307">
                     <description>menu</description>
@@ -1873,21 +1881,22 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
                 <control type="button" id="4308">
                     <description>categories</description>
-                    <posx>1030</posx>
-                    <posy>30r</posy>
-                    <width>160</width>
+                    <posx>180</posx>
+                    <posy>0</posy>
+                    <width>900</width>
                     <height>30</height>
-                    <label>CATEGORIES</label>
+                    <label></label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
                     <textcolor>grey</textcolor>
                     <focusedcolor>black</focusedcolor>
-                    <texturefocus>tvg-button-focus.png</texturefocus>
-                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
                 </control>
                 <control type="button" id="4306">
                     <description>exit</description>
