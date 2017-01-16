@@ -1,3 +1,6 @@
+version 0.0.298
+- stop before play
+
 version 0.0.297
 - mouse button purge
 
