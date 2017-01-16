@@ -247,6 +247,9 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD_MOUSE_CONTROLS = 6300
     C_MAIN_VIDEO_BACKGROUND = 5555
     C_MAIN_VIDEO_PIP = 6666
+    C_CAT_BACKGROUND = 7000
+    C_CAT_QUIT = 7003
+    C_CAT_CATEGORY = 7004
     C_MAIN_LAST_PLAYED = 8000
     C_MAIN_LAST_PLAYED_TITLE = 8001
     C_MAIN_LAST_PLAYED_TIME = 8002
@@ -1133,6 +1136,16 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId == self.C_MAIN_MOUSE_SEARCH:
             self.programSearchSelect()
             return
+        elif controlId == self.C_CAT_CATEGORY:
+            cList = self.getControl(self.C_CAT_CATEGORY)
+            item = cList.getSelectedItem()
+            if item:
+                self.category = item.getLabel()
+                ADDON.setSetting('category',self.category)
+                self.database.setCategory(self.category)
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+                return
+
         program = self._getProgramFromControl(self.getControl(controlId))
         if self.mode == MODE_QUICK_EPG :
             program = self._getQuickProgramFromControl(self.getControl(controlId))
@@ -2610,6 +2623,15 @@ class TVGuide(xbmcgui.WindowXML):
         self.setControlLabel(self.C_MAIN_LOADING_TIME_LEFT, strings(CALCULATING_REMAINING_TIME))
         self._showControl(self.C_MAIN_LOADING)
         self.setFocusId(self.C_MAIN_LOADING_CANCEL)
+
+        items = []
+        categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
+        for label in categories:
+            item = xbmcgui.ListItem(label)
+            items.append(item)
+        listControl = self.getControl(self.C_CAT_CATEGORY)
+        listControl.reset()
+        listControl.addItems(items)
 
         # remove existing controls
         self._clearEpg()

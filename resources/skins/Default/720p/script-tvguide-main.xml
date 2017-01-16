@@ -451,6 +451,7 @@
                 </control>
             </control>
 
+
             <!-- Channels column -->
             <control type="group">
                 <posx>0</posx>
@@ -1914,6 +1915,76 @@
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 </control>
 
+            </control>
+
+
+            <control type="image" id="7000">
+                <left>430</left>
+                <top>480</top>
+                <width>840</width>
+                <height>20</height>
+                <texture>white.png</texture>
+                <visible>true</visible>
+            </control>
+
+            <control type="list" id="7004">
+                <description>categories</description>
+                <left>430</left>
+                <top>480</top>
+                <width>840</width>
+                <height>20</height>
+                <visible>true</visible>
+                <onup></onup>
+                <ondown></ondown>
+                <onleft></onleft>
+                <onright></onright>
+                <viewtype label="3D list">list</viewtype>
+                <orientation>horizontal</orientation>
+
+                <itemlayout width="210" height="20">
+                    <control type="image">
+                        <posx>1</posx>
+                        <posy>0</posy>
+                        <width>208</width>
+                        <height>20</height>
+                        <texture>black-back.png</texture>
+                        <visible>true</visible>
+                    </control>
+                    <control type="label">
+                        <left>0</left>
+                        <top>0</top>
+                        <width>210</width>
+                        <height>20</height>
+                        <font>font13</font>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <textcolor>white</textcolor>
+                        <selectedcolor>blue</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="210" height="20">
+                    <control type="image">
+                        <posx>1</posx>
+                        <posy>0</posy>
+                        <width>208</width>
+                        <height>20</height>
+                        <texture>tvg-program-focus.png</texture>
+                        <visible>true</visible>
+                    </control>
+                    <control type="label">
+                        <left>0</left>
+                        <top>0</top>
+                        <width>210</width>
+                        <height>20</height>
+                        <font>font13</font>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <textcolor>black</textcolor>
+                        <selectedcolor>yellow</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                </focusedlayout>
             </control>
 
         </control>
