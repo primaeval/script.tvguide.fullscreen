@@ -2293,6 +2293,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         wasPlaying = self.player.isPlaying()
         if url:
+            self.player.stop()
             if url.startswith("plugin://plugin.video.meta/movies/play_by_name") and program is not None:
                 import urllib
                 title = urllib.quote(program.title)
