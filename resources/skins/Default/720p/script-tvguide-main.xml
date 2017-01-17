@@ -1924,7 +1924,7 @@
                 <width>850</width>
                 <height>22</height>
                 <texture>white.png</texture>
-                <visible>true</visible>
+                <visible>false</visible>
             </control>
 
             <control type="list" id="7004">
@@ -1969,7 +1969,7 @@
                         <posy>0</posy>
                         <width>168</width>
                         <height>20</height>
-                        <texture>tvg-program-nofocus.png</texture>
+                        <texture>tvg-program-focus.png</texture>
                         <visible>true</visible>
                     </control>
                     <control type="image">
