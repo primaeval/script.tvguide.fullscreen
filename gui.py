@@ -782,6 +782,96 @@ class TVGuide(xbmcgui.WindowXML):
 
         if self.categories_test:
             self.setFocusId(self.C_CAT_CATEGORY)
+            if action.getId() in COMMAND_ACTIONS["MENU"]:
+                kodi = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
+                dialog = xbmcgui.Dialog()
+                if kodi < 16:
+                    dialog.ok('TV Guide Fullscreen', 'Editing categories in Kodi %s is currently not supported.' % kodi)
+                else:
+                    cList = self.getControl(self.C_CAT_CATEGORY)
+                    item = cList.getSelectedItem()
+                    if item:
+                        self.selected_category = item.getLabel()
+                    if self.selected_category == "All Channels":
+                        selection = ["Add Category"]
+                    else:
+                        selection = ["Add Category","Add Channels","Remove Channels","Clear Channels"]
+                    dialog = xbmcgui.Dialog()
+                    ret = dialog.select("%s" % self.selected_category, selection)
+                    if ret < 0:
+                        return
+
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+                    lines = f.read().splitlines()
+                    f.close()
+                    categories = {}
+                    if self.selected_category not in ["Any", "All Channels"]:
+                        categories[self.selected_category] = []
+                    for line in lines:
+                        if '=' in line:
+                            name,cat = line.strip().split('=')
+                            if cat not in categories:
+                                categories[cat] = []
+                            categories[cat].append(name)
+
+                    if ret == 1:
+                        channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=True,all=True)])
+                        channelList = [c for c in channelList if c not in categories[self.selected_category]]
+                        str = 'Add Channels To %s' % self.selected_category
+                        ret = dialog.multiselect(str, channelList)
+                        if ret is None:
+                            return
+                        if not ret:
+                            ret = []
+                        channels = []
+                        for i in ret:
+                            channels.append(channelList[i])
+
+                        for channel in channels:
+                            if channel not in categories[self.selected_category]:
+                                categories[self.selected_category].append(channel)
+
+                    elif ret == 2:
+                        channelList = sorted(categories[self.selected_category])
+                        str = 'Remove Channels From %s' % self.selected_category
+                        ret = dialog.multiselect(str, channelList)
+                        if ret is None:
+                            return
+                        if not ret:
+                            ret = []
+                        channels = []
+                        for i in ret:
+                            channelList[i] = ""
+                        categories[self.selected_category] = []
+                        for name in channelList:
+                            if name:
+                                categories[self.selected_category].append(name)
+
+                    elif ret == 3:
+                        categories[self.selected_category] = []
+
+                    elif ret == 0:
+                        dialog = xbmcgui.Dialog()
+                        cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
+                        if cat:
+                            if cat not in categories:
+                                categories[cat] = []
+                            items = list()
+                            new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
+                            for label in new_categories:
+                                item = xbmcgui.ListItem(label)
+                                items.append(item)
+                            listControl = self.getControl(self.C_CAT_CATEGORY)
+                            listControl.reset()
+                            listControl.addItems(items)
+
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
+                    for cat in categories:
+                        channels = categories[cat]
+                        for channel in channels:
+                            f.write("%s=%s\n" % (channel.encode("utf8"),cat))
+                    f.close()
+                    self.categories = [category for category in categories if category]
             return
 
         controlInFocus = None
