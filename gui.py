@@ -333,6 +333,7 @@ class TVGuide(xbmcgui.WindowXML):
             categories.add(cat)
         categories = sorted(categories)
         self.categories = categories
+        self.categories_test = False
         if ADDON.getSetting('categories.remember') == 'false':
             self.category = ""
         else:
@@ -773,7 +774,15 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.close()
                 return
+        elif action.getId() in COMMAND_ACTIONS["CATEGORIES_BAR"]:
+            self.categories_test = not self.categories_test
+            if self.categories_test:
+                self.setFocusId(self.C_CAT_CATEGORY)
+                return
 
+        if self.categories_test:
+            self.setFocusId(self.C_CAT_CATEGORY)
+            return
 
         controlInFocus = None
         currentFocus = self.focusPoint
@@ -1049,6 +1058,12 @@ class TVGuide(xbmcgui.WindowXML):
         if self.isClosing:
             return
 
+        if controlId == self.C_CAT_CATEGORY:
+            cList = self.getControl(self.C_CAT_CATEGORY)
+            item = cList.getSelectedItem()
+            if item:
+                self.selected_category = item.getLabel()
+                self.category = self.selected_category
         if controlId in [self.C_MAIN_MOUSE_FIRST]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
@@ -1140,6 +1155,7 @@ class TVGuide(xbmcgui.WindowXML):
             cList = self.getControl(self.C_CAT_CATEGORY)
             item = cList.getSelectedItem()
             if item:
+                self.categories_test = False
                 self.category = item.getLabel()
                 ADDON.setSetting('category',self.category)
                 self.database.setCategory(self.category)
@@ -2632,6 +2648,13 @@ class TVGuide(xbmcgui.WindowXML):
         listControl = self.getControl(self.C_CAT_CATEGORY)
         listControl.reset()
         listControl.addItems(items)
+        if self.category:
+            index = categories.index(self.category)
+            listControl.selectItem(index)
+        name = remove_formatting(ADDON.getSetting('categories.background.color'))
+        color = colors.color_name[name]
+        control = self.getControl(self.C_CAT_BACKGROUND)
+        control.setColorDiffuse(color)
 
         # remove existing controls
         self._clearEpg()
