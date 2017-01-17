@@ -1265,7 +1265,7 @@
                 <font>font13</font>
                 <align>right</align>
                 <aligny>center</aligny>
-                <visible>true</visible>
+                <visible>false</visible>
                 <scroll>true</scroll>
                 <label>-</label>
             </control>

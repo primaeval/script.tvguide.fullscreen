@@ -817,8 +817,8 @@ class TVGuide(xbmcgui.WindowXML):
                     if ret == 1:
                         channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=True,all=True)])
                         channelList = [c for c in channelList if c not in categories[self.selected_category]]
-                        str = 'Add Channels To %s' % self.selected_category
-                        ret = dialog.multiselect(str, channelList)
+                        sstr = 'Add Channels To %s' % self.selected_category
+                        ret = dialog.multiselect(sstr, channelList)
                         if ret is None:
                             return
                         if not ret:
@@ -833,8 +833,8 @@ class TVGuide(xbmcgui.WindowXML):
 
                     elif ret == 2:
                         channelList = sorted(categories[self.selected_category])
-                        str = 'Remove Channels From %s' % self.selected_category
-                        ret = dialog.multiselect(str, channelList)
+                        sstr = 'Remove Channels From %s' % self.selected_category
+                        ret = dialog.multiselect(sstr, channelList)
                         if ret is None:
                             return
                         if not ret:
@@ -2737,10 +2737,11 @@ class TVGuide(xbmcgui.WindowXML):
             items.append(item)
         listControl = self.getControl(self.C_CAT_CATEGORY)
         listControl.reset()
-        listControl.addItems(items)
-        if self.category:
-            index = categories.index(self.category)
-            listControl.selectItem(index)
+        if len(items) > 1:
+            listControl.addItems(items)
+            if self.category:
+                index = categories.index(self.category)
+                listControl.selectItem(index)
         name = remove_formatting(ADDON.getSetting('categories.background.color'))
         color = colors.color_name[name]
         control = self.getControl(self.C_CAT_BACKGROUND)
