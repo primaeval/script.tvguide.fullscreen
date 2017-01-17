@@ -34,11 +34,12 @@ if len(sys.argv) > 1:
     category = sys.argv[1]
     if category:
         ADDON.setSetting('category',category)
-ADDON.setSetting('source','')
+
 if len(sys.argv) > 2:
-    source = sys.argv[2]
-    if source:
-        ADDON.setSetting('source',source)
+    source = ADDON.getSetting('source.source')
+    new_source = sys.argv[2]
+    if new_source != source:
+        ADDON.setSetting('source.source',new_source)
 
 assets = [
 ('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/sunburst.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/sunburst.png'),
