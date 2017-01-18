@@ -1,3 +1,9 @@
+version 0.0.299
+- NEW CatBar Skin
+- to activate it map up the Show OSD action
+- "CATEGORIES_BAR": ["ACTION_SHOW_OSD"]
+- Keymap Editor \ Global \ Playback \ Show OSD
+
 version 0.0.298
 - stop before play
 
