@@ -2271,6 +2271,11 @@ class TVGuide(xbmcgui.WindowXML):
         elif control is None:
             first_channel = self.channelIdx - CHANNELS_PER_PAGE
             if first_channel < 0:
+                if self.getControl(self.C_CAT_CATEGORY) and ADDON.getSetting('up.cat') == 'true':
+                    self.categories_test = not self.categories_test
+                    if self.categories_test:
+                        self.setFocusId(self.C_CAT_CATEGORY)
+                        return
                 len_channels = self.database.getNumberOfChannels()
                 last_page = len_channels % CHANNELS_PER_PAGE
                 first_channel = len_channels - last_page
