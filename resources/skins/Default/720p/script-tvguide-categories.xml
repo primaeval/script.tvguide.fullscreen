@@ -49,11 +49,11 @@
             <viewtype label="3D list">list</viewtype>
             <orientation>horizontal</orientation>
 
-            <itemlayout width="256" height="30">
+            <itemlayout width="160" height="30">
                 <control type="image">
                     <posx>1</posx>
                     <posy>2</posy>
-                    <width>254</width>
+                    <width>158</width>
                     <height>26</height>
                     <texture>black-back.png</texture>
                     <visible>true</visible>
@@ -61,7 +61,7 @@
                 <control type="label">
                     <left>0</left>
                     <top>2</top>
-                    <width>256</width>
+                    <width>160</width>
                     <height>26</height>
                     <font>font13</font>
                     <align>center</align>
@@ -71,11 +71,11 @@
                     <info>ListItem.Label</info>
                 </control>
             </itemlayout>
-            <focusedlayout width="256" height="30">
+            <focusedlayout width="160" height="30">
                 <control type="image">
                     <posx>1</posx>
                     <posy>2</posy>
-                    <width>254</width>
+                    <width>158</width>
                     <height>26</height>
                     <texture>tvg-program-focus.png</texture>
                     <visible>true</visible>
@@ -83,7 +83,7 @@
                 <control type="label">
                     <left>0</left>
                     <top>2</top>
-                    <width>256</width>
+                    <width>160</width>
                     <height>26</height>
                     <font>font13</font>
                     <align>center</align>
