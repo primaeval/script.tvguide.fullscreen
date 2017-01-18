@@ -1,3 +1,7 @@
+version 0.0.300
+- Settings \ Appearance \ Up to Categories Bar
+  if skin has a Categories bar (use CatBar for now)
+
 version 0.0.299
 - NEW CatBar Skin
 - to activate it map up the Show OSD action
