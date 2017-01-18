@@ -774,7 +774,7 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.close()
                 return
-        elif action.getId() in COMMAND_ACTIONS["CATEGORIES_BAR"]:
+        elif action.getId() in COMMAND_ACTIONS["CATEGORIES_BAR"] and self.getControl(self.C_CAT_CATEGORY):
             self.categories_test = not self.categories_test
             if self.categories_test:
                 self.setFocusId(self.C_CAT_CATEGORY)
@@ -2736,16 +2736,17 @@ class TVGuide(xbmcgui.WindowXML):
             item = xbmcgui.ListItem(label)
             items.append(item)
         listControl = self.getControl(self.C_CAT_CATEGORY)
-        listControl.reset()
-        if len(items) > 1:
-            listControl.addItems(items)
-            if self.category:
-                index = categories.index(self.category)
-                listControl.selectItem(index)
-        name = remove_formatting(ADDON.getSetting('categories.background.color'))
-        color = colors.color_name[name]
-        control = self.getControl(self.C_CAT_BACKGROUND)
-        control.setColorDiffuse(color)
+        if listControl:
+            listControl.reset()
+            if len(items) > 1:
+                listControl.addItems(items)
+                if self.category:
+                    index = categories.index(self.category)
+                    listControl.selectItem(index)
+            name = remove_formatting(ADDON.getSetting('categories.background.color'))
+            color = colors.color_name[name]
+            control = self.getControl(self.C_CAT_BACKGROUND)
+            control.setColorDiffuse(color)
 
         # remove existing controls
         self._clearEpg()
