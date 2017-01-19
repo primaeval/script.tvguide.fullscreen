@@ -181,7 +181,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_LOGO = 7024
     C_MAIN_CHANNEL = 7025
     C_MAIN_PROGRESS = 7026
-    C_MAIN_CATEGORY = 7028
+    C_MAIN_CURRENT_CATEGORY = 7028
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -247,10 +247,10 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD_MOUSE_CONTROLS = 6300
     C_MAIN_VIDEO_BACKGROUND = 5555
     C_MAIN_VIDEO_PIP = 6666
-    C_CAT_BACKGROUND = 7000
-    C_CAT_QUIT = 7003
-    C_CAT_CATEGORY = 7004
-    C_CAT_PROGRAM_CATEGORIES = 7005
+    C_MAIN_CAT_BACKGROUND = 7000
+    C_MAIN_CAT_QUIT = 7003
+    C_MAIN_CATEGORY = 7004
+    C_MAIN_PROGRAM_CATEGORIES = 7005
     C_MAIN_LAST_PLAYED = 8000
     C_MAIN_LAST_PLAYED_TITLE = 8001
     C_MAIN_LAST_PLAYED_TIME = 8002
@@ -774,8 +774,8 @@ class TVGuide(xbmcgui.WindowXML):
                 self.close()
                 return
 
-        elif action.getId() in COMMAND_ACTIONS["CATEGORIES_BAR"] and self.getControl(self.C_CAT_CATEGORY):
-            self.setFocusId(self.C_CAT_CATEGORY)
+        elif action.getId() in COMMAND_ACTIONS["CATEGORIES_BAR"] and self.getControl(self.C_MAIN_CATEGORY):
+            self.setFocusId(self.C_MAIN_CATEGORY)
             return
 
 
@@ -949,13 +949,13 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["DOWN"]:
             self._down(currentFocus)
 
-        elif action.getId() in COMMAND_ACTIONS["MENU"] and self.getFocusId() in [self.C_CAT_CATEGORY]:
+        elif action.getId() in COMMAND_ACTIONS["MENU"] and self.getFocusId() in [self.C_MAIN_CATEGORY]:
             kodi = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
             dialog = xbmcgui.Dialog()
             if kodi < 16:
                 dialog.ok('TV Guide Fullscreen', 'Editing categories in Kodi %s is currently not supported.' % kodi)
             else:
-                cList = self.getControl(self.C_CAT_CATEGORY)
+                cList = self.getControl(self.C_MAIN_CATEGORY)
                 item = cList.getSelectedItem()
                 if item:
                     self.selected_category = item.getLabel()
@@ -1028,7 +1028,7 @@ class TVGuide(xbmcgui.WindowXML):
                         for label in new_categories:
                             item = xbmcgui.ListItem(label)
                             items.append(item)
-                        listControl = self.getControl(self.C_CAT_CATEGORY)
+                        listControl = self.getControl(self.C_MAIN_CATEGORY)
                         listControl.reset()
                         listControl.addItems(items)
 
@@ -1044,9 +1044,9 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
-        elif action.getId() in COMMAND_ACTIONS["LEFT"] and self.getFocusId() not in [self.C_CAT_CATEGORY,self.C_CAT_PROGRAM_CATEGORIES]:
+        elif action.getId() in COMMAND_ACTIONS["LEFT"] and self.getFocusId() not in [self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
             self._left(currentFocus)
-        elif action.getId() in COMMAND_ACTIONS["RIGHT"] and self.getFocusId() not in [self.C_CAT_CATEGORY,self.C_CAT_PROGRAM_CATEGORIES]:
+        elif action.getId() in COMMAND_ACTIONS["RIGHT"] and self.getFocusId() not in [self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
             self._right(currentFocus)
 
         else:
@@ -1148,8 +1148,8 @@ class TVGuide(xbmcgui.WindowXML):
         if self.isClosing:
             return
 
-        if controlId == self.C_CAT_CATEGORY:
-            cList = self.getControl(self.C_CAT_CATEGORY)
+        if controlId == self.C_MAIN_CATEGORY:
+            cList = self.getControl(self.C_MAIN_CATEGORY)
             item = cList.getSelectedItem()
             if item:
                 self.selected_category = item.getLabel()
@@ -1241,8 +1241,11 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId == self.C_MAIN_MOUSE_SEARCH:
             self.programSearchSelect()
             return
-        elif controlId == self.C_CAT_CATEGORY:
-            cList = self.getControl(self.C_CAT_CATEGORY)
+        elif controlId == self.C_MAIN_PROGRAM_CATEGORIES:
+            self.categorySearch()
+            return
+        elif controlId == self.C_MAIN_CATEGORY:
+            cList = self.getControl(self.C_MAIN_CATEGORY)
             item = cList.getSelectedItem()
             if item:
                 self.category = item.getLabel()
@@ -1826,11 +1829,9 @@ class TVGuide(xbmcgui.WindowXML):
         self.categories = d.categories
         del d
 
-        if buttonClicked == CatMenu.C_CAT_CATEGORY:
+        if buttonClicked == CatMenu.C_MAIN_CATEGORY:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        #elif buttonClicked == CatMenu.C_CAT_QUIT:
-        #    self.close()
 
     def setFocusId(self, controlId):
         control = self.getControl(controlId)
@@ -1929,7 +1930,7 @@ class TVGuide(xbmcgui.WindowXML):
                 label = ''
             else:
                 label = self.category
-            self.setControlLabel(self.C_MAIN_CATEGORY, '[B]%s[/B]' % label)
+            self.setControlLabel(self.C_MAIN_CURRENT_CATEGORY, '[B]%s[/B]' % label)
 
             if program.channel.logo is not None:
                 self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
@@ -2273,8 +2274,8 @@ class TVGuide(xbmcgui.WindowXML):
         elif control is None:
             first_channel = self.channelIdx - CHANNELS_PER_PAGE
             if first_channel < 0:
-                if self.getControl(self.C_CAT_CATEGORY) and ADDON.getSetting('up.cat') == 'true':
-                    self.setFocusId(self.C_CAT_CATEGORY)
+                if self.getControl(self.C_MAIN_CATEGORY) and ADDON.getSetting('up.cat') == 'true':
+                    self.setFocusId(self.C_MAIN_CATEGORY)
                     return
                 len_channels = self.database.getNumberOfChannels()
                 last_page = len_channels % CHANNELS_PER_PAGE
@@ -2299,7 +2300,7 @@ class TVGuide(xbmcgui.WindowXML):
                              focusFunction=self._findQuickControlAbove)
 
     def _down(self, currentFocus):
-        if self.getFocusId() in [self.C_CAT_CATEGORY, self.C_CAT_PROGRAM_CATEGORIES]:
+        if self.getFocusId() in [self.C_MAIN_CATEGORY, self.C_MAIN_PROGRAM_CATEGORIES]:
             currentFocus.y = 0
         currentFocus.x = self.focusPoint.x
         control = self._findControlBelow(currentFocus)
@@ -2742,7 +2743,7 @@ class TVGuide(xbmcgui.WindowXML):
         for label in categories:
             item = xbmcgui.ListItem(label)
             items.append(item)
-        listControl = self.getControl(self.C_CAT_CATEGORY)
+        listControl = self.getControl(self.C_MAIN_CATEGORY)
         if listControl:
             listControl.reset()
             if len(items) > 1:
@@ -2752,7 +2753,7 @@ class TVGuide(xbmcgui.WindowXML):
                     listControl.selectItem(index)
             name = remove_formatting(ADDON.getSetting('categories.background.color'))
             color = colors.color_name[name]
-            control = self.getControl(self.C_CAT_BACKGROUND)
+            control = self.getControl(self.C_MAIN_BACKGROUND)
             control.setColorDiffuse(color)
 
         # remove existing controls

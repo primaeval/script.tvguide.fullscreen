@@ -1952,7 +1952,7 @@
                 <texturefocus>tvg-button-focus.png</texturefocus>
                 <texturenofocus>tvg-button-nofocus.png</texturenofocus>
                 <onright>7004</onright>
-                <onclick>Red</onclick>
+                <onclick></onclick>
             </control>
 
             <control type="list" id="7004">
