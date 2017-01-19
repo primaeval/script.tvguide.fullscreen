@@ -250,6 +250,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_CAT_BACKGROUND = 7000
     C_CAT_QUIT = 7003
     C_CAT_CATEGORY = 7004
+    C_CAT_PROGRAM_CATEGORIES = 7005
     C_MAIN_LAST_PLAYED = 8000
     C_MAIN_LAST_PLAYED_TITLE = 8001
     C_MAIN_LAST_PLAYED_TIME = 8002
@@ -333,7 +334,6 @@ class TVGuide(xbmcgui.WindowXML):
             categories.add(cat)
         categories = sorted(categories)
         self.categories = categories
-        self.categories_test = False
         if ADDON.getSetting('categories.remember') == 'false':
             self.category = ""
         else:
@@ -622,7 +622,6 @@ class TVGuide(xbmcgui.WindowXML):
         elif not self.osdEnabled:
             pass  # skip the rest of the actions
 
-        #elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
@@ -656,16 +655,13 @@ class TVGuide(xbmcgui.WindowXML):
 
     def onActionOSDMode(self, action):
         if action.getId() == ACTION_MOUSE_MOVE:
-        #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
             if ADDON.getSetting('mouse.controls') == "true":
                 self._showControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
             return
 
-        #if action.getId() == ACTION_SHOW_INFO:
         if action.getId() in COMMAND_ACTIONS["OSD"]:
             self._hideOsd()
 
-        #elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self._hideOsd()
             self.viewStartDate = datetime.datetime.today()
@@ -722,14 +718,12 @@ class TVGuide(xbmcgui.WindowXML):
 
     def onActionLastPlayedMode(self, action):
         if action.getId() == ACTION_MOUSE_MOVE:
-        #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
             if ADDON.getSetting('mouse.controls') == "true":
                 self._showControl(self.C_MAIN_LAST_PLAYED_MOUSE_CONTROLS)
             return
         if action.getId() in COMMAND_ACTIONS["LAST_CHANNEL"]:
             self._hideLastPlayed()
 
-        #elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self._hideLastPlayed()
             self.viewStartDate = datetime.datetime.today()
@@ -756,23 +750,19 @@ class TVGuide(xbmcgui.WindowXML):
     # epg mode
     def onActionEPGMode(self, action):
         if action.getId() in [ACTION_PARENT_DIR]:
-        #if action.getId() in COMMAND_ACTIONS["EXIT"]:
             self.close()
             return
 
         # catch the ESC key
         elif action.getId() == ACTION_PREVIOUS_MENU and action.getButtonCode() == KEY_ESC:
-        #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_CLOSE"] and action.getButtonCode() == KEY_ESC:
             self.close()
             return
 
         if action.getId() == ACTION_MOUSE_MOVE:
-        #elif action.getId() in COMMAND_ACTIONS["EPG_MODE_SHOW_TOUCH_CONTROLS"]:
             if ADDON.getSetting('mouse.controls') == "true":
                 self._showControl(self.C_MAIN_MOUSE_CONTROLS)
             return
 
-        #elif action.getId() in [KEY_NAV_BACK]:
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             if self.player.isPlaying():
                 if (ADDON.getSetting("exit.on.back") == "true") and (ADDON.getSetting("play.minimized") == "false"):
@@ -783,105 +773,11 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.close()
                 return
+
         elif action.getId() in COMMAND_ACTIONS["CATEGORIES_BAR"] and self.getControl(self.C_CAT_CATEGORY):
-            self.categories_test = not self.categories_test
-            if self.categories_test:
-                self.setFocusId(self.C_CAT_CATEGORY)
-                return
-
-        if self.categories_test:
-            #self.setFocusId(self.C_CAT_CATEGORY)
-            if action.getId() in COMMAND_ACTIONS["MENU"]:
-                kodi = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
-                dialog = xbmcgui.Dialog()
-                if kodi < 16:
-                    dialog.ok('TV Guide Fullscreen', 'Editing categories in Kodi %s is currently not supported.' % kodi)
-                else:
-                    cList = self.getControl(self.C_CAT_CATEGORY)
-                    item = cList.getSelectedItem()
-                    if item:
-                        self.selected_category = item.getLabel()
-                    if self.selected_category == "All Channels":
-                        selection = ["Add Category"]
-                    else:
-                        selection = ["Add Category","Add Channels","Remove Channels","Clear Channels"]
-                    dialog = xbmcgui.Dialog()
-                    ret = dialog.select("%s" % self.selected_category, selection)
-                    if ret < 0:
-                        return
-
-                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
-                    lines = f.read().splitlines()
-                    f.close()
-                    categories = {}
-                    if self.selected_category not in ["Any", "All Channels"]:
-                        categories[self.selected_category] = []
-                    for line in lines:
-                        if '=' in line:
-                            name,cat = line.strip().split('=')
-                            if cat not in categories:
-                                categories[cat] = []
-                            categories[cat].append(name)
-
-                    if ret == 1:
-                        channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=True,all=True)])
-                        channelList = [c for c in channelList if c not in categories[self.selected_category]]
-                        sstr = 'Add Channels To %s' % self.selected_category
-                        ret = dialog.multiselect(sstr, channelList)
-                        if ret is None:
-                            return
-                        if not ret:
-                            ret = []
-                        channels = []
-                        for i in ret:
-                            channels.append(channelList[i])
-
-                        for channel in channels:
-                            if channel not in categories[self.selected_category]:
-                                categories[self.selected_category].append(channel)
-
-                    elif ret == 2:
-                        channelList = sorted(categories[self.selected_category])
-                        sstr = 'Remove Channels From %s' % self.selected_category
-                        ret = dialog.multiselect(sstr, channelList)
-                        if ret is None:
-                            return
-                        if not ret:
-                            ret = []
-                        channels = []
-                        for i in ret:
-                            channelList[i] = ""
-                        categories[self.selected_category] = []
-                        for name in channelList:
-                            if name:
-                                categories[self.selected_category].append(name)
-
-                    elif ret == 3:
-                        categories[self.selected_category] = []
-
-                    elif ret == 0:
-                        dialog = xbmcgui.Dialog()
-                        cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
-                        if cat:
-                            if cat not in categories:
-                                categories[cat] = []
-                            items = list()
-                            new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
-                            for label in new_categories:
-                                item = xbmcgui.ListItem(label)
-                                items.append(item)
-                            listControl = self.getControl(self.C_CAT_CATEGORY)
-                            listControl.reset()
-                            listControl.addItems(items)
-
-                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
-                    for cat in categories:
-                        channels = categories[cat]
-                        for channel in channels:
-                            f.write("%s=%s\n" % (channel.encode("utf8"),cat))
-                    f.close()
-                    self.categories = [category for category in categories if category]
+            self.setFocusId(self.C_CAT_CATEGORY)
             return
+
 
         controlInFocus = None
         currentFocus = self.focusPoint
@@ -899,15 +795,8 @@ class TVGuide(xbmcgui.WindowXML):
             if control is not None:
                 #self.setFocus(control)
                 return
-        if action.getId() in COMMAND_ACTIONS["LEFT"]:
-            self._left(currentFocus)
-        elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
-            self._right(currentFocus)
-        elif action.getId() in COMMAND_ACTIONS["UP"]:
-            self._up(currentFocus)
-        elif action.getId() in COMMAND_ACTIONS["DOWN"]:
-            self._down(currentFocus)
-        elif action.getId() in COMMAND_ACTIONS["NEXT_DAY"]:
+
+        if action.getId() in COMMAND_ACTIONS["NEXT_DAY"]:
             self._nextDay()
         elif action.getId() in COMMAND_ACTIONS["PREV_DAY"]:
             self._previousDay()
@@ -929,11 +818,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                      seconds=self.viewStartDate.second)
             self.onRedrawEPG(0, self.viewStartDate)
-        #elif action.getId() in [KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU] and controlInFocus is not None:
-        elif action.getId() in COMMAND_ACTIONS["MENU"] and controlInFocus is not None:
-            program = self._getProgramFromControl(controlInFocus)
-            if program is not None:
-                self._showContextMenu(program)
+
         elif action.getId() in COMMAND_ACTIONS["CHANNEL_LISTING"]:
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
@@ -1059,9 +944,115 @@ class TVGuide(xbmcgui.WindowXML):
                         xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s)' % (program.title))
             else:
                 xbmcgui.Dialog().notification("TV Guide Fullscreen", "Couldn't find: %s" % title)
+        elif action.getId() in COMMAND_ACTIONS["UP"]:
+            self._up(currentFocus)
+        elif action.getId() in COMMAND_ACTIONS["DOWN"]:
+            self._down(currentFocus)
+
+        elif action.getId() in COMMAND_ACTIONS["MENU"] and self.getFocusId() in [self.C_CAT_CATEGORY]:
+            kodi = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
+            dialog = xbmcgui.Dialog()
+            if kodi < 16:
+                dialog.ok('TV Guide Fullscreen', 'Editing categories in Kodi %s is currently not supported.' % kodi)
+            else:
+                cList = self.getControl(self.C_CAT_CATEGORY)
+                item = cList.getSelectedItem()
+                if item:
+                    self.selected_category = item.getLabel()
+                if self.selected_category == "All Channels":
+                    selection = ["Add Category"]
+                else:
+                    selection = ["Add Category","Add Channels","Remove Channels","Clear Channels"]
+                dialog = xbmcgui.Dialog()
+                ret = dialog.select("%s" % self.selected_category, selection)
+                if ret < 0:
+                    return
+
+                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+                lines = f.read().splitlines()
+                f.close()
+                categories = {}
+                if self.selected_category not in ["Any", "All Channels"]:
+                    categories[self.selected_category] = []
+                for line in lines:
+                    if '=' in line:
+                        name,cat = line.strip().split('=')
+                        if cat not in categories:
+                            categories[cat] = []
+                        categories[cat].append(name)
+
+                if ret == 1:
+                    channelList = sorted([channel.title for channel in self.database.getChannelList(onlyVisible=True,all=True)])
+                    channelList = [c for c in channelList if c not in categories[self.selected_category]]
+                    sstr = 'Add Channels To %s' % self.selected_category
+                    ret = dialog.multiselect(sstr, channelList)
+                    if ret is None:
+                        return
+                    if not ret:
+                        ret = []
+                    channels = []
+                    for i in ret:
+                        channels.append(channelList[i])
+
+                    for channel in channels:
+                        if channel not in categories[self.selected_category]:
+                            categories[self.selected_category].append(channel)
+
+                elif ret == 2:
+                    channelList = sorted(categories[self.selected_category])
+                    sstr = 'Remove Channels From %s' % self.selected_category
+                    ret = dialog.multiselect(sstr, channelList)
+                    if ret is None:
+                        return
+                    if not ret:
+                        ret = []
+                    channels = []
+                    for i in ret:
+                        channelList[i] = ""
+                    categories[self.selected_category] = []
+                    for name in channelList:
+                        if name:
+                            categories[self.selected_category].append(name)
+
+                elif ret == 3:
+                    categories[self.selected_category] = []
+
+                elif ret == 0:
+                    dialog = xbmcgui.Dialog()
+                    cat = dialog.input('Add Category', type=xbmcgui.INPUT_ALPHANUM)
+                    if cat:
+                        if cat not in categories:
+                            categories[cat] = []
+                        items = list()
+                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
+                        for label in new_categories:
+                            item = xbmcgui.ListItem(label)
+                            items.append(item)
+                        listControl = self.getControl(self.C_CAT_CATEGORY)
+                        listControl.reset()
+                        listControl.addItems(items)
+
+                f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
+                for cat in categories:
+                    channels = categories[cat]
+                    for channel in channels:
+                        f.write("%s=%s\n" % (channel.encode("utf8"),cat))
+                f.close()
+                self.categories = [category for category in categories if category]
+
+        elif action.getId() in COMMAND_ACTIONS["MENU"] and controlInFocus is not None:
+            program = self._getProgramFromControl(controlInFocus)
+            if program is not None:
+                self._showContextMenu(program)
+        elif action.getId() in COMMAND_ACTIONS["LEFT"] and self.getFocusId() not in [self.C_CAT_CATEGORY,self.C_CAT_PROGRAM_CATEGORIES]:
+            self._left(currentFocus)
+        elif action.getId() in COMMAND_ACTIONS["RIGHT"] and self.getFocusId() not in [self.C_CAT_CATEGORY,self.C_CAT_PROGRAM_CATEGORIES]:
+            self._right(currentFocus)
 
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
+
+
 
     def onActionQuickEPGMode(self, action):
         if action.getId() == ACTION_MOUSE_MOVE:
@@ -1254,7 +1245,6 @@ class TVGuide(xbmcgui.WindowXML):
             cList = self.getControl(self.C_CAT_CATEGORY)
             item = cList.getSelectedItem()
             if item:
-                self.categories_test = False
                 self.category = item.getLabel()
                 ADDON.setSetting('category',self.category)
                 self.database.setCategory(self.category)
@@ -1481,7 +1471,10 @@ class TVGuide(xbmcgui.WindowXML):
         f.close()
         categories = []
         for (c,v) in category_count:
-            s = "%s (%s)" % (c,v)
+            if not self.category or self.category == "All Channels":
+                s = "%s (%s)" % (c,v)
+            else:
+                s = c
             categories.append(s)
         which = d.select("Program Category Search",categories)
         if which == -1:
@@ -2281,10 +2274,8 @@ class TVGuide(xbmcgui.WindowXML):
             first_channel = self.channelIdx - CHANNELS_PER_PAGE
             if first_channel < 0:
                 if self.getControl(self.C_CAT_CATEGORY) and ADDON.getSetting('up.cat') == 'true':
-                    self.categories_test = not self.categories_test
-                    if self.categories_test:
-                        self.setFocusId(self.C_CAT_CATEGORY)
-                        return
+                    self.setFocusId(self.C_CAT_CATEGORY)
+                    return
                 len_channels = self.database.getNumberOfChannels()
                 last_page = len_channels % CHANNELS_PER_PAGE
                 first_channel = len_channels - last_page
@@ -2308,6 +2299,8 @@ class TVGuide(xbmcgui.WindowXML):
                              focusFunction=self._findQuickControlAbove)
 
     def _down(self, currentFocus):
+        if self.getFocusId() in [self.C_CAT_CATEGORY, self.C_CAT_PROGRAM_CATEGORIES]:
+            currentFocus.y = 0
         currentFocus.x = self.focusPoint.x
         control = self._findControlBelow(currentFocus)
         if control is not None:
