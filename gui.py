@@ -2272,9 +2272,12 @@ class TVGuide(xbmcgui.WindowXML):
         if control is not None:
             self.setFocus(control)
         elif control is None:
+            if self.getControl(self.C_MAIN_CATEGORY) and ADDON.getSetting('up.cat.mode') == 'Always':
+                self.setFocusId(self.C_MAIN_CATEGORY)
+                return
             first_channel = self.channelIdx - CHANNELS_PER_PAGE
             if first_channel < 0:
-                if self.getControl(self.C_MAIN_CATEGORY) and ADDON.getSetting('up.cat') == 'true':
+                if self.getControl(self.C_MAIN_CATEGORY) and ADDON.getSetting('up.cat.mode') == 'First Channel':
                     self.setFocusId(self.C_MAIN_CATEGORY)
                     return
                 len_channels = self.database.getNumberOfChannels()
