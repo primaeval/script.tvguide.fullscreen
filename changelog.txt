@@ -1,4 +1,4 @@
-version 0.0.301
+version 0.0.301-302
 - Program Categories button in CatBar skin
 
 version 0.0.300
