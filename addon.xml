@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.tvguide.fullscreen" name="TV Guide Fullscreen" version="0.0.302" provider-name="primaeval, iainmacleod, im85288, RayW1986, bluezed, andy">
-	<requires>
-		<import addon="xbmc.python" version="2.19.0"/>
-		<import addon="script.module.simplejson" version="3.3.0"/>
+<addon id="script.tvguide.fullscreen" name="TV Guide Fullscreen" version="0.0.303" provider-name="primaeval, iainmacleod, im85288, RayW1986, bluezed, andy">
+    <requires>
+        <import addon="xbmc.python" version="2.19.0"/>
+        <import addon="script.module.simplejson" version="3.3.0"/>
         <import addon="script.module.requests" version="2.9.1" />
         <import addon="script.module.dateutil" version="2.4.2" />
         <import addon="script.module.pil" />
-	</requires>
-	<extension point="xbmc.python.script" library="addon.py">
+    </requires>
+    <extension point="xbmc.python.script" library="addon.py">
             <provides>executable</provides>
     </extension>
     <extension point="xbmc.service" library="service.py" start="login"/>
-	<extension point="xbmc.addon.metadata">
-		<disclaimer lang="en">based on the original TV Guide addon by twinther and FTV Guide additions</disclaimer>
-		<language></language>
-		<platform>all</platform>
-		<license>GPLv2</license>
-		<forum>-</forum>
-		<source>https://github.com/primaeval/script.tvguide.fullscreen</source>
+    <extension point="xbmc.addon.metadata">
+        <description lang="en">Possibly the most powerful TV Guide in the world. ;)</description>
+        <disclaimer lang="en">Based on the original TV Guide addon by twinther and FTV Guide additions</disclaimer>
+        <language></language>
+        <platform>all</platform>
+        <license>GPLv2</license>
+        <forum>http://forum.kodi.tv/showthread.php?tid=282157</forum>
+        <source>https://github.com/primaeval/script.tvguide.fullscreen</source>
         <website></website>
-		<email></email>
-	</extension>
+        <email>primaeval</email>
+    </extension>
 </addon>
