@@ -1829,7 +1829,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.categories = d.categories
         del d
 
-        if buttonClicked == CatMenu.C_MAIN_CATEGORY:
+        if buttonClicked == CatMenu.C_CAT_CATEGORY:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
 
