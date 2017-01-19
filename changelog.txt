@@ -1,3 +1,6 @@
+version 0.0.301
+- Program Categories button in CatBar skin
+
 version 0.0.300
 - Settings \ Appearance \ Up to Categories Bar
   if skin has a Categories bar (use CatBar for now)
