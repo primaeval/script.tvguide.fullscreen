@@ -790,7 +790,7 @@ class TVGuide(xbmcgui.WindowXML):
                 return
 
         if self.categories_test:
-            self.setFocusId(self.C_CAT_CATEGORY)
+            #self.setFocusId(self.C_CAT_CATEGORY)
             if action.getId() in COMMAND_ACTIONS["MENU"]:
                 kodi = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
                 dialog = xbmcgui.Dialog()

@@ -1937,16 +1937,34 @@
                 <visible>false</visible>
             </control>
 
+            <control type="button" id="7005">
+                <description>program category</description>
+                <posx>1</posx>
+                <posy>1</posy>
+                <width>158</width>
+                <height>28</height>
+                <label>Category</label>
+                <font>font13</font>
+                <aligny>center</aligny>
+                <align>center</align>
+                <textcolor>grey</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <texturefocus>tvg-button-focus.png</texturefocus>
+                <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                <onright>7004</onright>
+                <onclick>Red</onclick>
+            </control>
+
             <control type="list" id="7004">
                 <description>categories</description>
-                <left>0</left>
+                <left>160</left>
                 <top>1</top>
-                <width>1280</width>
+                <width>1120</width>
                 <height>28</height>
                 <visible>true</visible>
                 <onup></onup>
                 <ondown></ondown>
-                <onleft></onleft>
+                <onleft>7005</onleft>
                 <onright></onright>
                 <viewtype label="3D list">list</viewtype>
                 <orientation>horizontal</orientation>
