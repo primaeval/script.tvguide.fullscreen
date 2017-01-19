@@ -592,6 +592,15 @@ class TVGuide(xbmcgui.WindowXML):
             self.showFullAutoplaywiths()
         elif action.getId() in COMMAND_ACTIONS["CATEGORIES"]:
             self._showCatMenu()
+        elif action.getId() in COMMAND_ACTIONS["PROGRAM_SEARCH"]:
+            self.programSearch()
+        elif action.getId() in COMMAND_ACTIONS["DESCRIPTION_SEARCH"]:
+            self.descriptionSearch()
+        elif action.getId() in COMMAND_ACTIONS["CATEGORY_SEARCH"]:
+            self.categorySearch()
+        elif action.getId() in COMMAND_ACTIONS["CHANNEL_SEARCH"]:
+            self.channelSearch()
+
 
         if self.mode == MODE_TV:
             self.onActionTVMode(action)
