@@ -809,9 +809,9 @@ class TVGuide(xbmcgui.WindowXML):
             self._moveUp(CHANNELS_PER_PAGE)
         elif action.getId() in COMMAND_ACTIONS["PAGE_DOWN"]:
             self._moveDown(CHANNELS_PER_PAGE)
-        elif self.getFocusId() != self.C_MAIN_CATEGORY and action.getId() == ACTION_MOUSE_WHEEL_UP:
+        elif self.getFocusId() not in [self.C_MAIN_CATEGORY, self.C_MAIN_ACTIONS] and action.getId() == ACTION_MOUSE_WHEEL_UP:
             self._moveUp(scrollEvent=True)
-        elif self.getFocusId() != self.C_MAIN_CATEGORY and action.getId() == ACTION_MOUSE_WHEEL_DOWN:
+        elif self.getFocusId() not in [self.C_MAIN_CATEGORY, self.C_MAIN_ACTIONS] and action.getId() == ACTION_MOUSE_WHEEL_DOWN:
             self._moveDown(scrollEvent=True)
         elif action.getId() in COMMAND_ACTIONS["GO_TO_NOW"]:
             self.viewStartDate = datetime.datetime.today()
@@ -1049,9 +1049,9 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
-        elif action.getId() in COMMAND_ACTIONS["LEFT"] and self.getFocusId() not in [self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
+        elif action.getId() in COMMAND_ACTIONS["LEFT"] and self.getFocusId() not in [self.C_MAIN_ACTIONS,self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
             self._left(currentFocus)
-        elif action.getId() in COMMAND_ACTIONS["RIGHT"] and self.getFocusId() not in [self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
+        elif action.getId() in COMMAND_ACTIONS["RIGHT"] and self.getFocusId() not in [self.C_MAIN_ACTIONS,self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
             self._right(currentFocus)
 
         else:
@@ -2280,6 +2280,8 @@ class TVGuide(xbmcgui.WindowXML):
             self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate, focusFunction=self._findQuickControlOnRight)
 
     def _up(self, currentFocus):
+        if self.getFocusId() in [self.C_MAIN_ACTIONS]:
+            currentFocus.y = 1280
         currentFocus.x = self.focusPoint.x
         control = self._findControlAbove(currentFocus)
         if control is not None:
@@ -2323,6 +2325,9 @@ class TVGuide(xbmcgui.WindowXML):
         if control is not None:
             self.setFocus(control)
         elif control is None:
+            if self.getControl(self.C_MAIN_ACTIONS) and ADDON.getSetting('down.action') == 'true':
+                self.setFocusId(self.C_MAIN_ACTIONS)
+                return
             self.focusPoint.y = self.epgView.top
             self.onRedrawEPG(self.channelIdx + CHANNELS_PER_PAGE, self.viewStartDate,
                              focusFunction=self._findControlBelow)

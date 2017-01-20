@@ -96,6 +96,8 @@
         <setting id="program.image.scale" label="Scale Program Image" type="bool" default="true" />
         <setting type="sep"/>
         <setting id="up.cat.mode" label="Up to Categories Bar" type="select" default="First Channel" values="No|First Channel|Always" />
+        <setting id="down.action" label="Down to Action Bar" type="bool" default="false" />
+        <setting label="Reset Action Bar" type="action" action="RunScript($CWD/actions.py)" />
         <setting type="sep"/>
         <setting id="program.search.plot" label="Program Search in Synopsis/Title" type="bool" default="false" />
         <setting type="lsep" label="Listings Views"/>
