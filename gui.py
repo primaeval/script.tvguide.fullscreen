@@ -804,9 +804,9 @@ class TVGuide(xbmcgui.WindowXML):
             self._moveUp(CHANNELS_PER_PAGE)
         elif action.getId() in COMMAND_ACTIONS["PAGE_DOWN"]:
             self._moveDown(CHANNELS_PER_PAGE)
-        elif action.getId() == ACTION_MOUSE_WHEEL_UP:
+        elif self.getFocusId() != self.C_MAIN_CATEGORY and action.getId() == ACTION_MOUSE_WHEEL_UP:
             self._moveUp(scrollEvent=True)
-        elif action.getId() == ACTION_MOUSE_WHEEL_DOWN:
+        elif self.getFocusId() != self.C_MAIN_CATEGORY and action.getId() == ACTION_MOUSE_WHEEL_DOWN:
             self._moveDown(scrollEvent=True)
         elif action.getId() in COMMAND_ACTIONS["GO_TO_NOW"]:
             self.viewStartDate = datetime.datetime.today()
