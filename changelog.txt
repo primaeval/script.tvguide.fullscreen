@@ -1,4 +1,4 @@
-version 0.0.303
+version 0.0.303-304
 - new Up to Categories option - Always (ie every page)
 
 version 0.0.301-302
