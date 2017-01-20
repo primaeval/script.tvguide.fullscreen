@@ -340,6 +340,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.category = ADDON.getSetting('category')
             if self.category not in self.categories:
                 self.category = ""
+        self.cat_index = 0
 
         self.osdEnabled = False
         self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
@@ -1867,6 +1868,11 @@ class TVGuide(xbmcgui.WindowXML):
         super(TVGuide, self).setFocus(control)
 
     def onFocus(self, controlId):
+        if self.mode == MODE_EPG and controlId != self.C_MAIN_CATEGORY:
+            listControl = self.getControl(self.C_MAIN_CATEGORY)
+            if listControl:
+                listControl.selectItem(self.cat_index)
+
         try:
             controlInFocus = self.getControl(controlId)
         except Exception:
@@ -2753,6 +2759,7 @@ class TVGuide(xbmcgui.WindowXML):
                 listControl.addItems(items)
                 if self.category:
                     index = categories.index(self.category)
+                    self.cat_index = index
                     listControl.selectItem(index)
             name = remove_formatting(ADDON.getSetting('categories.background.color'))
             color = colors.color_name[name]
