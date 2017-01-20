@@ -2057,11 +2057,11 @@
                 <viewtype label="3D list">list</viewtype>
                 <orientation>horizontal</orientation>
 
-                <itemlayout width="88" height="28">
+                <itemlayout width="91" height="28">
                     <control type="image">
                         <posx>1</posx>
                         <posy>0</posy>
-                        <width>86</width>
+                        <width>89</width>
                         <height>28</height>
                         <texture>tvg-button-nofocus.png</texture>
                         <visible>true</visible>
@@ -2069,7 +2069,7 @@
                     <control type="label">
                         <left>0</left>
                         <top>0</top>
-                        <width>88</width>
+                        <width>91</width>
                         <height>28</height>
                         <font>font13</font>
                         <align>center</align>
@@ -2079,19 +2079,19 @@
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="88" height="28">
+                <focusedlayout width="91" height="28">
                     <control type="image">
                         <posx>1</posx>
                         <posy>0</posy>
-                        <width>86</width>
+                        <width>89</width>
                         <height>28</height>
                         <texture>tvg-program-nofocus.png</texture>
-                        <visible>false</visible>
+                        <visible>true</visible>
                     </control>
                     <control type="image">
                         <posx>1</posx>
                         <posy>0</posy>
-                        <width>86</width>
+                        <width>89</width>
                         <height>28</height>
                         <texture>tvg-button-focus.png</texture>
                         <visible>Control.HasFocus(7100)</visible>
@@ -2099,7 +2099,7 @@
                     <control type="label">
                         <left>0</left>
                         <top>0</top>
-                        <width>88</width>
+                        <width>91</width>
                         <height>28</height>
                         <font>font13</font>
                         <align>center</align>
