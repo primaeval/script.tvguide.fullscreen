@@ -1670,6 +1670,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4311">
@@ -1686,6 +1687,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4312">
@@ -1702,6 +1704,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4314">
@@ -1718,6 +1721,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4315">
@@ -1734,6 +1738,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4316">
@@ -1750,7 +1755,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
-                    <visible>true</visible>
+                    <visible>false</visible>
                 </control>
 
                 <control type="button" id="4317">
@@ -1914,6 +1919,7 @@
                     <focusedcolor>black</focusedcolor>
                     <texturefocus>tvg-button-focus.png</texturefocus>
                     <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>false</visible>
                 </control>
 
             </control>
@@ -2037,6 +2043,86 @@
             </control>
 
 
+            <control type="list" id="7100">
+                <description>action bar</description>
+                <left>400</left>
+                <top>30r</top>
+                <width>880</width>
+                <height>28</height>
+                <visible>true</visible>
+                <onup></onup>
+                <ondown></ondown>
+                <onleft></onleft>
+                <onright></onright>
+                <viewtype label="3D list">list</viewtype>
+                <orientation>horizontal</orientation>
+
+                <itemlayout width="88" height="28">
+                    <control type="image">
+                        <posx>1</posx>
+                        <posy>0</posy>
+                        <width>86</width>
+                        <height>28</height>
+                        <texture>tvg-button-nofocus.png</texture>
+                        <visible>true</visible>
+                    </control>
+                    <control type="label">
+                        <left>0</left>
+                        <top>0</top>
+                        <width>88</width>
+                        <height>28</height>
+                        <font>font13</font>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <textcolor>white</textcolor>
+                        <selectedcolor>blue</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="88" height="28">
+                    <control type="image">
+                        <posx>1</posx>
+                        <posy>0</posy>
+                        <width>86</width>
+                        <height>28</height>
+                        <texture>tvg-program-focus.png</texture>
+                        <visible>true</visible>
+                    </control>
+                    <control type="image">
+                        <posx>1</posx>
+                        <posy>0</posy>
+                        <width>86</width>
+                        <height>28</height>
+                        <texture>tvg-button-focus.png</texture>
+                        <visible>Control.HasFocus(7004)</visible>
+                    </control>
+                    <control type="label">
+                        <left>0</left>
+                        <top>0</top>
+                        <width>88</width>
+                        <height>28</height>
+                        <font>font13</font>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <textcolor>black</textcolor>
+                        <selectedcolor>yellow</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                    <!--<control type="label">
+                        <left>0</left>
+                        <top>0</top>
+                        <width>170</width>
+                        <height>20</height>
+                        <font>font13</font>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <textcolor>black</textcolor>
+                        <selectedcolor>yellow</selectedcolor>
+                        <info>ListItem.Label</info>
+                        <visible>Control.HasFocus(7004)</visible>
+                    </control>-->
+                </focusedlayout>
+            </control>
 
 
         </control>

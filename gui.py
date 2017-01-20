@@ -251,6 +251,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_CAT_QUIT = 7003
     C_MAIN_CATEGORY = 7004
     C_MAIN_PROGRAM_CATEGORIES = 7005
+    C_MAIN_ACTIONS = 7100
     C_MAIN_LAST_PLAYED = 8000
     C_MAIN_LAST_PLAYED_TITLE = 8001
     C_MAIN_LAST_PLAYED_TIME = 8002
@@ -284,6 +285,9 @@ class TVGuide(xbmcgui.WindowXML):
     def __init__(self):
         super(TVGuide, self).__init__()
 
+        #self.actions = [["Seach","Action(Number4)",r"button_search.png"]]
+        #self.saveActions()
+        self.loadActions()
         self.tryingToPlay = False
         self.notification = None
         self.autoplay = None
@@ -1148,7 +1152,10 @@ class TVGuide(xbmcgui.WindowXML):
 
         if self.isClosing:
             return
-
+        if controlId == self.C_MAIN_ACTIONS:
+            cList = self.getControl(self.C_MAIN_ACTIONS)
+            pos = cList.getSelectedPosition()
+            xbmc.executebuiltin(self.actions[pos][1])
         if controlId == self.C_MAIN_CATEGORY:
             cList = self.getControl(self.C_MAIN_CATEGORY)
             item = cList.getSelectedItem()
@@ -2766,6 +2773,15 @@ class TVGuide(xbmcgui.WindowXML):
             control = self.getControl(self.C_MAIN_BACKGROUND)
             control.setColorDiffuse(color)
 
+        listControl = self.getControl(self.C_MAIN_ACTIONS)
+        if listControl:
+            items = []
+            for label,action,iconImage in self.actions:
+                item = xbmcgui.ListItem(label,iconImage=iconImage)
+                items.append(item)
+            listControl.reset()
+            listControl.addItems(items)
+
         # remove existing controls
         self._clearEpg()
 
@@ -3220,6 +3236,24 @@ class TVGuide(xbmcgui.WindowXML):
             self.autoplay.scheduleAutoplays()
             self.autoplaywith.scheduleAutoplaywiths()
             self.loadChannelMappings()
+
+    def saveActions(self):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/actions.json'
+        f = xbmcvfs.File(file_name,"wb")
+        data = json.dumps(self.actions,indent=2)
+        f.write(data)
+        f.close()
+
+    def loadActions(self):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/actions.json'
+        f = xbmcvfs.File(file_name,"rb")
+        data = f.read()
+        f.close()
+        if data:
+            self.actions = json.loads(data)
+        else:
+            self.actions = []
+
 
     def loadChannelMappings(self):
         if ADDON.getSetting('mapping.ini.enabled') == 'true':
