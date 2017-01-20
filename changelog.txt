@@ -1,3 +1,12 @@
+version 0.0.305
+- Action Bar in CatBar skin
+- Settings \ Appearance \ Show Action Bar
+- Settings \ Appearance \ Down to Action Bar
+- Settings \ Appearance \ Reset Action Bar
+- customise the Action Bar in file:
+\userdata\addon_data\script.tvguide.fullscreen\actions.json
+- format is ["Name", "Action", "Icon"]
+
 version 0.0.303-304
 - new Up to Categories option - Always (ie every page)
 
