@@ -1642,9 +1642,9 @@
                 <control type="button" id="4309">
                     <description>pip toggle</description>
                     <posx>0</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>PIP</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1659,9 +1659,9 @@
                 <control type="button" id="4310">
                     <description>now list</description>
                     <posx>630</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>NOW</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1675,9 +1675,9 @@
                 <control type="button" id="4311">
                     <description>next list</description>
                     <posx>730</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>NEXT</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1691,9 +1691,9 @@
                 <control type="button" id="4312">
                     <description>search</description>
                     <posx>830</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>SEARCH</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1707,9 +1707,9 @@
                 <control type="button" id="4314">
                     <description>channel number</description>
                     <posx>430</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>NUM</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1723,9 +1723,9 @@
                 <control type="button" id="4315">
                     <description>stop</description>
                     <posx>530</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>STOP</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1739,9 +1739,9 @@
                 <control type="button" id="4316">
                     <description>favourites</description>
                     <posx>930</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>FAVS</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1791,9 +1791,9 @@
                 <control type="button" id="4301">
                     <description>navigate to now</description>
                     <posx>430</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>HOME</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1808,9 +1808,9 @@
                 <control type="button" id="4302">
                     <description>navigate left</description>
                     <posx>530</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>LEFT</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1824,9 +1824,9 @@
                 <control type="button" id="4303">
                     <description>navigate up</description>
                     <posx>630</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>UP</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1840,9 +1840,9 @@
                 <control type="button" id="4304">
                     <description>navigate down</description>
                     <posx>730</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>DOWN</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1856,9 +1856,9 @@
                 <control type="button" id="4305">
                     <description>navigate right</description>
                     <posx>830</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>RIGHT</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1872,9 +1872,9 @@
                 <control type="button" id="4307">
                     <description>menu</description>
                     <posx>930</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>90</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>MENU</label>
                     <font>font13</font>
                     <aligny>center</aligny>
@@ -1903,9 +1903,9 @@
                 <control type="button" id="4306">
                     <description>exit</description>
                     <posx>1200</posx>
-                    <posy>30r</posy>
+                    <posy>20r</posy>
                     <width>80</width>
-                    <height>30</height>
+                    <height>20</height>
                     <label>QUIT</label>
                     <font>font13</font>
                     <aligny>center</aligny>
