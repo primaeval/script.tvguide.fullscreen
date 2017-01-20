@@ -35,15 +35,35 @@
     ""
   ],
   [
-    "AutoPlay",
+    "Autoplay",
     "Action(Number6)",
+    ""
+  ],
+  [
+    "Next",
+    "Action(SkipNext)",
+    ""
+  ],
+  [
+    "Prev",
+    "Action(skipprevious)",
+    ""
+  ],
+  [
+    "Home",
+    "Action(FirstPage)",
+    ""
+  ],
+  [
+    "First",
+    "Action(LastPage)",
     ""
   ],
   [
     "Favs",
     "ActivateWindow(10134)",
     ""
-  ],  
+  ],
   [
     "Quit",
     "Action(Close)",

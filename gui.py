@@ -345,6 +345,7 @@ class TVGuide(xbmcgui.WindowXML):
             if self.category not in self.categories:
                 self.category = ""
         self.cat_index = 0
+        self.action_index = 0
 
         self.osdEnabled = False
         self.osdEnabled = ADDON.getSetting('enable.osd') == 'true' and ADDON.getSetting(
@@ -427,6 +428,8 @@ class TVGuide(xbmcgui.WindowXML):
                 super(TVGuide, self).close()
 
     def onInit(self):
+        self.setControlVisible(self.C_MAIN_ACTIONS, ADDON.getSetting('action.bar') == 'true')
+
         if ADDON.getSetting('epg.video.pip') == 'true':
             self.setControlVisible(self.C_MAIN_PIP,True)
             self.setControlVisible(self.C_MAIN_VIDEO,False)
@@ -1155,6 +1158,7 @@ class TVGuide(xbmcgui.WindowXML):
         if controlId == self.C_MAIN_ACTIONS:
             cList = self.getControl(self.C_MAIN_ACTIONS)
             pos = cList.getSelectedPosition()
+            self.action_index = pos
             xbmc.executebuiltin(self.actions[pos][1])
         if controlId == self.C_MAIN_CATEGORY:
             cList = self.getControl(self.C_MAIN_CATEGORY)
@@ -2325,7 +2329,7 @@ class TVGuide(xbmcgui.WindowXML):
         if control is not None:
             self.setFocus(control)
         elif control is None:
-            if self.getControl(self.C_MAIN_ACTIONS) and ADDON.getSetting('down.action') == 'true':
+            if self.getControl(self.C_MAIN_ACTIONS) and ADDON.getSetting('action.bar') == 'true' and ADDON.getSetting('down.action') == 'true':
                 self.setFocusId(self.C_MAIN_ACTIONS)
                 return
             self.focusPoint.y = self.epgView.top
@@ -2786,6 +2790,7 @@ class TVGuide(xbmcgui.WindowXML):
                 items.append(item)
             listControl.reset()
             listControl.addItems(items)
+            listControl.selectItem(self.action_index)
 
         # remove existing controls
         self._clearEpg()
@@ -3565,6 +3570,13 @@ class TVGuide(xbmcgui.WindowXML):
         control = self.getControl(controlId)
         if control:
             control.setVisible(visible)
+
+    def setControlEnabled(self, controlId, enable):
+        if not controlId:
+            return
+        control = self.getControl(controlId)
+        if control:
+            control.setEnabled(enable)
 
     def getControl(self, controlId):
         if not controlId:

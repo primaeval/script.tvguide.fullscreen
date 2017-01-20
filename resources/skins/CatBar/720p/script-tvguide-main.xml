@@ -2045,9 +2045,9 @@
 
             <control type="list" id="7100">
                 <description>action bar</description>
-                <left>400</left>
+                <left>0</left>
                 <top>30r</top>
-                <width>880</width>
+                <width>1280</width>
                 <height>28</height>
                 <visible>true</visible>
                 <onup></onup>
