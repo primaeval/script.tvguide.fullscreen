@@ -1,4 +1,4 @@
-version 0.0.305
+version 0.0.305-306
 - Action Bar in CatBar skin
 - Settings \ Appearance \ Show Action Bar
 - Settings \ Appearance \ Down to Action Bar
