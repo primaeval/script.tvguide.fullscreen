@@ -428,7 +428,11 @@ class TVGuide(xbmcgui.WindowXML):
                 super(TVGuide, self).close()
 
     def onInit(self):
-        self.setControlVisible(self.C_MAIN_ACTIONS, ADDON.getSetting('action.bar') == 'true')
+        self.has_cat_bar = self.getControl(self.C_MAIN_CATEGORY) != None
+        self.has_action_bar = self.getControl(self.C_MAIN_ACTIONS) != None
+
+        if self.has_action_bar:
+            self.setControlVisible(self.C_MAIN_ACTIONS, ADDON.getSetting('action.bar') == 'true')
 
         if ADDON.getSetting('epg.video.pip') == 'true':
             self.setControlVisible(self.C_MAIN_PIP,True)
@@ -1879,7 +1883,7 @@ class TVGuide(xbmcgui.WindowXML):
         super(TVGuide, self).setFocus(control)
 
     def onFocus(self, controlId):
-        if self.mode == MODE_EPG and controlId != self.C_MAIN_CATEGORY:
+        if self.has_cat_bar and self.mode == MODE_EPG and controlId != self.C_MAIN_CATEGORY:
             listControl = self.getControl(self.C_MAIN_CATEGORY)
             if listControl:
                 listControl.selectItem(self.cat_index)
@@ -2763,34 +2767,36 @@ class TVGuide(xbmcgui.WindowXML):
         self._showControl(self.C_MAIN_LOADING)
         self.setFocusId(self.C_MAIN_LOADING_CANCEL)
 
-        items = []
-        categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
-        for label in categories:
-            item = xbmcgui.ListItem(label)
-            items.append(item)
-        listControl = self.getControl(self.C_MAIN_CATEGORY)
-        if listControl:
-            listControl.reset()
-            if len(items) > 1:
-                listControl.addItems(items)
-                if self.category:
-                    index = categories.index(self.category)
-                    self.cat_index = index
-                    listControl.selectItem(index)
-            name = remove_formatting(ADDON.getSetting('categories.background.color'))
-            color = colors.color_name[name]
-            control = self.getControl(self.C_MAIN_BACKGROUND)
-            control.setColorDiffuse(color)
-
-        listControl = self.getControl(self.C_MAIN_ACTIONS)
-        if listControl:
+        if self.has_cat_bar:
             items = []
-            for label,action,iconImage in self.actions:
-                item = xbmcgui.ListItem(label,iconImage=iconImage)
+            categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
+            for label in categories:
+                item = xbmcgui.ListItem(label)
                 items.append(item)
-            listControl.reset()
-            listControl.addItems(items)
-            listControl.selectItem(self.action_index)
+            listControl = self.getControl(self.C_MAIN_CATEGORY)
+            if listControl:
+                listControl.reset()
+                if len(items) > 1:
+                    listControl.addItems(items)
+                    if self.category:
+                        index = categories.index(self.category)
+                        self.cat_index = index
+                        listControl.selectItem(index)
+                name = remove_formatting(ADDON.getSetting('categories.background.color'))
+                color = colors.color_name[name]
+                control = self.getControl(self.C_MAIN_BACKGROUND)
+                control.setColorDiffuse(color)
+
+        if self.has_action_bar:
+            listControl = self.getControl(self.C_MAIN_ACTIONS)
+            if listControl:
+                items = []
+                for label,action,iconImage in self.actions:
+                    item = xbmcgui.ListItem(label,iconImage=iconImage)
+                    items.append(item)
+                listControl.reset()
+                listControl.addItems(items)
+                listControl.selectItem(self.action_index)
 
         # remove existing controls
         self._clearEpg()
