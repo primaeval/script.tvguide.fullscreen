@@ -2039,14 +2039,14 @@ class TVGuide(xbmcgui.WindowXML):
         unique = False
         if ADDON.getSetting('omdb') == 'true':
             if year:
-                url = 'http://www.omdbapi.com/?t=%s&y=%s&plot=short&r=json&type=movie' % (urllib.quote_plus(title),year)
+                url = 'http://www.omdbapi.com/?t=%s&y=%s&plot=short&r=json&type=movie' % (urllib.quote_plus(title.encode("utf8"),year))
             elif movie:
-                url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=movie' % (urllib.quote_plus(title))
+                url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=movie' % (urllib.quote_plus(title.encode("utf8")))
             elif season and episode:
                 unique = True
-                url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=episode&Season=%s&Episode=%s' % (urllib.quote_plus(title),season,episode)
+                url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json&type=episode&Season=%s&Episode=%s' % (urllib.quote_plus(title.encode("utf8"),season,episode))
             else:
-                url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title)
+                url = 'http://www.omdbapi.com/?t=%s&y=&plot=short&r=json' % urllib.quote_plus(title.encode("utf8"))
             try: data = requests.get(url).content
             except: data = ''
 
