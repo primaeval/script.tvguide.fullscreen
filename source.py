@@ -1834,13 +1834,6 @@ class XMLTVSource(Source):
             pass
         event, root = context.next()
         elements_parsed = 0
-        meta_installed = False
-
-        try:
-            xbmcaddon.Addon("plugin.video.meta")
-            meta_installed = True
-        except Exception:
-            pass  # ignore addons that are not installed
 
         data = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channel_id_shortcut.ini','rb').read()
         id_shortcuts = {}
@@ -1890,43 +1883,43 @@ class XMLTVSource(Source):
                         is_movie = "Movie"
                         title = "%s (%s)" % (title,date)
                     language = elem.find("title").get("lang")
-                    if meta_installed == True:
-                        episode_num = elem.findtext("episode-num")
-                        meta_categories = elem.findall("category")
-                        for category in meta_categories:
-                            if "movie" in category.text.lower() or channel.lower().find("sky movies") != -1 \
-                                    or "film" in category.text.lower():
-                                is_movie = "Movie"
-                                break
 
-                        if episode_num is not None:
-                            episode_num = unicode.encode(unicode(episode_num), 'ascii','ignore')
-                            if str.find(episode_num, ".") != -1:
-                                splitted = str.split(episode_num, ".")
-                                if splitted[0] != "":
-                                    #TODO fix dk format
-                                    try:
-                                        season = int(splitted[0]) + 1
-                                        is_movie = None # fix for misclassification
-                                        if str.find(splitted[1], "/") != -1:
-                                            episode = int(splitted[1].split("/")[0]) + 1
-                                        elif splitted[1] != "":
-                                            episode = int(splitted[1]) + 1
-                                    except:
-                                        episode = ""
-                                        season = ""
+                    episode_num = elem.findtext("episode-num")
+                    meta_categories = elem.findall("category")
+                    for category in meta_categories:
+                        if "movie" in category.text.lower() or channel.lower().find("sky movies") != -1 \
+                                or "film" in category.text.lower():
+                            is_movie = "Movie"
+                            break
 
-                            elif str.find(episode_num.lower(), "season") != -1 and episode_num != "Season ,Episode ":
-                                pattern = re.compile(r"Season\s(\d+).*?Episode\s+(\d+).*",re.I|re.U)
-                                season = int(re.sub(pattern, r"\1", episode_num))
-                                episode = int(re.sub(pattern, r"\2", episode_num))
+                    if episode_num is not None:
+                        episode_num = unicode.encode(unicode(episode_num), 'ascii','ignore')
+                        if str.find(episode_num, ".") != -1:
+                            splitted = str.split(episode_num, ".")
+                            if splitted[0] != "":
+                                #TODO fix dk format
+                                try:
+                                    season = int(splitted[0]) + 1
+                                    is_movie = None # fix for misclassification
+                                    if str.find(splitted[1], "/") != -1:
+                                        episode = int(splitted[1].split("/")[0]) + 1
+                                    elif splitted[1] != "":
+                                        episode = int(splitted[1]) + 1
+                                except:
+                                    episode = ""
+                                    season = ""
 
-                            else:
-                                pattern = re.compile(r"S([0-9]+)E([0-9]+)",re.I|re.U)
-                                match = re.search(pattern,episode_num)
-                                if match:
-                                    season = int(match.group(1))
-                                    episode = int(match.group(2))
+                        elif str.find(episode_num.lower(), "season") != -1 and episode_num != "Season ,Episode ":
+                            pattern = re.compile(r"Season\s(\d+).*?Episode\s+(\d+).*",re.I|re.U)
+                            season = int(re.sub(pattern, r"\1", episode_num))
+                            episode = int(re.sub(pattern, r"\2", episode_num))
+
+                        else:
+                            pattern = re.compile(r"S([0-9]+)E([0-9]+)",re.I|re.U)
+                            match = re.search(pattern,episode_num)
+                            if match:
+                                season = int(match.group(1))
+                                episode = int(match.group(2))
                     if channel in id_shortcuts:
                         cid = id_shortcuts[channel]
                     else:
