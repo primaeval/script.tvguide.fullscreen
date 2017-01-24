@@ -1,3 +1,11 @@
+IMPORTANT:
+The kodi forum thread has been closed. I don't know why.
+I'm looking for a new forum home.
+You can contact me here: primaeval.dev AT gmail.com
+
+version 0.0.307
+- sanitise
+
 version 0.0.305-306
 - Action Bar in CatBar skin
 - Settings \ Appearance \ Show Action Bar
@@ -66,8 +74,8 @@ version 0.0.284
 - Settings \ Lab2 \ tvguide.co.uk email (overrides Provider)
 
 version 0.0.283
-- Touch Controls - First Channel (clock), Channel Number dialog (NUM), Favourites (FAVS), Stop, Custom (MINE) 
-- Settings \ Lab1 \ Custom Command for MINE 
+- Touch Controls - First Channel (clock), Channel Number dialog (NUM), Favourites (FAVS), Stop, Custom (MINE)
+- Settings \ Lab1 \ Custom Command for MINE
 - play ActivateWindow urls as xbmc.executebuiltin(url)
 
 version 0.0.280-282
