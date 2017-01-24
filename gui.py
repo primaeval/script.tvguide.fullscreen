@@ -1758,7 +1758,7 @@ class TVGuide(xbmcgui.WindowXML):
             if not program.language:
                 program.language = "en"
 
-            catchup = ADDON.getSetting('catchup').lower()
+            catchup = ADDON.getSetting('catchup.text').lower()
             if selection == 0:
                 xbmc.executebuiltin("RunPlugin(plugin://plugin.video.%s/movies/play_by_name/%s/%s)" % (
                     catchup, title, program.language))
