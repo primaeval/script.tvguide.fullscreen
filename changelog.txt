@@ -1,7 +1,5 @@
-IMPORTANT:
-The kodi forum thread has been closed. I don't know why.
-I'm looking for a new forum home.
-You can contact me here: primaeval.dev AT gmail.com
+version 0.0.308
+- panic over, the forum thread is back
 
 version 0.0.307
 - sanitise
