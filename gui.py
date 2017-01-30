@@ -404,6 +404,7 @@ class TVGuide(xbmcgui.WindowXML):
             if self.player.isPlaying():
                 if ADDON.getSetting('stop.on.exit') == "true":
                     self.player.stop()
+                    self.clear_catchup()
 
             f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle','wb')
             try:
@@ -536,6 +537,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         if action.getId() in COMMAND_ACTIONS["STOP"]:
             self.tryingToPlay = False
+            self.clear_catchup()
             self._hideOsdOnly()
             self._hideQuickEpg()
 
@@ -1185,6 +1187,7 @@ class TVGuide(xbmcgui.WindowXML):
             return
         elif controlId in [self.C_MAIN_MOUSE_STOP]:
             self.player.stop()
+            self.clear_catchup()
             self.tryingToPlay = False
             self._hideOsdOnly()
             self._hideQuickEpg()
@@ -2414,6 +2417,70 @@ class TVGuide(xbmcgui.WindowXML):
         program = self.database.getCurrentProgram(channel)
         self.playOrChoose(program)
 
+    def clear_catchup(self):
+        alarms = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.list','rb').read().splitlines()
+        for name in alarms:
+            xbmc.executebuiltin('CancelAlarm(%s,True)' % name.encode('utf-8', 'replace'))
+        programList = []
+        catchup = ADDON.getSetting('catchup.text')
+        channel = utils.Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
+        self.database.updateProgramList(None,programList,channel)
+        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+    def catchup(self,channel):
+        programList = self.database.getChannelListing(channel)
+        if not programList:
+            return
+        now = datetime.datetime.now()
+        offset = now - programList[0].startDate
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.list','wb')
+        first_cmd = None
+        for program in programList:
+            program.startDate += offset
+            program.endDate += offset
+            t = program.startDate - now
+            timeToAutoplay = ((t.days * 86400) + t.seconds) / 60
+            name = "%s-%s" % (program.channel.id,program.startDate)
+
+            title = program.title.replace(" ", "%20").replace(",", "").replace(u"\u2013", "-")
+            title = unicode.encode(title, "ascii", "ignore")
+            match = re.search('(.*?)\([0-9]{4}\)$',title)
+            if match:
+                title = match.group(1).strip()
+                program.is_movie = "Movie"
+            if program.is_movie == "Movie":
+                selection = 0
+            elif program.season:
+                selection = 1
+            else:
+                selection = 1
+
+            if not program.language:
+                program.language = "en"
+
+            catchup = ADDON.getSetting('catchup.text').lower()
+            if selection == 0:
+                cmd = "RunPlugin(plugin://plugin.video.%s/movies/play_by_name/%s/%s)" % (catchup, title, program.language)
+            elif selection == 1:
+                if program.season and program.episode:
+                    cmd = "RunPlugin(plugin://plugin.video.%s/tv/play_by_name/%s/%s/%s/%s)" % (
+                        catchup, title, program.season, program.episode, program.language)
+                else:
+                    cmd = "RunPlugin(plugin://plugin.video.%s/tv/play_by_name_only/%s/%s)" % (
+                        catchup, title, program.language)
+
+            f.write("%s\n" % name.encode('utf-8', 'replace'))
+            if not first_cmd:
+                first_cmd = cmd
+            else:
+                xbmc.executebuiltin('AlarmClock(%s,%s,%d,True)' % (name.encode('utf-8', 'replace'), cmd, timeToAutoplay ))
+        f.close()
+        catchup = ADDON.getSetting('catchup.text')
+        channel = utils.Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
+        self.database.updateProgramList(None,programList,channel)
+        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+        xbmc.executebuiltin(first_cmd)
+
     def playChannel(self, channel, program = None):
         if ADDON.getSetting('epg.video.pip') == 'true':
             self.setControlVisible(self.C_MAIN_IMAGE,True)
@@ -2450,25 +2517,30 @@ class TVGuide(xbmcgui.WindowXML):
         wasPlaying = self.player.isPlaying()
         if url:
             self.player.stop()
-            if url.startswith("plugin://plugin.video.meta/movies/play_by_name") and program is not None:
-                import urllib
-                title = urllib.quote(program.title)
-                url += "/%s/%s" % (title, program.language)
-            if url.startswith("plugin://plugin.video.meta/tv/play_by_name") and program is not None:
-                import urllib
-                title = urllib.quote(program.title)
-                url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
-            if url.startswith('@'):
-                xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
-            elif url[0:14] == "ActivateWindow":
-                xbmc.executebuiltin(url)
-            elif url[0:9] == 'plugin://':
-                if self.alternativePlayback:
-                    xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
+            self.clear_catchup()
+            if url.startswith("catchup"):
+                self.catchup(channel)
+                return True
+            else:
+                if url.startswith("plugin://plugin.video.meta/movies/play_by_name") and program is not None:
+                    import urllib
+                    title = urllib.quote(program.title)
+                    url += "/%s/%s" % (title, program.language)
+                if url.startswith("plugin://plugin.video.meta/tv/play_by_name") and program is not None:
+                    import urllib
+                    title = urllib.quote(program.title)
+                    url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
+                if url.startswith('@'):
+                    xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
+                elif url[0:14] == "ActivateWindow":
+                    xbmc.executebuiltin(url)
+                elif url[0:9] == 'plugin://':
+                    if self.alternativePlayback:
+                        xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
+                    else:
+                        self.player.play(item=url, windowed=self.osdEnabled)
                 else:
                     self.player.play(item=url, windowed=self.osdEnabled)
-            else:
-                self.player.play(item=url, windowed=self.osdEnabled)
 
             self.tryingToPlay = True
             if ADDON.getSetting('play.minimized') == 'false':
@@ -3252,6 +3324,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.autoplay.scheduleAutoplays()
             self.autoplaywith.scheduleAutoplaywiths()
             self.loadChannelMappings()
+            self.clear_catchup()
 
     def saveActions(self):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/actions.json'
@@ -4190,6 +4263,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     C_STREAM_STRM_CANCEL = 1004
     C_STREAM_STRM_IMPORT = 1006
     C_STREAM_STRM_PVR = 1007
+    C_STREAM_STRM_CATCHUP = 1008
     C_STREAM_STRM_CLEAR_ALT = 1009
     C_STREAM_FAVOURITES = 2001
     C_STREAM_FAVOURITES_PREVIEW = 2002
@@ -4525,6 +4599,9 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 name = remove_formatting(item.getLabel())
                 self.streamingService.setAddonStream(addon, name, stream)
 
+        elif controlId == self.C_STREAM_STRM_CATCHUP:
+            self.database.setCustomStreamUrl(self.channel, "catchup")
+            self.close()
         elif controlId == self.C_STREAM_ADDONS_OK:
             listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
             item = listControl.getSelectedItem()

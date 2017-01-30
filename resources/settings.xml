@@ -64,6 +64,7 @@
     </category>
     <category label="Playback">
         <setting id="catchup.text" label="Catchup Addon" type="text" default="Meta" />
+        <setting id="catchup.channel" label="Catchup Channel" type="bool" default="true" />
         <setting type="lsep" label="Channel Shortcuts (xmltv Ids must be Numeric)"/>
         <setting id="channel.shortcut" label="Channel Shortcut Type" type="enum" default="None" values="None|Index|xmltv Id" />
         <setting id="channel.shortcut.direct" label="Start When Any Number Key Pressed (or map Shift Key to start)" visible="!eq(-1,0)" type="bool" default="false" />

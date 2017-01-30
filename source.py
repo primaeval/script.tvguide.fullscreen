@@ -280,6 +280,7 @@ class Database(object):
 
         return self.source.isUpdated(channelsLastUpdated, programsLastUpdated)
 
+
     def updateChannelAndProgramListCaches(self, callback, date=datetime.datetime.now(), progress_callback=None,
                                           clearExistingProgramList=True):
         self.eventQueue.append(
@@ -349,6 +350,13 @@ class Database(object):
             imported = imported_channels = imported_programs = 0
 
             if getData == True:
+                if ADDON.getSetting('catchup.channel') == 'true':
+                    catchup = ADDON.getSetting('catchup.text')
+                    channel = Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
+                    c.execute(
+                        'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)',
+                        [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
+                         self.source.KEY, channel.weight, self.source.KEY])
                 for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
                     imported += 1
 
@@ -426,6 +434,29 @@ class Database(object):
             self.updateInProgress = False
             c.close()
         xbmcvfs.delete(lock)
+
+    def updateProgramList(self, callback, programList, channel):
+        self.eventQueue.append(
+            [self._updateProgramList, callback, programList, channel])
+        self.event.set()
+
+    def _updateProgramList(self, programList, channel):
+        # todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
+        sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
+        sqlite3.register_converter('timestamp', self.convert_datetime)
+
+        c = self.conn.cursor()
+        c.execute('DELETE FROM programs WHERE source=? AND channel=? ', [self.source.KEY, channel.id])
+        updatesId = 1 #TODO why?
+        for program in programList:
+            c.execute(
+                'INSERT OR REPLACE INTO programs(channel, title, sub_title, start_date, end_date, description, categories, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [channel.id, program.title, program.sub_title, program.startDate, program.endDate, program.description, program.categories,
+                 program.imageLarge, program.imageSmall, program.season, program.episode, program.is_movie,
+                 program.language, self.source.KEY, updatesId])
+
+        self.conn.commit()
+
 
     def setCategory(self,category):
         self.category = category
