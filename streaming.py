@@ -110,7 +110,7 @@ class StreamsService(object):
             for (label, stream) in self.getAddonStreams(id):
                 if type(stream) is list:
                     stream = stream[0]
-                if id == "plugin.video.meta":
+                if id == "plugin.video.%s" % self.addon.getSetting('catchup.text').lower():
                     label = channel.title
                     stream = str(stream.replace("<channel>", channel.title.replace(" ","%20")))
 

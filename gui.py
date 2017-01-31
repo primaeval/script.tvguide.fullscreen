@@ -2522,11 +2522,11 @@ class TVGuide(xbmcgui.WindowXML):
                 self.catchup(channel)
                 return True
             else:
-                if url.startswith("plugin://plugin.video.meta/movies/play_by_name") and program is not None:
+                if url.startswith("plugin://plugin.video.%s/movies/play_by_name" % ADDON.getSetting('catchup.text').lower()) and program is not None:
                     import urllib
                     title = urllib.quote(program.title)
                     url += "/%s/%s" % (title, program.language)
-                if url.startswith("plugin://plugin.video.meta/tv/play_by_name") and program is not None:
+                if url.startswith("plugin://plugin.video.%s/tv/play_by_name" % ADDON.getSetting('catchup.text').lower()) and program is not None:
                     import urllib
                     title = urllib.quote(program.title)
                     url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
@@ -4600,8 +4600,14 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 self.streamingService.setAddonStream(addon, name, stream)
 
         elif controlId == self.C_STREAM_STRM_CATCHUP:
-            self.database.setCustomStreamUrl(self.channel, "catchup")
-            self.close()
+            d = xbmcgui.Dialog()
+            which = d.select("Add Catchup Channel: %s" % self.channel.title,["Main Stream", "Alternative Stream"])
+            if which == 0:
+                self.database.setCustomStreamUrl(self.channel, "catchup")
+                self.close()
+            elif which == 1:
+                self.database.setAltCustomStreamUrl(self.channel, "catchup", "catchup")
+                self.close()
         elif controlId == self.C_STREAM_ADDONS_OK:
             listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
             item = listControl.getSelectedItem()
@@ -4743,7 +4749,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         streams = self.streamingService.getAddonStreams(item.getProperty('addon_id'))
         items = list()
         for (label, stream) in streams:
-            if item.getProperty('addon_id') == "plugin.video.meta":
+            if item.getProperty('addon_id') == "plugin.video.%s" % ADDON.getSetting('catchup.text').lower():
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
             if stream.startswith('@'):
@@ -4798,7 +4804,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             label = remove_formatting(dirs[stream])
             if stream in folders:
                 label = '[COLOR fuchsia]%s[/COLOR]' % label
-            if item.getProperty('addon_id') == "plugin.video.meta":
+            if item.getProperty('addon_id') == "plugin.video.%s" % ADDON.getSetting('catchup.text').lower():
                 label = self.channel.title
                 stream = stream.replace("<channel>", self.channel.title.replace(" ","%20"))
             item = xbmcgui.ListItem(label)
