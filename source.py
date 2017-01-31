@@ -350,13 +350,12 @@ class Database(object):
             imported = imported_channels = imported_programs = 0
 
             if getData == True:
-                if ADDON.getSetting('catchup.channel') == 'true':
-                    catchup = ADDON.getSetting('catchup.text')
-                    channel = Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
-                    c.execute(
-                        'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)',
-                        [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
-                         self.source.KEY, channel.weight, self.source.KEY])
+                catchup = ADDON.getSetting('catchup.text')
+                channel = Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", ADDON.getSetting('catchup.channel') == 'true')
+                c.execute(
+                    'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)',
+                    [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
+                     self.source.KEY, channel.weight, self.source.KEY])
                 for item in self.source.getDataFromExternal(date, ch_list, progress_callback):
                     imported += 1
 
