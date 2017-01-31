@@ -2479,6 +2479,9 @@ class TVGuide(xbmcgui.WindowXML):
         channel = utils.Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
         self.database.updateProgramList(None,programList,channel)
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+        if ADDON.getSetting('catchup.channel') == 'true':
+            self.currentChannel = channel
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         xbmc.executebuiltin(first_cmd)
 
     def playChannel(self, channel, program = None):
