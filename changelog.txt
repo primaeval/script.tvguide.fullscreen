@@ -1,3 +1,10 @@
+version 0.0.310
+- Catchup Channel - play channel programs with catchup addon
+- the current program is started from the beginning, all others are offset to compensate
+- Settings \ Playback \ Show Catchup Channel
+- Stream Setup \ strm|m3u \ Catchup Channel
+- set channel url to "catchup" in ini|m3u files
+
 version 0.0.309
 - fix
 
