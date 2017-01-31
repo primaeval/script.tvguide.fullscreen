@@ -2498,6 +2498,8 @@ class TVGuide(xbmcgui.WindowXML):
                 if match:
                     plugin = match.group(1)
                     plugin = xbmcaddon.Addon(plugin).getAddonInfo('name')
+                elif u[0] == "catchup":
+                    plugin = "Catchup"
                 else:
                     plugin = "Favourite"
                 names.append("%s - %s" % (plugin,u[1]))
@@ -4606,7 +4608,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 self.database.setCustomStreamUrl(self.channel, "catchup")
                 self.close()
             elif which == 1:
-                self.database.setAltCustomStreamUrl(self.channel, "catchup", "catchup")
+                self.database.setAltCustomStreamUrl(self.channel, self.channel.title, "catchup")
                 self.close()
         elif controlId == self.C_STREAM_ADDONS_OK:
             listControl = self.getControl(self.C_STREAM_ADDONS_STREAMS)
