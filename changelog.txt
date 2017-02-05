@@ -1,3 +1,11 @@
+version 0.0.311
+- Simpler Recording
+- Settings \ Program Scheduler \ AutoPlayWiths \ ffmpeg Program (point to ffmpeg.exe)
+- Settings \ Program Scheduler \ AutoPlayWiths \ ffmpeg Output Folder (for recordings)
+- if ffmpeg setting is not blank recording will try to use ffmpeg
+- else if playercorefactory is set it will use this player to autoplaywith
+- else it will look for the autoplaywith scripts in addon_data
+
 version 0.0.310
 - Catchup Channel - play channel programs with catchup addon
 - the current program is started from the beginning, all others are offset to compensate
