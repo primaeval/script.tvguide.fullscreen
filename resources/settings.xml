@@ -171,10 +171,12 @@
         <setting label="Clear Autoplays..." type="action" action="RunScript($CWD/autoplay.py)" />
         <setting type="lsep" label="AutoPlayWith (External Player)"/>
         <setting id="autoplaywiths.enabled" label="AutoPlayWiths" type="bool" default="true" />
-        <setting id="autoplaywith.player" label="PlayerCoreFactory.xml Player" type="text" default="" visible="eq(-1,true)"/>
+        <setting id="autoplaywiths.player" label="PlayerCoreFactory.xml Player" type="text" default="" visible="eq(-1,true)"/>
         <setting id="autoplaywiths.stop" label="Stop After Play" type="bool" default="true" visible="eq(-2,true)"/>
-        <setting label="Minutes before" type="enum" id="autoplaywiths.before" values="0|1|2|3|4|5|10" default="1" visible="eq(-3,true)"/>
-        <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1" visible="eq(-4,true)"/>
+        <setting id="autoplaywiths.ffmpeg" label="ffmpeg Program" type="file" default="" visible="eq(-3,true)"/>
+        <setting id="autoplaywiths.folder" label="ffmpeg Output Folder" type="folder" default="" visible="eq(-4,true)"/>
+        <setting label="Minutes before" type="enum" id="autoplaywiths.before" values="0|1|2|3|4|5|10" default="1" visible="eq(-5,true)"/>
+        <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1" visible="eq(-6,true)"/>
         <setting label="Clear Autoplaywiths..." type="action" action="RunScript($CWD/autoplaywith.py)" />
     </category>
 

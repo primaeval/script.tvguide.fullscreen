@@ -85,27 +85,7 @@ if ffmpeg:
         name = re.sub(":|<>\/",'',name)
         name = name.encode("cp1252")
         filename = xbmc.translatePath("%s%s.ts" % (folder,name))
-        #seconds = 30
+        seconds = 3600*4
         cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
         p = Popen(cmd,shell=True)
     quit()
-
-script = "special://profile/addon_data/script.tvguide.fullscreen/playwith.py"
-if xbmcvfs.exists(script):
-    xbmc.executebuiltin('RunScript(%s,%s,%s)' % (script,channel,start))
-
-core = ADDON.getSetting('autoplaywiths.player')
-if not core:
-    quit()
-
-c = conn.cursor()
-c.execute('SELECT stream_url FROM custom_stream_url WHERE channel=?', [channel])
-row = c.fetchone()
-url = ""
-if row:
-    url = row[0]
-if not url:
-    quit()
-
-xbmc.executebuiltin('PlayWith(%s)' % core)
-xbmc.executebuiltin('PlayMedia(%s)' % url)

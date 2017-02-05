@@ -2570,16 +2570,29 @@ class TVGuide(xbmcgui.WindowXML):
         if url:
             now = datetime.datetime.now()
             timestamp = time.mktime(self.currentProgram.startDate.timetuple())
+
+            ffmpeg = ADDON.getSetting('autoplaywiths.ffmpeg')
+            if ffmpeg:
+                folder = ADDON.getSetting('autoplaywiths.folder')
+                script = "special://home/addons/script.tvguide.fullscreen/playwithchannel.py"
+                xbmc.executebuiltin('RunScript(%s,%s,%s)' % (script,channel.id,timestamp))
+
             script = "special://profile/addon_data/script.tvguide.fullscreen/playwithchannel.py"
             if xbmcvfs.exists(script):
                 xbmc.executebuiltin('RunScript(%s,%s,%s)' % (script,channel.id,timestamp))
-            core = ADDON.getSetting('autoplaywith.player')
+            core = ADDON.getSetting('autoplaywiths.player')
             if core:
                 xbmc.executebuiltin('PlayWith(%s)' % core)
                 xbmc.executebuiltin('PlayMedia(%s)' % url)
 
 
     def stopWith(self):
+        ffmpeg = ADDON.getSetting('autoplaywiths.ffmpeg')
+        if ffmpeg:
+            folder = ADDON.getSetting('autoplaywiths.folder')
+            script = "special://home/addons/script.tvguide.fullscreen/stopwithchannel.py"
+            xbmc.executebuiltin('RunScript(%s)' % (script))
+
         script = "special://profile/addon_data/script.tvguide.fullscreen/stopwithchannel.py"
         if xbmcvfs.exists(script):
             xbmc.executebuiltin('RunScript(%s)' % (script))
