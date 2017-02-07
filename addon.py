@@ -35,7 +35,10 @@ ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 ffmpeg = ADDON.getSetting('autoplaywiths.ffmpeg')
 if ffmpeg:
     st = os.stat(ffmpeg)
-    os.chmod(ffmpeg, st.st_mode | stat.S_IEXEC)
+    try:
+        os.chmod(ffmpeg, st.st_mode | stat.S_IEXEC)
+    except:
+        pass
 
 if len(sys.argv) > 1:
     category = sys.argv[1]
