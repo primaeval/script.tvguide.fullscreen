@@ -326,6 +326,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.currentProgram = None
         self.focusedProgram = None
         self.quickEpgShowInfo = False
+        self.playing_catchup_channel = False
 
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
@@ -2418,7 +2419,16 @@ class TVGuide(xbmcgui.WindowXML):
         self.playOrChoose(program)
 
     def clear_catchup(self):
-        alarms = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.list','rb').read().splitlines()
+        if not self.playing_catchup_channel:
+            return
+        self.playing_catchup_channel = False
+        filename = 'special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.list'
+        f = xbmcvfs.File(filename,'rb')
+        alarms = f.read().splitlines()
+        f.close()
+        if not alarms:
+            return
+        xbmcvfs.delete(filename)
         for name in alarms:
             xbmc.executebuiltin('CancelAlarm(%s,True)' % name.encode('utf-8', 'replace'))
         programList = []
@@ -2428,6 +2438,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def catchup(self,channel):
+        self.playing_catchup_channel = True
         programList = self.database.getChannelListing(channel)
         if not programList:
             return
@@ -2485,6 +2496,7 @@ class TVGuide(xbmcgui.WindowXML):
         xbmc.executebuiltin(first_cmd)
 
     def playChannel(self, channel, program = None):
+        self.playing_catchup_channel = False
         if ADDON.getSetting('epg.video.pip') == 'true':
             self.setControlVisible(self.C_MAIN_IMAGE,True)
         url = self.database.getStreamUrl(channel)
@@ -2557,6 +2569,7 @@ class TVGuide(xbmcgui.WindowXML):
         return url is not None
 
     def playWithChannel(self, channel, program = None):
+        self.playing_catchup_channel = False
         if ADDON.getSetting('epg.video.pip') == 'true':
             self.setControlVisible(self.C_MAIN_IMAGE,False)
         if self.currentChannel:
