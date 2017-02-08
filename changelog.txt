@@ -1,4 +1,4 @@
-version 0.0.311-313
+version 0.0.311-314
 - Simpler Recording
 - Settings \ Program Scheduler \ AutoPlayWiths \ ffmpeg Program (point to ffmpeg.exe)
 - Settings \ Program Scheduler \ AutoPlayWiths \ ffmpeg Output Folder (for recordings)
