@@ -27,8 +27,13 @@ if match:
     orig_title = match.group(1).strip()
 title = urllib.quote_plus(orig_title)
 
-f = xbmcvfs.File('special://home/addons/script.tvguide.fullscreen/resources/favourites.xml')
+f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/favourites.xml')
 data = f.read()
+f.close()
+if not data:
+    f = xbmcvfs.File('special://home/addons/script.tvguide.fullscreen/resources/favourites.xml')
+    data = f.read()
+    f.close()
 
 search_addons = {}
 match = re.findall('<favourite name="(.*?)" thumb="(.*?)">(.*?)</favourite>',data)
