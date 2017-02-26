@@ -1,3 +1,7 @@
+version 0.0.315
+- Schedules Direct background update fix
+- MySearch will first look for \userdata\addon_data\script.tvguide.fullscreen\favourites.xml
+
 version 0.0.311-314
 - Simpler Recording
 - Settings \ Program Scheduler \ AutoPlayWiths \ ffmpeg Program (point to ffmpeg.exe)
