@@ -2061,6 +2061,8 @@ class TVGUKSource(Source):
         @param progress_callback:
         @return:
         """
+        d = xbmcgui.DialogProgressBG()
+        d.create('TV Guide Fullscreen', "parsing xmltv")
         email = ADDON.getSetting('tvguide.co.uk.email')
         if not email:
             systemid = {
@@ -2221,11 +2223,13 @@ class TVGUKSource(Source):
             total = len(visible_channels)
             if progress_callback:
                 percent = 100.0 * elements_parsed / len(visible_channels)
+                d.update(int(percent), message=id)
                 if not progress_callback(percent):
                     raise SourceUpdateCanceledException()
 
         self.channelsLastUpdated = datetime.datetime.now()
-
+        d.update(100, message="Done")
+        d.close()
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
         if self.channelsLastUpdated == None:
@@ -2766,10 +2770,11 @@ class DirectScheduleSource(Source):
     INI_TYPE_DEFAULT = 0
     INI_TYPE_CUSTOM = 1
 
-    def __init__(self, addon):
+    def __init__(self, addon, force):
         self.needReset = False
         self.fetchError = False
         self.start = True
+        self.force = force
         '''
         self.xmltvInterval = int(addon.getSetting('sd.interval'))
         self.logoSource = int(addon.getSetting('logos.source'))
@@ -2806,7 +2811,8 @@ class DirectScheduleSource(Source):
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if channelsLastUpdated is None or programLastUpdate is None:
             return True
-
+        if self.force:
+            return True
         update = False
         interval = int(ADDON.getSetting('sd.interval'))
         if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
@@ -3082,4 +3088,4 @@ def instantiateSource(force):
     elif source == "bbc":
         return BBCSource(ADDON)
     else:
-        return DirectScheduleSource(ADDON)
+        return DirectScheduleSource(ADDON,force)
