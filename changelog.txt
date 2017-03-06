@@ -1,3 +1,6 @@
+version 0.0.316
+- Season X Episode X xmltv fix
+
 version 0.0.315
 - Schedules Direct background update fix
 - MySearch will first look for \userdata\addon_data\script.tvguide.fullscreen\favourites.xml
