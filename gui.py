@@ -3056,7 +3056,7 @@ class TVGuide(xbmcgui.WindowXML):
                 )
 
                 self.controlAndProgramList.append(ControlAndProgram(control, program))
-
+        noProgramsMessage = ADDON.getSetting('no.programs.message')
         for channel in channelsWithoutPrograms:
             idx = channels.index(channel)
             noFocusTexture = 'tvg-program-nofocus.png'
@@ -3066,7 +3066,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.epgView.top + self.epgView.cellHeight * idx,
                 (self.epgView.right - self.epgView.left) - 2,
                 self.epgView.cellHeight - 2,
-                '-',
+                noProgramsMessage,
                 focusedColor=focusColor,
                 textColor=noFocusColor,
                 noFocusTexture=noFocusTexture,
@@ -3260,6 +3260,7 @@ class TVGuide(xbmcgui.WindowXML):
 
                 self.quickControlAndProgramList.append(ControlAndProgram(control, program))
 
+        noProgramsMessage = ADDON.getSetting('no.programs.message')
         for channel in channelsWithoutPrograms:
             idx = channels.index(channel)
             noFocusTexture = 'tvg-program-nofocus.png'
@@ -3269,7 +3270,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.quickEpgView.top + self.quickEpgView.cellHeight * idx,
                 (self.quickEpgView.right - self.quickEpgView.left) - 2,
                 self.quickEpgView.cellHeight - 2,
-                '-',
+                noProgramsMessage,
                 focusedColor=focusColor,
                 textColor=noFocusColor,
                 noFocusTexture=noFocusTexture,
