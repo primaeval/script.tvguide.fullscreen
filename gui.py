@@ -40,7 +40,6 @@ import requests
 import pickle
 import json
 import base64
-from PIL import Image, ImageOps
 import source as src
 from notification import Notification
 from autoplay import Autoplay
