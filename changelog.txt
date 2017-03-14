@@ -1,3 +1,8 @@
+version 0.0.317
+- scrolling fix
+- Settings \ Appearance \ No Programs Message (default is -)
+- ATV fix but TheLogoDB will not work
+
 version 0.0.316
 - Season X Episode X xmltv fix
 
