@@ -1,3 +1,6 @@
+version 0.0.319
+- Settings \ Appearance \ Show Addon in Context Menu (Default/CatBar only)
+
 version 0.0.318
 - xmltv import fix (hopefully)
 

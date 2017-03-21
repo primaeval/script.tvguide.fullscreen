@@ -682,10 +682,10 @@
 
         <control type="image" id="4025">
             <description>Addon Logo</description>
-            <posx>1070</posx>
-            <posy>655</posy>
-            <width>200</width>
-            <height>45</height>
+            <posx>1165</posx>
+            <posy>605</posy>
+            <width>100</width>
+            <height>100</height>
             <aspectratio>keep</aspectratio>
             <align>left</align>
             <texture>-</texture>
@@ -695,13 +695,14 @@
         <control type="label" id="4026">
             <description>Addon Name</description>
             <posx>550</posx>
-            <posy>655</posy>
+            <posy>680</posy>
             <width>200</width>
-            <height>45</height>
+            <height>20</height>
             <align>left</align>
-            <aligny>center</aligny>
+            <aligny>top</aligny>
             <font>font13_title</font>
             <textcolor>white</textcolor>
+            <shadowcolor>black</shadowcolor>
             <label></label>
             <align>left</align>
             <scroll>true</scroll>
