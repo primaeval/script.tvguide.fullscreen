@@ -3779,6 +3779,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
+    C_POPUP_ADDON_LOGO = 4025
+    C_POPUP_ADDON_LABEL = 4026
     C_POPUP_LIBMOV = 80000
     C_POPUP_LIBTV = 80001
     C_POPUP_VIDEOADDONS = 80002
@@ -3906,6 +3908,34 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
             self.getControl(self.C_POPUP_STREAM_SETUP).setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_ALT).setEnabled(False)
+
+        if self.program.channel and ADDON.getSetting('menu.addon') == "true":
+            url = self.database.getStreamUrl(self.program.channel)
+            if url:
+                if url.startswith('plugin://'):
+                    match = re.search('plugin://(.*?)/.*',url)
+                    if match:
+                        id = match.group(1)
+                        addon = xbmcaddon.Addon(id)
+                        name = addon.getAddonInfo('name')
+                        icon = addon.getAddonInfo('icon')
+                else:
+                    name = "Playlist"
+                    icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
+                if name:
+                    try:
+                        control = self.getControl(self.C_POPUP_ADDON_LABEL)
+                        if control:
+                            control.setLabel(name)
+                    except:
+                        pass
+                if icon:
+                    try:
+                        control = self.getControl(self.C_POPUP_ADDON_LOGO)
+                        if control:
+                            control.setImage(icon)
+                    except:
+                        pass
 
     def formatDateTodayTomorrow(self, timestamp):
         if timestamp:

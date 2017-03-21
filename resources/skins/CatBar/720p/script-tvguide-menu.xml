@@ -680,5 +680,32 @@
             <visible>false</visible>
         </control>
 
+        <control type="image" id="4025">
+            <description>Addon Logo</description>
+            <posx>1070</posx>
+            <posy>655</posy>
+            <width>200</width>
+            <height>45</height>
+            <aspectratio>keep</aspectratio>
+            <align>left</align>
+            <texture>-</texture>
+            <visible>true</visible>
+        </control>
+
+        <control type="label" id="4026">
+            <description>Addon Name</description>
+            <posx>550</posx>
+            <posy>655</posy>
+            <width>200</width>
+            <height>45</height>
+            <align>left</align>
+            <aligny>center</aligny>
+            <font>font13_title</font>
+            <textcolor>white</textcolor>
+            <label></label>
+            <align>left</align>
+            <scroll>true</scroll>
+        </control>
+
     </controls>
 </window>
