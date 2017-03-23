@@ -332,9 +332,9 @@ class TVGuide(xbmcgui.WindowXML):
         self.vpndefault = False
         try:
             self.api = VPNAPI()
-            if ADDON.getSetting('vpnmgr.connect') == "true"
+            if ADDON.getSetting('vpnmgr.connect') == "true":
                 self.vpnswitch = True
-            if ADDON.getSetting('vpnmgr.default') == "true"
+            if ADDON.getSetting('vpnmgr.default') == "true":
                 self.vpndefault = True
         except:
             self.api = None
