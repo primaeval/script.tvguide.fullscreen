@@ -240,6 +240,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD = 6000
     C_MAIN_OSD_TITLE = 6001
     C_MAIN_OSD_TIME = 6002
+    C_MAIN_OSD_START_TIME = 60021
     C_MAIN_OSD_DESCRIPTION = 6003
     C_MAIN_OSD_CHANNEL_LOGO = 6004
     C_MAIN_OSD_CHANNEL_TITLE = 6005
@@ -249,6 +250,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_OSD_DESCRIPTION = 6007
     C_NEXT_OSD_TITLE = 6008
     C_NEXT_OSD_TIME = 6009
+    C_NEXT_OSD_START_TIME = 60091
     C_NEXT_OSD_CHANNEL_IMAGE = 6010
     C_MAIN_OSD_MOUSE_CONTROLS = 6300
     C_MAIN_VIDEO_BACKGROUND = 5555
@@ -2785,8 +2787,11 @@ class TVGuide(xbmcgui.WindowXML):
             if self.osdProgram.startDate or self.osdProgram.endDate:
                 self.setControlLabel(self.C_MAIN_OSD_TIME, '[B]%s - %s[/B]' % (
                     self.formatTime(self.osdProgram.startDate), self.formatTime(self.osdProgram.endDate)))
+                self.setControlLabel(self.C_MAIN_OSD_START_TIME, '[B]%s[/B]' % (
+                    self.formatTime(self.osdProgram.startDate)))
             else:
                 self.setControlLabel(self.C_MAIN_OSD_TIME, '')
+                self.setControlLabel(self.C_MAIN_OSD_START_TIME, '')
             if self.osdProgram.startDate and self.osdProgram.endDate:
                 osdprogramprogresscontrol = self.getControl(self.C_MAIN_OSD_PROGRESS)
                 if osdprogramprogresscontrol:
@@ -2809,8 +2814,11 @@ class TVGuide(xbmcgui.WindowXML):
                 if nextOsdProgram.startDate or nextOsdProgram.endDate:
                     self.setControlLabel(self.C_NEXT_OSD_TIME, '%s - %s' % (
                         self.formatTime(nextOsdProgram.startDate), self.formatTime(nextOsdProgram.endDate)))
+                    self.setControlLabel(self.C_NEXT_OSD_START_TIME, '%s' % (
+                        self.formatTime(nextOsdProgram.startDate)))
                 else:
                     self.setControlLabel(self.C_NEXT_OSD_TIME, '')
+                    self.setControlLabel(self.C_NEXT_OSD_START_TIME, '')
                 try:
                     nextOsdControl = self.getControl(self.C_NEXT_OSD_CHANNEL_IMAGE)
                     if nextOsdControl != None and nextOsdProgram.imageSmall is not None:
