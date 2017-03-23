@@ -247,6 +247,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_OSD_CHANNEL_IMAGE = 6006
     C_MAIN_OSD_PROGRESS = 6011
     C_MAIN_OSD_PLAY = 6012
+    C_MAIN_OSD_DURATION = 6013
+    C_MAIN_OSD_PROGRESS_INFO = 6014
     C_NEXT_OSD_DESCRIPTION = 6007
     C_NEXT_OSD_TITLE = 6008
     C_NEXT_OSD_TIME = 6009
@@ -2798,6 +2800,30 @@ class TVGuide(xbmcgui.WindowXML):
                     osdprogramprogresscontrol.setPercent(self.percent(self.osdProgram.startDate,self.osdProgram.endDate))
             self.setControlText(self.C_MAIN_OSD_DESCRIPTION, self.osdProgram.description)
             self.setControlLabel(self.C_MAIN_OSD_CHANNEL_TITLE, self.osdChannel.title)
+
+            duration = int(timedelta_total_seconds((self.osdProgram.endDate - self.osdProgram.startDate)) / 60)
+            self.setControlLabel(self.C_MAIN_OSD_DURATION, 'Length: %s minute(s)' % duration)            
+            if self.osdProgram.startDate > datetime.datetime.now():
+                when = int(timedelta_total_seconds(self.osdProgram.startDate - datetime.datetime.now()) / 60 + 1)
+                if when > 1440:
+                    whendays = when / 1440
+                    whenhours = (when / 60) - (whendays * 24)
+                    whenminutes = when - (whendays * 1440) - (whenhours * 60)
+                    when = "In %s day(s) %s hour(s) %s min(s)" % (whendays,whenhours,whenminutes)
+                    self.setControlLabel(self.C_MAIN_OSD_PROGRESS_INFO, when)
+                elif when > 60:
+                    whenhours = when / 60
+                    whenminutes = when - (whenhours * 60)
+                    when = "In %s hour(s) %s minute(s)" % (whenhours,whenminutes)
+                    self.setControlLabel(self.C_MAIN_OSD_PROGRESS_INFO, when)
+                else:
+                    self.setControlLabel(self.C_MAIN_OSD_PROGRESS_INFO, 'In %s minute(s)' % when)
+            elif self.osdProgram.endDate - (datetime.datetime.now() - self.osdProgram.startDate) > self.osdProgram.startDate:
+                remaining = int(timedelta_total_seconds(self.osdProgram.endDate - datetime.datetime.now()) / 60 + 1)
+                self.setControlLabel(self.C_MAIN_OSD_PROGRESS_INFO,  '%s minute(s) left' % remaining)
+            else:
+                self.setControlLabel(self.C_MAIN_OSD_PROGRESS_INFO, 'Ended')
+
             if self.osdProgram.channel.logo is not None:
                 self.setControlImage(self.C_MAIN_OSD_CHANNEL_LOGO, self.osdProgram.channel.logo)
             else:
