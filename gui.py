@@ -176,6 +176,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_DATE = 4000
     C_MAIN_TITLE = 7020
     C_MAIN_TIME = 7021
+    C_MAIN_TIME_AND_DAY = 77021
     C_MAIN_DESCRIPTION = 7022
     if ADDON.getSetting('program.image.scale') == 'true':
         C_MAIN_IMAGE = 7027
@@ -1947,8 +1948,12 @@ class TVGuide(xbmcgui.WindowXML):
             if program.startDate or program.endDate:
                 self.setControlLabel(self.C_MAIN_TIME,
                                      '[B]%s - %s[/B]' % (self.formatTime(program.startDate), self.formatTime(program.endDate)))
+                day = self.formatDateTodayTomorrow(program.startDate)
+                self.setControlLabel(self.C_MAIN_TIME_AND_DAY,
+                                     '[B]%s %s - %s[/B]' % (day, self.formatTime(program.startDate), self.formatTime(program.endDate)))
             else:
                 self.setControlLabel(self.C_MAIN_TIME, '')
+                self.setControlLabel(self.C_MAIN_TIME_AND_DAY, '')
             if program.startDate and program.endDate:
                 programprogresscontrol = self.getControl(self.C_MAIN_PROGRESS)
                 if programprogresscontrol:
