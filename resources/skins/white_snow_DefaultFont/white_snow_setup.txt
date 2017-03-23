@@ -1,0 +1,7 @@
+White_snow Skin Setup:
+
+1. Add FuturaBoldBT.tff into your skin addon folder: /addons/'yourskinfolder'/font/ (Example /addons/skin.aeon.nox.silvo/font/)
+
+2. Open TVGuide_font.txt, copy and paste into font.xml inside /addons/'yourskinfolder'/1080i/font.xml
+
+3. Change the values in your settings.xml inside your userdata/script.tvguide.fullscreen folder corresponding the values found in white_snow_settings.xml
