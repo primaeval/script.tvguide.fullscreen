@@ -48,6 +48,7 @@ from strings import *
 from rpc import RPC
 import utils
 import ActionEditor
+from vpnapi import VPNAPI
 
 import streaming
 
@@ -305,7 +306,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.quickEpgView = EPGView()
         self.quickChannelIdx = 0
         self.quickFocusPoint = Point()
-
+            
         self.player = xbmc.Player()
         self.database = None
         self.tvdb_urls = {}
@@ -326,7 +327,18 @@ class TVGuide(xbmcgui.WindowXML):
         self.focusedProgram = None
         self.quickEpgShowInfo = False
         self.playing_catchup_channel = False
-
+        
+        self.vpnswitch = False
+        self.vpndefault = False
+        try:
+            self.api = VPNAPI()
+            if ADDON.getSetting('vpnmgr.connect') == "true"
+                self.vpnswitch = True
+            if ADDON.getSetting('vpnmgr.default') == "true"
+                self.vpndefault = True
+        except:
+            self.api = None
+            
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
         f.close()
@@ -2553,15 +2565,18 @@ class TVGuide(xbmcgui.WindowXML):
                     title = urllib.quote(program.title)
                     url += "%s/%s/%s/%s" % (title, program.season, program.episode, program.language)
                 if url.startswith('@'):
+                    if self.vpnswitch: self.api.filterAndSwitch(url[1:], 0, self.vpndefault, True)
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
                 elif url[0:14] == "ActivateWindow":
                     xbmc.executebuiltin(url)
                 elif url[0:9] == 'plugin://':
+                    if self.vpnswitch: self.api.filterAndSwitch(url, 0, self.vpndefault, True)
                     if self.alternativePlayback:
                         xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
                     else:
                         self.player.play(item=url, windowed=self.osdEnabled)
                 else:
+                    if self.vpndefault: self.api.defaultVPN(True)
                     self.player.play(item=url, windowed=self.osdEnabled)
 
             self.tryingToPlay = True
@@ -2642,15 +2657,18 @@ class TVGuide(xbmcgui.WindowXML):
                 url = self.alt_urls.pop(0)
                 #TODO meta
                 if url.startswith('@'):
+                    if self.vpnswitch: self.api.filterAndSwitch(url[1:], 0, self.vpndefault, True)
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
                 elif url[0:14] == "ActivateWindow":
                     xbmc.executebuiltin(url)
                 elif url[0:9] == 'plugin://':
+                    if self.vpnswitch: self.api.filterAndSwitch(url, 0, self.vpndefault, True)
                     if self.alternativePlayback:
                         xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
                     else:
                         self.player.play(item=url, windowed=self.osdEnabled)
                 else:
+                    if self.vpndefault: self.api.defaultVPN(True)
                     self.player.play(item=url, windowed=self.osdEnabled)
                 self.tryingToPlay = True
                 if ADDON.getSetting('play.minimized') == 'false':
