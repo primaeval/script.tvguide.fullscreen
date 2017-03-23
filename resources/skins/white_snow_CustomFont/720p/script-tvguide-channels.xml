@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+    <allowoverlay>no</allowoverlay>
+    <defaultcontrol always="true">6000</defaultcontrol>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+    <controls>
+        <control type="label" id="6001">
+            <description>visibility marker for selection box</description>
+        </control>
+
+
+        <control type="image">
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>black-back.png</texture>
+        </control>
+        <control type="image">
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>whitetrans65.png</texture>
+        </control>
+
+        <control type="image">
+            <description>main mount</description>
+            <posx>10</posx>
+            <posy>10</posy>
+            <width>1260</width>
+            <height>700</height>
+            <texture>grey.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <description>main background</description>
+            <posx>12</posx>
+            <posy>12</posy>
+            <width>1256</width>
+            <height>696</height>
+            <texture>whitetrans85.png</texture>
+            <visible>true</visible>
+        </control>
+
+        <control type="group">
+            <posx>40</posx>
+            <posy>380</posy>
+            <width>600</width>
+            <height>40</height>
+            <visible>!Control.IsVisible(6001)</visible>
+            <animation type="Visible">
+                <effect type="slide" start="450,0" end="0,0" time="500" />
+            </animation>
+            <animation type="Hidden">
+                <effect type="slide" start="0,0" end="450,0" time="500" />
+            </animation>
+
+            <control type="image">
+                <posx>0</posx>
+                <posy>20</posy>
+                <width>600</width>
+                <height>40</height>
+                <texture></texture>
+            </control>
+
+            <control type="image">
+                <posx>12</posx>
+                <posy>20</posy>
+                <width>16</width>
+                <height>40</height>
+                <texture>tvguide-channel-updownarrow.png</texture>
+            </control>
+            <control type="button" id="6002">
+                <posx>40</posx>
+                <posy>20</posy>
+                <width>560</width>
+                <height>38</height>
+                <aligny>center</aligny>
+                <font>font13</font>
+                <textcolor>darkgrey</textcolor>
+                <focusedcolor>black</focusedcolor>
+                <label>text</label>
+                <texturefocus>tvg-program-focus.png</texturefocus>
+                <texturenofocus>tvg-program-nofocus.png</texturenofocus>
+            </control>
+            <control type="label">
+                <posx>40</posx>
+                <posy>70</posy>
+                <width>560</width>
+                <height>60</height>
+                <font>font13</font>
+                <textcolor>darkgrey</textcolor>
+                <visible>false</visible>
+                <label>$ADDON[script.tvguide.fullscreen 30501]</label>
+            </control>
+        </control>
+
+        <control type="label">
+            <posx>50</posx>
+            <posy>80</posy>
+            <width>520</width>
+            <height>40</height>
+            <align>left</align>
+            <aligny>center</aligny>
+            <font>font13_title</font>
+            <textcolor>black</textcolor>
+            <label>$ADDON[script.tvguide.fullscreen 30500]</label>
+        </control>
+        <control type="label">
+            <description>Help and Tips</description>
+            <posx>50</posx>
+            <posy>160</posy>
+            <width>500</width>
+            <height>400</height>
+            <textcolor>dimgrey</textcolor>
+            <font>font13</font>
+            <align>left</align>
+            <aligny>top</aligny>
+            <wrapmultiline>true</wrapmultiline>
+            <autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+            <label>$ADDON[script.tvguide.fullscreen 30501]</label>
+        </control>
+        <control type="fixedlist" id="6000">
+            <posx>640</posx>
+            <posy>40</posy>
+            <width>600</width>
+            <height>600</height>
+            <viewtype label="list">list</viewtype>
+            <orientation>vertical</orientation>
+            <focusposition>9</focusposition>
+            <onright>6006</onright>
+            <itemlayout width="600" height="40">
+                <control type="image">
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>600</width>
+                    <height>38</height>
+                    <texture>tvg-program-nofocus.png</texture>
+                </control>
+                <control type="label">
+                    <posx>20</posx>
+                    <posy>0</posy>
+                    <width>580</width>
+                    <height>38</height>
+                    <aligny>center</aligny>
+                    <font>font13</font>
+                    <textcolor>dimgrey</textcolor>
+                    <info>ListItem.Label</info>
+                </control>
+                <control type="image">
+                    <posx>360</posx>
+                    <posy>0</posy>
+                    <width>100</width>
+                    <height>38</height>
+                    <aspectratio>keep</aspectratio>
+                    <info>ListItem.Art(banner)</info>
+                </control>
+                <control type="image">
+                    <posx>560</posx>
+                    <posy>0</posy>
+                    <width>40</width>
+                    <height>40</height>
+                    <info>ListItem.Icon</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="600" height="40">
+                <control type="image">
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>600</width>
+                    <height>38</height>
+                    <texture>tvg-program-nofocus.png</texture>
+                    <visible>!Control.HasFocus(6000)</visible>
+                </control>
+                <control type="image">
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>600</width>
+                    <height>38</height>
+                    <texture>tvg-program-focus.png</texture>
+                    <visible>Control.HasFocus(6000)</visible>
+                </control>
+                <control type="image">
+                    <posx>8</posx>
+                    <posy>0</posy>
+                    <width>12</width>
+                    <height>40</height>
+                    <texture>tvguide-channel-leftarrow.png</texture>
+                </control>
+                <control type="label">
+                    <posx>20</posx>
+                    <posy>0</posy>
+                    <width>580</width>
+                    <height>38</height>
+                    <aligny>center</aligny>
+                    <font>font13</font>
+                    <textcolor>black</textcolor>
+                    <label>[B]$INFO[ListItem.Label][/B]</label>
+                </control>
+                <control type="image">
+                    <posx>360</posx>
+                    <posy>0</posy>
+                    <width>100</width>
+                    <height>38</height>
+                    <aspectratio>keep</aspectratio>
+                    <info>ListItem.Art(banner)</info>
+                </control>
+                <control type="image">
+                    <posx>560</posx>
+                    <posy>0</posy>
+                    <width>40</width>
+                    <height>40</height>
+                    <info>ListItem.Icon</info>
+                </control>
+            </focusedlayout>
+        </control>
+        <control type="button" id="6006">
+            <posx>300</posx>
+            <posy>660</posy>
+            <width>170</width>
+            <height>40</height>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>dimgrey</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Logos</label>
+            <texturefocus>tvg-program-focus.png</texturefocus>
+            <texturenofocus>tvg-program-nofocus.png</texturenofocus>
+            <onleft>6000</onleft>
+            <onright>6005</onright>
+            <onup>6000</onup>
+        </control>        
+        <control type="button" id="6005">
+            <posx>500</posx>
+            <posy>660</posy>
+            <width>170</width>
+            <height>40</height>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>dimgrey</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Logo</label>
+            <texturefocus>tvg-program-focus.png</texturefocus>
+            <texturenofocus>tvg-program-nofocus.png</texturenofocus>
+            <onleft>6006</onleft>
+            <onright>6003</onright>
+            <onup>6000</onup>
+        </control>
+        <control type="button" id="6003">
+            <posx>700</posx>
+            <posy>660</posy>
+            <width>170</width>
+            <height>40</height>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>dimgrey</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>$ADDON[script.tvguide.fullscreen 30502]</label>
+            <texturefocus>tvg-program-focus.png</texturefocus>
+            <texturenofocus>tvg-program-nofocus.png</texturenofocus>
+            <onleft>6005</onleft>
+            <onright>6004</onright>
+            <onup>6000</onup>
+        </control>
+        <control type="button" id="6004">
+            <posx>900</posx>
+            <posy>660</posy>
+            <width>170</width>
+            <height>40</height>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>dimgrey</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>$ADDON[script.tvguide.fullscreen 30503]</label>
+            <texturefocus>tvg-program-focus.png</texturefocus>
+            <texturenofocus>tvg-program-nofocus.png</texturenofocus>
+            <onleft>6003</onleft>
+            <onright>6000</onright>
+            <onup>6000</onup>
+        </control>
+
+    </controls>
+</window>

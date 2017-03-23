@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+    <allowoverlay>no</allowoverlay>
+    <defaultcontrol always="true">7004</defaultcontrol>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+
+    <controls>
+        <control type="image">
+            <description>category background</description>
+            <posx>0</posx>
+            <posy>665</posy>           
+            <posy>0</posy>
+            <width>1280</width>
+            <height>55</height>
+            <texture>white_snow.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image" id="7000">
+            <description>settings selected category background</description>
+            <posx>0</posx>
+            <posy>665</posy>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>55</height>
+            <texture></texture>
+            <visible>false</visible>
+        </control>
+
+        <control type="button" id="7003">
+            <description>quit</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <label></label>
+            <font>font13</font>
+            <aligny>center</aligny>
+            <align>center</align>
+            <textcolor>grey</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <texturefocus>tvg-transparent.png</texturefocus>
+            <texturenofocus>tvg-transparent.png</texturenofocus>
+        </control>
+
+        <control type="list" id="7004">
+            <description>categories</description>
+            <top>665</top>          
+            <left>0</left>
+            <top>0</top>
+            <width>1280</width>
+            <height>55</height>
+            <visible>true</visible>
+            <onup></onup>
+            <ondown></ondown>
+            <onleft></onleft>
+            <onright></onright>
+            <viewtype label="3D list">list</viewtype>
+            <orientation>horizontal</orientation>
+
+            <itemlayout width="182" height="55">
+                <control type="image">
+                    <posx>1</posx>
+                    <posy>10</posy>
+                    <width>180</width>
+                    <height>36</height>
+                    <texture>tvg-program-nofocus.png</texture>
+                    <visible>true</visible>
+                </control>
+                <control type="label">
+                    <left>0</left>
+                    <top>10</top>
+                    <width>182</width>
+                    <height>36</height>
+                    <font>font13</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <textcolor>darkgrey</textcolor>
+                    <selectedcolor>black</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="182" height="55">
+                <control type="image">
+                    <posx>1</posx>
+                    <posy>10</posy>
+                    <width>180</width>
+                    <height>36</height>
+                    <texture>tvg-program-focus.png</texture>
+                    <visible>true</visible>
+                </control>
+                <control type="label">
+                    <left>0</left>
+                    <top>10</top>
+                    <width>182</width>
+                    <height>36</height>
+                    <font>font13</font>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <textcolor>black</textcolor>
+                    <selectedcolor>yellow</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+
+
+    </controls>
+</window>
