@@ -3967,27 +3967,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
         programSuperFavourites = self.getControl(self.C_POPUP_SUPER_FAVOURITES)
 
-        items = list()
-        categories = ["All Channels"] + sorted(list(self.categories), key=lambda x: x.lower())
-        for label in categories:
-            item = xbmcgui.ListItem(label)
 
-            items.append(item)
-        listControl = self.getControl(self.C_POPUP_CATEGORY)
-        listControl.addItems(items)
-        if self.category and self.category in categories:
-            index = categories.index(self.category)
-            if index >= 0:
-                listControl.selectItem(index)
-
-        #playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
-        playControl.setLabel("Watch Channel")
-        if self.program.channel and not self.program.channel.isPlayable():
-            #playControl.setEnabled(False)
-            self.setFocusId(self.C_POPUP_CHOOSE_STREAM)
-        if self.database.getCustomStreamUrl(self.program.channel):
-            chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
-            chooseStrmControl.setLabel(strings(REMOVE_STRM_FILE))
 
         if self.program.channel and self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
@@ -4033,6 +4013,28 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 autoplaywithControl.setLabel("AutoPlayWith")
             else:
                 autoplaywithControl.setLabel("Don't AutoPlayWith")
+
+        items = list()
+        categories = ["All Channels"] + sorted(list(self.categories), key=lambda x: x.lower())
+        for label in categories:
+            item = xbmcgui.ListItem(label)
+
+            items.append(item)
+        listControl = self.getControl(self.C_POPUP_CATEGORY)
+        listControl.addItems(items)
+        if self.category and self.category in categories:
+            index = categories.index(self.category)
+            if index >= 0:
+                listControl.selectItem(index)
+
+        #playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
+        playControl.setLabel("Watch Channel")
+        if self.program.channel and not self.program.channel.isPlayable():
+            #playControl.setEnabled(False)
+            self.setFocusId(self.C_POPUP_CHOOSE_STREAM)
+        if self.database.getCustomStreamUrl(self.program.channel):
+            chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
+            chooseStrmControl.setLabel(strings(REMOVE_STRM_FILE))
 
         if not self.program.title:
             labelControl.setEnabled(False)
