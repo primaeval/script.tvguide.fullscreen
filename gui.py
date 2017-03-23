@@ -3184,10 +3184,11 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     title = program.title
 
+                epgboxspacing = int(ADDON.getSetting('epg.box.spacing'))
                 control = xbmcgui.ControlButton(
                     cellStart,
                     self.epgView.top + self.epgView.cellHeight * idx,
-                    cellWidth - 2,
+                    cellWidth - epgboxspacing,
                     self.epgView.cellHeight - 2,
                     title,
                     focusedColor=focusColor,
@@ -3388,10 +3389,11 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     title = program.title
 
+                epgboxspacing = int(ADDON.getSetting('epg.box.spacing'))
                 control = xbmcgui.ControlButton(
                     cellStart,
                     self.quickEpgView.top + self.quickEpgView.cellHeight * idx,
-                    cellWidth - 2,
+                    cellWidth - epgboxspacing,
                     self.quickEpgView.cellHeight - 2,
                     title,
                     focusedColor=focusColor,
