@@ -1,3 +1,6 @@
+version 0.0.320
+- PIL bodge for Kodi 18+ (DO NOT USE LOGODB IN LEIA!)
+
 version 0.0.319
 - Settings \ Appearance \ Show Addon in Context Menu (Default/CatBar only)
 
