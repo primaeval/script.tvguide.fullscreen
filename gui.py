@@ -234,6 +234,12 @@ class TVGuide(xbmcgui.WindowXML):
     C_QUICK_EPG_DESCRIPTION = 17022
     C_QUICK_EPG_LOGO = 17024
     C_QUICK_EPG_CHANNEL = 17025
+    C_QUICK_EPG_BUTTON_LEFT = 17027
+    C_QUICK_EPG_BUTTON_NOW = 17028
+    C_QUICK_EPG_BUTTON_RIGHT = 17029
+    C_QUICK_EPG_BUTTON_FIRST = 17030
+    C_QUICK_EPG_BUTTON_CH_UP = 17031
+    C_QUICK_EPG_BUTTON_CH_DOWN = 17032
     C_QUICK_EPG_TIMEBAR = 14100
     C_QUICK_EPG_HEADER = 14601
     C_QUICK_EPG_FOOTER = 14602
@@ -1275,6 +1281,34 @@ class TVGuide(xbmcgui.WindowXML):
             return
         elif controlId == self.C_MAIN_MOUSE_SEARCH:
             self.programSearchSelect()
+            return
+        elif controlId == self.C_QUICK_EPG_BUTTON_LEFT:
+            self.quickViewStartDate -= datetime.timedelta(hours=2)
+            self.quickFocusPoint.x = self.quickEpgView.left
+            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate, focusFunction=self._findQuickControlOnRight)
+            return
+        elif controlId == self.C_QUICK_EPG_BUTTON_NOW:
+            self.quickViewStartDate = datetime.datetime.today()
+            self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 30, seconds=self.quickViewStartDate.second)
+            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate)
+            return
+        elif controlId == self.C_QUICK_EPG_BUTTON_RIGHT:
+            self.quickViewStartDate += datetime.timedelta(hours=2)
+            self.quickFocusPoint.x = self.quickEpgView.left
+            self.onRedrawQuickEPG(self.quickChannelIdx, self.quickViewStartDate, focusFunction=self._findQuickControlOnRight)
+            return
+        elif controlId == self.C_QUICK_EPG_BUTTON_FIRST:
+            self.quickViewStartDate = datetime.datetime.today()
+            self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 30, seconds=self.quickViewStartDate.second)
+            self.onRedrawQuickEPG(self.channelIdx, self.quickViewStartDate)
+            return
+        elif controlId == self.C_QUICK_EPG_BUTTON_CH_UP:
+            self.quickFocusPoint.y = self.quickEpgView.bottom
+            self.onRedrawQuickEPG(self.quickChannelIdx - 3, self.quickViewStartDate, focusFunction=self._findQuickControlAbove)
+            return
+        elif controlId == self.C_QUICK_EPG_BUTTON_CH_DOWN:
+            self.quickFocusPoint.y = self.quickEpgView.top
+            self.onRedrawQuickEPG(self.quickChannelIdx + 3, self.quickViewStartDate, focusFunction=self._findQuickControlBelow)
             return
         elif controlId == self.C_MAIN_OSD_BUTTON_LAST_CHANNEL:
             self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
