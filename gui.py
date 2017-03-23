@@ -1135,7 +1135,7 @@ class TVGuide(xbmcgui.WindowXML):
             program = self._getQuickProgramFromControl(controlInFocus)
             if program is not None:
                 self.showListing(program.channel)
-        elif action.getId() in COMMAND_ACTIONS["MENU"]  and controlInFocus is not None:
+        elif action.getId() in COMMAND_ACTIONS["MENU"] and controlInFocus is not None:
             program = self._getQuickProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
