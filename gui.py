@@ -225,6 +225,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_EPG_VIEW_MARKER = 5001
     C_MAIN_PIP = 5002
     C_MAIN_VIDEO = 5003
+    C_MAIN_VIDEO_BUTTON_LAST_CHANNEL = 5004
     C_QUICK_EPG = 10000
     C_QUICK_EPG_VIEW_MARKER = 10001
     C_QUICK_EPG_MOUSE_CONTROLS = 10300
@@ -1281,6 +1282,10 @@ class TVGuide(xbmcgui.WindowXML):
             return
         elif controlId == self.C_MAIN_MOUSE_SEARCH:
             self.programSearchSelect()
+            return
+        elif controlId == self.C_MAIN_VIDEO_BUTTON_LAST_CHANNEL:
+            self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
+            self._showContextMenu(self.osdProgram)
             return
         elif controlId == self.C_QUICK_EPG_BUTTON_LEFT:
             self.quickViewStartDate -= datetime.timedelta(hours=2)
