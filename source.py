@@ -388,11 +388,14 @@ class Database(object):
                             channel = program.channel.id
                         else:
                             channel = program.channel
-                        c.execute(
+                        try:
+                            c.execute(
                             'INSERT OR REPLACE INTO programs(channel, title, sub_title, start_date, end_date, description, categories, image_large, image_small, season, episode, is_movie, language, source, updates_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                             [channel, program.title, program.sub_title, program.startDate, program.endDate, program.description, program.categories,
                              program.imageLarge, program.imageSmall, program.season, program.episode, program.is_movie,
                              program.language, self.source.KEY, updatesId])
+                        except:
+                            pass
 
                 # channels updated
                 c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
