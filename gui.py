@@ -711,13 +711,13 @@ class TVGuide(xbmcgui.WindowXML):
             self._channelDown()
             self._hideOsd()
 
-        elif action.getId() in COMMAND_ACTIONS["UP"]:
+        elif action.getId() in COMMAND_ACTIONS["UP"] or action.getId() == ACTION_MOUSE_WHEEL_UP:
             self.osdChannel = self.database.getPreviousChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
             self.osdActive = True
 
-        elif action.getId() in COMMAND_ACTIONS["DOWN"]:
+        elif action.getId() in COMMAND_ACTIONS["DOWN"] or action.getId() == ACTION_MOUSE_WHEEL_DOWN:
             self.osdChannel = self.database.getNextChannel(self.osdChannel)
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
