@@ -255,6 +255,11 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_OSD_START_TIME = 60091
     C_NEXT_OSD_CHANNEL_IMAGE = 6010
     C_MAIN_OSD_MOUSE_CONTROLS = 6300
+    C_MAIN_OSD_BUTTON_LAST_CHANNEL =  6301
+    C_MAIN_OSD_BUTTON_EPG_BACK = 6302
+    C_MAIN_OSD_BUTTON_PLAY = 6303
+    C_MAIN_OSD_BUTTON_CONTEXTMENU_CURRENT = 6304
+    C_MAIN_OSD_BUTTON_CONTEXTMENU_NEXT = 6305
     C_MAIN_VIDEO_BACKGROUND = 5555
     C_MAIN_VIDEO_PIP = 6666
     C_MAIN_CAT_BACKGROUND = 7000
@@ -1270,6 +1275,27 @@ class TVGuide(xbmcgui.WindowXML):
             return
         elif controlId == self.C_MAIN_MOUSE_SEARCH:
             self.programSearchSelect()
+            return
+        elif controlId == self.C_MAIN_OSD_BUTTON_LAST_CHANNEL:
+            self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
+            self._showContextMenu(self.osdProgram)
+            return
+        elif controlId == self.C_MAIN_OSD_BUTTON_EPG_BACK:
+            self._hideOsd()
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            return
+        elif controlId == self.C_MAIN_OSD_BUTTON_CONTEXTMENU_CURRENT:
+            self._hideOsd()
+            self._showContextMenu(self.osdProgram)
+            return
+        elif controlId == self.C_MAIN_OSD_BUTTON_CONTEXTMENU_NEXT:
+            self._hideOsd()
+            self.osdProgram = self.database.getNextProgram(self.osdProgram)
+            self._showContextMenu(self.osdProgram)
+            return
+        elif controlId == self.C_MAIN_OSD_BUTTON_PLAY:
+            self.playOrChoose(self.osdProgram)
+            self._showOsd()
             return
         elif controlId == self.C_MAIN_PROGRAM_CATEGORIES:
             self.categorySearch()
