@@ -1,3 +1,6 @@
+version 0.0.322
+- Settings \ Appearance \ Skin Folder (above resources/skins)
+
 version 0.0.320-321
 - PIL bodge for Kodi 18+ (DO NOT USE LOGODB IN LEIA!)
 
