@@ -729,10 +729,6 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self._hideOsd()
-            self.viewStartDate = datetime.datetime.today()
-            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
-            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() in COMMAND_ACTIONS["PLAY"]:
             self._hideOsd()
@@ -789,10 +785,11 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self._hideLastPlayed()
-            self.viewStartDate = datetime.datetime.today()
-            self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
-            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if self.mode == MODE_EPG:
+                self.viewStartDate = datetime.datetime.today()
+                self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
+                self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() in COMMAND_ACTIONS["MENU"]:
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
@@ -1764,7 +1761,8 @@ class TVGuide(xbmcgui.WindowXML):
                 play_type = d.select("Notification play_type", ["once","always"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.notification.addNotification(program, play_type)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if self.mode == MODE_EPG:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAY:
             if program.autoplayScheduled:
@@ -1774,7 +1772,8 @@ class TVGuide(xbmcgui.WindowXML):
                 play_type = d.select("AutoPlay play_type", ["once","always"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.autoplay.addAutoplay(program, play_type)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if self.mode == MODE_EPG:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAYWITH:
             if program.autoplaywithScheduled:
@@ -1784,7 +1783,8 @@ class TVGuide(xbmcgui.WindowXML):
                 play_type = d.select("AutoPlayWith play_type", ["once","always"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.autoplaywith.addAutoplaywith(program, play_type)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if self.mode == MODE_EPG:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_LISTS:
             d = xbmcgui.Dialog()
@@ -1807,7 +1807,8 @@ class TVGuide(xbmcgui.WindowXML):
                 self.showFullAutoplaywiths()
 
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if self.mode == MODE_EPG:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_STREAM:
             result = self.streamingService.detectStream(program.channel)
@@ -1852,7 +1853,8 @@ class TVGuide(xbmcgui.WindowXML):
             d.doModal()
             del d
             self.streamingService = streaming.StreamsService(ADDON)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if self.mode == MODE_EPG:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked in [PopupMenu.C_POPUP_PLAY, PopupMenu.C_POPUP_PLAY_BIG]:
             self.playChannel(program.channel, program)
@@ -1866,7 +1868,8 @@ class TVGuide(xbmcgui.WindowXML):
             d = ChannelsMenu(self.database)
             d.doModal()
             del d
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            if self.mode == MODE_EPG:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked in [PopupMenu.C_POPUP_QUIT, PopupMenu.C_POPUP_SETUP_QUIT]:
             self.close()
