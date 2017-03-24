@@ -1807,7 +1807,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.streamingService = streaming.StreamsService(ADDON)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        elif buttonClicked == PopupMenu.C_POPUP_PLAY:
+        elif buttonClicked in [PopupMenu.C_POPUP_PLAY, PopupMenu.C_POPUP_PLAY_BIG]:
             self.playChannel(program.channel, program)
 
         elif buttonClicked == PopupMenu.C_POPUP_CHANNELS:
@@ -3934,6 +3934,13 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_LIBMOV = 80000
     C_POPUP_LIBTV = 80001
     C_POPUP_VIDEOADDONS = 80002
+    C_POPUP_MENU_MOUSE_CONTROLS = 44500
+    C_POPUP_PLAY_BIG = 44501
+    C_POPUP_CHANNEL_UP_BIG = 44503
+    C_POPUP_CHANNEL_DOWN_BIG = 44504
+    C_POPUP_PROGRAM_PREVIOUS_BIG = 44505
+    C_POPUP_PROGRAM_NEXT_BIG = 44506
+    C_POPUP_PROGRAM_NOW_BIG = 44507
 
 
     def __new__(cls, database, program, showRemind, showAutoplay, showAutoplaywith, category, categories):
@@ -3951,6 +3958,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         self.database = database
         self.program = program
         self.nextprogram = self.database.getNextProgram(program)
+        self.previousprogram = self.database.getPreviousProgram(program)
+        self.currentChannel = program.channel
         self.showRemind = showRemind
         self.showAutoplay = showAutoplay
         self.showAutoplaywith = showAutoplaywith
@@ -4168,7 +4177,23 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 return timestamp.strftime("%A")
 
     def onAction(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
+        if action.getId() == ACTION_MOUSE_MOVE:
+            if ADDON.getSetting('mouse.controls') == "true":
+                self._showControl(self.C_POPUP_MENU_MOUSE_CONTROLS)
+
+        elif action.getId() in [ACTION_MOUSE_WHEEL_UP]:
+            self.currentChannel = self.database.getPreviousChannel(self.currentChannel)
+            self.program = self.database.getCurrentProgram(self.currentChannel)
+            self.nextprogram = self.database.getNextProgram(self.program)
+            self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
+            self.show()
+        elif action.getId() in [ACTION_MOUSE_WHEEL_DOWN]:
+            self.currentChannel = self.database.getNextChannel(self.currentChannel)
+            self.program = self.database.getCurrentProgram(self.currentChannel)
+            self.nextprogram = self.database.getNextProgram(self.program)
+            self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
+            self.show()
+        elif action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
             self.close()
         elif action.getId() in [KEY_CONTEXT_MENU]:
             cList = self.getControl(self.C_POPUP_CATEGORY)
@@ -4239,7 +4264,33 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             self.categories = [category for category in categories if category]
 
     def onClick(self, controlId):
-        if controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
+        if controlId in [self.C_POPUP_CHANNEL_UP_BIG]:
+            self.currentChannel = self.database.getPreviousChannel(self.currentChannel)
+            self.program = self.database.getCurrentProgram(self.currentChannel)
+            self.nextprogram = self.database.getNextProgram(self.program)
+            self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
+            self.show()
+        elif controlId in [self.C_POPUP_CHANNEL_DOWN_BIG]:
+            self.currentChannel = self.database.getNextChannel(self.currentChannel)
+            self.program = self.database.getCurrentProgram(self.currentChannel)
+            self.nextprogram = self.database.getNextProgram(self.program)
+            self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
+            self.show()
+        elif controlId in [self.C_POPUP_PROGRAM_PREVIOUS_BIG]:
+            self.program = self.database.getPreviousProgram(self.program)
+            self.nextprogram = self.database.getNextProgram(self.program)
+            self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
+            self.show()
+        elif controlId in [self.C_POPUP_PROGRAM_NEXT_BIG]:
+            self.program = self.database.getNextProgram(self.program)
+            self.nextprogram = self.database.getNextProgram(self.program)
+            self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
+            self.show()
+        elif controlId in [self.C_POPUP_PROGRAM_NOW_BIG]:
+            self.program = self.database.getCurrentProgram(self.currentChannel)
+            self.nextprogram = self.database.getNextProgram(self.program)
+            self.show()
+        elif controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
             self.database.deleteCustomStreamUrl(self.program.channel)
             chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
             chooseStrmControl.setLabel(strings(CHOOSE_STRM_FILE))
