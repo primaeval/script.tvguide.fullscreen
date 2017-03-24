@@ -58,6 +58,8 @@ MODE_QUICK_EPG = 'QUICKEPG'
 MODE_TV = 'TV'
 MODE_OSD = 'OSD'
 MODE_LASTCHANNEL = 'LASTCHANNEL'
+MODE_POPUP_MENU = 'POPUP_MENU'
+MODE_POPUP_SETUP = 'POPUP_SETUP'
 
 COMMAND_ACTIONS = ActionEditor.getCommandActions()
 
@@ -3940,6 +3942,9 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_LIBMOV = 80000
     C_POPUP_LIBTV = 80001
     C_POPUP_VIDEOADDONS = 80002
+    C_POPUP_SETUP = 4500
+    C_POPUP_BUTTON_SHOW_SETUP = 4501
+    C_POPUP_SETUP_BUTTON_CLOSE = 4502
     C_POPUP_MENU_MOUSE_CONTROLS = 44500
     C_POPUP_PLAY_BIG = 44501
     C_POPUP_CHANNEL_UP_BIG = 44503
@@ -3994,6 +3999,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         nextprogramTitleControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_TITLE)
         nextprogramDateControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_DATE)
 
+        self.mode = MODE_POPUP_MENU
 
         if self.program.channel:
             channelTitleControl.setLabel(self.program.channel.title)
@@ -4170,6 +4176,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                     except:
                         pass
 
+    def _showPopupSetup(self):
+
+        self.mode = MODE_POPUP_SETUP
+        self._showControl(self.C_POPUP_SETUP)
+
     def formatDateTodayTomorrow(self, timestamp):
         if timestamp:
             today = datetime.datetime.today()
@@ -4202,8 +4213,19 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
             self.show()
         elif action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
+            if self.mode == MODE_POPUP_SETUP:
+                self._hidePopupSetup()
+                self.setFocusId(self.C_POPUP_PLAY)
+                self.mode = MODE_POPUP_MENU
+            else:
+                self.close()
+        elif action.getId() in [ACTION_STOP]:
             self.close()
         elif action.getId() in [KEY_CONTEXT_MENU]:
+            self._showPopupSetup()
+
+        elif action.getId() in [KEY_CONTEXT_MENU] and xbmc.getCondVisibility('Control.IsEnabled(7004)'):
+
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
             if item:
@@ -4272,7 +4294,13 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             self.categories = [category for category in categories if category]
 
     def onClick(self, controlId):
-        if controlId in [self.C_POPUP_CHANNEL_UP_BIG]:
+        if controlId == self.C_POPUP_BUTTON_SHOW_SETUP:
+            self._showPopupSetup()
+        elif controlId == self.C_POPUP_SETUP_BUTTON_CLOSE:
+            self._hidePopupSetup()
+            self.setFocusId(self.C_POPUP_PLAY)
+            self.mode = MODE_POPUP_MENU
+        elif controlId in [self.C_POPUP_CHANNEL_UP_BIG]:
             self.currentChannel = self.database.getPreviousChannel(self.currentChannel)
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
@@ -4331,6 +4359,30 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         else:
             self.buttonClicked = controlId
             self.close()
+
+    def _hidePopupSetup(self):
+        self._hideControl(self.C_POPUP_SETUP)
+
+    def setControlVisible(self, controlId, visible):
+        if not controlId:
+            return
+        control = self.getControl(controlId)
+        if control:
+            control.setVisible(visible)
+
+    def _hideControl(self, *controlIds):
+        """
+        Visibility is inverted in skin
+        """
+        for controlId in controlIds:
+            self.setControlVisible(controlId,True)
+
+    def _showControl(self, *controlIds):
+        """
+        Visibility is inverted in skin
+        """
+        for controlId in controlIds:
+            self.setControlVisible(controlId,False)
 
     def onFocus(self, controlId):
         pass
