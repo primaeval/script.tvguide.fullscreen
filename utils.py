@@ -30,11 +30,6 @@ import urllib
 import xbmcgui
 import xbmcvfs
 import requests
-try:
-    from PIL import Image, ImageOps
-    mac = False
-except:
-    mac = True
 
 LOGO_TYPE_DEFAULT = 0
 LOGO_TYPE_CUSTOM = 1
@@ -215,8 +210,7 @@ def reset_playing():
     f.close()
 
 def autocrop_image(image, border = 0):
-    if mac:
-        return None
+    from PIL import Image, ImageOps
     size = image.size
     bb_image = image
     bbox = bb_image.getbbox()
@@ -239,8 +233,6 @@ def autocrop_image(image, border = 0):
     return cropped_image
 
 def getLogo(title,ask=False,force=True):
-    if mac:
-        return None
     infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
     outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % title)
     if not force and xbmcvfs.exists(outfile):
@@ -268,7 +260,7 @@ def getLogo(title,ask=False,force=True):
                 f = xbmcvfs.File("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png","wb")
                 f.write(data)
                 f.close()
-
+                from PIL import Image, ImageOps
                 image = Image.open(infile)
                 border = 0
                 image = autocrop_image(image, border)
