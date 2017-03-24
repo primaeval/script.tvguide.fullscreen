@@ -2615,6 +2615,10 @@ class TVGuide(xbmcgui.WindowXML):
                 xbmc.executebuiltin('RunScript(%s,%s,%s)' % (script,channel.id,timestamp))
             core = ADDON.getSetting('autoplaywiths.player')
             if core:
+                if url[0:9] == 'plugin://':
+                    if self.vpnswitch: self.api.filterAndSwitch(url, 0, self.vpndefault, True)
+                else:
+                    if self.vpndefault: self.api.defaultVPN(True)
                 xbmc.executebuiltin('PlayWith(%s)' % core)
                 xbmc.executebuiltin('PlayMedia(%s)' % url)
 
