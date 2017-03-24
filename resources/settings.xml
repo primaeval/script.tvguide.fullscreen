@@ -91,7 +91,7 @@
     <category label="Appearance">
         <setting id="skin.source" label="Skin Type" type="enum" default="0" values="Ours|Yours|Folder" />
         <setting id="skin" label="Skin" type="fileenum" values="resources/skins" mask="/" default="Default" visible="eq(-1,0)"/>
-        <setting id="skin.folder" label="Skin Folder" type="folder"  visible="eq(-2,2)"/>
+        <setting id="skin.folder" label="Skin Folder (above resources/skins)" type="folder"  visible="eq(-2,2)"/>
         <setting id="skin.user" label="User Skin Name" type="text" visible="gt(-3,0))" default=''/>
         <setting id="epg.video.pip" label="Small EPG Video Preview Window" type="bool" default="false" />
         <setting type="sep"/>
