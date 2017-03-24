@@ -207,6 +207,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_DOWN_BIG = 44304
     C_MAIN_MOUSE_RIGHT_BIG = 44305
     C_MAIN_MOUSE_EXIT = 4306
+    C_MAIN_MENUBAR_BUTTON_EXIT = 44306
     C_MAIN_MOUSE_MENU = 4307
     C_MAIN_MOUSE_CATEGORIES = 4308
     C_MAIN_MOUSE_PIP = 4309
@@ -214,12 +215,16 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_NEXT = 4311
     C_MAIN_MOUSE_SEARCH = 4312
     C_MAIN_MOUSE_FIRST = 4313
+    C_MAIN_MENUBAR_BUTTON_FIRST = 44313
     C_MAIN_MOUSE_CHANNEL_NUMBER = 4314
     C_MAIN_MOUSE_STOP = 4315
     C_MAIN_MOUSE_FAVOURITES = 4316
     C_MAIN_MOUSE_MINE1 = 4317
     C_MAIN_MOUSE_NEXT_DAY = 4318
     C_MAIN_MOUSE_PREV_DAY = 4319
+    C_MAIN_MOUSE_AUTOPLAYWITH = 4320
+    C_MAIN_MOUSE_AUTOPLAY = 4321
+    C_MAIN_MOUSE_REMIND = 4322
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -1200,7 +1205,7 @@ class TVGuide(xbmcgui.WindowXML):
         del w
 
     def onClick(self, controlId):
-        if controlId in [self.C_MAIN_LOADING_CANCEL, self.C_MAIN_MOUSE_EXIT]:
+        if controlId in [self.C_MAIN_LOADING_CANCEL, self.C_MAIN_MOUSE_EXIT, self.C_MAIN_MENUBAR_BUTTON_EXIT]:
             self.close()
             return
 
@@ -1217,7 +1222,7 @@ class TVGuide(xbmcgui.WindowXML):
             if item:
                 self.selected_category = item.getLabel()
                 self.category = self.selected_category
-        if controlId in [self.C_MAIN_MOUSE_FIRST]:
+        if controlId in [self.C_MAIN_MOUSE_FIRST, self.C_MAIN_MENUBAR_BUTTON_FIRST]:
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                      seconds=self.viewStartDate.second)
@@ -1304,6 +1309,15 @@ class TVGuide(xbmcgui.WindowXML):
             return
         elif controlId == self.C_MAIN_MOUSE_SEARCH:
             self.programSearchSelect()
+            return
+        elif controlId == self.C_MAIN_MOUSE_AUTOPLAYWITH:
+            self.showFullAutoplaywiths()
+            return
+        elif controlId == self.C_MAIN_MOUSE_AUTOPLAY:
+            self.showFullAutoplays()
+            return
+        elif controlId == self.C_MAIN_MOUSE_REMIND:
+            self.showFullReminders()
             return
         elif controlId == self.C_MAIN_VIDEO_BUTTON_LAST_CHANNEL:
             self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
