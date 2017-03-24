@@ -3,6 +3,7 @@ import xbmc,xbmcaddon,xbmcvfs
 import sqlite3
 from subprocess import Popen
 import datetime,time
+# from vpnapi import VPNAPI
 
 channel = sys.argv[1]
 start = sys.argv[2]
@@ -53,6 +54,17 @@ if row:
     url = row[0]
 if not url:
     quit()
+# Uncomment this if you want to use VPN Mgr filtering.  Need to import VPNAPI.py
+# else:
+#    if ADDON.getSetting('vpnmgr.connect') == "true":
+#        vpndefault = False
+#        if ADDON.getSetting('vpnmgr.default') == "true":
+#            vpndefault = True
+#        api = VPNAPI()
+#        if url[0:9] == 'plugin://':
+#            api.filterAndSwitch(url, 0, vpndefault, True)
+#        else:
+#            if vpndefault: api.defaultVPN(True)
 
 # Find the actual url used to play the stream
 #core = "dummy"
