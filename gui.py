@@ -3972,18 +3972,19 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             channelTitleControl.setLabel(self.program.channel.title)
         if self.program.channel and self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
-
-        programTitleControl.setLabel(self.program.title)
-
-        label = ""
-        try:
-            season = self.program.season
-            episode = self.program.episode
-            if season and episode:
-                label = " S%sE%s" % (season,episode)
-        except:
-            pass
-        programLabelControl.setLabel(self.program.title+label)
+        if self.program.title:
+            programTitleControl.setLabel('[B]%s[/B]' % self.program.title)
+            label = ""
+            try:
+                season = self.program.season
+                episode = self.program.episode
+                if season and episode:
+                    label = " [B]S%sE%s[/B]" % (season,episode)
+                    programLabelControl.setLabel(self.program.title+label)
+                else:
+                    programLabelControl.setEnabled(False)
+            except:
+                pass
         labelControl.setLabel(self.program.description)
 
         if self.program.imageSmall:
