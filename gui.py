@@ -1810,6 +1810,11 @@ class TVGuide(xbmcgui.WindowXML):
         elif buttonClicked in [PopupMenu.C_POPUP_PLAY, PopupMenu.C_POPUP_PLAY_BIG]:
             self.playChannel(program.channel, program)
 
+        elif buttonClicked == PopupMenu.C_POPUP_STOP:
+            self.player.stop()
+            self._hideOsd()
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
         elif buttonClicked == PopupMenu.C_POPUP_CHANNELS:
             d = ChannelsMenu(self.database)
             d.doModal()
@@ -3907,6 +3912,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CATEGORY = 7004
     C_POPUP_SET_CATEGORY = 7005
     C_POPUP_PLAY = 4000
+    C_POPUP_STOP = 44000
     C_POPUP_CHOOSE_STREAM = 4001
     C_POPUP_REMIND = 4002
     C_POPUP_CHANNELS = 4003
@@ -3973,6 +3979,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programDateControl = self.getControl(self.C_POPUP_PROGRAM_DATE)
         programImageControl = self.getControl(self.C_POPUP_PROGRAM_IMAGE)
         playControl = self.getControl(self.C_POPUP_PLAY)
+        stopControl = self.getControl(self.C_POPUP_STOP)
         remindControl = self.getControl(self.C_POPUP_REMIND)
         autoplayControl = self.getControl(self.C_POPUP_AUTOPLAY)
         autoplaywithControl = self.getControl(self.C_POPUP_AUTOPLAYWITH)
@@ -4130,6 +4137,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             nextprogramDateControl.setEnabled(False)
         if not self.program.channel:
             playControl.setEnabled(False)
+            stopControl.setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
             self.getControl(self.C_POPUP_STREAM_SETUP).setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_ALT).setEnabled(False)
