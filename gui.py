@@ -3924,6 +3924,9 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_PROGRAM_TITLE = 4102
+    C_POPUP_DURATION = 4103
+    C_POPUP_PROGRESS_INFO = 4104
+    C_POPUP_PROGRESS_BAR = 4105
     C_POPUP_ADDON_LOGO = 4025
     C_POPUP_ADDON_LABEL = 4026
     C_POPUP_LIBMOV = 80000
@@ -3966,6 +3969,9 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
         programSuperFavourites = self.getControl(self.C_POPUP_SUPER_FAVOURITES)
+        programDurationControl = self.getControl(self.C_POPUP_DURATION)
+        programProgressInfoControl = self.getControl(self.C_POPUP_PROGRESS_INFO)
+        programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
 
 
         if self.program.channel:
@@ -3993,11 +3999,50 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programImageControl.setImage(self.program.imageLarge)
 
         start = self.program.startDate
+        end = self.program.endDate
         if start:
             day = self.formatDateTodayTomorrow(start)
-            start = start.strftime("%H:%M")
-            start = "%s %s" % (day,start)
-            programDateControl.setLabel(start)
+            starttime = start.strftime("%H:%M")
+            endtime = end.strftime("%H:%M")
+            programdate = "%s %s - %s" % (day,starttime,endtime)
+            programDateControl.setLabel('[B]%s[/B]' % programdate)
+
+            duration = end - start
+            duration_str = "Length: %s Minute(s)" % (duration.seconds / 60)
+            programDurationControl.setLabel(duration_str)
+
+            now = datetime.datetime.now()
+            if now > start:
+                when = datetime.timedelta(-1)
+                elapsed = now - start
+            else:
+                when = start - now
+                elapsed = datetime.timedelta(0)
+            days = when.days
+            hours, remainder = divmod(when.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            if days >= 1:
+                when_str = "In %d days %s hour(s) %s min(s)" % (days,hours,minutes + 1)
+                programProgressInfoControl.setLabel(when_str)
+            elif days > 0:
+                when_str = "In %d day %s hour(s) %s min(s)" % (days,hours,minutes + 1)
+                programProgressInfoControl.setLabel(when_str)
+            elif hours >= 1:
+                when_str = "In %d hour(s) %d minute(s)" % (hours,minutes + 1)
+                programProgressInfoControl.setLabel(when_str)
+            elif seconds > 0:
+                when_str = "In %d minute(s)" % (when.seconds / 60 + 1)
+                programProgressInfoControl.setLabel(when_str)
+            elif end - elapsed > start:
+                remaining = end - now
+                remaining_str =  "%s minute(s) left" % (remaining.seconds / 60 + 1)
+                programProgressInfoControl.setLabel(remaining_str)
+            else:
+                programProgressInfoControl.setLabel("Ended")
+
+            progress = (100.0 * float(elapsed.seconds)) / float(duration.seconds+0.001)
+            progress = int(round(progress))
+            programProgressBarControl.setPercent(progress)
 
         if self.program.startDate:
             remindControl.setEnabled(True)
@@ -4052,6 +4097,9 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programPlayBeginningControl.setEnabled(False)
             programSuperFavourites.setEnabled(False)
             self.getControl(self.C_POPUP_EXTENDED).setEnabled(False)
+            programDurationControl.setEnabled(False)
+            programProgressInfoControl.setEnabled(False)
+            programProgressBarControl.setEnabled(False)
         if not self.program.channel:
             playControl.setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
