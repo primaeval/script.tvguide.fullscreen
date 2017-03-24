@@ -1709,6 +1709,7 @@ class TVGuide(xbmcgui.WindowXML):
         ADDON.setSetting('category',self.category)
         self.database.setCategory(self.category)
         self.categories = d.categories
+        program = d.program
         del d
 
         if buttonClicked == PopupMenu.C_POPUP_REMIND:
