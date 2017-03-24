@@ -696,7 +696,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
             if self.currentProgram is not None:
                 self._showContextMenu(self.currentProgram)
-        elif action.getId() in COMMAND_ACTIONS["OSD"]:
+        elif action.getId() in COMMAND_ACTIONS["OSD"] + COMMAND_ACTIONS["PLAY"]:
             self.osdChannel = self.currentChannel
             self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
             self._showOsd()
