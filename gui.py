@@ -3927,6 +3927,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_DURATION = 4103
     C_POPUP_PROGRESS_INFO = 4104
     C_POPUP_PROGRESS_BAR = 4105
+    C_POPUP_NEXT_PROGRAM_TITLE = 4106
+    C_POPUP_NEXT_PROGRAM_DATE = 4107
     C_POPUP_ADDON_LOGO = 4025
     C_POPUP_ADDON_LABEL = 4026
     C_POPUP_LIBMOV = 80000
@@ -3948,6 +3950,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         super(PopupMenu, self).__init__()
         self.database = database
         self.program = program
+        self.nextprogram = self.database.getNextProgram(program)
         self.showRemind = showRemind
         self.showAutoplay = showAutoplay
         self.showAutoplaywith = showAutoplaywith
@@ -3972,6 +3975,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programDurationControl = self.getControl(self.C_POPUP_DURATION)
         programProgressInfoControl = self.getControl(self.C_POPUP_PROGRESS_INFO)
         programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
+        nextprogramTitleControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_TITLE)
+        nextprogramDateControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_DATE)
 
 
         if self.program.channel:
@@ -3997,9 +4002,21 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:
             programImageControl.setImage(self.program.imageLarge)
+        if self.nextprogram.title:
+            nextprogramTitleControl.setLabel(self.nextprogram.title)
 
         start = self.program.startDate
         end = self.program.endDate
+        nextstart = self.nextprogram.startDate
+        nextend = self.nextprogram.endDate
+
+        if nextstart:
+            day = self.formatDateTodayTomorrow(nextstart)
+            starttime = nextstart.strftime("%H:%M")
+            endtime = nextend.strftime("%H:%M")
+            nextprogramdate = "%s - %s" % (starttime,endtime)
+            nextprogramDateControl.setLabel('[B]%s[/B]' % nextprogramdate)
+
         if start:
             day = self.formatDateTodayTomorrow(start)
             starttime = start.strftime("%H:%M")
@@ -4100,6 +4117,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programDurationControl.setEnabled(False)
             programProgressInfoControl.setEnabled(False)
             programProgressBarControl.setEnabled(False)
+            nextprogramTitleControl.setEnabled(False)
+            nextprogramDateControl.setEnabled(False)
         if not self.program.channel:
             playControl.setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
