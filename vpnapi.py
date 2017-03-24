@@ -198,8 +198,7 @@ class VPNAPI:
         # ovpn file name.  This is probably only needed when the API object is old and crusty and
         # there's potential that the .ovpn has changed.  Might be better just to create a new
         # API object in this case though...
-        if not default == "": 
-            self.default = default
+        self.default = default
         
         
     # Functions below this line shouldn't need to be called directly
