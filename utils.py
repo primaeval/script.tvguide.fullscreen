@@ -233,8 +233,6 @@ def autocrop_image(image, border = 0):
     return cropped_image
 
 def getLogo(title,ask=False,force=True):
-    if mac:
-        return None
     infile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/temp.png")
     outfile = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/logos/%s.png" % title)
     if not force and xbmcvfs.exists(outfile):
