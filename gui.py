@@ -3985,8 +3985,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                     programLabelControl.setEnabled(False)
             except:
                 pass
-        labelControl.setLabel(self.program.description)
-
+        if self.program.description:
+            labelControl.setText(self.program.description)
         if self.program.imageSmall:
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:
