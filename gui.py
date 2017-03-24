@@ -1823,7 +1823,7 @@ class TVGuide(xbmcgui.WindowXML):
             del d
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        elif buttonClicked == PopupMenu.C_POPUP_QUIT:
+        elif buttonClicked in [PopupMenu.C_POPUP_QUIT, PopupMenu.C_POPUP_SETUP_QUIT]:
             self.close()
 
         elif buttonClicked == PopupMenu.C_POPUP_LIBMOV:
@@ -3919,6 +3919,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_REMIND = 4002
     C_POPUP_CHANNELS = 4003
     C_POPUP_QUIT = 4004
+    C_POPUP_SETUP_QUIT = 44004
     C_POPUP_PLAY_BEGINNING = 4005
     C_POPUP_SEARCH = 4006
     C_POPUP_STREAM_SETUP = 4007
@@ -3931,6 +3932,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CHOOSE_CLOSE = 4015
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
+    C_POPUP_SETUP_CHANNEL_TITLE = 44101
     C_POPUP_PROGRAM_TITLE = 4102
     C_POPUP_DURATION = 4103
     C_POPUP_PROGRESS_INFO = 4104
@@ -3945,6 +3947,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_SETUP = 4500
     C_POPUP_BUTTON_SHOW_SETUP = 4501
     C_POPUP_SETUP_BUTTON_CLOSE = 4502
+    C_POPUP_SETUP_BUTTON_CHANNEL_UP = 4503
+    C_POPUP_SETUP_BUTTON_CHANNEL_DOWN = 4504
+    C_POPUP_SETUP_BUTTON_PROGRAM_PREVIOUS = 4505
+    C_POPUP_SETUP_BUTTON_PROGRAM_NEXT = 4506
+    C_POPUP_SETUP_BUTTON_PROGRAM_NOW = 4507
     C_POPUP_MENU_MOUSE_CONTROLS = 44500
     C_POPUP_PLAY_BIG = 44501
     C_POPUP_CHANNEL_UP_BIG = 44503
@@ -3998,11 +4005,13 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
         nextprogramTitleControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_TITLE)
         nextprogramDateControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_DATE)
+        setupChannelTitleControl = self.getControl(self.C_POPUP_SETUP_CHANNEL_TITLE)
 
         self.mode = MODE_POPUP_MENU
 
         if self.program.channel:
             channelTitleControl.setLabel(self.program.channel.title)
+            setupChannelTitleControl.setLabel(self.program.channel.title)
         if self.program.channel and self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
         if self.program.title:
@@ -4141,6 +4150,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programProgressBarControl.setEnabled(False)
             nextprogramTitleControl.setEnabled(False)
             nextprogramDateControl.setEnabled(False)
+            setupChannelTitleControl.setEnabled(False)
         if not self.program.channel:
             playControl.setEnabled(False)
             stopControl.setEnabled(False)
@@ -4300,29 +4310,29 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             self._hidePopupSetup()
             self.setFocusId(self.C_POPUP_PLAY)
             self.mode = MODE_POPUP_MENU
-        elif controlId in [self.C_POPUP_CHANNEL_UP_BIG]:
+        elif controlId in [self.C_POPUP_CHANNEL_UP_BIG, self.C_POPUP_SETUP_BUTTON_CHANNEL_UP]:
             self.currentChannel = self.database.getPreviousChannel(self.currentChannel)
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
             self.show()
-        elif controlId in [self.C_POPUP_CHANNEL_DOWN_BIG]:
+        elif controlId in [self.C_POPUP_CHANNEL_DOWN_BIG, self.C_POPUP_SETUP_BUTTON_CHANNEL_DOWN]:
             self.currentChannel = self.database.getNextChannel(self.currentChannel)
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
             self.show()
-        elif controlId in [self.C_POPUP_PROGRAM_PREVIOUS_BIG]:
+        elif controlId in [self.C_POPUP_PROGRAM_PREVIOUS_BIG, self.C_POPUP_SETUP_BUTTON_PROGRAM_PREVIOUS]:
             self.program = self.database.getPreviousProgram(self.program)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
             self.show()
-        elif controlId in [self.C_POPUP_PROGRAM_NEXT_BIG]:
+        elif controlId in [self.C_POPUP_PROGRAM_NEXT_BIG, self.C_POPUP_SETUP_BUTTON_PROGRAM_NEXT]:
             self.program = self.database.getNextProgram(self.program)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
             self.show()
-        elif controlId in [self.C_POPUP_PROGRAM_NOW_BIG]:
+        elif controlId in [self.C_POPUP_PROGRAM_NOW_BIG, self.C_POPUP_SETUP_BUTTON_PROGRAM_NOW]:
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.show()
