@@ -4226,13 +4226,13 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if ADDON.getSetting('mouse.controls') == "true":
                 self._showControl(self.C_POPUP_MENU_MOUSE_CONTROLS)
 
-        elif action.getId() in [ACTION_MOUSE_WHEEL_UP]:
+        elif action.getId() in [ACTION_MOUSE_WHEEL_UP, ACTION_UP]:
             self.currentChannel = self.database.getPreviousChannel(self.currentChannel)
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
             self.show()
-        elif action.getId() in [ACTION_MOUSE_WHEEL_DOWN]:
+        elif action.getId() in [ACTION_MOUSE_WHEEL_DOWN, ACTION_DOWN]:
             self.currentChannel = self.database.getNextChannel(self.currentChannel)
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
