@@ -2116,10 +2116,10 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlLabel(self.C_MAIN_CHANNEL, '[B]%s[/B]' % program.channel.title)
 
             if self.category in ["Any","All Channels"]:
-                label = ''
+                label = 'All Channels'
             else:
                 label = self.category
-            self.setControlLabel(self.C_MAIN_CURRENT_CATEGORY, '[B]%s[/B]' % label)
+            self.setControlLabel(self.C_MAIN_CURRENT_CATEGORY, '%s' % label)
 
             if program.channel.logo is not None:
                 self.setControlImage(self.C_MAIN_LOGO, program.channel.logo)
