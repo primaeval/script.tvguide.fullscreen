@@ -1861,7 +1861,7 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     xbmc.executebuiltin("RunPlugin(plugin://plugin.video.%s/tv/play_by_name_only/%s/%s)" % (
                         catchup, title, program.language))
-        elif buttonClicked == PopupMenu.C_POPUP_SUPER_FAVOURITES:
+        elif buttonClicked == PopupMenu.C_POPUP_SEARCH:
             if ADDON.getSetting('search.type') == 'MySearch':
                 script = "special://home/addons/script.tvguide.fullscreen/search.py"
                 if xbmcvfs.exists(script):
@@ -3918,7 +3918,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CHANNELS = 4003
     C_POPUP_QUIT = 4004
     C_POPUP_PLAY_BEGINNING = 4005
-    C_POPUP_SUPER_FAVOURITES = 4006
+    C_POPUP_SEARCH = 4006
     C_POPUP_STREAM_SETUP = 4007
     C_POPUP_AUTOPLAY = 4008
     C_POPUP_AUTOPLAYWITH = 4009
@@ -3987,7 +3987,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         channelTitleControl = self.getControl(self.C_POPUP_CHANNEL_TITLE)
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
-        programSuperFavourites = self.getControl(self.C_POPUP_SUPER_FAVOURITES)
+        programSuperFavourites = self.getControl(self.C_POPUP_SEARCH)
         programDurationControl = self.getControl(self.C_POPUP_DURATION)
         programProgressInfoControl = self.getControl(self.C_POPUP_PROGRESS_INFO)
         programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
