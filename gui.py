@@ -208,7 +208,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_RIGHT_BIG = 44305
     C_MAIN_MOUSE_EXIT = 4306
     C_MAIN_MENUBAR_BUTTON_EXIT = 44306
-    C_MAIN_MOUSE_MENU = 4307
+    C_MAIN_MOUSE_MENU = 4307 # deprecated?
     C_MAIN_MOUSE_CATEGORIES = 4308
     C_MAIN_MOUSE_PIP = 4309
     C_MAIN_MOUSE_NOW = 4310
@@ -3980,7 +3980,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_FAVOURITES = 4012
     C_POPUP_EXTENDED = 4013
     C_POPUP_CHOOSE_ALT = 4014
-    C_POPUP_CHOOSE_CLOSE = 4015
+    C_POPUP_CHOOSE_CLOSE = 4015 # deprecated?
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_SETUP_CHANNEL_TITLE = 44101
@@ -5906,5 +5906,5 @@ class CatMenu(xbmcgui.WindowXMLDialog):
             self.buttonClicked = controlId
             self.close()
 
-    def onFocus(self, controlId):
+    def onFocus(self, controlId): # TODO: Fix "Control 7004 in window 13002 has been asked to focus, but it can't" in kodi log
         pass
