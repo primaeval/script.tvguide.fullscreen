@@ -738,9 +738,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.playOrChoose(self.osdProgram)
 
         elif action.getId() in COMMAND_ACTIONS["MENU"]:
-            self.osdProgram = self.database.getCurrentProgram(self.osdChannel)
-            if self.osdProgram is not None:
-                self._showContextMenu(self.osdProgram)
+            self._showContextMenu(self.osdProgram)
 
         elif action.getId() in COMMAND_ACTIONS["PLAY_NEXT_CHANNEL"]:
             self._channelUp()
