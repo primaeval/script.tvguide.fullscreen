@@ -228,6 +228,10 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_PIP = 5002
     C_MAIN_VIDEO = 5003
     C_MAIN_VIDEO_BUTTON_LAST_CHANNEL = 5004
+    C_MAIN_MENUBAR = 5200
+    C_MAIN_BUTTON_SHOW_MENUBAR = 5201
+    C_MAIN_BUTTON_CLOSE_MENUBAR = 5202
+    C_MAIN_BUTTON_CLOSE_MENUBAR_BIG = 55202
     C_QUICK_EPG = 10000
     C_QUICK_EPG_VIEW_MARKER = 10001
     C_QUICK_EPG_MOUSE_CONTROLS = 10300
@@ -560,6 +564,19 @@ class TVGuide(xbmcgui.WindowXML):
 
         self._hideControl(self.C_UP_NEXT)
 
+        if action.getId() in COMMAND_ACTIONS["CLOSE"] + COMMAND_ACTIONS["UP"] + COMMAND_ACTIONS["CATEGORIES"] and self.mode == None:
+            self._hideControl(self.C_MAIN_MENUBAR)
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+            return
+        if action.getId() in COMMAND_ACTIONS["DOWN"] and self.mode == None:
+            self._hideControl(self.C_MAIN_MENUBAR)
+            self.focusPoint.y = self.epgView.top
+            self.onRedrawEPG(self.channelIdx + CHANNELS_PER_PAGE, self.viewStartDate,
+                             focusFunction=self._findControlBelow)
+            return
+        if action.getId() in COMMAND_ACTIONS["MENU"] and self.mode == None:
+            self._hideControl(self.C_MAIN_MENUBAR)
+            self.mode = MODE_EPG
         if action.getId() in COMMAND_ACTIONS["STOP"]:
             self.tryingToPlay = False
             self.clear_catchup()
@@ -630,7 +647,10 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["AUTOPLAYWITHS"]:
             self.showFullAutoplaywiths()
         elif action.getId() in COMMAND_ACTIONS["CATEGORIES"]:
-            self._showCatMenu()
+            self._showControl(self.C_MAIN_MENUBAR)
+            self.setFocusId(self.C_MAIN_MOUSE_SEARCH)
+            self.mode = None
+            return
         elif action.getId() in COMMAND_ACTIONS["PROGRAM_SEARCH"]:
             self.programSearch()
         elif action.getId() in COMMAND_ACTIONS["DESCRIPTION_SEARCH"]:
@@ -1288,6 +1308,17 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId == self.C_MAIN_VIDEO_BUTTON_LAST_CHANNEL:
             self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
             self._showContextMenu(self.osdProgram)
+            return
+        elif controlId == self.C_MAIN_BUTTON_SHOW_MENUBAR:
+            self._showControl(self.C_MAIN_MENUBAR)
+            self.setFocusId(self.C_MAIN_MOUSE_SEARCH)
+            self.mode = None
+            return
+        elif controlId in [self.C_MAIN_BUTTON_CLOSE_MENUBAR, self.C_MAIN_BUTTON_CLOSE_MENUBAR_BIG]:
+            self._hideControl(self.C_MAIN_MENUBAR)
+            if self.mode != MODE_EPG:
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+                return
             return
         elif controlId == self.C_QUICK_EPG_BUTTON_LEFT:
             self.quickViewStartDate -= datetime.timedelta(hours=2)
@@ -2459,8 +2490,10 @@ class TVGuide(xbmcgui.WindowXML):
         if control is not None:
             self.setFocus(control)
         elif control is None:
-            if self.getControl(self.C_MAIN_ACTIONS) and ADDON.getSetting('action.bar') == 'true' and ADDON.getSetting('down.action') == 'true':
-                self.setFocusId(self.C_MAIN_ACTIONS)
+            if self.getControl(self.C_MAIN_MENUBAR) and ADDON.getSetting('action.bar') == 'true' and ADDON.getSetting('down.action') == 'true':
+                self._showControl(self.C_MAIN_MENUBAR)
+                self.mode = None
+                self.setFocusId(self.C_MAIN_MOUSE_SEARCH)
                 return
             self.focusPoint.y = self.epgView.top
             self.onRedrawEPG(self.channelIdx + CHANNELS_PER_PAGE, self.viewStartDate,
@@ -5821,7 +5854,7 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                 f.close()
                 self.categories = [category for category in categories if category]
         #elif action.getId() in [ACTION_MENU, ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_ESC]:
-        elif action.getId() in COMMAND_ACTIONS["CLOSE"] + COMMAND_ACTIONS["CATEGORIES"] :
+        elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self.close()
             return
 
