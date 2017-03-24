@@ -129,9 +129,13 @@ HALF_HOUR = datetime.timedelta(minutes=30)
 if ADDON.getSetting('skin.source') == "0":
     SKIN = ADDON.getSetting('skin')
     SKIN_PATH = ADDON.getAddonInfo('path')
-else:
+elif ADDON.getSetting('skin.source') == "1":
     SKIN = ADDON.getSetting('skin.user')
     SKIN_PATH = xbmc.translatePath("special://profile/addon_data/script.tvguide.fullscreen/")
+elif ADDON.getSetting('skin.source') == "2":
+    SKIN = ADDON.getSetting('skin.user')
+    SKIN_PATH = ADDON.getSetting('skin.folder')
+
 
 def log(what):
     xbmc.log(repr(what))
