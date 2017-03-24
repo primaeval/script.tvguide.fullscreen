@@ -3968,12 +3968,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programSuperFavourites = self.getControl(self.C_POPUP_SUPER_FAVOURITES)
 
 
-
+        if self.program.channel:
+            channelTitleControl.setLabel(self.program.channel.title)
         if self.program.channel and self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
 
-        if self.program.channel:
-            channelTitleControl.setLabel(self.program.channel.title)
         programTitleControl.setLabel(self.program.title)
 
         label = ""
@@ -3985,17 +3984,19 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         except:
             pass
         programLabelControl.setLabel(self.program.title+label)
+        labelControl.setLabel(self.program.description)
+
+        if self.program.imageSmall:
+            programImageControl.setImage(self.program.imageSmall)
+        if self.program.imageLarge:
+            programImageControl.setImage(self.program.imageLarge)
+
         start = self.program.startDate
         if start:
             day = self.formatDateTodayTomorrow(start)
             start = start.strftime("%H:%M")
             start = "%s %s" % (day,start)
             programDateControl.setLabel(start)
-        if self.program.imageSmall:
-            programImageControl.setImage(self.program.imageSmall)
-        if self.program.imageLarge:
-            programImageControl.setImage(self.program.imageLarge)
-        labelControl.setLabel(self.program.description)
 
         if self.program.startDate:
             remindControl.setEnabled(True)
