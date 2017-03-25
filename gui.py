@@ -2877,6 +2877,7 @@ class TVGuide(xbmcgui.WindowXML):
             return  # ignore redraw request while redrawing
         debug('onRedrawEPG')
 
+        self._hideQuickEpg()
         self.redrawingEPG = True
         self.mode = MODE_EPG
         self._showControl(self.C_MAIN_EPG)
