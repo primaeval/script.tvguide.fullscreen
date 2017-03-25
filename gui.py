@@ -1326,9 +1326,17 @@ class TVGuide(xbmcgui.WindowXML):
         d = ProgramListDialog(title,programList)
         d.doModal()
         index = d.index
-        if index > -1:
-            self._showContextMenu(programList[index])
-
+        action = d.action
+        if action == ACTION_RIGHT:
+            self.showNow()
+        elif action == ACTION_LEFT:
+            self.showNext()
+        elif action == KEY_CONTEXT_MENU:
+            if index > -1:
+                self._showContextMenu(programList[index])
+        else:
+            if index > -1:
+                self.playOrChoose(programList[index])
 
     def showNow(self):
         programList = self.database.getNowList()
