@@ -2905,7 +2905,7 @@ class TVGuide(xbmcgui.WindowXML):
                         listControl.selectItem(index)
                 name = remove_formatting(ADDON.getSetting('categories.background.color'))
                 color = colors.color_name[name]
-                control = self.getControl(self.C_MAIN_BACKGROUND)
+                control = self.getControl(self.C_MAIN_CAT_BACKGROUND)
                 control.setColorDiffuse(color)
 
         if self.has_action_bar:
