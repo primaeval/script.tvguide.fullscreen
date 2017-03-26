@@ -1,0 +1,7 @@
+White_snow Skin Setup:
+
+1. Add your favourite font into your skin addon folder: /addons/'yourskinfolder'/font/ (Example /addons/skin.aeon.nox.silvo/font/)
+
+2. Open TVGuide_"fontname".txt, copy and paste into font.xml inside /addons/'yourskinfolder'/1080i/font.xml. Restart Kodi.
+
+Have Fun

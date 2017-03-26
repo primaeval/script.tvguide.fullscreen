@@ -1,0 +1,13 @@
+<settings>
+    <setting id="action.bar" value="true" />
+    <setting id="down.action" value="true" />
+    <setting id="channels.per.page" value="8" />
+    <setting id="epg.box.spacing" value="4" />
+    <setting id="epg.focus.color" value="[COLOR ff606060]black[/COLOR]" />
+    <setting id="epg.font" value="TVGuide29" />
+    <setting id="epg.nofocus.color" value="[COLOR ff696969]dimgrey[/COLOR]" />
+    <setting id="last.channel.popup" value="1" />
+    <setting id="redraw.epg" value="false" />
+    <setting id="skin" value="white_snow_CustomFont" />
+    <setting id="up.cat.mode" value="No" />
+</settings>
