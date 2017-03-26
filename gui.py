@@ -4046,7 +4046,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programDateControl = self.getControl(self.C_POPUP_PROGRAM_DATE)
         programImageControl = self.getControl(self.C_POPUP_PROGRAM_IMAGE)
         playControl = self.getControl(self.C_POPUP_PLAY)
-        stopControl = self.getControl(self.C_POPUP_STOP)
+        if xbmc.getCondVisibility('Control.IsVisible(44000)'):
+            stopControl = self.getControl(self.C_POPUP_STOP)
         remindControl = self.getControl(self.C_POPUP_REMIND)
         autoplayControl = self.getControl(self.C_POPUP_AUTOPLAY)
         autoplaywithControl = self.getControl(self.C_POPUP_AUTOPLAYWITH)
@@ -4055,18 +4056,25 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
         programSuperFavourites = self.getControl(self.C_POPUP_SEARCH)
-        programDurationControl = self.getControl(self.C_POPUP_DURATION)
-        programProgressInfoControl = self.getControl(self.C_POPUP_PROGRESS_INFO)
-        programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
-        nextprogramTitleControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_TITLE)
-        nextprogramDateControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_DATE)
-        setupChannelTitleControl = self.getControl(self.C_POPUP_SETUP_CHANNEL_TITLE)
+        if xbmc.getCondVisibility('Control.IsVisible(4103)'):
+            programDurationControl = self.getControl(self.C_POPUP_DURATION)
+        if xbmc.getCondVisibility('Control.IsVisible(4104)'):
+            programProgressInfoControl = self.getControl(self.C_POPUP_PROGRESS_INFO)
+        if xbmc.getCondVisibility('Control.IsVisible(4105)'):
+            programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
+        if xbmc.getCondVisibility('Control.IsVisible(4106)'):
+            nextprogramTitleControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_TITLE)
+        if xbmc.getCondVisibility('Control.IsVisible(4107)'):
+            nextprogramDateControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_DATE)
+        if xbmc.getCondVisibility('Control.IsVisible(44101)'):
+            setupChannelTitleControl = self.getControl(self.C_POPUP_SETUP_CHANNEL_TITLE)
 
         self.mode = MODE_POPUP_MENU
 
         if self.program.channel:
             channelTitleControl.setLabel(self.program.channel.title)
-            setupChannelTitleControl.setLabel(self.program.channel.title)
+            if xbmc.getCondVisibility('Control.IsVisible(44101)'):
+                setupChannelTitleControl.setLabel(self.program.channel.title)
         if self.program.channel and self.program.channel.logo is not None:
             channelLogoControl.setImage(self.program.channel.logo)
         if self.program.title:
@@ -4088,7 +4096,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:
             programImageControl.setImage(self.program.imageLarge)
-        if self.nextprogram.title:
+        if self.nextprogram.title and xbmc.getCondVisibility('Control.IsVisible(4106)'):
             nextprogramTitleControl.setLabel(self.nextprogram.title)
 
         start = self.program.startDate
@@ -4096,7 +4104,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         nextstart = self.nextprogram.startDate
         nextend = self.nextprogram.endDate
 
-        if nextstart:
+        if nextstart and xbmc.getCondVisibility('Control.IsVisible(4107)'):
             day = self.formatDateTodayTomorrow(nextstart)
             starttime = nextstart.strftime("%H:%M")
             endtime = nextend.strftime("%H:%M")
@@ -4112,7 +4120,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
             duration = end - start
             duration_str = "Length: %s Minute(s)" % (duration.seconds / 60)
-            programDurationControl.setLabel(duration_str)
+            if xbmc.getCondVisibility('Control.IsVisible(4103)'):
+                programDurationControl.setLabel(duration_str)
 
             now = datetime.datetime.now()
             if now > start:
@@ -4124,28 +4133,30 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             days = when.days
             hours, remainder = divmod(when.seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
-            if days >= 1:
-                when_str = "In %d days %s hour(s) %s min(s)" % (days,hours,minutes + 1)
-                programProgressInfoControl.setLabel(when_str)
-            elif days > 0:
-                when_str = "In %d day %s hour(s) %s min(s)" % (days,hours,minutes + 1)
-                programProgressInfoControl.setLabel(when_str)
-            elif hours >= 1:
-                when_str = "In %d hour(s) %d minute(s)" % (hours,minutes + 1)
-                programProgressInfoControl.setLabel(when_str)
-            elif seconds > 0:
-                when_str = "In %d minute(s)" % (when.seconds / 60 + 1)
-                programProgressInfoControl.setLabel(when_str)
-            elif end - elapsed > start:
-                remaining = end - now
-                remaining_str =  "%s minute(s) left" % (remaining.seconds / 60 + 1)
-                programProgressInfoControl.setLabel(remaining_str)
-            else:
-                programProgressInfoControl.setLabel("Ended")
+            if xbmc.getCondVisibility('Control.IsVisible(4104)'):
+                if days >= 1:
+                    when_str = "In %d days %s hour(s) %s min(s)" % (days,hours,minutes + 1)
+                    programProgressInfoControl.setLabel(when_str)
+                elif days > 0:
+                    when_str = "In %d day %s hour(s) %s min(s)" % (days,hours,minutes + 1)
+                    programProgressInfoControl.setLabel(when_str)
+                elif hours >= 1:
+                    when_str = "In %d hour(s) %d minute(s)" % (hours,minutes + 1)
+                    programProgressInfoControl.setLabel(when_str)
+                elif seconds > 0:
+                    when_str = "In %d minute(s)" % (when.seconds / 60 + 1)
+                    programProgressInfoControl.setLabel(when_str)
+                elif end - elapsed > start:
+                    remaining = end - now
+                    remaining_str =  "%s minute(s) left" % (remaining.seconds / 60 + 1)
+                    programProgressInfoControl.setLabel(remaining_str)
+                else:
+                    programProgressInfoControl.setLabel("Ended")
 
             progress = (100.0 * float(elapsed.seconds)) / float(duration.seconds+0.001)
             progress = int(round(progress))
-            programProgressBarControl.setPercent(progress)
+            if xbmc.getCondVisibility('Control.IsVisible(4105)'):
+                programProgressBarControl.setPercent(progress)
 
         if self.program.startDate:
             remindControl.setEnabled(True)
@@ -4276,17 +4287,17 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 return timestamp.strftime("%A")
 
     def onAction(self, action):
-        if action.getId() == ACTION_MOUSE_MOVE:
+        if action.getId() == ACTION_MOUSE_MOVE and xbmc.getCondVisibility('Control.IsVisible(44500)'):
             if ADDON.getSetting('mouse.controls') == "true":
                 self._showControl(self.C_POPUP_MENU_MOUSE_CONTROLS)
 
-        elif action.getId() in [ACTION_MOUSE_WHEEL_UP, ACTION_UP]:
+        elif action.getId() in [ACTION_MOUSE_WHEEL_UP, ACTION_UP] and xbmc.getCondVisibility('!Control.IsVisible(7004)'):
             self.currentChannel = self.database.getPreviousChannel(self.currentChannel)
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.program.imageSmall = "tvg-tv.png" # TODO: get tvdb images
             self.show()
-        elif action.getId() in [ACTION_MOUSE_WHEEL_DOWN, ACTION_DOWN]:
+        elif action.getId() in [ACTION_MOUSE_WHEEL_DOWN, ACTION_DOWN] and xbmc.getCondVisibility('!Control.IsVisible(7004)'):
             self.currentChannel = self.database.getNextChannel(self.currentChannel)
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
@@ -4301,10 +4312,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 self.close()
         elif action.getId() in [ACTION_STOP]:
             self.close()
-        elif action.getId() in [KEY_CONTEXT_MENU]:
+        elif action.getId() in [KEY_CONTEXT_MENU] and xbmc.getCondVisibility('Control.IsVisible(4500)'):
             self._showPopupSetup()
 
-        elif action.getId() in [KEY_CONTEXT_MENU] and xbmc.getCondVisibility('Control.IsEnabled(7004)'):
+        elif action.getId() in [KEY_CONTEXT_MENU] and xbmc.getCondVisibility('Control.IsVisible(7004)'):
 
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
