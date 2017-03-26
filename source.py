@@ -1879,8 +1879,9 @@ class XMLTVSource(Source):
         if self.logoSource == XMLTVSource.LOGO_SOURCE_FOLDER:
             dirs, files = xbmcvfs.listdir(logoFolder)
             logos = [file[:-4] for file in files if file.endswith(".png")]
-        d = xbmcgui.DialogProgressBG()
-        d.create('TV Guide Fullscreen', "parsing xmltv")
+        if ADDON.getSetting('update.progress') == 'true':
+            d = xbmcgui.DialogProgressBG()
+            d.create('TV Guide Fullscreen', "parsing xmltv")
         category_count = {}
         for event, elem in context:
             if event == "end":
@@ -2016,15 +2017,17 @@ class XMLTVSource(Source):
                     elements_parsed += 1
                     if progress_callback and elements_parsed % 500 == 0:
                         percent = 100.0 / size * f.tell()
-                        d.update(int(percent), message=channel)
+                        if ADDON.getSetting('update.progress') == 'true':
+                            d.update(int(percent), message=channel)
                         if not progress_callback(percent):
                             raise SourceUpdateCanceledException()
                     yield result
 
             root.clear()
         f.close()
-        d.update(100, message="Done")
-        d.close()
+        if ADDON.getSetting('update.progress') == 'true':
+            d.update(100, message="Done")
+            d.close()
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/category_count.ini',"wb")
         for c in sorted(category_count):
             s = "%s=%s\n" % (c, category_count[c])
