@@ -3962,6 +3962,7 @@ class TVGuide(xbmcgui.WindowXML):
 
 class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_LABEL = 7000
+    C_POPUP_PROGRAM_DESCRIPTION_TEXTBOX = 77000
     C_POPUP_PROGRAM_LABEL = 7001
     C_POPUP_PROGRAM_IMAGE = 7002
     C_POPUP_PROGRAM_DATE = 7003
@@ -4042,6 +4043,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         labelControl = self.getControl(self.C_POPUP_LABEL)
+        if xbmc.getCondVisibility('Control.IsVisible(77000)'):
+            programdescriptionControl = self.getControl(self.C_POPUP_PROGRAM_DESCRIPTION_TEXTBOX)
         programLabelControl = self.getControl(self.C_POPUP_PROGRAM_LABEL)
         programDateControl = self.getControl(self.C_POPUP_PROGRAM_DATE)
         programImageControl = self.getControl(self.C_POPUP_PROGRAM_IMAGE)
@@ -4091,7 +4094,9 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             except:
                 pass
         if self.program.description:
-            labelControl.setText(self.program.description)
+            labelControl.setLabel(self.program.description)
+        if self.program.description and xbmc.getCondVisibility('Control.IsVisible(77000)'):
+            programdescriptionControl.setText(self.program.description)
         if self.program.imageSmall:
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:
@@ -4208,6 +4213,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
         if not self.program.title:
             labelControl.setEnabled(False)
+            programdescriptionControl.setEnabled(False)
             programLabelControl.setEnabled(False)
             programDateControl.setEnabled(False)
             programImageControl.setEnabled(False)
