@@ -571,8 +571,12 @@ class TVGuide(xbmcgui.WindowXML):
 
         if action.getId() in COMMAND_ACTIONS["CLOSE"] + COMMAND_ACTIONS["UP"] + COMMAND_ACTIONS["CATEGORIES"] and self.mode == None:
             self._hideControl(self.C_MAIN_MENUBAR)
-            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-            return
+            self.mode = MODE_EPG
+            self.focusPoint.y = self.epgView.bottom
+            control = self._findControlAbove(self.focusPoint)
+            if control is not None:
+                self.setFocus(control)
+                return
         if action.getId() in COMMAND_ACTIONS["DOWN"] and self.mode == None:
             self._hideControl(self.C_MAIN_MENUBAR)
             self.focusPoint.y = self.epgView.top
