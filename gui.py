@@ -1814,7 +1814,7 @@ class TVGuide(xbmcgui.WindowXML):
             if self.mode == MODE_EPG:
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
-        elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_STREAM:
+        elif buttonClicked in [PopupMenu.C_POPUP_CHOOSE_STREAM, PopupMenu.C_POPUP_CHOOSE_STREAM_2]:
             result = self.streamingService.detectStream(program.channel)
             if not result:
                 # could not detect stream, show context menu
@@ -3972,6 +3972,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_PLAY = 4000
     C_POPUP_STOP = 44000
     C_POPUP_CHOOSE_STREAM = 4001
+    C_POPUP_CHOOSE_STREAM_2 = 40011
     C_POPUP_REMOVE_STREAM = 44001
     C_POPUP_REMIND = 4002
     C_POPUP_CHANNELS = 4003
@@ -4199,23 +4200,34 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if index >= 0:
                 listControl.selectItem(index)
 
-        if self.database.getCustomStreamUrl(self.program.channel)is None:
-            #playControl.setEnabled(False)
-            self.getControl(self.C_POPUP_REMOVE_STREAM).setEnabled(False)
-            self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(True)
-            chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
-            chooseStrmControl.setLabel(strings(CHOOSE_STRM_FILE))
-            self._showPopupSetup()
-            playControl.setLabel("Not playable")
-        else:
+        if xbmc.getCondVisibility('[Control.IsVisible(40011)|Control.IsVisible(44001)]'):
+            if self.database.getCustomStreamUrl(self.program.channel)is None:
+                #playControl.setEnabled(False)
+                self.getControl(self.C_POPUP_REMOVE_STREAM).setEnabled(False)
+                self.getControl(self.C_POPUP_CHOOSE_STREAM_2).setEnabled(True)
+                chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM_2)
+                chooseStrmControl.setLabel(strings(CHOOSE_STRM_FILE))
+                self._showPopupSetup()
+                playControl.setLabel("Not playable")
+            else:
+                #playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
+                self.getControl(self.C_POPUP_CHOOSE_STREAM_2).setEnabled(False)
+                self.getControl(self.C_POPUP_REMOVE_STREAM).setEnabled(True)
+                chooseStrmControl = self.getControl(self.C_POPUP_REMOVE_STREAM)
+                chooseStrmControl.setLabel(strings(REMOVE_STRM_FILE))
+                playControl.setLabel("Watch Channel")
+            if xbmc.getCondVisibility('!Control.IsVisible(4500)'):
+                self._showPopupSetup()
+
+        if xbmc.getCondVisibility('Control.IsVisible(4001)'):
             #playControl.setLabel(strings(WATCH_CHANNEL, self.program.channel.title))
-            self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
-            self.getControl(self.C_POPUP_REMOVE_STREAM).setEnabled(True)
-            chooseStrmControl = self.getControl(self.C_POPUP_REMOVE_STREAM)
-            chooseStrmControl.setLabel(strings(REMOVE_STRM_FILE))
             playControl.setLabel("Watch Channel")
-        if xbmc.getCondVisibility('!Control.IsVisible(4500)'):
-            self._showPopupSetup()
+            if self.program.channel and not self.program.channel.isPlayable():
+                #playControl.setEnabled(False)
+                self.setFocusId(self.C_POPUP_CHOOSE_STREAM)
+                if self.database.getCustomStreamUrl(self.program.channel):
+                    chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
+                    chooseStrmControl.setLabel(strings(REMOVE_STRM_FILE))
 
         if not self.program.title:
             labelControl.setEnabled(False)
@@ -4243,6 +4255,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             playControl.setEnabled(False)
             stopControl.setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(False)
+            self.getControl(self.C_POPUP_CHOOSE_STREAM_2).setEnabled(False)
             self.getControl(self.C_POPUP_REMOVE_STREAM).setEnabled(False)
             self.getControl(self.C_POPUP_STREAM_SETUP).setEnabled(False)
             self.getControl(self.C_POPUP_CHOOSE_ALT).setEnabled(False)
@@ -4281,7 +4294,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         self._showControl(self.C_POPUP_SETUP)
 
         if self.database.getCustomStreamUrl(self.program.channel)is None:
-            self.setFocusId(self.C_POPUP_CHOOSE_STREAM)
+            self.setFocusId(self.C_POPUP_CHOOSE_STREAM_2)
         else:
             self.setFocusId(self.C_POPUP_REMOVE_STREAM)
 
@@ -4430,14 +4443,18 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.nextprogram = self.database.getNextProgram(self.program)
             self.show()
-        elif controlId == self.C_POPUP_REMOVE_STREAM:
+        elif controlId == self.C_POPUP_CHOOSE_STREAM and self.database.getCustomStreamUrl(self.program.channel):
             self.database.deleteCustomStreamUrl(self.program.channel)
             chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM)
             chooseStrmControl.setLabel(strings(CHOOSE_STRM_FILE))
+        elif controlId == self.C_POPUP_REMOVE_STREAM:
+            self.database.deleteCustomStreamUrl(self.program.channel)
+            chooseStrmControl = self.getControl(self.C_POPUP_CHOOSE_STREAM_2)
+            chooseStrmControl.setLabel(strings(CHOOSE_STRM_FILE))
             self.getControl(self.C_POPUP_REMOVE_STREAM).setEnabled(False)
-            self.getControl(self.C_POPUP_CHOOSE_STREAM).setEnabled(True)
+            self.getControl(self.C_POPUP_CHOOSE_STREAM_2).setEnabled(True)
             self._showPopupSetup()
-            self.setFocusId(self.C_POPUP_CHOOSE_STREAM)
+            self.setFocusId(self.C_POPUP_CHOOSE_STREAM_2)
 
             if not self.program.channel.isPlayable():
                 playControl = self.getControl(self.C_POPUP_PLAY)
