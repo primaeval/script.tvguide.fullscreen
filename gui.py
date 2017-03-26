@@ -3966,6 +3966,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_PROGRAM_LABEL = 7001
     C_POPUP_PROGRAM_IMAGE = 7002
     C_POPUP_PROGRAM_DATE = 7003
+    C_POPUP_PROGRAM_DATE_AND_ENDTIME = 77003
     C_POPUP_CATEGORY = 7004
     C_POPUP_SET_CATEGORY = 7005
     C_POPUP_PLAY = 4000
@@ -4047,6 +4048,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programdescriptionControl = self.getControl(self.C_POPUP_PROGRAM_DESCRIPTION_TEXTBOX)
         programLabelControl = self.getControl(self.C_POPUP_PROGRAM_LABEL)
         programDateControl = self.getControl(self.C_POPUP_PROGRAM_DATE)
+        if xbmc.getCondVisibility('Control.IsVisible(77003)'):
+            programDateandEndTimeControl = self.getControl(self.C_POPUP_PROGRAM_DATE_AND_ENDTIME)
         programImageControl = self.getControl(self.C_POPUP_PROGRAM_IMAGE)
         playControl = self.getControl(self.C_POPUP_PLAY)
         if xbmc.getCondVisibility('Control.IsVisible(44000)'):
@@ -4120,8 +4123,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             day = self.formatDateTodayTomorrow(start)
             starttime = start.strftime("%H:%M")
             endtime = end.strftime("%H:%M")
-            programdate = "%s %s - %s" % (day,starttime,endtime)
-            programDateControl.setLabel('[B]%s[/B]' % programdate)
+            programdate = "%s %s" % (day,starttime)
+            programDateControl.setLabel(programdate)
+            if xbmc.getCondVisibility('Control.IsVisible(77003)'):
+                programdateandendtime = "%s %s - %s" % (day,starttime,endtime)
+                programDateandEndTimeControl.setLabel('[B]%s[/B]' % programdateandendtime)
 
             duration = end - start
             duration_str = "Length: %s Minute(s)" % (duration.seconds / 60)
@@ -4216,6 +4222,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programdescriptionControl.setEnabled(False)
             programLabelControl.setEnabled(False)
             programDateControl.setEnabled(False)
+            programDateandEndTimeControl.setEnabled(False)
             programImageControl.setEnabled(False)
             remindControl.setEnabled(False)
             autoplayControl.setEnabled(False)
