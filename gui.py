@@ -656,10 +656,13 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["AUTOPLAYWITHS"]:
             self.showFullAutoplaywiths()
         elif action.getId() in COMMAND_ACTIONS["CATEGORIES"]:
-            self._showControl(self.C_MAIN_MENUBAR)
-            self.setFocusId(self.C_MAIN_MOUSE_SEARCH)
-            self.mode = None
-            return
+            if xbmc.getCondVisibility('!Control.IsVisible(7004)'):
+                self._showControl(self.C_MAIN_MENUBAR)
+                self.setFocusId(self.C_MAIN_MOUSE_SEARCH)
+                self.mode = None
+                return
+            else:
+                self._showCatMenu()
         elif action.getId() in COMMAND_ACTIONS["PROGRAM_SEARCH"]:
             self.programSearch()
         elif action.getId() in COMMAND_ACTIONS["DESCRIPTION_SEARCH"]:
@@ -2510,7 +2513,10 @@ class TVGuide(xbmcgui.WindowXML):
         if control is not None:
             self.setFocus(control)
         elif control is None:
-            if self.getControl(self.C_MAIN_MENUBAR) and ADDON.getSetting('action.bar') == 'true' and ADDON.getSetting('down.action') == 'true':
+            if self.getControl(self.C_MAIN_ACTIONS) and ADDON.getSetting('action.bar') == 'true' and ADDON.getSetting('down.action') == 'true' and xbmc.getCondVisibility('Control.IsVisible(7100)'):
+                self.setFocusId(self.C_MAIN_ACTIONS)
+                return
+            elif self.getControl(self.C_MAIN_MENUBAR) and ADDON.getSetting('action.bar') == 'true' and ADDON.getSetting('down.action') == 'true':
                 self._showControl(self.C_MAIN_MENUBAR)
                 self.mode = None
                 self.setFocusId(self.C_MAIN_MOUSE_SEARCH)
@@ -5916,6 +5922,9 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                 self.categories = [category for category in categories if category]
         #elif action.getId() in [ACTION_MENU, ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_ESC]:
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
+            self.close()
+            return
+        elif action.getId() in COMMAND_ACTIONS["CATEGORIES"] and xbmc.getCondVisibility('Control.IsVisible(7004)'):
             self.close()
             return
 
