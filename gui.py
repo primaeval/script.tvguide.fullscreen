@@ -710,8 +710,11 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["PLAY_LAST_CHANNEL"]:
             self._playLastChannel()
         elif action.getId() in COMMAND_ACTIONS["LAST_CHANNEL"] + COMMAND_ACTIONS["LEFT"]:
-            self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
-            self._showContextMenu(self.osdProgram)
+            if ADDON.getSetting('last.channel.popup') == '0':
+                self._showLastPlayedChannel()
+            else:
+                self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
+                self._showContextMenu(self.osdProgram)
         elif action.getId() in COMMAND_ACTIONS["FULLSCREEN"] + COMMAND_ACTIONS["RIGHT"]:
              xbmc.executebuiltin('Action(FullScreen)')
         elif action.getId() in COMMAND_ACTIONS["NOW_LISTING"] + COMMAND_ACTIONS["UP"]:

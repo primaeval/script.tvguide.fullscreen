@@ -136,6 +136,7 @@
         <setting id="menu.addon" label="Show Addon in Context Menu" type="bool" default="false"/>
         <setting id="epg.box.spacing" label="Epg Program Title Box Spacing" type="labelenum" default="2" values="2|3|4|5|6|7|8|9|10"/>
         <setting type="sep"/>
+        <setting id="last.channel.popup" label="Last Channel Popup in OSD or ContextMenu" type="enum" default="0" values="OSD Popup|ContextMenu"/>
     </category>
 
 
