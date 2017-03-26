@@ -141,7 +141,19 @@
                 <visible>StringCompare(Control.GetLabel(7001),)</visible>
             </control>
             <control type="label" id="7003">
-                <description>program date and time</description>
+                <description>program date</description>
+                <left>810</left>
+                <posy>11</posy>
+                <width>238</width>
+                <height>40</height>
+                <label>[B]18:00 - 20:00[/B]</label>
+                <textcolor>darkgray</textcolor>
+                <font>font15</font>
+                <align>right</align>
+                <visible>false</visible>
+            </control>
+            <control type="label" id="77003">
+                <description>program date and endtime</description>
                 <left>810</left>
                 <posy>11</posy>
                 <width>238</width>
@@ -162,7 +174,18 @@
                 <aspectratio>scale</aspectratio>
             </control>
 
-            <control type="textbox" id="7000">
+            <control type="label" id="7000">
+                <description>Program description</description>
+                <posx>30</posx>
+                <posy>106</posy>
+                <width>690</width>
+                <height>410</height>
+                <label></label>
+                <textcolor>black</textcolor>
+                <font>TVGuide31_textbox</font>
+                <visible>false</visible>
+            </control>
+            <control type="textbox" id="77000">
                 <description>Program description</description>
                 <posx>30</posx>
                 <posy>106</posy>
@@ -731,8 +754,28 @@
                 <width>800</width>
                 <height>50</height>   
 
+                <control type="button" id="4001">
+                    <!-- Choose Stream -->
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>217</width>
+                    <height>32</height>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
+                    <onup></onup>
+                    <onleft></onleft>
+                    <onright></onright>
+                    <align>right</align>
+                    <aligny>center</aligny>
+                    <font>font12</font>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <label>Choose Stream</label>
+                    <visible>false</visible>
+                </control>
+
                 <control type="image">
-                    <description>Button Choose Stream</description>
+                    <description>Button Choose Stream_2</description>
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>49</width>
@@ -740,10 +783,10 @@
                     <texture>buttons/Button darkBlue AddStream.png</texture>
                     <aspectratio align="left">keep</aspectratio>
                     <colordiffuse>white</colordiffuse>
-                    <visible>Control.IsEnabled(4001)</visible>
+                    <visible>Control.IsEnabled(40011)</visible>
                 </control>
                 <control type="image">
-                    <description>Button Choose Stream Focus</description>
+                    <description>Button Choose Stream_2 Focus</description>
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>49</width>
@@ -751,10 +794,10 @@
                     <texture>buttons/Button darkBlue AddStreamFO.png</texture>
                     <aspectratio align="left">keep</aspectratio>
                     <colordiffuse>white</colordiffuse>
-                    <visible>Control.HasFocus(4001)</visible>
-                 </control> 
-                <control type="button" id="4001">
-                    <!-- Choose Stream -->
+                    <visible>Control.HasFocus(40011)</visible>
+                </control>
+                <control type="button" id="40011">
+                    <!-- Choose Stream_2 -->
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>217</width>
@@ -770,7 +813,7 @@
                     <textcolor>grey</textcolor>
                     <focusedcolor>black</focusedcolor>
                     <label>Choose Stream</label>
-                    <visible>Control.IsEnabled(4001)</visible>
+                    <visible>Control.IsEnabled(40011)</visible>
                 </control>
 
                 <control type="image">
@@ -804,7 +847,7 @@
                     <texturefocus></texturefocus>
                     <texturenofocus></texturenofocus>
                     <onup>4503</onup>
-                    <onleft>4001</onleft>
+                    <onleft>40011</onleft>
                     <onright>4014</onright>
                     <align>right</align>
                     <aligny>center</aligny>
@@ -988,7 +1031,7 @@
                     <aligny>center</aligny>
                     <onup>4503</onup>
                     <onleft>4502</onleft>
-                    <onright>4001</onright>
+                    <onright>40011</onright>
                     <textcolor></textcolor>
                     <focusedcolor></focusedcolor>
                     <font>font13</font>
@@ -1017,7 +1060,7 @@
                     <texturefocus>buttons/button_arrowup_firstFO.png</texturefocus>
                     <texturenofocus>buttons/button_arrowup_first.png</texturenofocus>
                     <onup></onup>
-                    <ondown>4001</ondown>
+                    <ondown>40011</ondown>
                     <onleft>4506</onleft>
                     <onright>4504</onright>
                     <font>font13</font>
@@ -1034,7 +1077,7 @@
                     <texturefocus>buttons/button_arrowdownFO.png</texturefocus>
                     <texturenofocus>buttons/button_arrowdown.png</texturenofocus>
                     <onup></onup>
-                    <ondown>4001</ondown>
+                    <ondown>40011</ondown>
                     <onleft>4503</onleft>
                     <onright>4505</onright>
                     <font>font13</font>
@@ -1051,7 +1094,7 @@
                     <texturefocus>buttons/button_arrowleftFO.png</texturefocus>
                     <texturenofocus>buttons/button_arrowleft.png</texturenofocus>
                     <onup></onup>
-                    <ondown>4001</ondown>
+                    <ondown>40011</ondown>
                     <onleft>4504</onleft>
                     <onright>4507</onright>
                     <font>font13</font>
@@ -1068,7 +1111,7 @@
                     <texturefocus>buttons/button_arrownowFO.png</texturefocus>
                     <texturenofocus>buttons/button_arrownow.png</texturenofocus>
                     <onup></onup>
-                    <ondown>4001</ondown>
+                    <ondown>40011</ondown>
                     <onleft>4505</onleft>
                     <onright>4506</onright>
                     <font>font13</font>
@@ -1085,7 +1128,7 @@
                     <texturefocus>buttons/button_arrowrightFO.png</texturefocus>
                     <texturenofocus>buttons/button_arrowright.png</texturenofocus>
                     <onup></onup>
-                    <ondown>4001</ondown>
+                    <ondown>40011</ondown>
                     <onleft>4507</onleft>
                     <onright>4503</onright>
                     <font>font13</font>
