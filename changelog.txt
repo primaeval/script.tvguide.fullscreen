@@ -1,3 +1,7 @@
+version 0.0.323
+- Settings \ Startup \ Service Time (time of day)
+- Settings \ Startup \ Update Notification Progress (included normal foreground updating)
+
 version 0.0.322
 - Settings \ Appearance \ Skin Folder (above resources/skins)
 
