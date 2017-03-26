@@ -739,6 +739,11 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self._hideOsd()
+            if ADDON.getSetting('redraw.epg') == 'true':
+                self.viewStartDate = datetime.datetime.today()
+                self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
+                self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif action.getId() in COMMAND_ACTIONS["PLAY"]:
             self._hideOsd()
@@ -795,7 +800,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif action.getId() in COMMAND_ACTIONS["CLOSE"]:
             self._hideLastPlayed()
-            if self.mode == MODE_EPG:
+            if ADDON.getSetting('redraw.epg') == 'true':
                 self.viewStartDate = datetime.datetime.today()
                 self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 60, seconds=self.viewStartDate.second)
                 self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
@@ -1771,7 +1776,7 @@ class TVGuide(xbmcgui.WindowXML):
                 play_type = d.select("Notification play_type", ["once","always"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.notification.addNotification(program, play_type)
-            if self.mode == MODE_EPG:
+            if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAY:
@@ -1782,7 +1787,7 @@ class TVGuide(xbmcgui.WindowXML):
                 play_type = d.select("AutoPlay play_type", ["once","always"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.autoplay.addAutoplay(program, play_type)
-            if self.mode == MODE_EPG:
+            if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_AUTOPLAYWITH:
@@ -1793,7 +1798,7 @@ class TVGuide(xbmcgui.WindowXML):
                 play_type = d.select("AutoPlayWith play_type", ["once","always"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.autoplaywith.addAutoplaywith(program, play_type)
-            if self.mode == MODE_EPG:
+            if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked == PopupMenu.C_POPUP_LISTS:
@@ -1817,7 +1822,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.showFullAutoplaywiths()
 
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
-            if self.mode == MODE_EPG:
+            if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked in [PopupMenu.C_POPUP_CHOOSE_STREAM, PopupMenu.C_POPUP_CHOOSE_STREAM_2]:
@@ -1863,7 +1868,7 @@ class TVGuide(xbmcgui.WindowXML):
             d.doModal()
             del d
             self.streamingService = streaming.StreamsService(ADDON)
-            if self.mode == MODE_EPG:
+            if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked in [PopupMenu.C_POPUP_PLAY, PopupMenu.C_POPUP_PLAY_BIG]:
@@ -1878,7 +1883,7 @@ class TVGuide(xbmcgui.WindowXML):
             d = ChannelsMenu(self.database)
             d.doModal()
             del d
-            if self.mode == MODE_EPG:
+            if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         elif buttonClicked in [PopupMenu.C_POPUP_QUIT, PopupMenu.C_POPUP_SETUP_QUIT]:
