@@ -93,25 +93,37 @@ if __name__ == '__main__':
                 if ADDON.getSetting('service.addon.folders') == "true":
                     xbmc.executebuiltin('RunScript(special://home/addons/script.tvguide.fullscreen/ReloadAddonFolders.py)')
             while not monitor.abortRequested():
-                interval = int(ADDON.getSetting('service.interval'))
-                waitTime = 21600  # Default 6hrs
-                if interval == 0:
-                    waitTime = 7200   # 2hrs
-                elif interval == 1:
-                    waitTime = 21600  # 6hrs
-                elif interval == 2:
-                    waitTime = 43200  # 12hrs
-                elif interval == 3:
-                    waitTime = 86400  # 24hrs
-                ts = ADDON.getSetting('last.background.update') or "0.0"
-                lastTime = datetime.datetime.fromtimestamp(float(ts))
-                now = datetime.datetime.now()
-                nextTime = lastTime + datetime.timedelta(seconds=waitTime)
-                td = nextTime - now
-                timeLeft = td.seconds + (td.days * 24 * 3600)
+                if ADDON.getSetting('service.type') == '0':
+                    interval = int(ADDON.getSetting('service.interval'))
+                    waitTime = 21600  # Default 6hrs
+                    if interval == 0:
+                        waitTime = 7200   # 2hrs
+                    elif interval == 1:
+                        waitTime = 21600  # 6hrs
+                    elif interval == 2:
+                        waitTime = 43200  # 12hrs
+                    elif interval == 3:
+                        waitTime = 86400  # 24hrs
+                    ts = ADDON.getSetting('last.background.update') or "0.0"
+                    lastTime = datetime.datetime.fromtimestamp(float(ts))
+                    now = datetime.datetime.now()
+                    nextTime = lastTime + datetime.timedelta(seconds=waitTime)
+                    td = nextTime - now
+                    timeLeft = td.seconds + (td.days * 24 * 3600)
+                    xbmc.log("[script.tvguide.fullscreen] Service waiting for interval %s" % waitTime, xbmc.LOGDEBUG)
+                else:
+                    next_time = ADDON.getSetting('service.time')
+                    if next_time:
+                        hour,minute = next_time.split(':')
+                        now = datetime.datetime.now()
+                        next_time = now.replace(hour=int(hour),minute=int(minute),second=0,microsecond=0)
+                        if next_time < now:
+                            next_time = next_time + datetime.timedelta(hours=24)
+                        td = next_time - now
+                        timeLeft = td.seconds + (td.days * 24 * 3600)
                 if timeLeft < 0:
                     timeLeft = 0
-                xbmc.log("[script.tvguide.fullscreen] Service waiting for interval %s" % waitTime, xbmc.LOGDEBUG)
+                xbmc.log("[script.tvguide.fullscreen] Service waiting for %d seconds" % timeLeft, xbmc.LOGDEBUG)
                 if timeLeft and monitor.waitForAbort(timeLeft):
                     break
                 xbmc.log("[script.tvguide.fullscreen] Service now triggered...", xbmc.LOGDEBUG)
