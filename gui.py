@@ -4079,7 +4079,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programDurationControl = self.getControl(self.C_POPUP_DURATION)
         if xbmc.getCondVisibility('Control.IsVisible(4104)'):
             programProgressInfoControl = self.getControl(self.C_POPUP_PROGRESS_INFO)
-        if xbmc.getCondVisibility('Control.IsVisible(4105)'):
+        if xbmc.getCondVisibility('Control.IsEnabled(4105)'):
             programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
         if xbmc.getCondVisibility('Control.IsVisible(4106)'):
             nextprogramTitleControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_TITLE)
@@ -4179,7 +4179,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
             progress = (100.0 * float(elapsed.seconds)) / float(duration.seconds+0.001)
             progress = int(round(progress))
-            if xbmc.getCondVisibility('Control.IsVisible(4105)'):
+            if xbmc.getCondVisibility('Control.IsEnabled(4105)'):
                 programProgressBarControl.setPercent(progress)
 
         if self.program.startDate:
