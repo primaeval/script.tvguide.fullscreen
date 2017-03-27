@@ -576,14 +576,14 @@ class TVGuide(xbmcgui.WindowXML):
             control = self._findControlAbove(self.focusPoint)
             if control is not None:
                 self.setFocus(control)
-                return
+            return
         if action.getId() in COMMAND_ACTIONS["DOWN"] and self.mode == None:
             self._hideControl(self.C_MAIN_MENUBAR)
             self.focusPoint.y = self.epgView.top
             self.onRedrawEPG(self.channelIdx + CHANNELS_PER_PAGE, self.viewStartDate,
                              focusFunction=self._findControlBelow)
             return
-        if action.getId() in COMMAND_ACTIONS["MENU"] and self.mode == None:
+        if action.getId() in COMMAND_ACTIONS["MENU"] + [ACTION_MOUSE_WHEEL_UP, ACTION_MOUSE_WHEEL_DOWN] and self.mode == None:
             self._hideControl(self.C_MAIN_MENUBAR)
             self.mode = MODE_EPG
         if action.getId() in COMMAND_ACTIONS["STOP"]:
@@ -1341,9 +1341,7 @@ class TVGuide(xbmcgui.WindowXML):
             return
         elif controlId in [self.C_MAIN_BUTTON_CLOSE_MENUBAR, self.C_MAIN_BUTTON_CLOSE_MENUBAR_BIG]:
             self._hideControl(self.C_MAIN_MENUBAR)
-            if self.mode != MODE_EPG:
-                self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-                return
+            self.mode = MODE_EPG
             return
         elif controlId == self.C_QUICK_EPG_BUTTON_LEFT:
             self.quickViewStartDate -= datetime.timedelta(hours=2)
@@ -4081,7 +4079,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programDurationControl = self.getControl(self.C_POPUP_DURATION)
         if xbmc.getCondVisibility('Control.IsVisible(4104)'):
             programProgressInfoControl = self.getControl(self.C_POPUP_PROGRESS_INFO)
-        if xbmc.getCondVisibility('Control.IsVisible(4105)'):
+        if xbmc.getCondVisibility('Control.IsEnabled(4105)'):
             programProgressBarControl = self.getControl(self.C_POPUP_PROGRESS_BAR)
         if xbmc.getCondVisibility('Control.IsVisible(4106)'):
             nextprogramTitleControl = self.getControl(self.C_POPUP_NEXT_PROGRAM_TITLE)
@@ -4181,7 +4179,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
             progress = (100.0 * float(elapsed.seconds)) / float(duration.seconds+0.001)
             progress = int(round(progress))
-            if xbmc.getCondVisibility('Control.IsVisible(4105)'):
+            if xbmc.getCondVisibility('Control.IsEnabled(4105)'):
                 programProgressBarControl.setPercent(progress)
 
         if self.program.startDate:
