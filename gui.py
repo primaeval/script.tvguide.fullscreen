@@ -656,11 +656,10 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["AUTOPLAYWITHS"]:
             self.showFullAutoplaywiths()
         elif action.getId() in COMMAND_ACTIONS["CATEGORIES"]:
-            if xbmc.getCondVisibility('!Control.IsVisible(7004)'):
+            if xbmc.getCondVisibility('Control.IsVisible(5201)'):
                 self._showControl(self.C_MAIN_MENUBAR)
                 self.setFocusId(self.C_MAIN_MOUSE_SEARCH)
                 self.mode = None
-                return
             else:
                 self._showCatMenu()
         elif action.getId() in COMMAND_ACTIONS["PROGRAM_SEARCH"]:
