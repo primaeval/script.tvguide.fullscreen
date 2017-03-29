@@ -1,3 +1,6 @@
+version 0.0.326
+- channel shortcut fix
+
 version 0.0.324-325
 - white_snow skin changes
 
