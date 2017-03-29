@@ -556,11 +556,13 @@ class TVGuide(xbmcgui.WindowXML):
         if (behaviour == 2) or (behaviour == 1 and self.mode != MODE_EPG):
             self._hideOsdOnly()
             self._hideQuickEpg()
+            self.focusPoint.y = 0
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             xbmc.executebuiltin('Action(Select)')
         else:
             self._hideOsdOnly()
             self._hideQuickEpg()
+            self.focusPoint.y = 0
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def onAction(self, action):
