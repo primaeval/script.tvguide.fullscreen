@@ -541,8 +541,8 @@ class TVGuide(xbmcgui.WindowXML):
         self.viewStartDate = datetime.datetime.today()
         self.viewStartDate -= datetime.timedelta(minutes=self.viewStartDate.minute % 30,
                                                  seconds=self.viewStartDate.second)
+        channelList = self.database.getChannelList(onlyVisible=True,all=False)
         if ADDON.getSetting('channel.shortcut') == '2':
-            channelList = self.database.getChannelList(onlyVisible=True,all=False)
             for i in range(len(channelList)):
                 if self.channel_number == channelList[i].id:
                      self.channelIdx = i
@@ -553,7 +553,10 @@ class TVGuide(xbmcgui.WindowXML):
         self.getControl(9999).setLabel(self.channel_number)
 
         behaviour = int(ADDON.getSetting('channel.shortcut.behaviour'))
-        if (behaviour == 2) or (behaviour == 1 and self.mode != MODE_EPG):
+        if (self.mode != MODE_EPG) and (behaviour > 0):
+            program = utils.Program(channel=channelList[self.channelIdx], title='', sub_title='', startDate=None, endDate=None, description='', categories='')
+            self.playOrChoose(program)
+        elif (behaviour == 2) or (behaviour == 1 and self.mode != MODE_EPG):
             self._hideOsdOnly()
             self._hideQuickEpg()
             self.focusPoint.y = 0
@@ -2101,7 +2104,7 @@ class TVGuide(xbmcgui.WindowXML):
                     programprogresscontrol.setPercent(percent)
 
                 duration = int(timedelta_total_seconds((program.endDate - program.startDate)) / 60)
-                self.setControlLabel(self.C_MAIN_DURATION, 'Length: %s minute(s)' % duration)            
+                self.setControlLabel(self.C_MAIN_DURATION, 'Length: %s minute(s)' % duration)
                 if program.startDate > datetime.datetime.now():
                     when = int(timedelta_total_seconds(program.startDate - datetime.datetime.now()) / 60 + 1)
                     if when > 1440:
@@ -2941,7 +2944,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlLabel(self.C_MAIN_OSD_CHANNEL_TITLE, self.osdChannel.title)
 
             duration = int(timedelta_total_seconds((self.osdProgram.endDate - self.osdProgram.startDate)) / 60)
-            self.setControlLabel(self.C_MAIN_OSD_DURATION, 'Length: %s minute(s)' % duration)            
+            self.setControlLabel(self.C_MAIN_OSD_DURATION, 'Length: %s minute(s)' % duration)
             if self.osdProgram.startDate > datetime.datetime.now():
                 when = int(timedelta_total_seconds(self.osdProgram.startDate - datetime.datetime.now()) / 60 + 1)
                 if when > 1440:
