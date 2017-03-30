@@ -1,3 +1,6 @@
+version 0.0.327
+- don't switch to epg on play channel shortcut
+
 version 0.0.326
 - channel shortcut fix
 
