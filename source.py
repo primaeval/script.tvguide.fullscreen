@@ -2289,8 +2289,8 @@ class TVGUKSource(Source):
                     hour = 0
             london = timezone('Europe/London')
             utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
-            loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
-            return loc_dt
+            #loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
+            return utc_dt #loc_dt
         return
 
 class TVGUKNowSource(Source):
@@ -2427,8 +2427,8 @@ class TVGUKNowSource(Source):
                     hour = 0
             london = timezone('Europe/London')
             utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
-            loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
-            return loc_dt
+            #loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
+            return utc_dt #loc_dt
         return
 
 
