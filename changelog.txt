@@ -1,3 +1,20 @@
+version 0.0.328-329
+- fix tvguide.co.uk offset
+- delete *.xml/*.xmltv on Settings \ Reset Database \ Reset Everything
+
+version 0.0.327
+- don't switch to epg on play channel shortcut
+
+version 0.0.326
+- channel shortcut fix
+
+version 0.0.324-325
+- white_snow skin changes
+
+version 0.0.323
+- Settings \ Startup \ Service Time (time of day)
+- Settings \ Startup \ Update Notification Progress (included normal foreground updating)
+
 version 0.0.322
 - Settings \ Appearance \ Skin Folder (above resources/skins)
 

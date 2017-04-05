@@ -80,6 +80,11 @@ if __name__ == '__main__':
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/folders.list')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle')
+            path = 'special://profile/addon_data/script.tvguide.fullscreen/'
+            dirs, files = xbmcvfs.listdir(path)
+            for f in files:
+                if (f.endswith('xml') or f.endswith('xmltv')) and f != "settings.xml":
+                    xbmcvfs.delete(path+f)
         if mode == 3:
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb.pickle')
             xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/tvdb_banners.pickle')
