@@ -1,4 +1,4 @@
-version 0.0.328
+version 0.0.328-329
 - fix tvguide.co.uk offset
 - delete *.xml/*.xmltv on Settings \ Reset Database \ Reset Everything
 
