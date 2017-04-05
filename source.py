@@ -47,7 +47,7 @@ import xml.etree.ElementTree as ET
 import requests
 from itertools import chain
 
-import resources.lib.pytz
+import resources.lib.pytz as pytz
 from resources.lib.pytz import timezone
 
 from sdAPI import SdAPI
@@ -2288,9 +2288,9 @@ class TVGUKSource(Source):
                 if hour == 12:
                     hour = 0
             london = timezone('Europe/London')
-            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
-            #loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
-            return utc_dt #loc_dt
+            dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
+            utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
+            return utc_dt + datetime.timedelta(seconds=-time.timezone)
         return
 
 class TVGUKNowSource(Source):
@@ -2426,9 +2426,9 @@ class TVGUKNowSource(Source):
                 if hour == 12:
                     hour = 0
             london = timezone('Europe/London')
-            utc_dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0,tzinfo=london)
-            #loc_dt = utc_dt + datetime.timedelta(seconds=self.local_time_offset())
-            return utc_dt #loc_dt
+            dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
+            utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
+            return utc_dt + datetime.timedelta(seconds=-time.timezone)
         return
 
 
