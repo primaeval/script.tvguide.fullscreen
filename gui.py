@@ -226,6 +226,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_AUTOPLAYWITH = 4320
     C_MAIN_MOUSE_AUTOPLAY = 4321
     C_MAIN_MOUSE_REMIND = 4322
+    C_MAIN_MOUSE_HELP_CONTROL = 4323
+    C_MAIN_MOUSE_HELP_BUTTON = 4324
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -487,6 +489,9 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             self.setControlVisible(self.C_MAIN_PIP,False)
             self.setControlVisible(self.C_MAIN_VIDEO,True)
+
+        if ADDON.getSetting('help.invisiblebuttons') == 'false':
+            self.setControlVisible(self.C_MAIN_MOUSE_HELP_BUTTON,False)
 
         self._hideControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
         self._hideControl(self.C_QUICK_EPG_MOUSE_CONTROLS)
@@ -1346,6 +1351,12 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId == self.C_MAIN_MOUSE_REMIND:
             self.showFullReminders()
             return
+        elif controlId == self.C_MAIN_MOUSE_HELP_BUTTON and ADDON.getSetting('help.invisiblebuttons') == 'true':
+            if xbmc.getCondVisibility('!Control.IsVisible(4323)'):
+                self._hideControl(self.C_MAIN_MOUSE_HELP_CONTROL)
+            else:
+                self._showControl(self.C_MAIN_MOUSE_HELP_CONTROL)
+            return
         elif controlId == self.C_MAIN_VIDEO_BUTTON_LAST_CHANNEL:
             self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
             self._showContextMenu(self.osdProgram)
@@ -1377,7 +1388,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId == self.C_QUICK_EPG_BUTTON_FIRST:
             self.quickViewStartDate = datetime.datetime.today()
             self.quickViewStartDate -= datetime.timedelta(minutes=self.quickViewStartDate.minute % 30, seconds=self.quickViewStartDate.second)
-            self.onRedrawQuickEPG(self.channelIdx, self.quickViewStartDate)
+            self.onRedrawQuickEPG(0, self.quickViewStartDate)
             return
         elif controlId == self.C_QUICK_EPG_BUTTON_CH_UP:
             self.quickFocusPoint.y = self.quickEpgView.bottom
