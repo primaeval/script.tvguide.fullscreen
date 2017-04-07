@@ -6,6 +6,8 @@ import time
 import subprocess
 from subprocess import Popen
 import re
+from vpnapi import VPNAPI
+
 
 def log(what):
     xbmc.log(repr(what))
@@ -106,6 +108,16 @@ if row:
     url = row[0]
 if not url:
     quit()
-
-xbmc.executebuiltin('PlayWith(%s)' % core)
+else:
+    if ADDON.getSetting('vpnmgr.connect') == "true":
+        vpndefault = False
+        if ADDON.getSetting('vpnmgr.default') == "true":
+            vpndefault = True
+        api = VPNAPI()
+        if url[0:9] == 'plugin://':
+            api.filterAndSwitch(url, 0, vpndefault, True)
+        else:
+            if vpndefault: api.defaultVPN(True)    
+    
+xbmc.executebuiltin('PlayWith(%s)' % core
 xbmc.executebuiltin('PlayMedia(%s)' % url)
