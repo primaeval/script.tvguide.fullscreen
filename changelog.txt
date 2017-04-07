@@ -1,3 +1,7 @@
+version 0.0.330
+- integration with VPN Manager for OpenVPN from Zomboided (https://github.com/Zomboided/service.vpn.manager)
+- see Wiki for help (https://github.com/Zomboided/service.vpn.manager/wiki)
+
 version 0.0.328-329
 - fix tvguide.co.uk offset
 - delete *.xml/*.xmltv on Settings \ Reset Database \ Reset Everything
