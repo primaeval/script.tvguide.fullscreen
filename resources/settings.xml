@@ -193,12 +193,19 @@
         <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1" visible="eq(-6,true)"/>
         <setting label="Clear Autoplaywiths..." type="action" action="RunScript($CWD/autoplaywith.py)" />
     </category>
-
     <category label="30140">
         <setting type="lsep" label="30137"/>
         <setting type="lsep" label="30138"/>
         <setting label="Reset EPG Data" type="action" action="RunScript($CWD/ResetDatabase.py, 1)" />
         <setting label="Reset Everything" type="action" action="RunScript($CWD/ResetDatabase.py, 2)" />
+    </category>
+    <category label="VPN">
+        <setting type="lsep" label="VPN Manager Connection Switching"/>
+        <setting type="text" label="Install VPN Manager to switch VPN with channels" enable="false" visible="!System.HasAddon(service.vpn.manager)"/>
+        <setting type="text" label="  https://github.com/Zomboided/service.vpn.manager" enable="false" visible="!System.HasAddon(service.vpn.manager)"/>
+        <setting type="text" label="VPN switching can delay changing channels" enable="false" visible="System.HasAddon(service.vpn.manager)"/>
+        <setting id="vpnmgr.connect" label="Use VPN Mgr filtering for channel add-ons" type="bool" visible="System.HasAddon(service.vpn.manager)" default="true" />
+        <setting id="vpnmgr.default" label="Always revert to previous VPN state" type="bool" visible="System.HasAddon(service.vpn.manager)" default="true" />
     </category>
     <category label="Lab1">
         <setting id="find.program.images" label="Find Program Images from OMDb/TVDb/IMDb" type="bool" default="false" />
