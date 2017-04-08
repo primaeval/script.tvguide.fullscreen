@@ -64,6 +64,8 @@
         <setting label="Delete TheLogoDB.com Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 4)" />
     </category>
     <category label="Playback">
+        <setting id="m3u.read" label="Use highest bandwidth stream from m3u url (Krypton+ fix)" type="bool" default="false" />
+        <setting type="sep"/>
         <setting id="catchup.text" label="Catchup Addon (plugin.video.?)" type="text" default="Meta" />
         <setting id="catchup.channel" label="Show Catchup Channel" type="bool" default="false" />
         <setting type="lsep" label="Channel Shortcuts (xmltv Ids must be Numeric)"/>

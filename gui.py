@@ -342,7 +342,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.quickEpgView = EPGView()
         self.quickChannelIdx = 0
         self.quickFocusPoint = Point()
-            
+
         self.player = xbmc.Player()
         self.database = None
         self.tvdb_urls = {}
@@ -363,7 +363,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.focusedProgram = None
         self.quickEpgShowInfo = False
         self.playing_catchup_channel = False
-        
+
         self.vpnswitch = False
         self.vpndefault = False
         try:
@@ -374,7 +374,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.vpndefault = True
         except:
             self.api = None
-            
+
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
         f.close()
@@ -2777,6 +2777,13 @@ class TVGuide(xbmcgui.WindowXML):
                         self.player.play(item=url, windowed=self.osdEnabled)
                 else:
                     if self.vpndefault: self.api.defaultVPN(True)
+                    if ADDON.getSetting('m3u.read') == 'true':
+                        if url.startswith('http') and url.split('?')[0].split('.')[-1].startswith('m3u'):
+                            m3u = xbmcvfs.File(url,'rb').read()
+                            match = re.findall('EXT-X-STREAM-INF.*?BANDWIDTH=(.*?),.*?\n(http.*?)\n',m3u,re.M)
+                            streams = [[m[0],m[1]] for m in sorted(match, key=lambda x: int(x[0]), reverse=True)]
+                            if streams:
+                                url = streams[0][1]
                     self.player.play(item=url, windowed=self.osdEnabled)
 
             self.tryingToPlay = True
@@ -2873,6 +2880,13 @@ class TVGuide(xbmcgui.WindowXML):
                         self.player.play(item=url, windowed=self.osdEnabled)
                 else:
                     if self.vpndefault: self.api.defaultVPN(True)
+                    if ADDON.getSetting('m3u.read') == 'true':
+                        if url.startswith('http') and url.split('?')[0].split('.')[-1].startswith('m3u'):
+                            m3u = xbmcvfs.File(url,'rb').read()
+                            match = re.findall('EXT-X-STREAM-INF.*?BANDWIDTH=(.*?),.*?\n(http.*?)\n',m3u,re.M)
+                            streams = [[m[0],m[1]] for m in sorted(match, key=lambda x: int(x[0]), reverse=True)]
+                            if streams:
+                                url = streams[0][1]
                     self.player.play(item=url, windowed=self.osdEnabled)
                 self.tryingToPlay = True
                 if ADDON.getSetting('play.minimized') == 'false':
