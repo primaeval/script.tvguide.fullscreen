@@ -1,3 +1,6 @@
+version 0.17.331
+- Settings \ Playback \ Use highest bandwidth stream from m3u url (Krypton+ fix)
+
 version 0.0.330
 - integration with VPN Manager for OpenVPN from Zomboided (https://github.com/Zomboided/service.vpn.manager)
 - see Wiki for help (https://github.com/Zomboided/service.vpn.manager/wiki)
