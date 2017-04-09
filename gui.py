@@ -4134,10 +4134,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
         self.mode = MODE_POPUP_MENU
 
-        if ADDON.getSetting('help.invisiblebuttons') == 'true':
-            self.setControlVisible(self.C_POPUP_MOUSE_HELP_CONTROL,True)
-        else:
-            self.setControlVisible(self.C_POPUP_MOUSE_HELP_CONTROL,False)
+        if xbmc.getCondVisibility('Control.IsVisible(44510)'):
+            if ADDON.getSetting('help.invisiblebuttons') == 'true':
+                self.setControlVisible(self.C_POPUP_MOUSE_HELP_CONTROL,False)
+            else:
+                self.setControlVisible(self.C_POPUP_MOUSE_HELP_CONTROL,True)
 
         if self.program.channel:
             channelTitleControl.setLabel(self.program.channel.title)
