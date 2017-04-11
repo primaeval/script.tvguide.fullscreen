@@ -109,18 +109,19 @@ if row:
 if not url:
     quit()
 else:
-    try:
-        if ADDON.getSetting('vpnmgr.connect') == "true":
-            vpndefault = False
-            if ADDON.getSetting('vpnmgr.default') == "true":
-                vpndefault = True
-            api = VPNAPI()
-            if url[0:9] == 'plugin://':
-                api.filterAndSwitch(url, 0, vpndefault, True)
-            else:
-                if vpndefault: api.defaultVPN(True)
-    except:
-        pass
+    if xbmc.getCondVisibility("System.HasAddon(service.vpn.manager)"):
+        try:
+            if ADDON.getSetting('vpnmgr.connect') == "true":
+                vpndefault = False
+                if ADDON.getSetting('vpnmgr.default') == "true":
+                    vpndefault = True
+                api = VPNAPI()
+                if url[0:9] == 'plugin://':
+                    api.filterAndSwitch(url, 0, vpndefault, True)
+                else:
+                    if vpndefault: api.defaultVPN(True)
+        except:
+            pass
 
 xbmc.executebuiltin('PlayWith(%s)' % core
 xbmc.executebuiltin('PlayMedia(%s)' % url)
