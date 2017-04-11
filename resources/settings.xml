@@ -204,7 +204,7 @@
         <setting type="text" label="Install VPN Manager to switch VPN with channels" enable="false" visible="!System.HasAddon(service.vpn.manager)"/>
         <setting type="text" label="  https://github.com/Zomboided/service.vpn.manager" enable="false" visible="!System.HasAddon(service.vpn.manager)"/>
         <setting type="text" label="VPN switching can delay changing channels" enable="false" visible="System.HasAddon(service.vpn.manager)"/>
-        <setting id="vpnmgr.connect" label="Use VPN Mgr filtering for channel add-ons" type="bool" visible="" default="false" />
+        <setting id="vpnmgr.connect" label="Use VPN Mgr filtering for channel add-ons" type="bool" visible="System.HasAddon(service.vpn.manager)" default="true" />
         <setting id="vpnmgr.default" label="Always revert to previous VPN state" type="bool" visible="System.HasAddon(service.vpn.manager)" default="true" />
     </category>
     <category label="Lab1">

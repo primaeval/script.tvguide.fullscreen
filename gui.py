@@ -366,14 +366,16 @@ class TVGuide(xbmcgui.WindowXML):
         
         self.vpnswitch = False
         self.vpndefault = False
-        try:
-            self.api = VPNAPI()
-            if ADDON.getSetting('vpnmgr.connect') == "true":
-                self.vpnswitch = True
-            if ADDON.getSetting('vpnmgr.default') == "true":
-                self.vpndefault = True
-        except:
-            self.api = None
+        self.api = None
+        if xbmc.getCondVisibility("System.HasAddon(service.vpn.manager)"):
+            try:
+                self.api = VPNAPI()
+                if ADDON.getSetting('vpnmgr.connect') == "true":
+                    self.vpnswitch = True
+                if ADDON.getSetting('vpnmgr.default') == "true":
+                    self.vpndefault = True
+            except:
+                pass
             
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
