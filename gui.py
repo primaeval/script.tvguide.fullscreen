@@ -376,8 +376,6 @@ class TVGuide(xbmcgui.WindowXML):
                     self.vpndefault = True
             except:
                 pass
-        else:
-            xbmc.log("EXCEPTION: No VPN!!!", xbmc.LOGERROR)
             
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
