@@ -1,3 +1,6 @@
+version 0.0.333
+- vpn manager fix for autoplay/autoplaywith
+
 version 0.0.332
 - support for White Snow skin Help button
 
