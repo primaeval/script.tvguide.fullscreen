@@ -21,7 +21,7 @@ if row:
     url = row[0]
     ADDON.setSetting('playing.channel',channel)
     ADDON.setSetting('playing.start',start)
-   if xbmc.getCondVisibility("System.HasAddon(service.vpn.manager)"):
+    if xbmc.getCondVisibility("System.HasAddon(service.vpn.manager)"):
         try:
             if ADDON.getSetting('vpnmgr.connect') == "true":
                 vpndefault = False
