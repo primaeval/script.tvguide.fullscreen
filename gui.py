@@ -490,8 +490,10 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlVisible(self.C_MAIN_PIP,False)
             self.setControlVisible(self.C_MAIN_VIDEO,True)
 
-        if ADDON.getSetting('help.invisiblebuttons') == 'false':
-            self.setControlVisible(self.C_MAIN_MOUSE_HELP_BUTTON,False)
+        if ADDON.getSetting('help.invisiblebuttons') == 'true':
+            self.setControlVisible(self.C_MAIN_MOUSE_HELP_CONTROL,True)
+        else:
+            self.setControlVisible(self.C_MAIN_MOUSE_HELP_CONTROL,False)
 
         self._hideControl(self.C_MAIN_OSD_MOUSE_CONTROLS)
         self._hideControl(self.C_QUICK_EPG_MOUSE_CONTROLS)
@@ -1227,6 +1229,13 @@ class TVGuide(xbmcgui.WindowXML):
             ADDON.setSetting('epg.video.pip', 'false')
         self.reopen()
 
+    def invisibleButtonsHelp_toggle(self):
+        if ADDON.getSetting('help.invisiblebuttons') == 'false':
+            ADDON.setSetting('help.invisiblebuttons', 'true')
+        elif ADDON.getSetting('help.invisiblebuttons') == 'true':
+            ADDON.setSetting('help.invisiblebuttons', 'false')
+        self.reopen()
+
     def reopen(self):
         import gui
         xbmc.executebuiltin('XBMC.ActivateWindow(home)')
@@ -1351,11 +1360,8 @@ class TVGuide(xbmcgui.WindowXML):
         elif controlId == self.C_MAIN_MOUSE_REMIND:
             self.showFullReminders()
             return
-        elif controlId == self.C_MAIN_MOUSE_HELP_BUTTON and ADDON.getSetting('help.invisiblebuttons') == 'true':
-            if xbmc.getCondVisibility('!Control.IsVisible(4323)'):
-                self._hideControl(self.C_MAIN_MOUSE_HELP_CONTROL)
-            else:
-                self._showControl(self.C_MAIN_MOUSE_HELP_CONTROL)
+        elif controlId == self.C_MAIN_MOUSE_HELP_BUTTON:
+            self.invisibleButtonsHelp_toggle()
             return
         elif controlId == self.C_MAIN_VIDEO_BUTTON_LAST_CHANNEL:
             self.osdProgram = self.database.getCurrentProgram(self.lastChannel)
@@ -3475,7 +3481,7 @@ class TVGuide(xbmcgui.WindowXML):
             if program.channel in channelsWithoutPrograms:
                 channelsWithoutPrograms.remove(program.channel)
 
-            if isPlaying and (self.currentChannel == channels[idx]):
+            if isPlaying and self.currentChannel and (self.currentChannel == channels[idx]):
                 channel_playing = True
             else:
                 channel_playing = False
@@ -4080,6 +4086,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_PROGRAM_PREVIOUS_BIG = 44505
     C_POPUP_PROGRAM_NEXT_BIG = 44506
     C_POPUP_PROGRAM_NOW_BIG = 44507
+    C_POPUP_MOUSE_HELP_CONTROL = 44510
 
 
     def __new__(cls, database, program, showRemind, showAutoplay, showAutoplaywith, category, categories):
@@ -4140,6 +4147,12 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             setupChannelTitleControl = self.getControl(self.C_POPUP_SETUP_CHANNEL_TITLE)
 
         self.mode = MODE_POPUP_MENU
+
+        if xbmc.getCondVisibility('Control.IsVisible(44510)'):
+            if ADDON.getSetting('help.invisiblebuttons') == 'true':
+                self.setControlVisible(self.C_POPUP_MOUSE_HELP_CONTROL,False)
+            else:
+                self.setControlVisible(self.C_POPUP_MOUSE_HELP_CONTROL,True)
 
         if self.program.channel:
             channelTitleControl.setLabel(self.program.channel.title)
