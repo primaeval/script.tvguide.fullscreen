@@ -21,13 +21,16 @@ if row:
     url = row[0]
     ADDON.setSetting('playing.channel',channel)
     ADDON.setSetting('playing.start',start)
-    if ADDON.getSetting('vpnmgr.connect') == "true":
-        vpndefault = False
-        if ADDON.getSetting('vpnmgr.default') == "true":
-            vpndefault = True
-        api = VPNAPI()
-        if url[0:9] == 'plugin://':
-            api.filterAndSwitch(url, 0, vpndefault, True)
-        else:
-            if vpndefault: api.defaultVPN(True)
+    try:
+        if ADDON.getSetting('vpnmgr.connect') == "true":
+            vpndefault = False
+            if ADDON.getSetting('vpnmgr.default') == "true":
+                vpndefault = True
+            api = VPNAPI()
+            if url[0:9] == 'plugin://':
+                api.filterAndSwitch(url, 0, vpndefault, True)
+            else:
+                if vpndefault: api.defaultVPN(True)
+    except:
+        pass
     xbmc.executebuiltin('PlayMedia(%s)' % url)
