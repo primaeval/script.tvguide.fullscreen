@@ -342,7 +342,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.quickEpgView = EPGView()
         self.quickChannelIdx = 0
         self.quickFocusPoint = Point()
-            
+
         self.player = xbmc.Player()
         self.database = None
         self.tvdb_urls = {}
@@ -363,7 +363,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.focusedProgram = None
         self.quickEpgShowInfo = False
         self.playing_catchup_channel = False
-        
+
         self.vpnswitch = False
         self.vpndefault = False
         self.api = None
@@ -376,7 +376,7 @@ class TVGuide(xbmcgui.WindowXML):
                     self.vpndefault = True
             except:
                 pass
-            
+
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
         lines = f.read().splitlines()
         f.close()
@@ -846,6 +846,27 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
             self._hideLastPlayed()
 
+    def ChooseStreamAddon(self, result):
+        stream = ""
+        title = ""
+        if ADDON.getSetting('stream.addon.list') == 'true':
+            labels = []
+            for id, label, url in result:
+                addon = xbmcaddon.Addon(id)
+                label = "%s - %s" % (addon.getAddonInfo('name'),label)
+                labels.append(label)
+            d = xbmcgui.Dialog()
+            which = d.select('Choose Stream', labels)
+            if which > -1:
+                stream = result[which][2]
+                title = result[which][1]
+        else:
+            d = ChooseStreamAddonDialog(result)
+            d.doModal()
+            if d.stream is not None:
+                stream = d.stream
+                title = d.title
+        return title,stream
 
     # epg mode
     def onActionEPGMode(self, action):
@@ -995,10 +1016,9 @@ class TVGuide(xbmcgui.WindowXML):
                     self.playChannel(program.channel, program)
                 else:
                     # multiple matches, let user decide
-                    d = ChooseStreamAddonDialog(result)
-                    d.doModal()
-                    if d.stream is not None:
-                        self.database.setCustomStreamUrl(program.channel, d.stream)
+                    title,stream = self.ChooseStreamAddon(result)
+                    if stream:
+                        self.database.setCustomStreamUrl(program.channel, stream)
                         self.playChannel(program.channel, program)
         elif action.getId() in COMMAND_ACTIONS["EXTENDED_INFO"]:
             program = self._getProgramFromControl(controlInFocus)
@@ -1477,10 +1497,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.playChannel(program.channel, program)
             else:
                 # multiple matches, let user decide
-                d = ChooseStreamAddonDialog(result)
-                d.doModal()
-                if d.stream is not None:
-                    self.database.setCustomStreamUrl(program.channel, d.stream)
+                title,stream = self.ChooseStreamAddon(result)
+                if stream:
+                    self.database.setCustomStreamUrl(program.channel, stream)
                     self.playChannel(program.channel, program)
 
     def showListing(self, channel):
@@ -1870,11 +1889,9 @@ class TVGuide(xbmcgui.WindowXML):
 
             else:
                 # multiple matches, let user decide
-
-                d = ChooseStreamAddonDialog(result)
-                d.doModal()
-                if d.stream is not None:
-                    self.database.setCustomStreamUrl(program.channel, d.stream)
+                title,stream = self.ChooseStreamAddon(result)
+                if stream:
+                    self.database.setCustomStreamUrl(program.channel, stream)
                     self.playChannel(program.channel, program)
 
         elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_ALT:
@@ -1891,10 +1908,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.database.setCustomStreamUrl(program.channel, result)
             else:
                 # multiple matches, let user decide
-                d = ChooseStreamAddonDialog(result)
-                d.doModal()
-                if d.stream is not None:
-                    self.database.setAltCustomStreamUrl(program.channel, d.title, d.stream)
+                title,stream = self.ChooseStreamAddon(result)
+                if stream:
+                    self.database.setAltCustomStreamUrl(program.channel, title, stream)
 
         elif buttonClicked == PopupMenu.C_POPUP_STREAM_SETUP:
             d = StreamSetupDialog(self.database, program.channel)

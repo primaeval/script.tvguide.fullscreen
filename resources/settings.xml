@@ -98,6 +98,8 @@
         <setting type="sep"/>
         <setting id="program.image.scale" label="Scale Program Image" type="bool" default="true" />
         <setting type="sep"/>
+        <setting id="stream.addon.list" label="List View for Choose Stream" type="bool" default="false" />
+        <setting type="sep"/>
         <setting id="up.cat.mode" label="Up to Categories Bar" type="select" default="First Channel" values="No|First Channel|Always" />
         <setting id="action.bar" label="Show Action Bar" type="bool" default="true" />
         <setting id="down.action" label="Down to Action Bar" type="bool" default="false" />
