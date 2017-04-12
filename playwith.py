@@ -123,5 +123,5 @@ else:
         except:
             pass
 
-xbmc.executebuiltin('PlayWith(%s)' % core
+xbmc.executebuiltin('PlayWith(%s)' % core)
 xbmc.executebuiltin('PlayMedia(%s)' % url)
