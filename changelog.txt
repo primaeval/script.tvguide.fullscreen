@@ -1,3 +1,6 @@
+version 0.0.335
+- Settings \ Appearance \ List View for Choose Stream
+
 version 0.0.334
 - m3u subscription fix
 - more vpn manager fixes
