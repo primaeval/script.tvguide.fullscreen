@@ -1700,9 +1700,10 @@ class XMLTVSource(Source):
                 f.close
                 if not data:
                     d.notification("TV Guide Fullscreen","%s - %s" % (name,sub), xbmcgui.NOTIFICATION_ERROR)
-                name_stream = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
+                name_stream = re.findall(r'#EXTINF:.*,(.*?)\n(.*?)\n',data,flags=(re.MULTILINE))
                 for name,stream in name_stream:
                     if name and stream:
+                        name = re.sub('[\|=:\\\/]','',name)
                         subscription_streams[name.strip()] = stream.strip()
 
 
