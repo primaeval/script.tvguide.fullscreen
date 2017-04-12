@@ -1,3 +1,7 @@
+version 0.0.334
+- m3u subscription fix
+- more vpn manager fixes
+
 version 0.0.333
 - vpn manager fix for autoplay/autoplaywith
 
