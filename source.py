@@ -1703,6 +1703,7 @@ class XMLTVSource(Source):
                 name_stream = re.findall(r'#EXTINF:.*,(.*?)\n(.*?)\n',data,flags=(re.MULTILINE))
                 for name,stream in name_stream:
                     if name and stream:
+                        name = re.sub('[\|=:\\\/]','',name)
                         subscription_streams[name.strip()] = stream.strip()
 
 
