@@ -5057,12 +5057,12 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                 data = f.read()
                 lines = data.splitlines()
                 if len(lines) > 1:
-                    matches = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
+                    matches = re.findall(r'#EXTINF:.*,(.*?)\n(.*?)\n',data,flags=(re.MULTILINE))
                     playlist_streams = {}
                     for name,url in matches:
                         name = remove_formatting(name.strip())
-                        name = re.sub(r'[,:=]',' ',name)
-                        playlist_streams[name] = url.strip()
+                        name = re.sub('[\|=:\\\/]','',name)
+                        playlist_streams[name.strip()] = url.strip()
 
                     #TODO make this a function
                     file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
