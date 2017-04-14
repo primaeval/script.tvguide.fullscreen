@@ -1,3 +1,7 @@
+version 0.0.336
+- Settings \ Lab1 \ Custom Category Order (use | to seperate)
+- Skin clean
+
 version 0.0.335
 - Settings \ Appearance \ List View for Choose Stream
 
