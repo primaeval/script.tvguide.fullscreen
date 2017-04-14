@@ -1386,7 +1386,7 @@
                 <height>2</height>
                 <lefttexture />
                 <righttexture />
-                <texturebg  colordiffuse="white">tvg-button-nofocus.png</texturebg>
+                <texturebg  colordiffuse="">invisible.png</texturebg>
                 <midtexture colordiffuse="white">tvg-button-focus.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
