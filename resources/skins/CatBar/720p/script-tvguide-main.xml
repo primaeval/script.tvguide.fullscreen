@@ -262,7 +262,19 @@
                 <aligny>center</aligny>
 
 
-                <visible>True</visible>
+                <visible>false</visible>
+            </control>
+            <control type="image">
+                <description>footer</description>
+                <posx>372</posx>
+                <posy>510</posy>
+                <width>908</width>
+                <height>238</height>
+                <texture>tvg-tv.png</texture>
+                <aspectratio>stretch</aspectratio>
+                <align>center</align>
+                <aligny>center</aligny>
+                <visible>true</visible>
             </control>
 
             <control type="image" id="4100">
@@ -411,7 +423,7 @@
 
                 <control type="label" id="4001">
                     <description>1st half hour column</description>
-                    <posx>180</posx>
+                    <posx>190</posx>
                     <posy>0</posy>
                     <width>270</width>
                     <height>30</height>
@@ -421,7 +433,7 @@
                 </control>
                 <control type="label" id="4002">
                     <description>2nd half hour column</description>
-                    <posx>455</posx>
+                    <posx>465</posx>
                     <posy>0</posy>
                     <width>270</width>
                     <height>30</height>
@@ -431,7 +443,7 @@
                 </control>
                 <control type="label" id="4003">
                     <description>3rd half hour column</description>
-                    <posx>730</posx>
+                    <posx>740</posx>
                     <posy>0</posy>
                     <width>270</width>
                     <height>30</height>
@@ -441,7 +453,7 @@
                 </control>
                 <control type="label" id="4004">
                     <description>4th half hour column</description>
-                    <posx>1005</posx>
+                    <posx>1015</posx>
                     <posy>0</posy>
                     <width>270</width>
                     <height>30</height>
@@ -1278,14 +1290,14 @@
                 <textcolor>grey</textcolor>
                 <font>font13</font>
                 <align>left</align>
-                <visible>true</visible>
+                <visible>false</visible>
                 <scroll>true</scroll>
                 <label>-</label>
             </control>
             <control type="label" id="7020">
                 <description>Program title</description>
                 <posx>400</posx>
-                <posy>560</posy>
+                <posy>530</posy>
                 <width>845</width>
                 <height>30</height>
                 <textcolor>white</textcolor>
@@ -1311,20 +1323,20 @@
                 <visible>true</visible>
             </control>
             <control type="progress" id="7026">
-                <posx>1130</posx>
-                <posy>560</posy>
-                <width>130</width>
-                <height>3</height>
+                <posx>372</posx>
+                <posy>508</posy>
+                <width>906</width>
+                <height>2</height>
                 <lefttexture />
                 <righttexture />
-                <texturebg  colordiffuse="white">tvg-button-nofocus.png</texturebg>
-                <midtexture colordiffuse="grey">tvg-button-focus.png</midtexture>
+                <texturebg  colordiffuse="">invisible.png</texturebg>
+                <midtexture colordiffuse="white">tvg-button-focus.png</midtexture>
                 <visible>IntegerGreaterThan(Control.GetLabel(7026),0)</visible>
             </control>
             <control type="textbox" id="7022">
                 <description>Program description</description>
                 <posx>400</posx>
-                <posy>590</posy>
+                <posy>560</posy>
                 <width>845</width>
                 <height>140</height>
                 <textcolor>white</textcolor>
