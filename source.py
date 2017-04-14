@@ -350,6 +350,7 @@ class Database(object):
             imported = imported_channels = imported_programs = 0
 
             if getData == True:
+                xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/category_count.ini')
                 catchup = ADDON.getSetting('catchup.text')
                 channel = Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", ADDON.getSetting('catchup.channel') == 'true')
                 c.execute(
