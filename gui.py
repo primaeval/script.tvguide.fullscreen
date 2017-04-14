@@ -1478,6 +1478,8 @@ class TVGuide(xbmcgui.WindowXML):
 
 
     def playOrChoose(self,program):
+        if not program.channel.id:
+            return
         if self.player.isPlaying() and self.currentChannel and (program.channel.id == self.currentChannel.id) and (ADDON.getSetting('play.alt.choose') == 'false'):
                 self._hideEpg()
                 self._hideQuickEpg()
@@ -3222,7 +3224,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
                 self.setControlLabel(4410 + idx, ' ')
-                self.setControlVisible(4210 + idx,False)
+                self.setControlVisible(4210 + idx,True)
             else:
                 self.setControlVisible(4210 + idx,True)
                 channel = channels[idx]
@@ -3353,6 +3355,25 @@ class TVGuide(xbmcgui.WindowXML):
                 font=font
             )
 
+            program = src.Program(channel, "", '', None, None, None, '')
+            self.controlAndProgramList.append(ControlAndProgram(control, program))
+
+        for idx in range(len(channels), CHANNELS_PER_PAGE):
+            noFocusTexture = 'tvg-program-nofocus.png'
+            focusTexture = 'tvg-program-focus.png'
+            control = xbmcgui.ControlButton(
+                self.epgView.left,
+                self.epgView.top + self.epgView.cellHeight * idx,
+                (self.epgView.right - self.epgView.left) - 2,
+                self.epgView.cellHeight - 2,
+                "",
+                focusedColor=focusColor,
+                textColor=noFocusColor,
+                noFocusTexture=noFocusTexture,
+                focusTexture=focusTexture,
+                font=font
+            )
+            channel = utils.Channel("", "", '', "" , "", True)
             program = src.Program(channel, "", '', None, None, None, '')
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
