@@ -100,6 +100,8 @@
         <setting type="sep"/>
         <setting id="program.image.scale" label="Scale Program Image" type="bool" default="true" />
         <setting type="sep"/>
+        <setting id="stream.addon.list" label="List View for Choose Stream" type="bool" default="false" />
+        <setting type="sep"/>
         <setting id="up.cat.mode" label="Up to Categories Bar" type="select" default="First Channel" values="No|First Channel|Always" />
         <setting id="action.bar" label="Show Action Bar" type="bool" default="true" />
         <setting id="down.action" label="Down to Action Bar" type="bool" default="false" />
@@ -210,6 +212,7 @@
         <setting id="vpnmgr.default" label="Always revert to previous VPN state" type="bool" visible="System.HasAddon(service.vpn.manager)" default="true" />
     </category>
     <category label="Lab1">
+        <setting id="cat.order" label="Custom Category Order (use | to seperate)" type="text" default="" />
         <setting id="find.program.images" label="Find Program Images from OMDb/TVDb/IMDb" type="bool" default="false" />
         <setting id="omdb" label="OMDb Image and Plot Search" type="bool" enable="eq(-1,true)" default="false" />
         <setting id="tvdb.imdb" label="TVDb/IMDb Image Search" type="bool" enable="eq(-2,true)" default="false" />

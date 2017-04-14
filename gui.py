@@ -846,6 +846,27 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
             self._hideLastPlayed()
 
+    def ChooseStreamAddon(self, result):
+        stream = ""
+        title = ""
+        if ADDON.getSetting('stream.addon.list') == 'true':
+            labels = []
+            for id, label, url in result:
+                addon = xbmcaddon.Addon(id)
+                label = "%s - %s" % (addon.getAddonInfo('name'),label)
+                labels.append(label)
+            d = xbmcgui.Dialog()
+            which = d.select('Choose Stream', labels)
+            if which > -1:
+                stream = result[which][2]
+                title = result[which][1]
+        else:
+            d = ChooseStreamAddonDialog(result)
+            d.doModal()
+            if d.stream is not None:
+                stream = d.stream
+                title = d.title
+        return title,stream
 
     # epg mode
     def onActionEPGMode(self, action):
@@ -995,10 +1016,9 @@ class TVGuide(xbmcgui.WindowXML):
                     self.playChannel(program.channel, program)
                 else:
                     # multiple matches, let user decide
-                    d = ChooseStreamAddonDialog(result)
-                    d.doModal()
-                    if d.stream is not None:
-                        self.database.setCustomStreamUrl(program.channel, d.stream)
+                    title,stream = self.ChooseStreamAddon(result)
+                    if stream:
+                        self.database.setCustomStreamUrl(program.channel, stream)
                         self.playChannel(program.channel, program)
         elif action.getId() in COMMAND_ACTIONS["EXTENDED_INFO"]:
             program = self._getProgramFromControl(controlInFocus)
@@ -1124,7 +1144,8 @@ class TVGuide(xbmcgui.WindowXML):
                         if cat not in categories:
                             categories[cat] = []
                         items = list()
-                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
+                        order = ADDON.getSetting("cat.order").split('|')
+                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: order.index(x) if x in order else x.lower())
                         for label in new_categories:
                             item = xbmcgui.ListItem(label)
                             items.append(item)
@@ -1457,6 +1478,8 @@ class TVGuide(xbmcgui.WindowXML):
 
 
     def playOrChoose(self,program):
+        if not program.channel.id:
+            return
         if self.player.isPlaying() and self.currentChannel and (program.channel.id == self.currentChannel.id) and (ADDON.getSetting('play.alt.choose') == 'false'):
                 self._hideEpg()
                 self._hideQuickEpg()
@@ -1477,10 +1500,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.playChannel(program.channel, program)
             else:
                 # multiple matches, let user decide
-                d = ChooseStreamAddonDialog(result)
-                d.doModal()
-                if d.stream is not None:
-                    self.database.setCustomStreamUrl(program.channel, d.stream)
+                title,stream = self.ChooseStreamAddon(result)
+                if stream:
+                    self.database.setCustomStreamUrl(program.channel, stream)
                     self.playChannel(program.channel, program)
 
     def showListing(self, channel):
@@ -1870,11 +1892,9 @@ class TVGuide(xbmcgui.WindowXML):
 
             else:
                 # multiple matches, let user decide
-
-                d = ChooseStreamAddonDialog(result)
-                d.doModal()
-                if d.stream is not None:
-                    self.database.setCustomStreamUrl(program.channel, d.stream)
+                title,stream = self.ChooseStreamAddon(result)
+                if stream:
+                    self.database.setCustomStreamUrl(program.channel, stream)
                     self.playChannel(program.channel, program)
 
         elif buttonClicked == PopupMenu.C_POPUP_CHOOSE_ALT:
@@ -1891,10 +1911,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.database.setCustomStreamUrl(program.channel, result)
             else:
                 # multiple matches, let user decide
-                d = ChooseStreamAddonDialog(result)
-                d.doModal()
-                if d.stream is not None:
-                    self.database.setAltCustomStreamUrl(program.channel, d.title, d.stream)
+                title,stream = self.ChooseStreamAddon(result)
+                if stream:
+                    self.database.setAltCustomStreamUrl(program.channel, title, stream)
 
         elif buttonClicked == PopupMenu.C_POPUP_STREAM_SETUP:
             d = StreamSetupDialog(self.database, program.channel)
@@ -3152,7 +3171,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         if self.has_cat_bar:
             items = []
-            categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
+            order = ADDON.getSetting("cat.order").split('|')
+            categories = ["All Channels"] + sorted(self.categories, key=lambda x: order.index(x) if x in order else x.lower())
             for label in categories:
                 item = xbmcgui.ListItem(label)
                 items.append(item)
@@ -3218,7 +3238,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
                 self.setControlLabel(4410 + idx, ' ')
-                self.setControlVisible(4210 + idx,False)
+                self.setControlVisible(4210 + idx,True)
             else:
                 self.setControlVisible(4210 + idx,True)
                 channel = channels[idx]
@@ -3251,8 +3271,8 @@ class TVGuide(xbmcgui.WindowXML):
             control = self.getControl(4010 + idx)
             if control:
                 control.setHeight(self.epgView.cellHeight-2)
-                control.setWidth(176)
-                control.setPosition(2,top)
+                control.setWidth(166)
+                control.setPosition(12,top)
             control = self.getControl(4110 + idx)
             if control:
                 control.setWidth(176)
@@ -3349,6 +3369,25 @@ class TVGuide(xbmcgui.WindowXML):
                 font=font
             )
 
+            program = src.Program(channel, "", '', None, None, None, '')
+            self.controlAndProgramList.append(ControlAndProgram(control, program))
+
+        for idx in range(len(channels), CHANNELS_PER_PAGE):
+            noFocusTexture = 'tvg-program-nofocus.png'
+            focusTexture = 'tvg-program-focus.png'
+            control = xbmcgui.ControlButton(
+                self.epgView.left,
+                self.epgView.top + self.epgView.cellHeight * idx,
+                (self.epgView.right - self.epgView.left) - 2,
+                self.epgView.cellHeight - 2,
+                "",
+                focusedColor=focusColor,
+                textColor=noFocusColor,
+                noFocusTexture=noFocusTexture,
+                focusTexture=focusTexture,
+                font=font
+            )
+            channel = utils.Channel("", "", '', "" , "", True)
             program = src.Program(channel, "", '', None, None, None, '')
             self.controlAndProgramList.append(ControlAndProgram(control, program))
 
@@ -4266,7 +4305,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 autoplaywithControl.setLabel("Don't AutoPlayWith")
 
         items = list()
-        categories = ["All Channels"] + sorted(list(self.categories), key=lambda x: x.lower())
+        order = ADDON.getSetting("cat.order").split('|')
+        categories = ["All Channels"] + sorted(self.categories, key=lambda x: order.index(x) if x in order else x.lower())
         for label in categories:
             item = xbmcgui.ListItem(label)
 
@@ -5885,7 +5925,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         items = list()
-        categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
+        order = ADDON.getSetting("cat.order").split('|')
+        categories = ["All Channels"] + sorted(self.categories, key=lambda x: order.index(x) if x in order else x.lower())
         for label in categories:
             item = xbmcgui.ListItem(label)
             items.append(item)
@@ -5977,7 +6018,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                         if cat not in categories:
                             categories[cat] = []
                         items = list()
-                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
+                        order = ADDON.getSetting("cat.order").split('|')
+                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: order.index(x) if x in order else x.lower())
                         for label in new_categories:
                             item = xbmcgui.ListItem(label)
                             items.append(item)
