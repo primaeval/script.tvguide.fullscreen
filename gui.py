@@ -1144,7 +1144,8 @@ class TVGuide(xbmcgui.WindowXML):
                         if cat not in categories:
                             categories[cat] = []
                         items = list()
-                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
+                        order = ADDON.getSetting("cat.order").split('|')
+                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: order.index(x) if x in order else x.lower())
                         for label in new_categories:
                             item = xbmcgui.ListItem(label)
                             items.append(item)
@@ -3154,7 +3155,8 @@ class TVGuide(xbmcgui.WindowXML):
 
         if self.has_cat_bar:
             items = []
-            categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
+            order = ADDON.getSetting("cat.order").split('|')
+            categories = ["All Channels"] + sorted(self.categories, key=lambda x: order.index(x) if x in order else x.lower())
             for label in categories:
                 item = xbmcgui.ListItem(label)
                 items.append(item)
@@ -4268,7 +4270,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 autoplaywithControl.setLabel("Don't AutoPlayWith")
 
         items = list()
-        categories = ["All Channels"] + sorted(list(self.categories), key=lambda x: x.lower())
+        order = ADDON.getSetting("cat.order").split('|')
+        categories = ["All Channels"] + sorted(self.categories, key=lambda x: order.index(x) if x in order else x.lower())
         for label in categories:
             item = xbmcgui.ListItem(label)
 
@@ -5887,7 +5890,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         items = list()
-        categories = ["All Channels"] + sorted(self.categories, key=lambda x: x.lower())
+        order = ADDON.getSetting("cat.order").split('|')
+        categories = ["All Channels"] + sorted(self.categories, key=lambda x: order.index(x) if x in order else x.lower())
         for label in categories:
             item = xbmcgui.ListItem(label)
             items.append(item)
@@ -5979,7 +5983,8 @@ class CatMenu(xbmcgui.WindowXMLDialog):
                         if cat not in categories:
                             categories[cat] = []
                         items = list()
-                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: x.lower())
+                        order = ADDON.getSetting("cat.order").split('|')
+                        new_categories = ["All Channels"] + sorted(categories.keys(), key=lambda x: order.index(x) if x in order else x.lower())
                         for label in new_categories:
                             item = xbmcgui.ListItem(label)
                             items.append(item)
