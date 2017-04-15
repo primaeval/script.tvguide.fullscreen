@@ -1,3 +1,6 @@
+version 0.0.337
+- m3u fix
+
 version 0.0.336
 - Settings \ Lab1 \ Custom Category Order (use | to seperate)
 - Skin clean

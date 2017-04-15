@@ -1359,7 +1359,7 @@
                 <description>Program title</description>
                 <posx>400</posx>
                 <posy>530</posy>
-                <width>845</width>
+                <width>600</width>
                 <height>30</height>
                 <textcolor>white</textcolor>
 
@@ -1399,7 +1399,7 @@
                 <posx>400</posx>
                 <posy>560</posy>
                 <width>845</width>
-                <height>140</height>
+                <height>150</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
                 <align>left</align>
