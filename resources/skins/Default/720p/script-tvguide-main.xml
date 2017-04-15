@@ -1355,7 +1355,7 @@
                 <description>Program title</description>
                 <posx>435</posx>
                 <posy>490</posy>
-                <width>845</width>
+                <width>600</width>
                 <height>30</height>
                 <textcolor>white</textcolor>
 
@@ -1395,7 +1395,7 @@
                 <posx>435</posx>
                 <posy>520</posy>
                 <width>840</width>
-                <height>140</height>
+                <height>190</height>
                 <textcolor>white</textcolor>
                 <font>font13</font>
                 <align>left</align>
