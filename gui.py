@@ -3689,35 +3689,28 @@ class TVGuide(xbmcgui.WindowXML):
                 customFile = ADDON.getSetting('mapping.ini.file')
             else:
                 customFile = ADDON.getSetting('mapping.ini.url')
-            basename = os.path.basename(customFile)
-            file_name = 'special://profile/addon_data/script.tvguide.fullscreen/%s' % basename
-            f = open(xbmc.translatePath(file_name),"rb")
-            lines = f.read()
-            f.close()
-            lines = lines.splitlines()
-            stream_urls = [line.split("=",1) for line in lines]
-            f.close()
-            if stream_urls:
-                self.database.setCustomStreamUrls(stream_urls)
+            data = xbmcvfs.File(customFile,'rb').read()
+            if data:
+                lines = data.splitlines()
+                stream_urls = [line.split("=",1) for line in lines]
+                f.close()
+                if stream_urls:
+                    self.database.setCustomStreamUrls(stream_urls)
 
         if ADDON.getSetting('mapping.m3u.enabled') == 'true':
             if ADDON.getSetting('mapping.m3u.type') == '0':
                 customFile = ADDON.getSetting('mapping.m3u.file')
             else:
                 customFile = ADDON.getSetting('mapping.m3u.url')
-            basename = os.path.basename(customFile)
-            file_name = 'special://profile/addon_data/script.tvguide.fullscreen/%s' % basename
-            f = open(xbmc.translatePath(file_name),"rb")
-            data = f.read()
-            f.close()
-            matches = re.findall(r'#EXTINF:.*?,(.*?)\n(.*?)\n',data,flags=(re.DOTALL | re.MULTILINE))
-            stream_urls = []
-            for name,url in matches:
-                if name and url:
-                    stream_urls.append((name.decode("utf8"),url))
-            f.close()
-            if stream_urls:
-                self.database.setCustomStreamUrls(stream_urls)
+            data = xbmcvfs.File(customFile,'rb').read()
+            if data:
+                matches = re.findall(r'#EXTINF:.*?,(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
+                stream_urls = []
+                for name,url in matches:
+                    if name and url:
+                        stream_urls.append((name.decode("utf8"),url))
+                if stream_urls:
+                    self.database.setCustomStreamUrls(stream_urls)
 
     def onSourceProgressUpdate(self, percentageComplete):
         control = self.getControl(self.C_MAIN_LOADING_PROGRESS)
