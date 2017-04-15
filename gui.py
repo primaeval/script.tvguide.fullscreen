@@ -4187,10 +4187,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 season = self.program.season
                 episode = self.program.episode
                 if season and episode:
-                    label = " [B]S%sE%s[/B]" % (season,episode)
-                    programLabelControl.setLabel(self.program.title+label)
+                    label = "%s S%sE%s" % (self.program.title, season,episode)
                 else:
-                    programLabelControl.setEnabled(False)
+                    label = self.program.title
+                programLabelControl.setLabel(label)
             except:
                 pass
         if self.program.description:
