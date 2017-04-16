@@ -4201,8 +4201,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programImageControl.setImage(self.program.imageSmall)
         if self.program.imageLarge:
             programImageControl.setImage(self.program.imageLarge)
-        if self.nextprogram.title and xbmc.getCondVisibility('Control.IsVisible(4106)'):
-            nextprogramTitleControl.setLabel(self.nextprogram.title)
+        try:
+            if self.nextprogram.title and xbmc.getCondVisibility('Control.IsVisible(4106)'):
+                nextprogramTitleControl.setLabel(self.nextprogram.title)
+        except:
+            pass
 
         start = self.program.startDate
         end = self.program.endDate
