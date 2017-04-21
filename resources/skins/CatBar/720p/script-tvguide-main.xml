@@ -1383,6 +1383,46 @@
 
                 <visible>true</visible>
             </control>
+            <control type="label" id="77021">
+                <description>Current Program time and day</description>
+                <left>960</left>
+                <posy>1</posy>
+                <width>300</width>
+                <height>38</height>
+                <textcolor>grey</textcolor>
+                <font>font13</font>
+                <align>right</align>
+                <aligny>center</aligny>
+                <label>Program Time</label>
+                <visible>false</visible>
+            </control>
+            <control type="label" id="7029">
+                <description>Current Program Duration</description>
+                <left>1060</left>
+                <posy>101</posy>
+                <width>200</width>
+                <height>40</height>
+                <align>right</align>
+                <aligny></aligny>
+                <textcolor>grey</textcolor>
+                <font>font13</font>
+                <label>Duration</label>
+                <visible>false</visible>
+            </control>
+            <control type="label" id="7030">
+                <description>Current Program Progress Info</description>
+                <left>1030</left>
+                <posy>134</posy>
+                <width>230</width>
+                <height>40</height>
+                <align>right</align>
+                <aligny></aligny>
+                <textcolor>grey</textcolor>
+                <font>font13</font>
+                <scroll>true</scroll>
+                <label fallback="[B]... minutes remaining[/B]"></label>
+                <visible>false</visible>
+            </control>
             <control type="progress" id="7026">
                 <posx>372</posx>
                 <posy>508</posy>
