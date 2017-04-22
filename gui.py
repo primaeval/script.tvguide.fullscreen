@@ -343,6 +343,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.quickChannelIdx = 0
         self.quickFocusPoint = Point()
         self.timebar = None
+        self.quicktimebar = None
 
         self.player = xbmc.Player()
         self.database = None
@@ -3440,7 +3441,6 @@ class TVGuide(xbmcgui.WindowXML):
         self.redrawingQuickEPG = True
         self.mode = MODE_QUICK_EPG
         self._showControl(self.C_QUICK_EPG)
-        self.updateQuickTimebar(scheduleTimer=False)
 
         # remove existing controls
         self._clearQuickEpg()
@@ -3620,12 +3620,25 @@ class TVGuide(xbmcgui.WindowXML):
         if focusControl is None and len(self.quickControlAndProgramList) > 0:
             self.setQuickFocus(self.quickControlAndProgramList[0].control)
 
+        if self.quicktimebar:
+            self.removeControl(self.quicktimebar)
+        self.quicktimebar = xbmcgui.ControlImage (0, 0, -2, 0, "tvgf-timebar.png")
+        self.quicktimebar.setHeight(self.quickEpgView.bottom - self.quickEpgView.top - 2)
+        color = colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))]
+        self.quicktimebar.setColorDiffuse(color)
+        self.addControl(self.quicktimebar)
+        self.updateQuickTimebar(scheduleTimer=False)
+
         self.redrawingQuickEPG = False
 
     def _clearEpg(self):
+        if self.timebar:
+            self.removeControl(self.timebar)
+            self.timebar = None
         controls = [elem.control for elem in self.controlAndProgramList]
         try:
             self.removeControls(controls)
+
         except RuntimeError:
             for elem in self.controlAndProgramList:
                 try:
@@ -3635,6 +3648,9 @@ class TVGuide(xbmcgui.WindowXML):
         del self.controlAndProgramList[:]
 
     def _clearQuickEpg(self):
+        if self.quicktimebar:
+            self.removeControl(self.quicktimebar)
+            self.quicktimebar = None
         controls = [elem.control for elem in self.quickControlAndProgramList]
         try:
             self.removeControls(controls)
@@ -4056,6 +4072,7 @@ class TVGuide(xbmcgui.WindowXML):
             except:
                 pass
             control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
+            self.quicktimebar.setPosition(self._secondsToXposition(timeDelta.seconds), self.quickEpgView.top) #TODO use marker
 
         if scheduleTimer and not xbmc.abortRequested and not self.isClosing:
             threading.Timer(1, self.updateQuickTimebar).start()
