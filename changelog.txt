@@ -1,3 +1,6 @@
+version 0.0.338
+- on-top time bar (skinners: preload tvgf-timebar.png (see Default))
+
 version 0.0.337
 - m3u fix
 
