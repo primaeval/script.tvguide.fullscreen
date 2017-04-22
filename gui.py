@@ -342,6 +342,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.quickEpgView = EPGView()
         self.quickChannelIdx = 0
         self.quickFocusPoint = Point()
+        self.timebar = None
 
         self.player = xbmc.Player()
         self.database = None
@@ -3384,6 +3385,7 @@ class TVGuide(xbmcgui.WindowXML):
             control.setPosition(0,top)
             control.setHeight(height)
 
+
         control = self.getControl(self.C_MAIN_TIMEBAR)
         if control:
             control.setHeight(top - self.epgView.top - 2)
@@ -3411,11 +3413,20 @@ class TVGuide(xbmcgui.WindowXML):
         if focusControl is None and len(self.controlAndProgramList) > 0:
             control = self.getControl(self.C_MAIN_EPG_VIEW_MARKER)
             if control:
-                left, top = control.getPosition()
+                left, ttop = control.getPosition()
                 self.focusPoint.x = left
-                self.focusPoint.y = top
+                self.focusPoint.y = ttop
                 focusControl = focusFunction(self.focusPoint)
                 self.setFocus(focusControl)
+
+        if self.timebar:
+            self.removeControl(self.timebar)
+        self.timebar = xbmcgui.ControlImage (0, 0, -2, 0, "tvgf-timebar.png")
+        self.timebar.setHeight(top - self.epgView.top - 2)
+        color = colors.color_name[remove_formatting(ADDON.getSetting('timebar.color'))]
+        self.timebar.setColorDiffuse(color)
+        self.addControl(self.timebar)
+        self.updateTimebar()
 
         self._hideControl(self.C_MAIN_LOADING)
         self.redrawingEPG = False
@@ -4025,6 +4036,7 @@ class TVGuide(xbmcgui.WindowXML):
                 # exceptions.RuntimeError: Unknown exception thrown from the call "setVisible"
                 self.setControlVisible(self.C_MAIN_TIMEBAR,timeDelta.days == 0)
                 control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
+                self.timebar.setPosition(self._secondsToXposition(timeDelta.seconds), y)
             except:
                 pass
 
@@ -4209,8 +4221,11 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
 
         start = self.program.startDate
         end = self.program.endDate
-        nextstart = self.nextprogram.startDate
-        nextend = self.nextprogram.endDate
+        nextstart = None
+        nextend = None
+        if self.nextprogram:
+            nextstart = self.nextprogram.startDate
+            nextend = self.nextprogram.endDate
 
         if nextstart and xbmc.getCondVisibility('Control.IsVisible(4107)'):
             day = self.formatDateTodayTomorrow(nextstart)
