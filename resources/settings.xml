@@ -62,6 +62,8 @@
         <setting type="sep"/>
         <setting id="thelogodb" label="Use TheLogoDB.com Logos" type="enum" default="0" values="Never|If Missing|Always" />
         <setting label="Delete TheLogoDB.com Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 4)" />
+        <setting type="sep"/>
+        <setting label="Crop and Resize Logo Folder" type="action" action="RunScript($CWD/ResizeLogos.py)" />
     </category>
     <category label="Playback">
         <setting id="m3u.read" label="Use highest bandwidth stream from m3u url (Krypton+ fix)" type="bool" default="false" />
