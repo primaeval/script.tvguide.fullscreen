@@ -3,7 +3,7 @@
 version="0.0.339"
 provider-name="primaeval">
     <requires>
-        <import addon="xbmc.python" version="2.25.0"/>
+        <import addon="xbmc.python" version="2.19.0"/>
         <import addon="script.module.simplejson" version="3.3.0"/>
         <import addon="script.module.requests" version="2.9.1" />
         <import addon="script.module.dateutil" version="2.4.2" />
