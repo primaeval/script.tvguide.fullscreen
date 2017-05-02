@@ -3159,6 +3159,7 @@ class TVGuide(xbmcgui.WindowXML):
             debug('onRedrawEPG - already redrawing')
             return  # ignore redraw request while redrawing
         debug('onRedrawEPG')
+        controlAndProgramList = []
 
         self._hideQuickEpg()
         self.redrawingEPG = True
@@ -3204,7 +3205,7 @@ class TVGuide(xbmcgui.WindowXML):
                 listControl.selectItem(self.action_index)
 
         # remove existing controls
-        self._clearEpg()
+        #self._clearEpg()
 
         if ADDON.getSetting('epg.video.pip') == 'true' and self.player.isPlaying():
             self.setControlVisible(self.C_MAIN_IMAGE,False)
@@ -3352,7 +3353,7 @@ class TVGuide(xbmcgui.WindowXML):
                     font=font
                 )
 
-                self.controlAndProgramList.append(ControlAndProgram(control, program))
+                controlAndProgramList.append(ControlAndProgram(control, program))
         noProgramsMessage = ADDON.getSetting('no.programs.message')
         for channel in channelsWithoutPrograms:
             idx = channels.index(channel)
@@ -3372,7 +3373,7 @@ class TVGuide(xbmcgui.WindowXML):
             )
 
             program = src.Program(channel, "", '', None, None, None, '')
-            self.controlAndProgramList.append(ControlAndProgram(control, program))
+            controlAndProgramList.append(ControlAndProgram(control, program))
 
         for idx in range(len(channels), CHANNELS_PER_PAGE):
             noFocusTexture = 'tvg-program-nofocus.png'
@@ -3391,7 +3392,7 @@ class TVGuide(xbmcgui.WindowXML):
             )
             channel = utils.Channel("", "", '', "" , "", True)
             program = src.Program(channel, "", '', None, None, None, '')
-            self.controlAndProgramList.append(ControlAndProgram(control, program))
+            controlAndProgramList.append(ControlAndProgram(control, program))
 
         top = self.epgView.top + self.epgView.cellHeight * len(channels)
         height = 720 - top
@@ -3413,6 +3414,8 @@ class TVGuide(xbmcgui.WindowXML):
         if focusFunction is None:
             focusFunction = self._findControlAt
 
+        self._clearEpg()
+        self.controlAndProgramList = controlAndProgramList
         controls = [elem.control for elem in self.controlAndProgramList]
         try:
             self.addControls(controls)
