@@ -1,3 +1,6 @@
+version 0.0.340
+- smoother epg scrolling
+
 version 0.0.339
 - Settings \ Logos \ Crop and Resize Logo Folder
 
