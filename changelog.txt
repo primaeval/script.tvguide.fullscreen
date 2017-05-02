@@ -1,3 +1,9 @@
+version 0.0.340
+- smoother epg scrolling
+
+version 0.0.339
+- Settings \ Logos \ Crop and Resize Logo Folder
+
 version 0.0.338
 - on-top time bar (skinners: preload tvgf-timebar.png (see Default))
 
