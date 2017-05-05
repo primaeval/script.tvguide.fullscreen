@@ -236,7 +236,7 @@
                 <width>1280</width>
                 <height>450</height>
                 <texture>black-back.png</texture>
-                <visible>!Control.IsVisible(4200)</visible>
+                <visible>false</visible>
                 <aspectratio>scale</aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
