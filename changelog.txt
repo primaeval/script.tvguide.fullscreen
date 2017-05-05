@@ -1,4 +1,4 @@
-version 0.0.340
+version 0.0.340-341
 - smoother epg scrolling
 
 version 0.0.339
