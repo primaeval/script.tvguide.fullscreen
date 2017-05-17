@@ -3241,7 +3241,10 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlImage(4110 + idx, ' ')
                 self.setControlLabel(4010 + idx, ' ')
                 self.setControlLabel(4410 + idx, ' ')
-                self.setControlVisible(4210 + idx,True)
+                if ADDON.getSetting('dummy.channels') == 'true':
+                    self.setControlVisible(4210 + idx,True)
+                else:
+                    self.setControlVisible(4210 + idx,False)
             else:
                 self.setControlVisible(4210 + idx,True)
                 channel = channels[idx]
@@ -3375,24 +3378,25 @@ class TVGuide(xbmcgui.WindowXML):
             program = src.Program(channel, "", '', None, None, None, '')
             controlAndProgramList.append(ControlAndProgram(control, program))
 
-        for idx in range(len(channels), CHANNELS_PER_PAGE):
-            noFocusTexture = 'tvg-program-nofocus.png'
-            focusTexture = 'tvg-program-focus.png'
-            control = xbmcgui.ControlButton(
-                self.epgView.left,
-                self.epgView.top + self.epgView.cellHeight * idx,
-                (self.epgView.right - self.epgView.left) - 2,
-                self.epgView.cellHeight - 2,
-                "",
-                focusedColor=focusColor,
-                textColor=noFocusColor,
-                noFocusTexture=noFocusTexture,
-                focusTexture=focusTexture,
-                font=font
-            )
-            channel = utils.Channel("", "", '', "" , "", True)
-            program = src.Program(channel, "", '', None, None, None, '')
-            controlAndProgramList.append(ControlAndProgram(control, program))
+        if ADDON.getSetting('dummy.channels') == 'true':
+            for idx in range(len(channels), CHANNELS_PER_PAGE):
+                noFocusTexture = 'tvg-program-nofocus.png'
+                focusTexture = 'tvg-program-focus.png'
+                control = xbmcgui.ControlButton(
+                    self.epgView.left,
+                    self.epgView.top + self.epgView.cellHeight * idx,
+                    (self.epgView.right - self.epgView.left) - 2,
+                    self.epgView.cellHeight - 2,
+                    "",
+                    focusedColor=focusColor,
+                    textColor=noFocusColor,
+                    noFocusTexture=noFocusTexture,
+                    focusTexture=focusTexture,
+                    font=font
+                )
+                channel = utils.Channel("", "", '', "" , "", True)
+                program = src.Program(channel, "", '', None, None, None, '')
+                controlAndProgramList.append(ControlAndProgram(control, program))
 
         top = self.epgView.top + self.epgView.cellHeight * len(channels)
         height = 720 - top
