@@ -1,3 +1,7 @@
+version 0.0.342
+- Settings \ Appearance \ Show dummy channels on final page
+- Settings \ Lab2 \ Sports Fixtures
+
 version 0.0.340-341
 - smoother epg scrolling
 
