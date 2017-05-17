@@ -8,6 +8,7 @@ provider-name="primaeval">
         <import addon="script.module.requests" version="2.9.1" />
         <import addon="script.module.dateutil" version="2.4.2" />
         <import addon="script.module.pil" />
+        <import addon="script.module.beautifulsoup4" />
     </requires>
     <extension point="xbmc.python.script" library="addon.py">
             <provides>executable</provides>

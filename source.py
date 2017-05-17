@@ -46,6 +46,8 @@ import HTMLParser
 import xml.etree.ElementTree as ET
 import requests
 from itertools import chain
+from bs4 import BeautifulSoup
+from urlparse import urlparse
 
 import resources.lib.pytz as pytz
 from resources.lib.pytz import timezone
@@ -58,6 +60,15 @@ SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.l
 def log(x):
     xbmc.log(repr(x))
 
+def unescape( str ):
+    str = str.replace("&lt;","<")
+    str = str.replace("&gt;",">")
+    str = str.replace("&quot;","\"")
+    str = str.replace("&amp;","&")
+    str = str.replace("&nbsp;"," ")
+    str = str.replace("&dash;","-")
+    str = str.replace("&ndash;","-")
+    return str
 
 class SourceException(Exception):
     pass
@@ -3076,6 +3087,141 @@ class BBCSource(Source):
         t = t + td_local
         return t
 
+class FixturesSource(Source):
+    KEY = 'fixtures'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+        
+        for day in ["today","tomorrow"]:
+
+            country = ADDON.getSetting('fixtures.country')
+            url = 'http://www.getyourfixtures.com/%s/live/%s/anySport' % (country,day)
+
+            parsed_uri = urlparse(url)
+            domain = '{uri.scheme}://{uri.netloc}'.format(uri=parsed_uri)
+            timezone = ADDON.getSetting('fixtures.timezone')
+            if timezone != "None":
+                s = requests.Session()
+                #r = s.get("http://www.getyourfixtures.com/setCookie.php?offset=%s" % timezone)
+                r = s.get(url, cookies={"userTimeZoneGyf":urllib.quote_plus(timezone)})
+                data = r.content
+            else:
+                data = requests.get(url).content
+            if not data:
+                return
+
+            matches = data.split('<div class="match')
+            for match_div in matches[1:]:
+                soup = BeautifulSoup('<div class="match'+match_div)
+                sport_div = soup.find(class_=re.compile("sport"))
+                sport = "unknown"
+                if sport_div:
+                    sport = sport_div.img["alt"]
+                    icon = sport_div.img["src"]
+                    if icon:
+                        icon = domain+icon
+                    else:
+                        icon = ''
+                match_time = soup.find(class_=re.compile("time"))
+                if match_time:
+                    match_time = unescape(' '.join(match_time.stripped_strings))
+                    match_time = match_time.replace("script async","script")
+                else:
+                    pass
+                competition = soup.find(class_=re.compile("competition"))
+                if competition:
+                    competition = ' '.join(competition.stripped_strings)
+                fixture = soup.find(class_=re.compile("fixture"))
+                if fixture:
+                    fixture = ' '.join(fixture.stripped_strings)
+                stations = soup.find(class_=re.compile("stations"))
+
+                if stations:
+                    stations = stations.stripped_strings
+                    stations = list(stations)
+
+                if match_time:
+                    start_end = match_time.split(' - ')
+                    start_hour,start_minute = start_end[0].split(':')
+                    end_hour,end_minute = start_end[1].split(':')
+                    if day == "today":
+                        start = datetime.datetime.now()
+                    elif day == "tomorrow":
+                        start = datetime.datetime.now() + datetime.timedelta(days=1)
+                    else:
+                        d,m,y = day.split('-')
+                        start = datetime.datetime(int(y),int(m),int(d))
+                    end = start
+                    start = start.replace(hour=int(start_hour),minute=int(start_minute),second=0,microsecond=0)
+                    end = end.replace(hour=int(end_hour),minute=int(end_minute),second=0,microsecond=0)
+                    if end < start:
+                        end = end + datetime.timedelta(days=1)
+                    #start_time = str(int(time.mktime(start.timetuple())))
+                    #end_time = str(int(time.mktime(end.timetuple())))
+                    program = fixture
+                    description = competition
+                    for s in stations:
+                        s = s.replace("'",'')
+                        channel_number = s
+                        channel_name = s
+                        img_url = None
+                        c = Channel(channel_number, channel_name, '', img_url, "", True)
+                        yield c
+                        yield Program(c, program, description, start, end, "", '', imageSmall="",
+                             season = "", episode = "", is_movie = "", language= "")
+
+
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        today = datetime.datetime.now()
+        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
+            return True
+
+        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
+            return True
+        return False
+
+    def local_time_offset(self,t=None):
+        """Return offset of local zone from GMT, either at present or at time t."""
+        # python2.3 localtime() can't take None
+        if t is None:
+            t = time.time()
+        if time.localtime(t).tm_isdst and time.daylight:
+            return -time.altzone
+        else:
+            return -time.timezone
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+            london = timezone('Europe/London')
+            dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
+            utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
+            return utc_dt + datetime.timedelta(seconds=-time.timezone)
+        return
 
 
 def instantiateSource(force):
@@ -3096,5 +3242,7 @@ def instantiateSource(force):
         return YoNowSource(ADDON)
     elif source == "bbc":
         return BBCSource(ADDON)
+    elif source == "fixtures":
+        return FixturesSource(ADDON)
     else:
         return DirectScheduleSource(ADDON,force)

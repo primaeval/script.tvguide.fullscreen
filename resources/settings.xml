@@ -146,6 +146,8 @@
         <setting id="last.channel.popup" label="Last Channel Popup in OSD or ContextMenu" type="enum" default="0" values="OSD Popup|ContextMenu"/>
         <setting type="sep"/>
         <setting id="redraw.epg" label="RedrawEPG closing windows in VideoMode" type="bool" default="true"/>
+        <setting type="sep"/>
+        <setting id="dummy.channels" label="Show dummy channels on final page" type="bool" default="true"/>
     </category>
 
 
@@ -236,7 +238,10 @@
     <category label="Lab2">
         <setting type="lsep" label="Experimental Alternative Data Sources"/>
         <setting type="lsep" label="(OK this dialog and return after changing source)"/>
-        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|tvguide.co.uk now|yo.tv|yo.tv now|bbc" />
+        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|tvguide.co.uk now|yo.tv|yo.tv now|bbc|fixtures" />
+        <setting type="lsep" label="Sports Fixtures"/>
+        <setting id="fixtures.country" label="Sports Fixtures Country Code" type="select" default="all" values="all|ai|al|ao|ar|au|az|ba|be|bg|br|ca|ch|cn|cy|cz|de|dk|en|es|fi|fr|gr|hk|hr|hu|id|ie|il|in|ir|is|it|jp|kr|lv|mt|mx|my|nl|no|nz|pl|pt|qa|ro|rs|ru|s2|se|sg|si|sk|th|tr|ua|uk|us|vn|wa|za" />
+        <setting id="fixtures.timezone" label="Sports Fixtures Time Zone" type="select" default="None" values="None|-12:00|-11:00|-10:00|-09:00|-08:00|-07:00|-06:00|-05:00|-04:00|-03:00|-02:00|-01:00|+00:00|+01:00|+02:00|+03:00|+04:00|+05:00|+06:00|+07:00|+08:00|+09:00|+10:00|+11:00|+12:00" />
         <setting id="tvguide.co.uk.days" label="tvguide.co.uk Days" default="2" type="number"  visible="true"/>
         <setting id="tvguide.co.uk.systemid" label="tvguide.co.uk Provider" default="Sky" type="select"  visible="true" values="BT|Freeview|Freesat|Popular|Sky|Virgin M|Virgin L|Virgin M+|Virgin XL" />
         <setting id="tvguide.co.uk.email" label="tvguide.co.uk email (overrides Provider)" default="" type="text"  visible="true"/>
