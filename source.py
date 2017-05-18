@@ -1805,11 +1805,21 @@ class XMLTVSource(Source):
         if not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
         if (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
-            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
-                yield v
+            if ADDON.getSetting('fixtures') == 'true':
+                fixtures = FixturesSource(ADDON)
+                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
+                    yield v
+            else:
+                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
+                    yield v
         else:
-            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback)):
-                yield v
+            if ADDON.getSetting('fixtures') == 'true':
+                fixtures = FixturesSource(ADDON)
+                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
+                    yield v
+            else:
+                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback)):
+                    yield v
 
     def getDataFromExternal2(self, xmltvFile, date, ch_list, progress_callback=None):
         if xbmcvfs.exists(xmltvFile):
@@ -2314,6 +2324,15 @@ class TVGUKNowSource(Source):
         self.done = False
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        if ADDON.getSetting('fixtures') == 'true':
+            fixtures = FixturesSource(ADDON)
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
+                yield v
+        else:
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback)):
+                    yield v
+
+    def getDataFromExternal2(self, date, ch_list, progress_callback=None):
         """
         Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
         The source may choose to ignore the date parameter and return all data available.
@@ -2671,6 +2690,15 @@ class YoNowSource(Source):
             return ''
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        if ADDON.getSetting('fixtures') == 'true':
+            fixtures = FixturesSource(ADDON)
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
+                yield v
+        else:
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback)):
+                    yield v
+
+    def getDataFromExternal2(self, date, ch_list, progress_callback=None):
         """
         Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
         The source may choose to ignore the date parameter and return all data available.
@@ -3103,7 +3131,7 @@ class FixturesSource(Source):
         @param progress_callback:
         @return:
         """
-        
+
         for day in ["today","tomorrow"]:
 
             country = ADDON.getSetting('fixtures.country')
@@ -3171,15 +3199,16 @@ class FixturesSource(Source):
                     #start_time = str(int(time.mktime(start.timetuple())))
                     #end_time = str(int(time.mktime(end.timetuple())))
                     program = fixture
-                    description = competition
+                    description = competition + "\n" + sport
                     for s in stations:
                         s = s.replace("'",'')
+                        s = s + " "
                         channel_number = s
                         channel_name = s
                         img_url = None
                         c = Channel(channel_number, channel_name, '', img_url, "", True)
                         yield c
-                        yield Program(c, program, description, start, end, "", '', imageSmall="",
+                        yield Program(c, program, '', start, end, description, '', imageSmall="",
                              season = "", episode = "", is_movie = "", language= "")
 
 
