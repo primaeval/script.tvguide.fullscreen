@@ -1,3 +1,6 @@
+version 0.0.343
+- Settings \ Lab2 \ Include Sports Fixtures in xmltv Source
+
 version 0.0.342
 - Settings \ Appearance \ Show dummy channels on final page
 - Settings \ Lab2 \ Sports Fixtures
