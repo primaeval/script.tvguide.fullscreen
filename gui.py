@@ -228,6 +228,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_REMIND = 4322
     C_MAIN_MOUSE_HELP_CONTROL = 4323
     C_MAIN_MOUSE_HELP_BUTTON = 4324
+    C_MAIN_MOUSE_VOD = 4325
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -1171,7 +1172,8 @@ class TVGuide(xbmcgui.WindowXML):
             self._left(currentFocus)
         elif action.getId() in COMMAND_ACTIONS["RIGHT"] and self.getFocusId() not in [self.C_MAIN_ACTIONS,self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
             self._right(currentFocus)
-
+        elif action.getId() in COMMAND_ACTIONS["VOD"]:
+            self.showVODTV()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -1325,6 +1327,9 @@ class TVGuide(xbmcgui.WindowXML):
                 xbmc.executebuiltin("ActivateWindow(10001,plugin://plugin.program.super.favourites,return)")
             elif favourites == 'Favourites':
                 xbmc.executebuiltin("ActivateWindow(10134)")
+            return
+        elif controlId in [self.C_MAIN_MOUSE_VOD]:
+            self.showVODTV()
             return
         elif controlId in [self.C_MAIN_MOUSE_MINE1]:
             command = ADDON.getSetting('mine1')
