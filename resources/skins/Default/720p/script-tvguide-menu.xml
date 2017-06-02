@@ -595,7 +595,25 @@
             <visible>true</visible>
         </control>
 
-
+        <control type="button" id="4016">
+            <!-- vod -->
+            <posx>285</posx>
+            <posy>650</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4012</onup>
+            <ondown>4004</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>VOD</label>
+            <visible>true</visible>
+        </control>
 
         <control type="button" id="80000">
             <!-- MY MOVIES -->
