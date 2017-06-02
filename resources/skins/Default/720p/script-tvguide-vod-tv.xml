@@ -460,7 +460,7 @@
 			<posx>720</posx>
 			<posy>80</posy>
 			<width>500</width>
-			<height>245</height>
+			<height>400</height>
 			<info>Container(900001).ListItem.Plot</info>
 			<textcolor>ffffffff</textcolor>
 			<font>font13</font>
@@ -472,7 +472,7 @@
 		</control>
 		<control type="textbox">
 			<posx>280</posx>
-			<posy>280</posy>
+			<posy>300</posy>
 			<width>400</width>
 			<label>[B]Genres:[/B] $INFO[Container(900001).ListItem.Genre]</label>
 			<textcolor>ffffffff</textcolor>
@@ -485,7 +485,7 @@
 		</control>
 		<control type="textbox">
 			<posx>280</posx>
-			<posy>320</posy>
+			<posy>340</posy>
 			<width>400</width>
 			<label>[B]TV Network:[/B] $INFO[Container(900001).ListItem.Studio]</label>
 			<textcolor>ffffffff</textcolor>
@@ -498,7 +498,7 @@
 		</control>
 		<control type="textbox">
 			<posx>280</posx>
-			<posy>360</posy>
+			<posy>380</posy>
 			<width>400</width>
 			<label>[B]Total Episodes:[/B] $INFO[Container(900001).ListItem.Property(TotalEpisodes)]  [B]Watched Episodes:[/B] $INFO[Container(900001).ListItem.Property(WatchedEpisodes)]</label>
 			<textcolor>ffffffff</textcolor>
