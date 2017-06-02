@@ -5949,7 +5949,7 @@ class VODTVDialog(xbmcgui.WindowXMLDialog):
         self.action = None
 
     def onInit(self):
-        buttonControl = self.getControl(VODTVDialog.C_ALL)
+        buttonControl = self.getControl(VODTVDialog.C_VOD_LIST)
         self.setFocus(buttonControl)
 
     def close(self):
