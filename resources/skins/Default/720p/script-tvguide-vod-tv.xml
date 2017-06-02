@@ -17,7 +17,7 @@
             <posy>0</posy>
             <width>1280</width>
             <height>720</height>
-            <texture>background-cover.png</texture>
+            <texture>black.png</texture>
             <visible>true</visible>
         </control>
 		<control type="image">
@@ -27,7 +27,7 @@
 			<width>220</width>
 			<height>105</height>
 			<texture>black-back.png</texture>
-			<visible>true</visible>
+			<visible>false</visible>
 		</control>
 		<control type="image">
 			<description>category background</description>
@@ -36,7 +36,7 @@
 			<width>220</width>
 			<height>520</height>
 			<texture>black-back.png</texture>
-			<visible>true</visible>
+			<visible>false</visible>
 		</control>
 		<control type="image">
 			<posx>28</posx>
@@ -45,6 +45,7 @@
 			<height>34</height>
 			<texture>black.png</texture>
 			<aspectratio>stretch</aspectratio>
+            <visible>false</visible>
 		</control>
 		<control type="image">
 			<posx>30</posx>
@@ -53,6 +54,7 @@
 			<height>30</height>
 			<texture>black-back.png</texture>
 			<aspectratio>stretch</aspectratio>
+            <visible>false</visible>
 		</control>
 		<control type="label">
 			<description>time label</description>
@@ -60,12 +62,13 @@
 			<posy>50</posy>
 			<width>380</width>
 			<height>30</height>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
 			<aligny>center</aligny>
 			<textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
 			<label>[UPPERCASE]TV On Demand »[/UPPERCASE]</label>
+            <visible>false</visible>
 		</control>
 
 		<control type="image">
@@ -75,7 +78,7 @@
 			<width>940</width>
 			<height>630</height>
 			<texture>black-back.png</texture>
-			<visible>true</visible>
+			<visible>false</visible>
 		</control>
 		<control type="image">
 			<posx>298</posx>
@@ -84,6 +87,7 @@
 			<height>34</height>
 			<texture>black.png</texture>
 			<aspectratio>stretch</aspectratio>
+            <visible>false</visible>
 		</control>
 		<control type="image">
 			<posx>300</posx>
@@ -92,6 +96,7 @@
 			<height>30</height>
 			<texture>black-back.png</texture>
 			<aspectratio>stretch</aspectratio>
+            <visible>false</visible>
 		</control>
 		<control type="label">
 			<description>time label</description>
@@ -99,12 +104,13 @@
 			<posy>55</posy>
 			<width>380</width>
 			<height>30</height>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
 			<aligny>center</aligny>
 			<textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
 			<label>[UPPERCASE]Listings »[/UPPERCASE]</label>
+            <visible>false</visible>
 		</control>
 		<control type="label">
             <description>time label</description>
@@ -112,26 +118,27 @@
             <posy>55</posy>
             <width>180</width>
             <height>30</height>
-            <font>font10_title</font>
+            <font>font13</font>
             <align>right</align>
             <aligny>center</aligny>
             <textcolor>white</textcolor>
             <shadowcolor>black</shadowcolor>
             <label>NOW: $INFO[System.Time]</label>
+            <visible>false</visible>
         </control>
 
 		<!-- SECTION BUTTONS -->
 
 		<control type="button" id="90000">
 			<posx>40</posx>
-			<posy>95</posy>
+			<posy>40</posy>
 			<width>200</width>
-			<height>40</height>
+			<height>30</height>
 			<texturefocus>tvg-menu-focus.png</texturefocus>
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
-			<aligny>center</aligny>
-			<font>font10_title</font>
+			<aligny>top</aligny>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label>All Shows</label>
@@ -141,14 +148,14 @@
 		</control>
 		<control type="button" id="90001">
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>80</posy>
 			<width>200</width>
-			<height>40</height>
+			<height>30</height>
 			<texturefocus>tvg-menu-focus.png</texturefocus>
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
-			<aligny>center</aligny>
-			<font>font10_title</font>
+			<aligny>top</aligny>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label>In Progress</label>
@@ -167,7 +174,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -185,7 +192,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -203,7 +210,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -221,7 +228,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -239,7 +246,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -257,7 +264,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -275,7 +282,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -293,7 +300,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -311,7 +318,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -329,7 +336,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -347,7 +354,7 @@
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10_title</font>
+			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<label></label>
@@ -366,6 +373,7 @@
             <height>265</height>
 			<aspectratio>stretch</aspectratio>
 			<texture>black-back.png</texture>
+            <visible>false</visible>
 		</control>
 		<control type="image">
 			<posx>300</posx>
@@ -374,15 +382,16 @@
             <height>4</height>
 			<aspectratio>stretch</aspectratio>
 			<texture>black-back.png</texture>
+            <visible>false</visible>
 		</control>
 
 		<!-- FIRST VIDEO-ON-DEMAND SECTION -->
 		<control type="list" id="900001">
 			<description>All Shows</description>
-			<posx>307</posx>
-            <posy>425</posy>
-            <width>922</width>
-            <height>585</height>
+			<posx>40</posx>
+            <posy>280r</posy>
+            <width>1200</width>
+            <height>600</height>
 			<itemgap>5</itemgap>
 			<onleft>900001</onleft>
 			<onup>90000</onup>
@@ -392,30 +401,31 @@
 			<onclick>back</onclick>
 			<onclick>ActivateWindow(10025,$INFO[ListItem.FolderPath],return)</onclick>
 			<visible>Control.HasFocus(90000) | Control.HasFocus(900001)</visible>
-			<itemlayout width="150" height="230">
+			<itemlayout width="160" height="240">
 				<control type="image">
 					<left>0</left>
-					<top>27</top>
-					<width>150</width>
-					<height>230</height>
+					<top>0</top>
+					<width>160</width>
+					<height>240</height>
 					<aspectratio>keep</aspectratio>
 					<texture>$INFO[ListItem.Art(poster)]</texture>
 				</control>
 			</itemlayout>
-			<focusedlayout width="172" height="252">
+			<focusedlayout width="160" height="240">
 				<control type="image">
 					<left>0</left>
 					<top>0</top>
-					<width>172</width>
-					<height>252</height>
+					<width>160</width>
+					<height>240</height>
 					<aspectratio>stretch</aspectratio>
 					<texture>vod-focus.png</texture>
+                    <visible>false</visible>
 				</control>
 				<control type="image">
-					<left>3</left>
-					<top>3</top>
-					<width>166</width>
-					<height>246</height>
+					<left>-10</left>
+					<top>-10</top>
+					<width>180</width>
+					<height>260</height>
 					<aspectratio>keep</aspectratio>
 					<texture>$INFO[ListItem.Art(poster)]</texture>
 				</control>
@@ -423,78 +433,79 @@
 			<content target="" sortby="label" sortorder="ascending">library://video/tvshows/titles.xml</content>
 		</control>
 		<control type="image">
-			<posx>307</posx>
-			<posy>100</posy>
-			<height>230</height>
+			<posx>280</posx>
+			<posy>40</posy>
+			<height>240</height>
 			<width>400</width>
-			<aspectratio>keep</aspectratio>
+			<aspectratio>scale</aspectratio>
 			<align>left</align>
+            <aligny>top</aligny>
 			<info>Container(900001).ListItem.Property(Fanart_Image)</info>
 			<visible>Control.HasFocus(90000) | Control.HasFocus(900001)</visible>
 		</control>
 		<control type="textbox">
 			<posx>720</posx>
-			<posy>100</posy>
+			<posy>40</posy>
 			<width>600</width>
 			<info>Container(900001).ListItem.Label</info>
 			<textcolor>ffffffff</textcolor>
 			<font>font13_title</font>
 			<align>left</align>
-			<aligny>center</aligny>
+			<aligny>top</aligny>
 			<height>40</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90000) | Control.HasFocus(900001)</visible>
 		</control>
 		<control type="textbox">
 			<posx>720</posx>
-			<posy>150</posy>
+			<posy>80</posy>
 			<width>500</width>
 			<height>245</height>
 			<info>Container(900001).ListItem.Plot</info>
 			<textcolor>ffffffff</textcolor>
-			<font>font10</font>
-			<align>justify</align>
+			<font>font13</font>
+			<align>left</align>
 			<aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
 			<autoscroll delay="5000" time="1000" repeat="10000"></autoscroll>
 			<visible>Control.HasFocus(90000) | Control.HasFocus(900001)</visible>
 		</control>
 		<control type="textbox">
-			<posx>307</posx>
-			<posy>330</posy>
+			<posx>280</posx>
+			<posy>280</posy>
 			<width>400</width>
 			<label>[B]Genres:[/B] $INFO[Container(900001).ListItem.Genre]</label>
 			<textcolor>ffffffff</textcolor>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
-			<aligny>center</aligny>
-			<height>20</height>
+			<aligny>top</aligny>
+			<height>30</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90000) | Control.HasFocus(900001)</visible>
 		</control>
 		<control type="textbox">
-			<posx>307</posx>
-			<posy>350</posy>
+			<posx>280</posx>
+			<posy>320</posy>
 			<width>400</width>
 			<label>[B]TV Network:[/B] $INFO[Container(900001).ListItem.Studio]</label>
 			<textcolor>ffffffff</textcolor>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
-			<aligny>center</aligny>
-			<height>20</height>
+			<aligny>top</aligny>
+			<height>30</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90000) | Control.HasFocus(900001)</visible>
 		</control>
 		<control type="textbox">
-			<posx>307</posx>
-			<posy>370</posy>
+			<posx>280</posx>
+			<posy>360</posy>
 			<width>400</width>
-			<label>[B]Total Episodes:[/B] $INFO[Container(900001).ListItem.Property(TotalEpisodes)] // [B]Watched Episodes:[/B] $INFO[Container(900001).ListItem.Property(WatchedEpisodes)]</label>
+			<label>[B]Total Episodes:[/B] $INFO[Container(900001).ListItem.Property(TotalEpisodes)]  [B]Watched Episodes:[/B] $INFO[Container(900001).ListItem.Property(WatchedEpisodes)]</label>
 			<textcolor>ffffffff</textcolor>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
-			<aligny>center</aligny>
-			<height>20</height>
+			<aligny>top</aligny>
+			<height>30</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90000) | Control.HasFocus(900001)</visible>
 		</control>
@@ -502,10 +513,10 @@
 		<!-- SECOND VIDEO-ON-DEMAND SECTION -->
 		<control type="list" id="900011">
 			<description>In Progress</description>
-			<posx>307</posx>
-            <posy>425</posy>
-            <width>922</width>
-            <height>585</height>
+			<posx>40</posx>
+            <posy>280r</posy>
+            <width>1200</width>
+            <height>600</height>
 			<itemgap>5</itemgap>
 			<onleft>900011</onleft>
 			<onup>90001</onup>
@@ -515,30 +526,31 @@
 			<onclick>back</onclick>
 			<onclick>ActivateWindow(10025,$INFO[ListItem.FolderPath],return)</onclick>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
-			<itemlayout width="150" height="230">
+			<itemlayout width="160" height="240">
 				<control type="image">
 					<left>0</left>
-					<top>27</top>
-					<width>150</width>
-					<height>230</height>
+					<top>0</top>
+					<width>160</width>
+					<height>240</height>
 					<aspectratio>keep</aspectratio>
 					<texture>$INFO[ListItem.Art(poster)]</texture>
 				</control>
 			</itemlayout>
-			<focusedlayout width="172" height="252">
+			<focusedlayout width="160" height="240">
 				<control type="image">
 					<left>0</left>
 					<top>0</top>
-					<width>172</width>
-					<height>252</height>
+					<width>160</width>
+					<height>240</height>
 					<aspectratio>stretch</aspectratio>
 					<texture>vod-focus.png</texture>
+                    <visible>false</visible>
 				</control>
 				<control type="image">
-					<left>3</left>
-					<top>3</top>
-					<width>166</width>
-					<height>246</height>
+					<left>-10</left>
+					<top>-10</top>
+					<width>180</width>
+					<height>260</height>
 					<aspectratio>keep</aspectratio>
 					<texture>$INFO[ListItem.Art(poster)]</texture>
 				</control>
@@ -546,78 +558,79 @@
 			<content target="" sortby="" sortorder="ascending">library://video/tvshows/inprogressshows.xml.xsp</content>
 		</control>
 		<control type="image">
-			<posx>307</posx>
-			<posy>100</posy>
-			<height>230</height>
+			<posx>280</posx>
+			<posy>40</posy>
+			<height>240</height>
 			<width>400</width>
-			<aspectratio>keep</aspectratio>
+			<aspectratio>scale</aspectratio>
 			<align>left</align>
+            <aligny>top</aligny>
 			<info>Container(900011).ListItem.Property(Fanart_Image)</info>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
 		</control>
 		<control type="textbox">
 			<posx>720</posx>
-			<posy>100</posy>
+			<posy>40</posy>
 			<width>600</width>
 			<info>Container(900011).ListItem.Label</info>
 			<textcolor>ffffffff</textcolor>
 			<font>font13_title</font>
 			<align>left</align>
-			<aligny>center</aligny>
+			<aligny>top</aligny>
 			<height>40</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
 		</control>
 		<control type="textbox">
 			<posx>720</posx>
-			<posy>150</posy>
+			<posy>80</posy>
 			<width>500</width>
 			<height>245</height>
-			<info>Container(900011).ListItem.Plot</info>
+			<info>Container(900010).ListItem.Plot</info>
 			<textcolor>ffffffff</textcolor>
-			<font>font10</font>
-			<align>justify</align>
+			<font>font13</font>
+			<align>left</align>
 			<aligny>top</aligny>
 			<wrapmultiline>true</wrapmultiline>
 			<autoscroll delay="5000" time="1000" repeat="10000"></autoscroll>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
 		</control>
 		<control type="textbox">
-			<posx>307</posx>
-			<posy>330</posy>
+			<posx>280</posx>
+			<posy>280</posy>
 			<width>400</width>
 			<label>[B]Genres:[/B] $INFO[Container(900011).ListItem.Genre]</label>
 			<textcolor>ffffffff</textcolor>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
-			<aligny>center</aligny>
-			<height>20</height>
+			<aligny>top</aligny>
+			<height>30</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
 		</control>
 		<control type="textbox">
-			<posx>307</posx>
-			<posy>350</posy>
+			<posx>280</posx>
+			<posy>320</posy>
 			<width>400</width>
 			<label>[B]TV Network:[/B] $INFO[Container(900011).ListItem.Studio]</label>
 			<textcolor>ffffffff</textcolor>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
-			<aligny>center</aligny>
-			<height>20</height>
+			<aligny>top</aligny>
+			<height>30</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
 		</control>
 		<control type="textbox">
-			<posx>307</posx>
-			<posy>370</posy>
+			<posx>280</posx>
+			<posy>360</posy>
 			<width>400</width>
-			<label>[B]Total Episodes:[/B] $INFO[Container(900011).ListItem.Property(TotalEpisodes)] // [B]Watched Episodes:[/B] $INFO[Container(900011).ListItem.Property(WatchedEpisodes)]</label>
+			<label>[B]Total Episodes:[/B] $INFO[Container(900011).ListItem.Property(TotalEpisodes)]  [B]Watched Episodes:[/B] $INFO[Container(900011).ListItem.Property(WatchedEpisodes)]</label>
 			<textcolor>ffffffff</textcolor>
-			<font>font10_title</font>
+			<font>font13</font>
 			<align>left</align>
-			<aligny>center</aligny>
-			<height>20</height>
+			<aligny>top</aligny>
+			<height>30</height>
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
 		</control>
