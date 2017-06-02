@@ -1,4 +1,4 @@
-version 0.0.344
+version 0.0.344-345
 - New VOD Screen from RayW1986 
  (via Menu VOD, Default skin VOD button, COMMAND_VOD in Action Editor)
 
