@@ -228,6 +228,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MOUSE_REMIND = 4322
     C_MAIN_MOUSE_HELP_CONTROL = 4323
     C_MAIN_MOUSE_HELP_BUTTON = 4324
+    C_MAIN_MOUSE_VOD = 4325
     C_MAIN_BACKGROUND = 4600
     C_MAIN_HEADER = 4601
     C_MAIN_FOOTER = 4602
@@ -1171,7 +1172,8 @@ class TVGuide(xbmcgui.WindowXML):
             self._left(currentFocus)
         elif action.getId() in COMMAND_ACTIONS["RIGHT"] and self.getFocusId() not in [self.C_MAIN_ACTIONS,self.C_MAIN_CATEGORY,self.C_MAIN_PROGRAM_CATEGORIES]:
             self._right(currentFocus)
-
+        elif action.getId() in COMMAND_ACTIONS["VOD"]:
+            self.showVODTV()
         else:
             xbmc.log('[script.tvguide.fullscreen] Unhandled ActionId: ' + str(action.getId()), xbmc.LOGDEBUG)
 
@@ -1325,6 +1327,9 @@ class TVGuide(xbmcgui.WindowXML):
                 xbmc.executebuiltin("ActivateWindow(10001,plugin://plugin.program.super.favourites,return)")
             elif favourites == 'Favourites':
                 xbmc.executebuiltin("ActivateWindow(10134)")
+            return
+        elif controlId in [self.C_MAIN_MOUSE_VOD]:
+            self.showVODTV()
             return
         elif controlId in [self.C_MAIN_MOUSE_MINE1]:
             command = ADDON.getSetting('mine1')
@@ -1506,6 +1511,13 @@ class TVGuide(xbmcgui.WindowXML):
                 if stream:
                     self.database.setCustomStreamUrl(program.channel, stream)
                     self.playChannel(program.channel, program)
+
+    def showVODTV(self):
+        d = VODTVDialog()
+        d.doModal()
+        index = d.index
+        if index > -1:
+            self._showContextMenu(programList[index])
 
     def showListing(self, channel):
         programList = self.database.getChannelListing(channel)
@@ -1877,6 +1889,9 @@ class TVGuide(xbmcgui.WindowXML):
                 self.showFullAutoplays()
             elif list == 6:
                 self.showFullAutoplaywiths()
+
+        elif buttonClicked == PopupMenu.C_POPUP_VODTV:
+            self.showVODTV()
 
         elif buttonClicked == PopupMenu.C_POPUP_CATEGORY:
             if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
@@ -4127,6 +4142,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_EXTENDED = 4013
     C_POPUP_CHOOSE_ALT = 4014
     C_POPUP_CHOOSE_CLOSE = 4015 # deprecated?
+    C_POPUP_VODTV = 4016
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_SETUP_CHANNEL_TITLE = 44101
@@ -5920,6 +5936,24 @@ class ProgramListDialog(xbmcgui.WindowXMLDialog):
 
     def close(self):
         super(ProgramListDialog, self).close()
+
+class VODTVDialog(xbmcgui.WindowXMLDialog):
+    C_VOD_LIST = 90000
+
+    def __new__(cls):
+        return super(VODTVDialog, cls).__new__(cls, 'script-tvguide-vod-tv.xml', SKIN_PATH, SKIN)
+
+    def __init__(self):
+        super(VODTVDialog, self).__init__()
+        self.index = -1
+        self.action = None
+
+    def onInit(self):
+        buttonControl = self.getControl(VODTVDialog.C_ALL)
+        self.setFocus(buttonControl)
+
+    def close(self):
+        super(VODTVDialog, self).close()
 
 class CatMenu(xbmcgui.WindowXMLDialog):
     C_CAT_BACKGROUND = 7000

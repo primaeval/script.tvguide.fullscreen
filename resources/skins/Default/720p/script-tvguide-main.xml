@@ -1870,6 +1870,23 @@
                     <visible>true</visible>
                 </control>
 
+                <control type="button" id="4325">
+                    <description>vod</description>
+                    <posx>1030</posx>
+                    <posy>20r</posy>
+                    <width>90</width>
+                    <height>20</height>
+                    <label>VOD</label>
+                    <font>font13</font>
+                    <aligny>center</aligny>
+                    <align>center</align>
+                    <textcolor>grey</textcolor>
+                    <focusedcolor>black</focusedcolor>
+                    <texturefocus>tvg-button-focus.png</texturefocus>
+                    <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+                    <visible>true</visible>
+                </control>
+
                 <control type="button" id="4317">
                     <description>spare</description>
                     <posx>300</posx>
