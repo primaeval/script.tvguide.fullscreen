@@ -1,3 +1,6 @@
+version 0.0.348
+- vod additions
+
 version 0.0.347
 - current addon name and icon controls in streamaddon
 - Listing View Future Days fix 
