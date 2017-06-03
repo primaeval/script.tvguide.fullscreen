@@ -1,3 +1,7 @@
+version 0.0.347
+- current addon name and icon controls in streamaddon
+- Listing View Future Days fix 
+
 version 0.0.344-346
 - New VOD Screen from RayW1986 
  (via Menu VOD, Default skin VOD button, COMMAND_VOD in Action Editor)
