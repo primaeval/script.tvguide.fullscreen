@@ -555,7 +555,7 @@
 					<texture>$INFO[ListItem.Art(poster)]</texture>
 				</control>
 			</focusedlayout>
-			<content target="" sortby="" sortorder="ascending">library://video/tvshows/inprogressshows.xml</content>
+			<content target="" sortby="" sortorder="ascending">library://video/inprogressshows.xml</content>
 		</control>
 		<control type="image">
 			<posx>280</posx>
