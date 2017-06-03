@@ -201,7 +201,7 @@
 			<font>font13_title</font>
 			<textcolor>white</textcolor>
 			<label>$INFO[Window(Weather).Property(Current.Temperature)]$INFO[System.TemperatureUnits]</label>
-            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![StringCompare(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
 		</control>
 		<control type="image">
 			<description>Display current weather icon</description>
@@ -212,7 +212,7 @@
             <fadetime>300</fadetime>
             <aspectratio align="right">keep</aspectratio>
             <texture colordiffuse="button_focus">weather/small/$INFO[Weather.FanartCode].png</texture>
-            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![StringCompare(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
+            <visible>Skin.HasSetting(show_weatherinfo) + Weather.IsFetched + ![String.IsEqual(Weather.FanartCode,na) + String.Contains(Weather.Conditions,/)]</visible>
         </control>
 
 		<!-- Header Buttons -->
@@ -301,7 +301,7 @@
             <top>60</top>
             <width>1280</width>
             <height>498</height>
-            <visible>StringCompare(Control.GetLabel(100),strm)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),strm)</visible>
             <control type="button" id="1001">
                 <description>Single Stream From Playlist</description>
                 <left>40</left>
@@ -436,7 +436,7 @@
             <top>60</top>
             <width>552</width>
             <height>498</height>
-            <visible>StringCompare(Control.GetLabel(100),favourites)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),favourites)</visible>
             <control type="textbox">
                 <description>Favorite description</description>
 				<left>60</left>
@@ -573,7 +573,7 @@
             <top>60</top>
             <width>1280</width>
             <height>498</height>
-            <visible>StringCompare(Control.GetLabel(100),addons)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),addons)</visible>
 
             <control type="image">
                 <description>Up arrow</description>
@@ -804,7 +804,7 @@
             <top>60</top>
             <width>1280</width>
             <height>498</height>
-            <visible>StringCompare(Control.GetLabel(100),browse)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),browse)</visible>
 
             <control type="image">
                 <description>Up arrow</description>

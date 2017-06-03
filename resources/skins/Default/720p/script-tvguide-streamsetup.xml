@@ -248,7 +248,7 @@
             <posy>120</posy>
             <width>800</width>
             <height>340</height>
-            <visible>StringCompare(Control.GetLabel(100),strm)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),strm)</visible>
 
             <control type="textbox">
                 <posx>140</posx>
@@ -424,7 +424,7 @@
             <posy>120</posy>
             <width>800</width>
             <height>340</height>
-            <visible>StringCompare(Control.GetLabel(100),favourites)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),favourites)</visible>
 
             <control type="textbox">
                 <posx>140</posx>
@@ -580,7 +580,7 @@
             <posy>120</posy>
             <width>1280</width>
             <height>600</height>
-            <visible>StringCompare(Control.GetLabel(100),addons)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),addons)</visible>
 
             <control type="image">
                 <posx>90</posx>
@@ -817,7 +817,7 @@
             <posy>120</posy>
             <width>1280</width>
             <height>600</height>
-            <visible>StringCompare(Control.GetLabel(100),browse)</visible>
+            <visible>String.IsEqual(Control.GetLabel(100),browse)</visible>
 
             <control type="image">
                 <posx>90</posx>
