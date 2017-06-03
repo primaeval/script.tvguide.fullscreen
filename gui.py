@@ -1776,7 +1776,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._showContextMenu(programList[index])
 
     def showFullReminders(self):
-        programList = self.database.getFullNotifications()
+        programList = self.database.getFullNotifications(int(ADDON.getSetting('listing.days')))
         title = "Reminders"
         d = ProgramListDialog(title,programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
@@ -1801,7 +1801,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._showContextMenu(program)
 
     def showFullAutoplays(self):
-        programList = self.database.getFullAutoplays()
+        programList = self.database.getFullAutoplays(int(ADDON.getSetting('listing.days')))
         title = "AutoPlays"
         d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
@@ -1826,7 +1826,7 @@ class TVGuide(xbmcgui.WindowXML):
             self._showContextMenu(program)
 
     def showFullAutoplaywiths(self):
-        programList = self.database.getFullAutoplaywiths()
+        programList = self.database.getFullAutoplaywiths(int(ADDON.getSetting('listing.days')))
         title = "AutoPlayWiths"
         d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
