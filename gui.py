@@ -849,7 +849,21 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["RIGHT"]:
             self._hideLastPlayed()
 
-    def ChooseStreamAddon(self, result):
+    def ChooseStreamAddon(self, result, channel):
+        name = ''
+        icon = ''
+        url = self.database.getStreamUrl(channel)
+        if url:
+            if url.startswith('plugin://'):
+                match = re.search('plugin://(.*?)/.*',url)
+                if match:
+                    id = match.group(1)
+                    addon = xbmcaddon.Addon(id)
+                    name = addon.getAddonInfo('name')
+                    icon = addon.getAddonInfo('icon')
+            else:
+                name = "Playlist"
+                icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
         stream = ""
         title = ""
         if ADDON.getSetting('stream.addon.list') == 'true':
@@ -864,7 +878,7 @@ class TVGuide(xbmcgui.WindowXML):
                 stream = result[which][2]
                 title = result[which][1]
         else:
-            d = ChooseStreamAddonDialog(result)
+            d = ChooseStreamAddonDialog(result,name,icon)
             d.doModal()
             if d.stream is not None:
                 stream = d.stream
@@ -1019,7 +1033,7 @@ class TVGuide(xbmcgui.WindowXML):
                     self.playChannel(program.channel, program)
                 else:
                     # multiple matches, let user decide
-                    title,stream = self.ChooseStreamAddon(result)
+                    title,stream = self.ChooseStreamAddon(result,program.channel)
                     if stream:
                         self.database.setCustomStreamUrl(program.channel, stream)
                         self.playChannel(program.channel, program)
@@ -1507,7 +1521,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.playChannel(program.channel, program)
             else:
                 # multiple matches, let user decide
-                title,stream = self.ChooseStreamAddon(result)
+                title,stream = self.ChooseStreamAddon(result, program.channel)
                 if stream:
                     self.database.setCustomStreamUrl(program.channel, stream)
                     self.playChannel(program.channel, program)
@@ -1909,7 +1923,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             else:
                 # multiple matches, let user decide
-                title,stream = self.ChooseStreamAddon(result)
+                title,stream = self.ChooseStreamAddon(result, program.channel)
                 if stream:
                     self.database.setCustomStreamUrl(program.channel, stream)
                     self.playChannel(program.channel, program)
@@ -1928,7 +1942,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.database.setCustomStreamUrl(program.channel, result)
             else:
                 # multiple matches, let user decide
-                title,stream = self.ChooseStreamAddon(result)
+                title,stream = self.ChooseStreamAddon(result, program.channel)
                 if stream:
                     self.database.setAltCustomStreamUrl(program.channel, title, stream)
 
@@ -5740,15 +5754,19 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
 class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
     C_SELECTION_LIST = 1000
+    C_SELECTION_ADDON_LOGO = 4025
+    C_SELECTION_ADDON_LABEL = 4026
 
-    def __new__(cls, addons):
+    def __new__(cls, addons, name, icon):
         return super(ChooseStreamAddonDialog, cls).__new__(cls, 'script-tvguide-streamaddon.xml', SKIN_PATH, SKIN)
 
-    def __init__(self, addons):
+    def __init__(self, addons, name, icon):
         super(ChooseStreamAddonDialog, self).__init__()
         self.addons = addons
         self.stream = None
         self.title = None
+        self.name = name
+        self.icon = icon
 
     def onInit(self):
         items = list()
@@ -5763,6 +5781,21 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
         listControl.addItems(items)
 
         self.setFocus(listControl)
+
+        if self.name:
+            try:
+                control = self.getControl(self.C_SELECTION_ADDON_LABEL)
+                if control:
+                    control.setLabel(self.name)
+            except:
+                pass
+        if self.icon:
+            try:
+                control = self.getControl(self.C_SELECTION_ADDON_LOGO)
+                if control:
+                    control.setImage(self.icon)
+            except:
+                pass
 
     def onAction(self, action):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
