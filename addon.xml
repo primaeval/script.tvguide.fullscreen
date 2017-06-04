@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.tvguide.fullscreen" name="TV Guide Fullscreen"
-version="0.17.348"
+version="0.17.349"
 provider-name="primaeval">
     <requires>
         <import addon="xbmc.python" version="2.25.0"/>
@@ -24,5 +24,25 @@ provider-name="primaeval">
         <source>https://github.com/primaeval/script.tvguide.fullscreen</source>
         <website>https://github.com/primaeval/script.tvguide.fullscreen</website>
         <email>primaeval</email>
+        <news>see changelog.txt for more details
+
+version 0.0.348
+- vod additions
+
+version 0.0.347
+- current addon name and icon controls in streamaddon
+- Listing View Future Days fix
+
+version 0.0.344-346
+- New VOD Screen from RayW1986
+ (via Menu VOD, Default skin VOD button, COMMAND_VOD in Action Editor)
+
+version 0.0.343
+- Settings \ Lab2 \ Include Sports Fixtures in xmltv Source
+
+version 0.0.342
+- Settings \ Appearance \ Show dummy channels on final page
+- Settings \ Lab2 \ Sports Fixtures
+        </news>
     </extension>
 </addon>
