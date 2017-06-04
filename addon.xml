@@ -24,25 +24,7 @@ provider-name="primaeval">
         <source>https://github.com/primaeval/script.tvguide.fullscreen</source>
         <website>https://github.com/primaeval/script.tvguide.fullscreen</website>
         <email>primaeval</email>
-        <news>see changelog.txt for more details
-
-version 0.0.348
-- vod additions
-
-version 0.0.347
-- current addon name and icon controls in streamaddon
-- Listing View Future Days fix
-
-version 0.0.344-346
-- New VOD Screen from RayW1986
- (via Menu VOD, Default skin VOD button, COMMAND_VOD in Action Editor)
-
-version 0.0.343
-- Settings \ Lab2 \ Include Sports Fixtures in xmltv Source
-
-version 0.0.342
-- Settings \ Appearance \ Show dummy channels on final page
-- Settings \ Lab2 \ Sports Fixtures
+        <news>version 0.17.349 - ignore url file names (force xmltv.xml, xmltv2.xml, mapping.ini etc)
         </news>
     </extension>
 </addon>
