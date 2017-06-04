@@ -164,25 +164,44 @@
 			<ondown>90002</ondown>
 			<visible>true</visible>
 		</control>
-		<!-- UNUSED BUTTONS -->
 		<control type="button" id="90002">
 			<posx>40</posx>
-			<posy>185</posy>
+			<posy>120</posy>
 			<width>200</width>
-			<height>40</height>
+			<height>30</height>
 			<texturefocus>tvg-menu-focus.png</texturefocus>
 			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
 			<align>center</align>
-			<aligny>center</aligny>
+			<aligny>top</aligny>
 			<font>font13</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
-			<label></label>
-			<onright>900021</onright>
+			<label>Recent Episodes</label>
+			<onright>900012</onright>
 			<onup>90001</onup>
 			<ondown>90003</ondown>
-			<visible>false</visible>
+			<visible>true</visible>
 		</control>
+		<control type="button" id="90003">
+			<posx>40</posx>
+			<posy>160</posy>
+			<width>200</width>
+			<height>30</height>
+			<texturefocus>tvg-menu-focus.png</texturefocus>
+			<texturenofocus>tvg-menu-nofocus.png</texturenofocus>
+			<align>center</align>
+			<aligny>top</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<focusedcolor>white</focusedcolor>
+			<label>Recent Movies</label>
+			<onright>900013</onright>
+			<onup>90002</onup>
+			<ondown>90003</ondown>
+			<visible>true</visible>
+		</control>
+		<!-- UNUSED BUTTONS -->
+
 		<control type="button" id="90003">
 			<posx>40</posx>
 			<posy>230</posy>
@@ -555,7 +574,7 @@
 					<texture>$INFO[ListItem.Art(poster)]</texture>
 				</control>
 			</focusedlayout>
-			<content target="" sortby="" sortorder="ascending">library://video/inprogressshows.xml</content>
+			<content target="" sortby="" sortorder="ascending">library://video/tvshows/inprogressshows.xml</content>
 		</control>
 		<control type="image">
 			<posx>280</posx>
@@ -634,6 +653,245 @@
 			<wrapmultiline>true</wrapmultiline>
 			<visible>Control.HasFocus(90001) | Control.HasFocus(900011)</visible>
 		</control>
+
+		<!-- 3rd VIDEO-ON-DEMAND SECTION -->
+		<control type="list" id="900012">
+			<description>In Progress</description>
+			<posx>40</posx>
+            <posy>280r</posy>
+            <width>1200</width>
+            <height>600</height>
+			<itemgap>5</itemgap>
+			<onleft>900012</onleft>
+			<onup>90002</onup>
+			<ondown>90002</ondown>
+			<orientation>horizontal</orientation>
+			<preloaditems>2</preloaditems>
+			<onclick>back</onclick>
+			<onclick>PlayMedia($INFO[ListItem.Path])</onclick>
+			<visible>Control.HasFocus(90002) | Control.HasFocus(900012)</visible>
+			<itemlayout width="160" height="240">
+				<control type="image">
+					<left>0</left>
+					<top>0</top>
+					<width>160</width>
+					<height>240</height>
+					<aspectratio>keep</aspectratio>
+					<texture>$INFO[ListItem.Icon]</texture>
+				</control>
+			</itemlayout>
+			<focusedlayout width="160" height="240">
+				<control type="image">
+					<left>0</left>
+					<top>0</top>
+					<width>160</width>
+					<height>240</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>vod-focus.png</texture>
+                    <visible>false</visible>
+				</control>
+				<control type="image">
+					<left>-10</left>
+					<top>-10</top>
+					<width>180</width>
+					<height>260</height>
+					<aspectratio>keep</aspectratio>
+					<texture>$INFO[ListItem.Icon]</texture>
+				</control>
+			</focusedlayout>
+			<content target="" sortby="" sortorder="ascending">library://video/tvshows/recentlyaddedepisodes.xml</content>
+		</control>
+		<control type="image">
+			<posx>280</posx>
+			<posy>40</posy>
+			<height>240</height>
+			<width>400</width>
+			<aspectratio>scale</aspectratio>
+			<align>left</align>
+            <aligny>top</aligny>
+			<info>Container(900012).ListItem.Icon</info>
+			<visible>Control.HasFocus(90002) | Control.HasFocus(900012)</visible>
+		</control>
+		<control type="textbox">
+			<posx>720</posx>
+			<posy>40</posy>
+			<width>600</width>
+			<info>Container(900012).ListItem.TVShowTitle</info>
+			<textcolor>ffffffff</textcolor>
+			<font>font13_title</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<height>40</height>
+			<wrapmultiline>true</wrapmultiline>
+			<visible>Control.HasFocus(90002) | Control.HasFocus(900012)</visible>
+		</control>
+		<control type="textbox">
+			<posx>720</posx>
+			<posy>80</posy>
+			<width>600</width>
+			<info>Container(900012).ListItem.Label</info>
+			<textcolor>ffffffff</textcolor>
+			<font>font13_title</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<height>40</height>
+			<wrapmultiline>true</wrapmultiline>
+			<visible>Control.HasFocus(90002) | Control.HasFocus(900012)</visible>
+		</control>
+		<control type="textbox">
+			<posx>720</posx>
+			<posy>120</posy>
+			<width>500</width>
+			<height>360</height>
+			<info>Container(900012).ListItem.Plot</info>
+			<textcolor>ffffffff</textcolor>
+			<font>font13</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<wrapmultiline>true</wrapmultiline>
+			<autoscroll delay="5000" time="1000" repeat="10000"></autoscroll>
+			<visible>Control.HasFocus(90002) | Control.HasFocus(900012)</visible>
+		</control>
+		<control type="textbox">
+			<posx>280</posx>
+			<posy>300</posy>
+			<width>400</width>
+			<label>[B]Genres:[/B] $INFO[Container(900012).ListItem.Genre]</label>
+			<textcolor>ffffffff</textcolor>
+			<font>font13</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<height>30</height>
+			<wrapmultiline>true</wrapmultiline>
+			<visible>Control.HasFocus(90002) | Control.HasFocus(900012)</visible>
+		</control>
+		<control type="textbox">
+			<posx>280</posx>
+			<posy>340</posy>
+			<width>400</width>
+			<label>[B]TV Network:[/B] $INFO[Container(900012).ListItem.Studio]</label>
+			<textcolor>ffffffff</textcolor>
+			<font>font13</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<height>30</height>
+			<wrapmultiline>true</wrapmultiline>
+			<visible>Control.HasFocus(90002) | Control.HasFocus(900012)</visible>
+		</control>
+
+
+		<!-- 4th VIDEO-ON-DEMAND SECTION -->
+		<control type="list" id="900013">
+			<description>In Progress</description>
+			<posx>40</posx>
+            <posy>280r</posy>
+            <width>1200</width>
+            <height>600</height>
+			<itemgap>5</itemgap>
+			<onleft>900013</onleft>
+			<onup>90003</onup>
+			<ondown>90003</ondown>
+			<orientation>horizontal</orientation>
+			<preloaditems>2</preloaditems>
+			<onclick>back</onclick>
+			<onclick>PlayMedia($INFO[ListItem.Path])</onclick>
+			<visible>Control.HasFocus(90003) | Control.HasFocus(900013)</visible>
+			<itemlayout width="160" height="240">
+				<control type="image">
+					<left>0</left>
+					<top>0</top>
+					<width>160</width>
+					<height>240</height>
+					<aspectratio>keep</aspectratio>
+					<texture>$INFO[ListItem.Art(poster)]</texture>
+				</control>
+			</itemlayout>
+			<focusedlayout width="160" height="240">
+				<control type="image">
+					<left>0</left>
+					<top>0</top>
+					<width>160</width>
+					<height>240</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>vod-focus.png</texture>
+                    <visible>false</visible>
+				</control>
+				<control type="image">
+					<left>-10</left>
+					<top>-10</top>
+					<width>180</width>
+					<height>260</height>
+					<aspectratio>keep</aspectratio>
+					<texture>$INFO[ListItem.Art(poster)]</texture>
+				</control>
+			</focusedlayout>
+			<content target="" sortby="" sortorder="ascending">library://video/movies/recentlyaddedmovies.xml</content>
+		</control>
+		<control type="image">
+			<posx>280</posx>
+			<posy>40</posy>
+			<height>240</height>
+			<width>400</width>
+			<aspectratio>scale</aspectratio>
+			<align>left</align>
+            <aligny>top</aligny>
+			<info>Container(900013).ListItem.Property(Fanart_Image)</info>
+			<visible>Control.HasFocus(90003) | Control.HasFocus(900013)</visible>
+		</control>
+		<control type="textbox">
+			<posx>720</posx>
+			<posy>40</posy>
+			<width>600</width>
+			<info>Container(900013).ListItem.Label</info>
+			<textcolor>ffffffff</textcolor>
+			<font>font13_title</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<height>40</height>
+			<wrapmultiline>true</wrapmultiline>
+			<visible>Control.HasFocus(90003) | Control.HasFocus(900013)</visible>
+		</control>
+		<control type="textbox">
+			<posx>720</posx>
+			<posy>80</posy>
+			<width>500</width>
+			<height>360</height>
+			<info>Container(900013).ListItem.Plot</info>
+			<textcolor>ffffffff</textcolor>
+			<font>font13</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<wrapmultiline>true</wrapmultiline>
+			<autoscroll delay="5000" time="1000" repeat="10000"></autoscroll>
+			<visible>Control.HasFocus(90003) | Control.HasFocus(900013)</visible>
+		</control>
+		<control type="textbox">
+			<posx>280</posx>
+			<posy>300</posy>
+			<width>400</width>
+			<label>[B]Genres:[/B] $INFO[Container(900013).ListItem.Genre]</label>
+			<textcolor>ffffffff</textcolor>
+			<font>font13</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<height>30</height>
+			<wrapmultiline>true</wrapmultiline>
+			<visible>Control.HasFocus(90003) | Control.HasFocus(900013)</visible>
+		</control>
+		<control type="textbox">
+			<posx>280</posx>
+			<posy>340</posy>
+			<width>400</width>
+			<label>[B]Studio:[/B] $INFO[Container(900013).ListItem.Studio]</label>
+			<textcolor>ffffffff</textcolor>
+			<font>font13</font>
+			<align>left</align>
+			<aligny>top</aligny>
+			<height>30</height>
+			<wrapmultiline>true</wrapmultiline>
+			<visible>Control.HasFocus(90003) | Control.HasFocus(900013)</visible>
+		</control>
+
 
     </controls>
 </window>

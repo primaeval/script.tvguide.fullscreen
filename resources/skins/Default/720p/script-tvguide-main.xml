@@ -1762,7 +1762,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>PIP</label>
+                    <label>pip</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1779,7 +1779,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>NOW</label>
+                    <label>now</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1795,7 +1795,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>NEXT</label>
+                    <label>next</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1811,7 +1811,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>SEARCH</label>
+                    <label>search</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1827,7 +1827,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>NUM</label>
+                    <label>num</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1843,7 +1843,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>STOP</label>
+                    <label>stop</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1859,7 +1859,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>FAVS</label>
+                    <label>favs</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1876,7 +1876,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>VOD</label>
+                    <label>vod</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1893,7 +1893,7 @@
                     <posy>480</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>MINE</label>
+                    <label>mine</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1910,7 +1910,7 @@
                     <posy>480</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>SPORT</label>
+                    <label>sport</label>
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -1928,7 +1928,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>HOME</label>
+                    <label>home</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1945,7 +1945,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>LEFT</label>
+                    <label>left</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1961,7 +1961,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>UP</label>
+                    <label>up</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1977,7 +1977,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>DOWN</label>
+                    <label>down</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -1993,7 +1993,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>RIGHT</label>
+                    <label>right</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -2009,7 +2009,7 @@
                     <posy>20r</posy>
                     <width>90</width>
                     <height>20</height>
-                    <label>MENU</label>
+                    <label>menu</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
@@ -2040,7 +2040,7 @@
                     <posy>20r</posy>
                     <width>80</width>
                     <height>20</height>
-                    <label>QUIT</label>
+                    <label>quit</label>
                     <font>font13</font>
                     <aligny>center</aligny>
                     <align>center</align>
