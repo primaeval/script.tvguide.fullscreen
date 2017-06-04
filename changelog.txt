@@ -1,3 +1,6 @@
+version 0.0.349
+- ignore url file names (force xmltv.xml, xmltv2.xml, mapping.ini etc)
+
 version 0.0.348
 - vod additions
 
