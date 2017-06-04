@@ -832,7 +832,6 @@ class Database(object):
         c.execute('SELECT * FROM programs WHERE channel LIKE ? AND source=? AND start_date<=? AND end_date>=? ',
                   [search, self.source.KEY, now, now])
         for row in c:
-            log(row)
             program = Program(channelMap[row['channel']], title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
                           description=row['description'], categories=row['categories'],
                           imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
@@ -1154,7 +1153,6 @@ class Database(object):
         c.execute("SELECT * FROM alt_custom_stream_url")
         stream_urls = []
         for row in c:
-            log(row)
             stream_urls.append((row["channel"],row["title"],row["stream_url"]))
         return stream_urls
 
@@ -1650,9 +1648,9 @@ class XMLTVSource(Source):
                 self.updateLocalFile(customFile, addon, force=force)
                 self.xmltvFile = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
             '''
-            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.file'), addon, force=force)
+            self.xmltvFile = self.updateLocalFile('xmltv.xml', addon.getSetting('xmltv.file'), addon, force=force)
         else:
-            self.xmltvFile = self.updateLocalFile(addon.getSetting('xmltv.url'), addon, force=force)
+            self.xmltvFile = self.updateLocalFile('xmltv.xml', addon.getSetting('xmltv.url'), addon, force=force)
 
         self.xmltv2File = ''
         if ADDON.getSetting('xmltv2.enabled') == 'true':
@@ -1669,9 +1667,9 @@ class XMLTVSource(Source):
                     self.updateLocalFile(customFile, addon, force=force)
                     self.xmltv2File = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
                 '''
-                self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.file'), addon, force=force)
+                self.xmltv2File = self.updateLocalFile('xmltv2.xml', addon.getSetting('xmltv2.file'), addon, force=force)
             else:
-                self.xmltv2File = self.updateLocalFile(addon.getSetting('xmltv2.url'), addon, force=force)
+                self.xmltv2File = self.updateLocalFile('xmltv2.xml', addon.getSetting('xmltv2.url'), addon, force=force)
 
         if addon.getSetting('categories.ini.enabled') == 'true':
             if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
@@ -1679,7 +1677,7 @@ class XMLTVSource(Source):
             else:
                 customFile = str(addon.getSetting('categories.ini.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True, force=force)
+                self.updateLocalFile('categories.ini', customFile, addon, True, force=force)
 
         if addon.getSetting('mapping.ini.enabled') == 'true':
             if self.mappingType == XMLTVSource.INI_TYPE_FILE:
@@ -1687,14 +1685,14 @@ class XMLTVSource(Source):
             else:
                 customFile = str(addon.getSetting('mapping.ini.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True, force=force)
+                self.updateLocalFile('mapping.ini', customFile, addon, True, force=force)
         if addon.getSetting('mapping.m3u.enabled') == 'true':
             if self.m3uType == XMLTVSource.INI_TYPE_FILE:
                 customFile = str(addon.getSetting('mapping.m3u.file'))
             else:
                 customFile = str(addon.getSetting('mapping.m3u.url'))
             if customFile:
-                self.updateLocalFile(customFile, addon, True, force=force)
+                self.updateLocalFile('mapping.m3u', customFile, addon, True, force=force)
 
         d = xbmcgui.Dialog()
         subscription_streams = {}
@@ -1790,10 +1788,11 @@ class XMLTVSource(Source):
 
 
 
-    def updateLocalFile(self, name, addon, isIni=False, force=False):
-        fileName = os.path.basename(name)
+    def updateLocalFile(self, fileName, url, addon, isIni=False, force=False):
+        #url = url.split('?')[0]
+        #fileName = os.path.basename(url)
         path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
-        fetcher = FileFetcher(name, addon)
+        fetcher = FileFetcher(url, path, addon)
         retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True
@@ -2843,10 +2842,11 @@ class DirectScheduleSource(Source):
                 xbmc.log('[%s] Use remote file: %s' % (ADDON.getAddonInfo('id'), customFile), xbmc.LOGDEBUG)
                 self.updateLocalFile(customFile, addon, True, force=force)
         '''
-
-    def updateLocalFile(self, name, addon, isIni=False, force=False):
-        path = os.path.join(self.PLUGIN_DATA, name)
-        fetcher = FileFetcher(name, addon)
+    def updateLocalFile(self, fileName, url, addon, isIni=False, force=False):
+        #url = url.split('?')[0]
+        #fileName = os.path.basename(url)
+        path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
+        fetcher = FileFetcher(url, path, addon)
         retVal = fetcher.fetchFile(force)
         if retVal == fetcher.FETCH_OK and not isIni:
             self.needReset = True

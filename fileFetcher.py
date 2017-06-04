@@ -63,20 +63,20 @@ class FileFetcher(object):
     addon = None
     fileType = TYPE_DEFAULT
 
-    def __init__(self, fileName, addon):
+    def __init__(self, url, path, addon):
         self.addon = addon
 
-        if fileName.startswith("http://") or fileName.startswith("sftp://") or fileName.startswith("ftp://") or \
-                fileName.startswith("https://") or fileName.startswith("ftps://") :
+        if url.startswith("http://") or url.startswith("sftp://") or url.startswith("ftp://") or \
+                url.startswith("https://") or url.startswith("ftps://") :
             self.fileType = self.TYPE_REMOTE
-            self.fileUrl = fileName
-            self.fileName = fileName.split('/')[-1]
-            self.filePath = os.path.join(self.basePath, fileName.split('/')[-1])
+            self.fileUrl = url
+            self.fileName = path.split('/')[-1]
+            self.filePath = path
         else:
             self.fileType = self.TYPE_DEFAULT
-            self.fileUrl = fileName
-            self.fileName = os.path.basename(fileName)
-            self.filePath = os.path.join(self.basePath,os.path.basename(fileName))
+            self.fileUrl = url
+            self.fileName = path.split('/')[-1]
+            self.filePath = path
 
         # make sure the folder is actually there already!
         if not os.path.exists(self.basePath):
