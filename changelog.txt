@@ -1,3 +1,6 @@
+version 0.0.350
+- re-enable ActivateWindow Favourites shortcut to play Folders
+
 version 0.0.349
 - ignore url file names (force xmltv.xml, xmltv2.xml, mapping.ini etc)
 
