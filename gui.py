@@ -2827,6 +2827,7 @@ class TVGuide(xbmcgui.WindowXML):
                     xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url[1:])
                 elif url[0:14] == "ActivateWindow":
                     xbmc.executebuiltin(url)
+                    return True
                 elif url[0:9] == 'plugin://':
                     if self.vpnswitch: self.api.filterAndSwitch(url, 0, self.vpndefault, True)
                     if self.alternativePlayback:
