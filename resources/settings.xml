@@ -235,8 +235,8 @@
         <setting type="sep"/>
         <setting label="Action Editor" type="action" action="RunScript($CWD/ActionEditor.py)" />
         <setting id="mine1" label="Custom Command for MINE" type="text" default="ActivateWindow(Videos,library://video,return)"/>
-        <setting type="lsep" label="Format: %Y year %m month %d day %H hour %M minute"/>
-        <setting type="lsep" label="%I channel id %T program title %D duration(minutes)"/>
+        <setting type="lsep" label="Format: %Y year %m month %d day %H hour %M minute %D duration(minutes)"/>
+        <setting type="lsep" label="%I channel id %T program title %S season %E episode"/>
         <setting id="catchup.addon" label="Catchup url" type="text" default=""/>
     </category>
     <category label="Lab2">

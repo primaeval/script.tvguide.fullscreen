@@ -1056,6 +1056,8 @@ class TVGuide(xbmcgui.WindowXML):
                 url = url.replace("%M",str(startDate.minute))
                 url = url.replace("%I",id)
                 url = url.replace("%T",name)
+                url = url.replace("%S",str(program.season))
+                url = url.replace("%E",str(program.episode))
                 url = url.replace("%D",str(minutes))
                 self.player.play(item=url)
 
@@ -4711,6 +4713,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 url = url.replace("%M",str(startDate.minute))
                 url = url.replace("%I",id)
                 url = url.replace("%T",name)
+                url = url.replace("%S",str(program.season))
+                url = url.replace("%E",str(program.episode))
                 url = url.replace("%D",str(minutes))
                 xbmc.Player().play(item=url)
         elif controlId == self.C_POPUP_CATEGORY:
