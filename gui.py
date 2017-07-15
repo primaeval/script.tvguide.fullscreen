@@ -2829,7 +2829,7 @@ class TVGuide(xbmcgui.WindowXML):
         url = self.database.getStreamUrl(channel)
         alt_url = self.database.getAltStreamUrl(channel)
         self.alt_urls = []
-        if url and alt_url:
+        if url and alt_url and (ADDON.getSetting('play.alt.fallback') == 'false'):
             d = xbmcgui.Dialog()
             alt_urls = [url] + [x[0] for x in alt_url]
             self.alt_urls = alt_urls

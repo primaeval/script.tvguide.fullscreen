@@ -81,6 +81,7 @@
         <setting type="sep"/>
         <setting id="play.alt.choose" label="Always Choose Channel if Alternative Streams Exist" type="bool" default="false" />
         <setting id="play.alt.continue" label="Try Other Alternative Streams if Play Fails" type="bool" default="false" />
+        <setting id="play.alt.fallback" label="Use Alternative Streams as a Fallback Only" type="bool" default="false" />
         <setting type="sep"/>
         <setting label="30119" type="lsep" />
         <setting id="enable.osd" label="30118" type="bool" default="true" />
