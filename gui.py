@@ -1039,6 +1039,26 @@ class TVGuide(xbmcgui.WindowXML):
                     if stream:
                         self.database.setCustomStreamUrl(program.channel, stream)
                         self.playChannel(program.channel, program)
+        elif action.getId() in COMMAND_ACTIONS["CATCHUP"]:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                id = program.channel.id
+                name = program.title
+                duration = program.endDate - program.startDate
+                minutes = duration.seconds // 60
+                url = ADDON.getSetting('catchup.addon')
+                #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
+                startDate = program.startDate
+                url = url.replace("%Y",str(startDate.year))
+                url = url.replace("%m",str(startDate.month))
+                url = url.replace("%d",str(startDate.day))
+                url = url.replace("%H",str(startDate.hour))
+                url = url.replace("%M",str(startDate.minute))
+                url = url.replace("%I",id)
+                url = url.replace("%T",name)
+                url = url.replace("%D",str(minutes))
+                self.player.play(item=url)
+
         elif action.getId() in COMMAND_ACTIONS["EXTENDED_INFO"]:
             program = self._getProgramFromControl(controlInFocus)
             title = program.title
@@ -4188,6 +4208,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CHOOSE_ALT = 4014
     C_POPUP_CHOOSE_CLOSE = 4015 # deprecated?
     C_POPUP_VODTV = 4016
+    C_POPUP_CATCHUP_ADDON = 4017
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_SETUP_CHANNEL_TITLE = 44101
@@ -4673,6 +4694,25 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if not self.program.channel.isPlayable():
                 playControl = self.getControl(self.C_POPUP_PLAY)
                 #playControl.setEnabled(False)
+        elif controlId == self.C_POPUP_CATCHUP_ADDON:
+            program = self.program
+            if program:
+                id = program.channel.id
+                name = program.title
+                duration = program.endDate - program.startDate
+                minutes = duration.seconds // 60
+                url = ADDON.getSetting('catchup.addon')
+                #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
+                startDate = program.startDate
+                url = url.replace("%Y",str(startDate.year))
+                url = url.replace("%m",str(startDate.month))
+                url = url.replace("%d",str(startDate.day))
+                url = url.replace("%H",str(startDate.hour))
+                url = url.replace("%M",str(startDate.minute))
+                url = url.replace("%I",id)
+                url = url.replace("%T",name)
+                url = url.replace("%D",str(minutes))
+                xbmc.Player().play(item=url)
         elif controlId == self.C_POPUP_CATEGORY:
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
