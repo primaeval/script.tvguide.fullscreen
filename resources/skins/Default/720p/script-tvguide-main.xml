@@ -1580,6 +1580,34 @@
                 <visible>!Control.IsVisible(5000)+Control.IsVisible(5002)</visible>
             </control>
 
+            <control type="image" id="44025">
+                <description>Addon Logo</description>
+                <posx>0</posx>
+                <posy>55r</posy>
+                <width>50</width>
+                <height>50</height>
+                <aspectratio>keep</aspectratio>
+                <align>right</align>
+                <texture>-</texture>
+                <visible>true</visible>
+            </control>
+
+            <control type="label" id="44026">
+                <description>Addon Name</description>
+                <posx>55</posx>
+                <posy>30r</posy>
+                <width>200</width>
+                <height>20</height>
+                <align>left</align>
+                <aligny>top</aligny>
+                <font>font13_title</font>
+                <textcolor>white</textcolor>
+                <shadowcolor>black</shadowcolor>
+                <label></label>
+                <align>left</align>
+                <scroll>true</scroll>
+            </control>
+
             <control type="label" id="4300">
                 <description>visibility marker for mouse control group</description>
                 <posx>0</posx>

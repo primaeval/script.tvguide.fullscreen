@@ -315,6 +315,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_UP_NEXT_TIME = 9009
     C_NEXT_UP_NEXT_CHANNEL_IMAGE = 9010
     C_MAIN_UP_NEXT_TIME_REMAINING = 9012
+    C_MAIN_ADDON_LOGO = 44025
+    C_MAIN_ADDON_LABEL = 44026
 
     def __new__(cls):
         return super(TVGuide, cls).__new__(cls, 'script-tvguide-main.xml', SKIN_PATH, SKIN)
@@ -2229,6 +2231,34 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlVisible(self.C_MAIN_LOGO,True)
             else:
                 self.setControlVisible(self.C_MAIN_LOGO,False)
+
+            if program.channel and ADDON.getSetting('addon.logo') == "true":
+                url = self.database.getStreamUrl(program.channel)
+                if url:
+                    if url.startswith('plugin://'):
+                        match = re.search('plugin://(.*?)/.*',url)
+                        if match:
+                            id = match.group(1)
+                            addon = xbmcaddon.Addon(id)
+                            name = addon.getAddonInfo('name')
+                            icon = addon.getAddonInfo('icon')
+                    else:
+                        name = "Playlist"
+                        icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
+                    if name:
+                        try:
+                            control = self.getControl(self.C_MAIN_ADDON_LABEL)
+                            if control:
+                                control.setLabel(name)
+                        except:
+                            pass
+                    if icon:
+                        try:
+                            control = self.getControl(self.C_MAIN_ADDON_LOGO)
+                            if control:
+                                control.setImage(icon)
+                        except:
+                            pass
 
             program_image = ''
             if ADDON.getSetting('program.image') == 'true':
