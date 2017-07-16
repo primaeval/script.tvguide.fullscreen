@@ -700,6 +700,26 @@
             <visible>false</visible>
         </control>
 
+        <control type="button" id="4017">
+            <description>catchup addon</description>
+            <posx>20</posx>
+            <posy>650</posy>
+            <width>200</width>
+            <height>50</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4016</onup>
+            <ondown>4004</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Catchup Addon</label>
+            <visible>true</visible>
+        </control>
+
         <control type="image" id="4025">
             <description>Addon Logo</description>
             <posx>1165</posx>

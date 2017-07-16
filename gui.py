@@ -315,6 +315,8 @@ class TVGuide(xbmcgui.WindowXML):
     C_NEXT_UP_NEXT_TIME = 9009
     C_NEXT_UP_NEXT_CHANNEL_IMAGE = 9010
     C_MAIN_UP_NEXT_TIME_REMAINING = 9012
+    C_MAIN_ADDON_LOGO = 44025
+    C_MAIN_ADDON_LABEL = 44026
 
     def __new__(cls):
         return super(TVGuide, cls).__new__(cls, 'script-tvguide-main.xml', SKIN_PATH, SKIN)
@@ -1037,6 +1039,28 @@ class TVGuide(xbmcgui.WindowXML):
                     if stream:
                         self.database.setCustomStreamUrl(program.channel, stream)
                         self.playChannel(program.channel, program)
+        elif action.getId() in COMMAND_ACTIONS["CATCHUP"]:
+            program = self._getProgramFromControl(controlInFocus)
+            if program:
+                id = program.channel.id
+                name = program.title
+                duration = program.endDate - program.startDate
+                minutes = duration.seconds // 60
+                url = ADDON.getSetting('catchup.addon')
+                #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
+                startDate = program.startDate
+                url = url.replace("%Y",str(startDate.year))
+                url = url.replace("%m",str(startDate.month))
+                url = url.replace("%d",str(startDate.day))
+                url = url.replace("%H",str(startDate.hour))
+                url = url.replace("%M",str(startDate.minute))
+                url = url.replace("%I",id)
+                url = url.replace("%T",name)
+                url = url.replace("%S",str(program.season))
+                url = url.replace("%E",str(program.episode))
+                url = url.replace("%D",str(minutes))
+                self.player.play(item=url)
+
         elif action.getId() in COMMAND_ACTIONS["EXTENDED_INFO"]:
             program = self._getProgramFromControl(controlInFocus)
             title = program.title
@@ -2230,6 +2254,34 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 self.setControlVisible(self.C_MAIN_LOGO,False)
 
+            if program.channel and ADDON.getSetting('addon.logo') == "true":
+                url = self.database.getStreamUrl(program.channel)
+                if url:
+                    if url.startswith('plugin://'):
+                        match = re.search('plugin://(.*?)/.*',url)
+                        if match:
+                            id = match.group(1)
+                            addon = xbmcaddon.Addon(id)
+                            name = addon.getAddonInfo('name')
+                            icon = addon.getAddonInfo('icon')
+                    else:
+                        name = "Playlist"
+                        icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
+                    if name:
+                        try:
+                            control = self.getControl(self.C_MAIN_ADDON_LABEL)
+                            if control:
+                                control.setLabel(name)
+                        except:
+                            pass
+                    if icon:
+                        try:
+                            control = self.getControl(self.C_MAIN_ADDON_LOGO)
+                            if control:
+                                control.setImage(icon)
+                        except:
+                            pass
+
             program_image = ''
             if ADDON.getSetting('program.image') == 'true':
                 if program.imageSmall:
@@ -2776,10 +2828,10 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlVisible(self.C_MAIN_IMAGE,True)
         url = self.database.getStreamUrl(channel)
         alt_url = self.database.getAltStreamUrl(channel)
-        self.alt_urls = []
-        if url and alt_url:
+        self.alt_urls = [x[0] for x in alt_url]
+        if url and alt_url and (ADDON.getSetting('play.alt.fallback') == 'false'):
             d = xbmcgui.Dialog()
-            alt_urls = [url] + [x[0] for x in alt_url]
+            alt_urls = [url] + self.alt_urls
             self.alt_urls = alt_urls
             names = []
             alt_url = [(url,channel.title)] + alt_url
@@ -2925,6 +2977,7 @@ class TVGuide(xbmcgui.WindowXML):
         if ADDON.getSetting('play.alt.continue') == 'true':
             if self.alt_urls:
                 url = self.alt_urls.pop(0)
+                #dialog.notification('Trying', url, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
                 #TODO meta
                 if url.startswith('@'):
                     if self.vpnswitch: self.api.filterAndSwitch(url[1:], 0, self.vpndefault, True)
@@ -4158,6 +4211,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_CHOOSE_ALT = 4014
     C_POPUP_CHOOSE_CLOSE = 4015 # deprecated?
     C_POPUP_VODTV = 4016
+    C_POPUP_CATCHUP_ADDON = 4017
     C_POPUP_CHANNEL_LOGO = 4100
     C_POPUP_CHANNEL_TITLE = 4101
     C_POPUP_SETUP_CHANNEL_TITLE = 44101
@@ -4643,6 +4697,27 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if not self.program.channel.isPlayable():
                 playControl = self.getControl(self.C_POPUP_PLAY)
                 #playControl.setEnabled(False)
+        elif controlId == self.C_POPUP_CATCHUP_ADDON:
+            program = self.program
+            if program:
+                id = program.channel.id
+                name = program.title
+                duration = program.endDate - program.startDate
+                minutes = duration.seconds // 60
+                url = ADDON.getSetting('catchup.addon')
+                #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
+                startDate = program.startDate
+                url = url.replace("%Y",str(startDate.year))
+                url = url.replace("%m",str(startDate.month))
+                url = url.replace("%d",str(startDate.day))
+                url = url.replace("%H",str(startDate.hour))
+                url = url.replace("%M",str(startDate.minute))
+                url = url.replace("%I",id)
+                url = url.replace("%T",name)
+                url = url.replace("%S",str(program.season))
+                url = url.replace("%E",str(program.episode))
+                url = url.replace("%D",str(minutes))
+                xbmc.Player().play(item=url)
         elif controlId == self.C_POPUP_CATEGORY:
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
