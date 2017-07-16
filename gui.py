@@ -2828,10 +2828,10 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlVisible(self.C_MAIN_IMAGE,True)
         url = self.database.getStreamUrl(channel)
         alt_url = self.database.getAltStreamUrl(channel)
-        self.alt_urls = []
+        self.alt_urls = [x[0] for x in alt_url]
         if url and alt_url and (ADDON.getSetting('play.alt.fallback') == 'false'):
             d = xbmcgui.Dialog()
-            alt_urls = [url] + [x[0] for x in alt_url]
+            alt_urls = [url] + self.alt_urls
             self.alt_urls = alt_urls
             names = []
             alt_url = [(url,channel.title)] + alt_url
@@ -2977,6 +2977,7 @@ class TVGuide(xbmcgui.WindowXML):
         if ADDON.getSetting('play.alt.continue') == 'true':
             if self.alt_urls:
                 url = self.alt_urls.pop(0)
+                #dialog.notification('Trying', url, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
                 #TODO meta
                 if url.startswith('@'):
                     if self.vpnswitch: self.api.filterAndSwitch(url[1:], 0, self.vpndefault, True)
