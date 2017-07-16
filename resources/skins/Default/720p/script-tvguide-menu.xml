@@ -717,7 +717,7 @@
             <textcolor>white</textcolor>
             <focusedcolor>black</focusedcolor>
             <label>Catchup Addon</label>
-            <visible>true</visible>
+            <visible>false</visible>
         </control>
 
         <control type="image" id="4025">

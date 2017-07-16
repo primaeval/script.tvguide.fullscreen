@@ -1,3 +1,11 @@
+version 0.0.351
+- Settings \ Appearance \ Show Addon Logo in EPG above Program Image
+- use controls 44025 and 44026 for addon logo and name in main xml file
+- Settings \ Lab1 \ Catchup url
+- Catchup Command Action and Button
+- eg plugin://plugin.video.XXX/catchup/%I/%Y-%m-%d:%H-%M/%T/%D
+- Catchup Addon button is hidden in Default skin and has id 4017
+
 version 0.0.350
 - re-enable ActivateWindow Favourites shortcut to play Folders
 
