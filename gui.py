@@ -155,6 +155,7 @@ def remove_formatting(label):
     label = re.sub(r"\[/?COLOR.*?\]",'',label)
     return label
 
+
 class Point(object):
     def __init__(self):
         self.x = self.y = 0
@@ -561,6 +562,41 @@ class TVGuide(xbmcgui.WindowXML):
                 programprogresscontrol.setWidth(200)
 
         self.setControlVisible(self.C_MAIN_IMAGE,True)
+
+
+    def play_catchup(self, program):
+        file_name = 'special://profile/addon_data/script.tvguide.fullscreen/catchup.ini'
+        f = xbmcvfs.File(file_name,"rb")
+        data = f.read()
+        f.close()
+        name_sub = re.findall('(.*?)=(.*)',data)
+        name_sub = sorted(name_sub, key=lambda x: x[0].lower())
+        name_sub = [list(i) for i in name_sub]
+        names = [i[0] for i in name_sub]
+        d = xbmcgui.Dialog()
+        result = d.select(program.title,["Play"] + names)
+        if result == 0:
+            self.playOrChoose(program)
+        elif result >= 1:
+            url = name_sub[result-1][1]
+            id = program.channel.id
+            name = program.title
+            duration = program.endDate - program.startDate
+            minutes = duration.seconds // 60
+            #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
+            startDate = program.startDate
+            url = url.replace("%Y",str(startDate.year))
+            url = url.replace("%m",str(startDate.month))
+            url = url.replace("%d",str(startDate.day))
+            url = url.replace("%H",str(startDate.hour))
+            url = url.replace("%M",str(startDate.minute))
+            url = url.replace("%I",id)
+            url = url.replace("%T",name)
+            url = url.replace("%S",str(program.season))
+            url = url.replace("%E",str(program.episode))
+            url = url.replace("%D",str(minutes))
+            log(url)
+            xbmc.Player().play(item=url)
 
     def playShortcut(self):
         self.channel_number_input = False
@@ -1042,25 +1078,7 @@ class TVGuide(xbmcgui.WindowXML):
         elif action.getId() in COMMAND_ACTIONS["CATCHUP"]:
             program = self._getProgramFromControl(controlInFocus)
             if program:
-                id = program.channel.id
-                name = program.title
-                duration = program.endDate - program.startDate
-                minutes = duration.seconds // 60
-                url = ADDON.getSetting('catchup.addon')
-                #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
-                startDate = program.startDate
-                url = url.replace("%Y",str(startDate.year))
-                url = url.replace("%m",str(startDate.month))
-                url = url.replace("%d",str(startDate.day))
-                url = url.replace("%H",str(startDate.hour))
-                url = url.replace("%M",str(startDate.minute))
-                url = url.replace("%I",id)
-                url = url.replace("%T",name)
-                url = url.replace("%S",str(program.season))
-                url = url.replace("%E",str(program.episode))
-                url = url.replace("%D",str(minutes))
-                self.player.play(item=url)
-
+                self.play_catchup(program)
         elif action.getId() in COMMAND_ACTIONS["EXTENDED_INFO"]:
             program = self._getProgramFromControl(controlInFocus)
             title = program.title
@@ -1524,29 +1542,7 @@ class TVGuide(xbmcgui.WindowXML):
             end = program.endDate
             ask = ADDON.getSetting('catchup.dialog')
             if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
-                d = xbmcgui.Dialog()
-                result = d.select(program.title,["Play", "Catchup"])
-                if result == 0:
-                    self.playOrChoose(program)
-                elif result == 1:
-                    id = program.channel.id
-                    name = program.title
-                    duration = program.endDate - program.startDate
-                    minutes = duration.seconds // 60
-                    url = ADDON.getSetting('catchup.addon')
-                    #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
-                    startDate = program.startDate
-                    url = url.replace("%Y",str(startDate.year))
-                    url = url.replace("%m",str(startDate.month))
-                    url = url.replace("%d",str(startDate.day))
-                    url = url.replace("%H",str(startDate.hour))
-                    url = url.replace("%M",str(startDate.minute))
-                    url = url.replace("%I",id)
-                    url = url.replace("%T",name)
-                    url = url.replace("%S",str(program.season))
-                    url = url.replace("%E",str(program.episode))
-                    url = url.replace("%D",str(minutes))
-                    xbmc.Player().play(item=url)
+                self.play_catchup(program)
             else:
                 self.playOrChoose(program)
 
@@ -2125,6 +2121,9 @@ class TVGuide(xbmcgui.WindowXML):
                         xbmc.executebuiltin('RunScript(script.extendedinfo,info=extendedtvinfo,name=%s)' % (program.title))
             else:
                 xbmcgui.Dialog().notification("TV Guide Fullscreen", "Couldn't find: %s" % title)
+        elif buttonClicked == PopupMenu.C_POPUP_CATCHUP_ADDON:
+            self.play_catchup(program)
+
 
     def _showCatMenu(self):
         #self._hideControl(self.C_MAIN_MOUSE_CONTROLS)
@@ -4728,24 +4727,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         elif controlId == self.C_POPUP_CATCHUP_ADDON:
             program = self.program
             if program:
-                id = program.channel.id
-                name = program.title
-                duration = program.endDate - program.startDate
-                minutes = duration.seconds // 60
-                url = ADDON.getSetting('catchup.addon')
-                #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
-                startDate = program.startDate
-                url = url.replace("%Y",str(startDate.year))
-                url = url.replace("%m",str(startDate.month))
-                url = url.replace("%d",str(startDate.day))
-                url = url.replace("%H",str(startDate.hour))
-                url = url.replace("%M",str(startDate.minute))
-                url = url.replace("%I",id)
-                url = url.replace("%T",name)
-                url = url.replace("%S",str(program.season))
-                url = url.replace("%E",str(program.episode))
-                url = url.replace("%D",str(minutes))
-                xbmc.Player().play(item=url)
+                self.buttonClicked = controlId
+                self.close()
         elif controlId == self.C_POPUP_CATEGORY:
             cList = self.getControl(self.C_POPUP_CATEGORY)
             item = cList.getSelectedItem()
