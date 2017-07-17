@@ -1519,7 +1519,36 @@ class TVGuide(xbmcgui.WindowXML):
         if ADDON.getSetting('play.menu') == 'true':
             self._showContextMenu(program)
         else:
-            self.playOrChoose(program)
+            now = datetime.datetime.now()
+            start = program.startDate
+            end = program.endDate
+            ask = ADDON.getSetting('catchup.dialog')
+            if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                d = xbmcgui.Dialog()
+                result = d.select(program.title,["Play", "Catchup"])
+                if result == 0:
+                    self.playOrChoose(program)
+                elif result == 1:
+                    id = program.channel.id
+                    name = program.title
+                    duration = program.endDate - program.startDate
+                    minutes = duration.seconds // 60
+                    url = ADDON.getSetting('catchup.addon')
+                    #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
+                    startDate = program.startDate
+                    url = url.replace("%Y",str(startDate.year))
+                    url = url.replace("%m",str(startDate.month))
+                    url = url.replace("%d",str(startDate.day))
+                    url = url.replace("%H",str(startDate.hour))
+                    url = url.replace("%M",str(startDate.minute))
+                    url = url.replace("%I",id)
+                    url = url.replace("%T",name)
+                    url = url.replace("%S",str(program.season))
+                    url = url.replace("%E",str(program.episode))
+                    url = url.replace("%D",str(minutes))
+                    xbmc.Player().play(item=url)
+            else:
+                self.playOrChoose(program)
 
 
     def playOrChoose(self,program):

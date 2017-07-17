@@ -239,6 +239,7 @@
         <setting type="lsep" label="Format: %Y year %m month %d day %H hour %M minute %D duration(minutes)"/>
         <setting type="lsep" label="%I channel id %T program title %S season %E episode"/>
         <setting id="catchup.addon" label="Catchup url" type="text" default=""/>
+        <setting id="catchup.dialog" label="Ask to Catchup" type="enum" default="0" values="Never|Start &lt; Now|End &lt; Now|Always"/>
     </category>
     <category label="Lab2">
         <setting type="lsep" label="Experimental Alternative Data Sources"/>
