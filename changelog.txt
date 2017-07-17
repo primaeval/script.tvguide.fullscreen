@@ -1,3 +1,9 @@
+version 0.0.352
+- multiple Catchup Addons in Lab1 \ Manage Catchup Urls
+- Catchup Addon dialog via Lab1 \ Ask to Catchup
+- removed ffmpeg chmod
+- only download tvgf backgrounds
+
 version 0.0.351
 - Settings \ Appearance \ Show Addon Logo in EPG above Program Image
 - use controls 44025 and 44026 for addon logo and name in main xml file
