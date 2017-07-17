@@ -32,13 +32,15 @@ import stat
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
+'''
 ffmpeg = ADDON.getSetting('autoplaywiths.ffmpeg')
 if ffmpeg:
-    st = os.stat(ffmpeg)
     try:
+        st = os.stat(ffmpeg)
         os.chmod(ffmpeg, st.st_mode | stat.S_IEXEC)
     except:
         pass
+'''
 
 if len(sys.argv) > 1:
     category = sys.argv[1]
@@ -54,11 +56,13 @@ if len(sys.argv) > 2:
 assets = [
 ('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/sunburst.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/sunburst.png'),
 ('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/charcoal.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/charcoal.png'),
-('special://profile/addon_data/script.tvguide.fullscreen/actions.json','special://home/addons/script.tvguide.fullscreen/resources/actions.json')
 ]
-for (dst,src) in assets:
-    if not xbmcvfs.exists(dst):
-        xbmcvfs.copy(src,dst)
+if ADDON.getAddonInfo('id').endswith('fullscreen'):
+    for (dst,src) in assets:
+        if not xbmcvfs.exists(dst):
+            xbmcvfs.copy(src,dst)
+
+xbmcvfs.copy('special://home/addons/script.tvguide.fullscreen/resources/actions.json','special://profile/addon_data/script.tvguide.fullscreen/actions.json')
 
 try:
     import gui
