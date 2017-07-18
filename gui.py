@@ -900,7 +900,7 @@ class TVGuide(xbmcgui.WindowXML):
                     name = addon.getAddonInfo('name')
                     icon = addon.getAddonInfo('icon')
             else:
-                name = "Playlist"
+                name = "url"
                 icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
         stream = ""
         title = ""
@@ -2283,32 +2283,8 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlVisible(self.C_MAIN_LOGO,False)
 
             if program.channel and ADDON.getSetting('addon.logo') == "true":
-                url = self.database.getStreamUrl(program.channel)
-                if url:
-                    if url.startswith('plugin://'):
-                        match = re.search('plugin://(.*?)/.*',url)
-                        if match:
-                            id = match.group(1)
-                            addon = xbmcaddon.Addon(id)
-                            name = addon.getAddonInfo('name')
-                            icon = addon.getAddonInfo('icon')
-                    else:
-                        name = "Playlist"
-                        icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
-                    if name:
-                        try:
-                            control = self.getControl(self.C_MAIN_ADDON_LABEL)
-                            if control:
-                                control.setLabel(name)
-                        except:
-                            pass
-                    if icon:
-                        try:
-                            control = self.getControl(self.C_MAIN_ADDON_LOGO)
-                            if control:
-                                control.setImage(icon)
-                        except:
-                            pass
+                threading.Thread(target=self.getAddonLogo,args=(program.channel,)).start()
+
 
             program_image = ''
             if ADDON.getSetting('program.image') == 'true':
@@ -2383,6 +2359,34 @@ class TVGuide(xbmcgui.WindowXML):
 
             #if not self.osdEnabled and self.player.isPlaying():
             #    self.player.stop()
+
+    def getAddonLogo(self,channel):
+        url = self.database.getStreamUrl(channel)
+        name = ""
+        icon = ""
+        if url:
+            if url.startswith('plugin://'):
+                match = re.search('plugin://(.*?)/.*',url)
+                if match:
+                    id = match.group(1)
+                    addon = xbmcaddon.Addon(id)
+                    name = addon.getAddonInfo('name')
+                    icon = addon.getAddonInfo('icon')
+            else:
+                name = "url"
+                icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
+        try:
+            control = self.getControl(self.C_MAIN_ADDON_LABEL)
+            if control:
+                control.setLabel(name)
+        except:
+            pass
+        try:
+            control = self.getControl(self.C_MAIN_ADDON_LOGO)
+            if control:
+                control.setImage(icon)
+        except:
+            pass
 
     def getImage(self,program_title,title,year,season,episode,movie,load):
         img = ''
@@ -4536,7 +4540,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                         name = addon.getAddonInfo('name')
                         icon = addon.getAddonInfo('icon')
                 else:
-                    name = "Playlist"
+                    name = "url"
                     icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
                 if name:
                     try:
@@ -5181,7 +5185,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     name = addon.getAddonInfo('name')
                     icon = addon.getAddonInfo('icon')
             else:
-                name = "Playlist"
+                name = "url"
                 icon = xbmcaddon.Addon('script.tvguide.fullscreen').getAddonInfo('icon')
             if name:
                 try:
