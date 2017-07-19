@@ -2363,10 +2363,13 @@ class TVGuide(xbmcgui.WindowXML):
             #    self.player.stop()
 
     def getAddonLogo(self,channel):
-        xbmc.sleep(350)
+        xbmc.sleep(50)
         if channel.id != self.current_channel_id:
             return
-        url = self.database.getStreamUrl(channel)
+        try:
+            url = self.database.getStreamUrl(channel)
+        except:
+            return
         name = ""
         icon = ""
         if url:
