@@ -369,6 +369,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.focusedProgram = None
         self.quickEpgShowInfo = False
         self.playing_catchup_channel = False
+        self.current_channel_id = None
 
         self.vpnswitch = False
         self.vpndefault = False
@@ -2283,6 +2284,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.setControlVisible(self.C_MAIN_LOGO,False)
 
             if program.channel and ADDON.getSetting('addon.logo') == "true":
+                self.current_channel_id = program.channel.id
                 threading.Thread(target=self.getAddonLogo,args=(program.channel,)).start()
 
 
@@ -2361,7 +2363,13 @@ class TVGuide(xbmcgui.WindowXML):
             #    self.player.stop()
 
     def getAddonLogo(self,channel):
-        url = self.database.getStreamUrl(channel)
+        xbmc.sleep(50)
+        if channel.id != self.current_channel_id:
+            return
+        try:
+            url = self.database.getStreamUrl(channel)
+        except:
+            return
         name = ""
         icon = ""
         if url:
