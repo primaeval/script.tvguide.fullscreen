@@ -586,6 +586,11 @@ class TVGuide(xbmcgui.WindowXML):
             minutes = duration.seconds // 60
             #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
             startDate = program.startDate
+            year = ""
+            match = re.search('(.*?) \(([0-9]{4})\)',program.title)
+            if match:
+                name = match.group(1)
+                year = match.group(2)
             url = url.replace("%Y",str(startDate.year))
             url = url.replace("%m",str(startDate.month))
             url = url.replace("%d",str(startDate.day))
@@ -596,7 +601,7 @@ class TVGuide(xbmcgui.WindowXML):
             url = url.replace("%S",str(program.season))
             url = url.replace("%E",str(program.episode))
             url = url.replace("%D",str(minutes))
-            log(url)
+            url = url.replace("%y",str(year))
             xbmc.Player().play(item=url)
 
     def playShortcut(self):
