@@ -3879,9 +3879,13 @@ class TVGuide(xbmcgui.WindowXML):
                 customFile = ADDON.getSetting('mapping.m3u.url')
             data = xbmcvfs.File(customFile,'rb').read()
             if data:
-                matches = re.findall(r'#EXTINF:.*?,(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
+                matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
                 stream_urls = []
-                for name,url in matches:
+                for attributes,name,url in matches:
+                    match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
+                    if match:
+                        name = match.group(1)
+                    name = name.strip()
                     if name and url:
                         stream_urls.append((name.decode("utf8"),url))
                 if stream_urls:
