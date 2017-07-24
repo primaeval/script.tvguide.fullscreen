@@ -586,6 +586,11 @@ class TVGuide(xbmcgui.WindowXML):
             minutes = duration.seconds // 60
             #plugin://plugin.video.XXX/play_archive/%I/%Y-%m-%d:%H-%M/%T/%D
             startDate = program.startDate
+            year = ""
+            match = re.search('(.*?) \(([0-9]{4})\)',program.title)
+            if match:
+                name = match.group(1)
+                year = match.group(2)
             url = url.replace("%Y",str(startDate.year))
             url = url.replace("%m",str(startDate.month))
             url = url.replace("%d",str(startDate.day))
@@ -596,7 +601,7 @@ class TVGuide(xbmcgui.WindowXML):
             url = url.replace("%S",str(program.season))
             url = url.replace("%E",str(program.episode))
             url = url.replace("%D",str(minutes))
-            log(url)
+            url = url.replace("%y",str(year))
             xbmc.Player().play(item=url)
 
     def playShortcut(self):
@@ -3874,9 +3879,13 @@ class TVGuide(xbmcgui.WindowXML):
                 customFile = ADDON.getSetting('mapping.m3u.url')
             data = xbmcvfs.File(customFile,'rb').read()
             if data:
-                matches = re.findall(r'#EXTINF:.*?,(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
+                matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
                 stream_urls = []
-                for name,url in matches:
+                for attributes,name,url in matches:
+                    match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
+                    if match:
+                        name = match.group(1)
+                    name = name.strip()
                     if name and url:
                         stream_urls.append((name.decode("utf8"),url))
                 if stream_urls:

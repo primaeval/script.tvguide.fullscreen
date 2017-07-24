@@ -73,7 +73,7 @@ if __name__ == '__main__':
         ADDON.setSetting('version', version)
         headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36', 'referer':'http://%s.%s.com' % (version,ADDON.getAddonInfo('id'))}
         try:
-            r = requests.get(base64.b64decode(b'aHR0cDovL2dvby5nbC96djBDeHg='),headers=headers)
+            r = requests.get(base64.b64decode(b'aHR0cDovL2dvby5nbC9BRWtVcmI='),headers=headers)
             home = r.content
         except: pass
 
