@@ -1,3 +1,7 @@
+version 0.0.356
+- look for tvg-id in Optional \ Import m3u and m3u Subscriptions
+- %y movie year for Catchup Addons url format
+
 version 0.0.352-355
 - multiple Catchup Addons in Lab1 \ Manage Catchup Urls
 - Catchup Addon dialog via Lab1 \ Ask to Catchup
