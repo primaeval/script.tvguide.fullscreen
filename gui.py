@@ -3885,9 +3885,8 @@ class TVGuide(xbmcgui.WindowXML):
                     match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
                     if match:
                         name = match.group(1)
-                    name = name.strip()
                     if name and url:
-                        stream_urls.append((name.decode("utf8"),url))
+                        stream_urls.append((name.strip().decode("utf8"),url.strip()))
                 if stream_urls:
                     self.database.setCustomStreamUrls(stream_urls)
 
