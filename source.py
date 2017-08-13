@@ -1906,6 +1906,7 @@ class XMLTVSource(Source):
             d = xbmcgui.DialogProgressBG()
             d.create('TV Guide Fullscreen', "parsing xmltv")
         category_count = {}
+        time_offset = int(ADDON.getSetting('xmltv.offset'))
         for event, elem in context:
             if event == "end":
                 result = None
@@ -1982,8 +1983,8 @@ class XMLTVSource(Source):
                         cid = id_shortcuts[channel]
                     else:
                         cid = channel
-                    result = Program(cid, title, sub_title, self.parseXMLTVDate(elem.get('start')),
-                                     self.parseXMLTVDate(elem.get('stop')), description, categories, imageSmall=icon,
+                    result = Program(cid, title, sub_title, self.parseXMLTVDate(elem.get('start')) + datetime.timedelta(minutes=time_offset),
+                                     self.parseXMLTVDate(elem.get('stop'))+ datetime.timedelta(minutes=time_offset), description, categories, imageSmall=icon,
                                      season = season, episode = episode, is_movie = is_movie, language= language)
 
                 elif elem.tag == "channel":

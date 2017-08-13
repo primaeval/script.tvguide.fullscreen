@@ -1,3 +1,6 @@
+version 0.0.359
+- Settings \ Source \ XMLTV Timezone Offset (minutes)
+
 version 0.0.356-358
 - look for tvg-id in Optional \ Import m3u and m3u Subscriptions
 - %y movie year for Catchup Addons url format
