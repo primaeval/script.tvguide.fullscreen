@@ -1,3 +1,10 @@
+version 0.0.361
+- MySearch additions
+- [%ST%] tvdb id [%SI] imdb id [%SY%] year [%SS%] season [%SE%] episode
+- eg copy favourites.xml to addon_data and add
+<favourite name="My Addon TV" thumb="special://home/addons/plugin.video.MY_ADDON/icon.png">plugin://plugin.video.MY_ADDON/?action=play&amp;year=[%SY%]&amp;tvshowtitle=[%SF%]&amp;season=[%SS%]&amp;episode=[%SE%]&amp;tvdb=[%ST%]&amp;title=[%SF%]</favourite>
+<favourite name="My Addon Movie" thumb="special://home/addons/plugin.video.MY_ADDON/icon.png">plugin://plugin.video.MY_ADDON/?action=play&amp;imdb=[%SI%]&amp;year=[%SY%]&amp;title=[%SF%]</favourite>
+
 version 0.0.360
 - Catchup Urls for imdb/tvdb ids
 - use "Settings\Lab1\Ask to Catchup = Always" for future programs too
