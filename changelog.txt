@@ -1,3 +1,11 @@
+version 0.0.360
+- Catchup Urls for imdb/tvdb ids
+- use "Settings\Lab1\Ask to Catchup = Always" for future programs too
+- Settings \ Lab1 \ %B IMDb Id %V TVDb Id %W tv show title
+- eg catchup.ini:
+-   My Addon TV=plugin://plugin.video.MY_ADDON/?action=play&amp;year=%Y&amp;tvshowtitle=%W&amp;season=%S&amp;episode=%E&amp;tvdb=%V&amp;title=%T
+-   My Addon Movie=plugin://plugin.video.MY_ADDON/?action=play&amp;imdb=%B&amp;year=%Y&amp;title=%T
+
 version 0.0.359
 - Settings \ Source \ XMLTV Timezone Offset (minutes)
 

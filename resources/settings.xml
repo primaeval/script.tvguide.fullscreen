@@ -239,7 +239,7 @@
         <setting id="mine1" label="Custom Command for MINE" type="text" default="ActivateWindow(Videos,library://video,return)"/>
         <setting type="lsep" label="Format: %Y year %m month %d day %H hour %M minute %D duration(minutes)"/>
         <setting type="lsep" label="%I channel id %T program title %S season %E episode %y movie year"/>
-        <setting type="lsep" label="%B IMDb Id %V TVDb Id"/>
+        <setting type="lsep" label="%B IMDb Id %V TVDb Id %W tv show title"/>
         <setting label="Mangage Catchup Urls" type="action" action="RunScript($CWD/catchup.py)" />
         <setting id="catchup.dialog" label="Ask to Catchup" type="enum" default="0" values="Never|Start &lt; Now|End &lt; Now|Always"/>
     </category>
