@@ -597,12 +597,23 @@ class TVGuide(xbmcgui.WindowXML):
             url = url.replace("%H",str(startDate.hour))
             url = url.replace("%M",str(startDate.minute))
             url = url.replace("%I",id)
-            url = url.replace("%T",name)
+            url = url.replace("%T",urllib.quote_plus(name.encode("utf8")))
+            url = url.replace("%W",urllib.quote_plus(name.encode("utf8")))
             url = url.replace("%S",str(program.season))
             url = url.replace("%E",str(program.episode))
             url = url.replace("%D",str(minutes))
             url = url.replace("%y",str(year))
+            if "%B" in url:
+                imdb = self.getIMDBId(name,year)
+                if imdb:
+                    url = url.replace("%B",imdb)
+            if "%V" in url:
+                tvdb = self.getTVDBId(name)
+                if tvdb:
+                    url = url.replace("%V",tvdb)
+            url = url.replace("%I",id)
             xbmc.Player().play(item=url)
+
 
     def playShortcut(self):
         self.channel_number_input = False
@@ -2566,6 +2577,24 @@ class TVGuide(xbmcgui.WindowXML):
         if load and tvdb_url and self.focusedProgram and (self.focusedProgram.title.encode("utf8") == title):
             self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
 
+
+    def getTVDBId(self, title):
+        orig_title = title
+        try: title = title.encode("utf8")
+        except: title = unicode(title)
+        url = "http://thetvdb.com/?string=%s&searchseriesid=&tab=listseries&function=Search" % urllib.quote_plus(title)
+        try:
+            html = requests.get(url).content
+        except:
+            return
+        match = re.search('<a href="(/\?tab=series&amp;id=(.*?))">(.*?)</a>',html)
+        tvdb_url = ''
+        if match:
+            id = match.group(2)
+            return id
+
+
+
     def getIMDBImage(self, title, year, load=True):
         orig_title = "%s (%s)" % (title,year)
         try: utf_title = orig_title.encode("utf8")
@@ -2614,6 +2643,23 @@ class TVGuide(xbmcgui.WindowXML):
             self.tvdb_urls[orig_title] = tvdb_url
         if load and tvdb_url and self.focusedProgram and (self.focusedProgram.title.encode("utf8") == utf_title):
             self.setControlImage(self.C_MAIN_IMAGE, tvdb_url)
+
+
+    def getIMDBId(self, title, year):
+        orig_title = "%s (%s)" % (title,year)
+        try: utf_title = orig_title.encode("utf8")
+        except: utf_title = unicode(utf_title)
+        headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
+        url = "http://www.bing.com/search?q=site%%3Aimdb.com+%s" % urllib.quote_plus(utf_title)
+        try: html = requests.get(url).content
+        except: return
+
+        match = re.search('href="(http://www.imdb.com/title/(tt.*?)/)".*?<strong>(.*?)</strong>',html)
+        tvdb_url = ''
+        if match:
+            id = match.group(2)
+            return id
+
 
 
     def _left(self, currentFocus):
