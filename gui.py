@@ -2643,10 +2643,9 @@ class TVGuide(xbmcgui.WindowXML):
             html = requests.get(url).content
         except:
             return
-        match = re.search('<a href="(/\?tab=series&amp;id=(.*?))">(.*?)</a>',html)
-        tvdb_url = ''
+        match = re.search('<a href="/\?tab=series&amp;id=([0-9]*)',html)
         if match:
-            id = match.group(2)
+            id = match.group(1)
             return id
 
 
