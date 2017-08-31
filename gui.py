@@ -591,7 +591,7 @@ class TVGuide(xbmcgui.WindowXML):
             if match:
                 name = match.group(1)
                 year = match.group(2)
-            url = url.replace("%Y",str(startDate.year))
+            url = url.replace("%Y",str(startDate.year)) #TODO tv show year
             url = url.replace("%m",str(startDate.month))
             url = url.replace("%d",str(startDate.day))
             url = url.replace("%H",str(startDate.hour))
