@@ -1615,7 +1615,15 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playOrChoose(programList[index])
+                program = programList[index]
+                now = datetime.datetime.now()
+                start = program.startDate
+                end = program.endDate
+                ask = ADDON.getSetting('catchup.dialog')
+                if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                    self.play_catchup(program)
+                else:
+                    self.playOrChoose(program)
 
     def showNow(self):
         programList = self.database.getNowList()
@@ -1633,7 +1641,15 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playOrChoose(programList[index])
+                program = programList[index]
+                now = datetime.datetime.now()
+                start = program.startDate
+                end = program.endDate
+                ask = ADDON.getSetting('catchup.dialog')
+                if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                    self.play_catchup(program)
+                else:
+                    self.playOrChoose(program)
 
     def showNext(self):
         programList = self.database.getNextList()
@@ -1651,7 +1667,15 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playOrChoose(programList[index])
+                program = programList[index]
+                now = datetime.datetime.now()
+                start = program.startDate
+                end = program.endDate
+                ask = ADDON.getSetting('catchup.dialog')
+                if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                    self.play_catchup(program)
+                else:
+                    self.playOrChoose(program)
 
 
     def programSearchSelect(self):
@@ -1725,7 +1749,15 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playOrChoose(programList[index])
+                program = programList[index]
+                now = datetime.datetime.now()
+                start = program.startDate
+                end = program.endDate
+                ask = ADDON.getSetting('catchup.dialog')
+                if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                    self.play_catchup(program)
+                else:
+                    self.playOrChoose(program)
 
 
     def descriptionSearch(self):
@@ -1775,7 +1807,15 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playOrChoose(programList[index])
+                program = programList[index]
+                now = datetime.datetime.now()
+                start = program.startDate
+                end = program.endDate
+                ask = ADDON.getSetting('catchup.dialog')
+                if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                    self.play_catchup(program)
+                else:
+                    self.playOrChoose(program)
 
     def categorySearch(self):
         d = xbmcgui.Dialog()
@@ -1808,7 +1848,15 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playOrChoose(programList[index])
+                program = programList[index]
+                now = datetime.datetime.now()
+                start = program.startDate
+                end = program.endDate
+                ask = ADDON.getSetting('catchup.dialog')
+                if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                    self.play_catchup(program)
+                else:
+                    self.playOrChoose(program)
 
     def channelSearch(self):
         d = xbmcgui.Dialog()
@@ -1830,7 +1878,15 @@ class TVGuide(xbmcgui.WindowXML):
                 self._showContextMenu(programList[index])
         else:
             if index > -1:
-                self.playOrChoose(programList[index])
+                program = programList[index]
+                now = datetime.datetime.now()
+                start = program.startDate
+                end = program.endDate
+                ask = ADDON.getSetting('catchup.dialog')
+                if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+                    self.play_catchup(program)
+                else:
+                    self.playOrChoose(program)
 
     def showReminders(self):
         programList = self.database.getNotifications()
@@ -2587,10 +2643,9 @@ class TVGuide(xbmcgui.WindowXML):
             html = requests.get(url).content
         except:
             return
-        match = re.search('<a href="(/\?tab=series&amp;id=(.*?))">(.*?)</a>',html)
-        tvdb_url = ''
+        match = re.search('<a href="/\?tab=series&amp;id=([0-9]*)',html)
         if match:
-            id = match.group(2)
+            id = match.group(1)
             return id
 
 
