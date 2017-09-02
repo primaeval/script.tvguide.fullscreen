@@ -362,7 +362,10 @@ class Database(object):
 
             if getData == True:
                 xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/category_count.ini')
-                catchup = ADDON.getSetting('catchup.text')
+                if ADDON.getSetting('catchup.type') == "0":
+                    catchup = ADDON.getSetting('catchup.text')
+                else:
+                    catchup = ADDON.getSetting('catchup.direct')
                 channel = Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", ADDON.getSetting('catchup.channel') == 'true')
                 c.execute(
                     'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)',

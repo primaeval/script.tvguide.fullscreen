@@ -101,6 +101,10 @@ class StreamsService(object):
         exact_matches = []
         sub_matches = []
         numword_matches = []
+        if ADDON.getSetting('catchup.type') == "0":
+            catchup = ADDON.getSetting('catchup.text')
+        else:
+            catchup = ADDON.getSetting('catchup.direct')
         for id in self.getAddons():
             try:
                 xbmcaddon.Addon(id)
@@ -110,7 +114,7 @@ class StreamsService(object):
             for (label, stream) in self.getAddonStreams(id):
                 if type(stream) is list:
                     stream = stream[0]
-                if id == "plugin.video.%s" % self.addon.getSetting('catchup.text').lower():
+                if id == "plugin.video.%s" % catchup.lower():
                     label = channel.title
                     stream = str(stream.replace("<channel>", channel.title.replace(" ","%20")))
 

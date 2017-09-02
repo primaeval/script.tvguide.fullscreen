@@ -31,7 +31,7 @@ def setCustomStreamUrls(success):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/custom_stream_urls.ini'
         f = xbmcvfs.File(file_name)
         lines = f.read().splitlines()
-        stream_urls = [line.split("=",1) for line in lines]
+        stream_urls = [line.decode("utf8").split("=",1) for line in lines]
         f.close()
         database.setCustomStreamUrls(stream_urls)
         xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), 'Imported channel mappings')
@@ -56,7 +56,7 @@ def setAltCustomStreamUrls(success):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/alt_custom_stream_urls.tsv'
         f = xbmcvfs.File(file_name)
         lines = f.read().splitlines()
-        stream_urls = [line.split("\t",2) for line in lines]
+        stream_urls = [line.decode("utf8").split("\t",2) for line in lines]
         f.close()
         database.setAltCustomStreamUrls(stream_urls)
         xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), 'Imported alternative channel mappings')
