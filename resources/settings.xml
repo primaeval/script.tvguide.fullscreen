@@ -69,7 +69,9 @@
     <category label="Playback">
         <setting id="m3u.read" label="Use highest bandwidth stream from m3u url (Krypton+ fix)" type="bool" default="false" />
         <setting type="sep"/>
-        <setting id="catchup.text" label="Catchup Addon (plugin.video.?)" type="text" default="Meta" />
+		<setting id="catchup.type" label="Catchup Channel Type" type="labelenum" default="0" values="Meta?|Direct"/>
+        <setting id="catchup.text" label="Catchup Meta Addon (plugin.video.?)" type="text" visible="eq(-1,0)" default="Meta" />
+		<setting id="catchup.direct" label="Catchup Direct Addon (plugin.video.?)" type="text" visible="eq(-2,1)" default="" />
         <setting id="catchup.channel" label="Show Catchup Channel" type="bool" default="false" />
         <setting type="lsep" label="Channel Shortcuts (xmltv Ids must be Numeric)"/>
         <setting id="channel.shortcut" label="Channel Shortcut Type" type="enum" default="None" values="None|Index|xmltv Id" />

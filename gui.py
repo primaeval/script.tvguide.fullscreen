@@ -2910,7 +2910,14 @@ class TVGuide(xbmcgui.WindowXML):
         self.database.updateProgramList(None,programList,channel)
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
+
     def catchup(self,channel):
+        if ADDON.getSetting('catchup.type') == "0":
+            self.catchup_meta(channel)
+        else:
+            self.catchup_direct(channel)
+
+    def catchup_meta(self,channel):
         self.playing_catchup_channel = True
         programList = self.database.getChannelListing(channel)
         if not programList:
@@ -2967,6 +2974,46 @@ class TVGuide(xbmcgui.WindowXML):
             self.currentChannel = channel
             self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
         xbmc.executebuiltin(first_cmd)
+
+
+    def catchup_direct(self,channel):
+        direct_addon = ADDON.getSetting('catchup.direct')
+        self.playing_catchup_channel = True
+        programList = self.database.getChannelListing(channel)
+        if not programList:
+            return
+        now = datetime.datetime.now()
+        offset = now - programList[0].startDate
+        f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.strm','wb')
+        for program in programList:
+            program.startDate += offset
+            program.endDate += offset
+            t = program.startDate - now
+            timeToAutoplay = ((t.days * 86400) + t.seconds) / 60
+
+            title = program.title
+
+            tvtitle = urllib.quote_plus(title.encode("utf8"))
+
+            if program.is_movie:
+                if hasattr(program, 'year'):
+                    year = program.year
+                    imdb = self.getIMDBId(title,year)
+                    name = "plugin://plugin.video.%s/?action=play&imdb=%s&year=%s&title=%s" % (direct_addon,imdb,year,tvtitle)
+            if program.season:
+                tvdb = self.getTVDBId(title)
+                name = "plugin://plugin.video.%s/?action=play&tvshowtitle=%s&tvdb=%s&season=%s&episode=%s" % (direct_addon,tvtitle,tvdb,program.season,program.episode)
+
+            f.write("%s\n" % name.encode('utf-8', 'replace'))
+        f.close()
+        catchup = ADDON.getSetting('catchup.direct')
+        channel = utils.Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
+        self.database.updateProgramList(None,programList,channel)
+        self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+        if ADDON.getSetting('catchup.channel') == 'true':
+            self.currentChannel = channel
+            self.currentProgram = self.database.getCurrentProgram(self.currentChannel)
+        xbmc.executebuiltin("PlayMedia(special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.strm)")
 
     def playChannel(self, channel, program = None):
         self.playing_catchup_channel = False
