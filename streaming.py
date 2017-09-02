@@ -101,10 +101,10 @@ class StreamsService(object):
         exact_matches = []
         sub_matches = []
         numword_matches = []
-        if ADDON.getSetting('catchup.type') == "0":
-            catchup = ADDON.getSetting('catchup.text')
+        if self.addon.getSetting('catchup.type') == "0":
+            catchup = self.addon.getSetting('catchup.text')
         else:
-            catchup = ADDON.getSetting('catchup.direct')
+            catchup = self.addon.getSetting('catchup.direct')
         for id in self.getAddons():
             try:
                 xbmcaddon.Addon(id)
