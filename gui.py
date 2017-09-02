@@ -1558,7 +1558,7 @@ class TVGuide(xbmcgui.WindowXML):
             start = program.startDate
             end = program.endDate
             ask = ADDON.getSetting('catchup.dialog')
-            if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
+            if start and end and ((ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now)):
                 self.play_catchup(program)
             else:
                 self.playOrChoose(program)
