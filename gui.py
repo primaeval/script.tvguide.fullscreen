@@ -3969,7 +3969,7 @@ class TVGuide(xbmcgui.WindowXML):
             data = xbmcvfs.File(customFile,'rb').read()
             if data:
                 lines = data.splitlines()
-                stream_urls = [line.split("=",1) for line in lines]
+                stream_urls = [line.decode("utf8").split("=",1) for line in lines]
                 if stream_urls:
                     self.database.setCustomStreamUrls(stream_urls)
 
