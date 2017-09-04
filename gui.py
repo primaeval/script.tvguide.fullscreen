@@ -2985,6 +2985,7 @@ class TVGuide(xbmcgui.WindowXML):
         now = datetime.datetime.now()
         offset = now - programList[0].startDate
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.strm','wb')
+        f.write("#EXTM3U\n")
         for program in programList:
             program.startDate += offset
             program.endDate += offset
@@ -2994,16 +2995,18 @@ class TVGuide(xbmcgui.WindowXML):
             title = program.title
 
             tvtitle = urllib.quote_plus(title.encode("utf8"))
-
+            label = title
             if program.is_movie:
                 if hasattr(program, 'year'):
                     year = program.year
+                    label = "%s (%s)" % (title,year)
                     imdb = self.getIMDBId(title,year)
                     name = "plugin://plugin.video.%s/?action=play&imdb=%s&year=%s&title=%s" % (direct_addon,imdb,year,tvtitle)
             if program.season:
+                label = "%s S%sE%s" % (title,program.season,program.episode)
                 tvdb = self.getTVDBId(title)
                 name = "plugin://plugin.video.%s/?action=play&tvshowtitle=%s&tvdb=%s&season=%s&episode=%s&year=0" % (direct_addon,tvtitle,tvdb,program.season,program.episode)
-
+            f.write("%s\n" % label.encode('utf-8', 'replace'))
             f.write("%s\n" % name.encode('utf-8', 'replace'))
         f.close()
         catchup = ADDON.getSetting('catchup.direct')
