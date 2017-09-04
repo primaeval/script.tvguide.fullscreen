@@ -818,6 +818,28 @@ class Database(object):
 
         return programList
 
+    def getCatchupListing(self, channel):
+        return self._invokeAndBlockForResult(self._getCatchupListing, channel)
+
+    def _getCatchupListing(self, channel):
+        now = datetime.datetime.now()
+        hours = int(ADDON.getSetting('catchup.hours'))
+        endTime = now + datetime.timedelta(hours=hours)
+        programList = []
+        c = self.conn.cursor()
+        try: c.execute('SELECT * FROM programs WHERE channel=? AND end_date>? AND start_date<?',
+                  [channel.id,now,endTime])
+        except: return
+        for row in c:
+            program = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
+                              description=row['description'], categories=row['categories'],
+                          imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
+                          is_movie=row['is_movie'], language=row['language'])
+            programList.append(program)
+        c.close()
+
+        return programList
+
     def channelSearch(self, search):
         return self._invokeAndBlockForResult(self._channelSearch, search)
 

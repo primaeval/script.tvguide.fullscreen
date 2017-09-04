@@ -2919,7 +2919,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def catchup_meta(self,channel):
         self.playing_catchup_channel = True
-        programList = self.database.getChannelListing(channel)
+        programList = self.database.getCatchupListing(channel)
         if not programList:
             return
         now = datetime.datetime.now()
@@ -2979,7 +2979,7 @@ class TVGuide(xbmcgui.WindowXML):
     def catchup_direct(self,channel):
         direct_addon = ADDON.getSetting('catchup.direct')
         self.playing_catchup_channel = True
-        programList = self.database.getChannelListing(channel)
+        programList = self.database.getCatchupListing(channel)
         if not programList:
             return
         now = datetime.datetime.now()
