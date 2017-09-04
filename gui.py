@@ -2986,6 +2986,7 @@ class TVGuide(xbmcgui.WindowXML):
         offset = now - programList[0].startDate
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.strm','wb')
         f.write("#EXTM3U\n")
+        newProgramList = []
         for program in programList:
             program.startDate += offset
             program.endDate += offset
@@ -2996,6 +2997,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             tvtitle = urllib.quote_plus(title.encode("utf8"))
             label = title
+            name = ""
             if program.is_movie:
                 if hasattr(program, 'year'):
                     year = program.year
@@ -3006,12 +3008,14 @@ class TVGuide(xbmcgui.WindowXML):
                 label = "%s S%sE%s" % (title,program.season,program.episode)
                 tvdb = self.getTVDBId(title)
                 name = "plugin://plugin.video.%s/?action=play&tvshowtitle=%s&tvdb=%s&season=%s&episode=%s&year=0" % (direct_addon,tvtitle,tvdb,program.season,program.episode)
-            f.write("%s\n" % label.encode('utf-8', 'replace'))
-            f.write("%s\n" % name.encode('utf-8', 'replace'))
+            if name:
+                f.write("%s\n" % label.encode('utf-8', 'replace'))
+                f.write("%s\n" % name.encode('utf-8', 'replace'))
+                newProgramList.append(program)
         f.close()
         catchup = ADDON.getSetting('catchup.direct')
         channel = utils.Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
-        self.database.updateProgramList(None,programList,channel)
+        self.database.updateProgramList(None,newProgramList,channel)
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
         if ADDON.getSetting('catchup.channel') == 'true':
             self.currentChannel = channel

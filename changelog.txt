@@ -1,4 +1,4 @@
-version 0.0.365
+version 0.0.365-366
 - Settings\Playback\catchup channel hours
 
 version 0.0.363-364
