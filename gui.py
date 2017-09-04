@@ -3002,7 +3002,7 @@ class TVGuide(xbmcgui.WindowXML):
                     name = "plugin://plugin.video.%s/?action=play&imdb=%s&year=%s&title=%s" % (direct_addon,imdb,year,tvtitle)
             if program.season:
                 tvdb = self.getTVDBId(title)
-                name = "plugin://plugin.video.%s/?action=play&tvshowtitle=%s&tvdb=%s&season=%s&episode=%s" % (direct_addon,tvtitle,tvdb,program.season,program.episode)
+                name = "plugin://plugin.video.%s/?action=play&tvshowtitle=%s&tvdb=%s&season=%s&episode=%s&year=0" % (direct_addon,tvtitle,tvdb,program.season,program.episode)
 
             f.write("%s\n" % name.encode('utf-8', 'replace'))
         f.close()
