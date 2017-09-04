@@ -2996,6 +2996,7 @@ class TVGuide(xbmcgui.WindowXML):
 
             tvtitle = urllib.quote_plus(title.encode("utf8"))
             label = title
+            name = ""
             if program.is_movie:
                 if hasattr(program, 'year'):
                     year = program.year
