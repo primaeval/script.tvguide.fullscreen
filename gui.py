@@ -3006,8 +3006,9 @@ class TVGuide(xbmcgui.WindowXML):
                 label = "%s S%sE%s" % (title,program.season,program.episode)
                 tvdb = self.getTVDBId(title)
                 name = "plugin://plugin.video.%s/?action=play&tvshowtitle=%s&tvdb=%s&season=%s&episode=%s&year=0" % (direct_addon,tvtitle,tvdb,program.season,program.episode)
-            f.write("%s\n" % label.encode('utf-8', 'replace'))
-            f.write("%s\n" % name.encode('utf-8', 'replace'))
+            if name:
+                f.write("%s\n" % label.encode('utf-8', 'replace'))
+                f.write("%s\n" % name.encode('utf-8', 'replace'))
         f.close()
         catchup = ADDON.getSetting('catchup.direct')
         channel = utils.Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
