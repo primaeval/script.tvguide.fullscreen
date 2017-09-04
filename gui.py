@@ -2986,6 +2986,7 @@ class TVGuide(xbmcgui.WindowXML):
         offset = now - programList[0].startDate
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/catchup_channel.strm','wb')
         f.write("#EXTM3U\n")
+        newProgramList = []
         for program in programList:
             program.startDate += offset
             program.endDate += offset
@@ -3010,10 +3011,11 @@ class TVGuide(xbmcgui.WindowXML):
             if name:
                 f.write("%s\n" % label.encode('utf-8', 'replace'))
                 f.write("%s\n" % name.encode('utf-8', 'replace'))
+                newProgramList.append(program)
         f.close()
         catchup = ADDON.getSetting('catchup.direct')
         channel = utils.Channel("catchup", catchup, '', "special://home/addons/plugin.video.%s/icon.png" % catchup.lower(), "catchup", True)
-        self.database.updateProgramList(None,programList,channel)
+        self.database.updateProgramList(None,newProgramList,channel)
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
         if ADDON.getSetting('catchup.channel') == 'true':
             self.currentChannel = channel
