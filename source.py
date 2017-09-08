@@ -1965,7 +1965,11 @@ class XMLTVSource(Source):
                     if ADDON.getSetting('xmltv.date') == 'true' and date and re.match("^[0-9]{4}$",date):
                         is_movie = "Movie"
                         title = "%s (%s)" % (title,date)
-                    language = elem.find("title").get("lang")
+                    title_tag = elem.find("title")
+                    if title_tag:
+                        language = title_tag.get("lang")
+                    else:
+                        language = "en"
 
                     episode_num = elem.findtext("episode-num")
                     meta_categories = elem.findall("category")
