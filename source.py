@@ -1965,7 +1965,11 @@ class XMLTVSource(Source):
                     if ADDON.getSetting('xmltv.date') == 'true' and date and re.match("^[0-9]{4}$",date):
                         is_movie = "Movie"
                         title = "%s (%s)" % (title,date)
-                    language = elem.find("title").get("lang")
+                    title_tag = elem.find("title")
+                    if title_tag:
+                        language = title_tag.get("lang")
+                    else:
+                        language = "en"
 
                     episode_num = elem.findtext("episode-num")
                     meta_categories = elem.findall("category")
@@ -2488,6 +2492,162 @@ class TVGUKNowSource(Source):
             utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
             return utc_dt + datetime.timedelta(seconds=-time.timezone)
         return
+
+
+class TVGUKNow2Source(Source):
+    KEY = 'tvguide.co.uk.now.2'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        if ADDON.getSetting('fixtures') == 'true':
+            fixtures = FixturesSource(ADDON)
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
+                yield v
+        else:
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback)):
+                    yield v
+
+    def getDataFromExternal2(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+        systemid = {
+            "Popular":"7",
+            "Sky":"5",
+            "Virgin M+":"2",
+            "Virgin XL":"25",
+            "BT":"22",
+            "Freeview":"3",
+            "Virgin M":"27",
+            "Virgin L":"24",
+            "Freesat":"19",
+        }
+        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
+        headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; rv:55.0) Gecko/20100101 Firefox/55.0'}
+
+        email = ADDON.getSetting('tvguide.co.uk.email')
+        s = requests.Session()
+        if email:
+            r = s.post('http://www.tvguide.co.uk/mychannels.asp',
+            data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'})
+            id = -1
+        r = s.get('http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=03:00&view=1&gw=1237' % id,headers=headers)
+        html = r.content
+        channels = html.split('<div class="div-epg-channel-name">')
+        channel_numbers = {}
+        for channel in channels:
+            name = ''
+            logo = ''
+            match = re.search('(.*?)<',channel)
+            if match:
+                name = match.group(1)
+            match = re.search('(http://my.tvguide.co.uk/channel_logos/.*?\.png)',channel)
+            if match:
+                logo = match.group(1)
+            if name:
+                c = Channel(name, name, '', logo, "", True)
+                yield c
+
+            now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+            last_start = now - datetime.timedelta(days=1)
+            last_end = now - datetime.timedelta(days=1)
+            programmes = channel.split('div-epg-programme')
+            for programme in programmes:
+                start = None
+                end = None
+                title = None
+                season = None
+                episode = None
+                year = None
+                is_movie = False
+                match = re.search('qt-title="([0-9].*?)-([0-9].*?) (.*?)"',programme)
+                if match:
+                    start = match.group(1)
+                    end = match.group(2)
+                    title = match.group(3)
+                    match = re.search('(.*) \(([0-9]{4})\)',title)
+                    if match:
+                        year = match.group(2)
+                        is_movie = True
+                match = re.search('qt-text="(.*?)"',programme)
+                if match:
+                    text = match.group(1)
+                    description = re.sub('<div.*?</div>','',text)
+                    description = re.sub('<br>','',description)
+                    description = re.sub('£','',description)
+                match = re.search('Season ([0-9]*)\. Episode ([0-9]*) of ([0-9]*)\.',programme)
+                if match:
+                    season = match.group(1)
+                    episode = match.group(2)
+                    total = match.group(3)
+                past = False
+                match = re.search('class="list-time inactive"',programme)
+                if match:
+                    past = True
+                if start is not None:
+                    year = now.year
+                    month = now.month
+                    day = now.day
+                    start = self.local_time(start,year,month,day)
+                    end = self.local_time(end,year,month,day)
+                    if start == end:
+                        continue
+                    while start < last_start:
+                        start = start + datetime.timedelta(days=1)
+                    while end < last_end:
+                        end = end + datetime.timedelta(days=1)
+                    last_start = start
+                    last_end = end
+                    program = Program(c, title, '', start, end, description, '', imageSmall="", season=season, episode=episode, is_movie = is_movie, language= "")
+                    yield program
+
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        today = datetime.datetime.now()
+        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
+            return True
+
+        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
+            return True
+        return False
+
+    def local_time_offset(self,t=None):
+        """Return offset of local zone from GMT, either at present or at time t."""
+        # python2.3 localtime() can't take None
+        if t is None:
+            t = time.time()
+        if time.localtime(t).tm_isdst and time.daylight:
+            return -time.altzone
+        else:
+            return -time.timezone
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+            london = timezone('Europe/London')
+            dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
+            utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
+            return utc_dt + datetime.timedelta(seconds=-time.timezone)
+        return
+
 
 
 class YoSource(Source):
@@ -3292,6 +3452,8 @@ def instantiateSource(force):
         return TVGUKSource(ADDON)
     elif source == "tvguide.co.uk now":
         return TVGUKNowSource(ADDON)
+    elif source == "tvguide.co.uk now 2":
+        return TVGUKNow2Source(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
     elif source == "yo.tv now":
