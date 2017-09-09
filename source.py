@@ -2531,102 +2531,84 @@ class TVGUKNow2Source(Source):
             "Freesat":"19",
         }
         id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
-        #r = requests.get('http://www.tvguide.co.uk/mobile/?systemid=%s' % id)
         headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; rv:55.0) Gecko/20100101 Firefox/55.0'}
-        r = requests.get('http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=03:00&view=1&gw=1237' % id,headers=headers)
 
+        email = ADDON.getSetting('tvguide.co.uk.email')
+        s = requests.Session()
+        if email:
+            r = s.post('http://www.tvguide.co.uk/mychannels.asp',
+            data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'})
+            id = -1
+        r = s.get('http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=03:00&view=1&gw=1237' % id,headers=headers)
         html = r.content
-        #log(html)
-        #return
-
         channels = html.split('<div class="div-epg-channel-name">')
-
         channel_numbers = {}
         for channel in channels:
-            #log(channel)
             name = ''
             logo = ''
             match = re.search('(.*?)<',channel)
             if match:
                 name = match.group(1)
-                log(name)
             match = re.search('(http://my.tvguide.co.uk/channel_logos/.*?\.png)',channel)
             if match:
                 logo = match.group(1)
-                #log(logo)
             if name:
                 c = Channel(name, name, '', logo, "", True)
                 yield c
-                
-            programmes = html.split('div-epg-programme')
+
+            now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+            last_start = now - datetime.timedelta(days=1)
+            last_end = now - datetime.timedelta(days=1)
+            programmes = channel.split('div-epg-programme')
             for programme in programmes:
-                log(programme)
-            '''
-            img_url = ''
-            channel_name = ''
-            img_match = re.search(r'<img class="img-channel-logo" width="50" src="(.*?)"\s*?alt="(.*?) TV Listings" />', channel)
-            if img_match:
-                img_url = img_match.group(1)
-                orig_channel_name = img_match.group(2)
-                channel_name = orig_channel_name
-            while channel_name in channel_numbers:
-                channel_name = channel_name + " "
-
-            channel_number = '0'
-            match = re.search(r'href="http://www\.tvguide\.co\.uk/mobile/channellisting\.asp\?ch=(.*?)"', channel)
-            if match:
-                channel_number=match.group(1)
-            else:
-                continue
-            channel_numbers[channel_number] = channel_name
-            c = Channel(channel_number, channel_name, '', img_url, "", True)
-            yield c
-            start = ''
-            program = ''
-            next_start = ''
-            next_program = ''
-            after_start = ''
-            after_program = ''
-            match = re.search(r'<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>', channel,flags=(re.DOTALL | re.MULTILINE))
-            if match:
-                #TODO fix around midnight
-                now = datetime.datetime.now()
-                tomorrow = now + datetime.timedelta(days=1)
-                year = now.year
-                month = now.month
-                day = now.day
-                start = self.local_time(match.group(1),year,month,day)
-                program = match.group(2)
-                next_start = self.local_time(match.group(3),year,month,day)
-                if next_start < start:
-                    next_start = next_start + datetime.timedelta(days=1)
-
-                next_program = match.group(4)
-                after_start = self.local_time(match.group(5),year,month,day)
-                if after_start < start:
-                    after_start = after_start + datetime.timedelta(days=1)
-
-                after_program = match.group(6)
-                match = re.search('<img.*?>&nbsp;(.*)',program)
+                start = None
+                end = None
+                title = None
+                season = None
+                episode = None
+                year = None
+                is_movie = False
+                match = re.search('qt-title="([0-9].*?)-([0-9].*?) (.*?)"',programme)
                 if match:
-                    program = match.group(1)
-                match = re.search('<img.*?>&nbsp;(.*)',next_program)
+                    start = match.group(1)
+                    end = match.group(2)
+                    title = match.group(3)
+                    match = re.search('(.*) \(([0-9]{4})\)',title)
+                    if match:
+                        year = match.group(2)
+                        is_movie = True
+                match = re.search('qt-text="(.*?)"',programme)
                 if match:
-                    next_program = match.group(1)
-                match = re.search('<img.*?>&nbsp;(.*)',after_program)
+                    text = match.group(1)
+                    description = re.sub('<div.*?</div>','',text)
+                    description = re.sub('<br>','',description)
+                    description = re.sub('£','',description)
+                match = re.search('Season ([0-9]*)\. Episode ([0-9]*) of ([0-9]*)\.',programme)
                 if match:
-                    after_program = match.group(1)
-                if after_start.replace(tzinfo=None) > tomorrow:
-                    start = start - datetime.timedelta(days=1)
-                    next_start = next_start - datetime.timedelta(days=1)
-                    after_start = after_start - datetime.timedelta(days=1)
-                yield Program(c, program, '', start, next_start, "", '', imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")
-                yield Program(c, next_program, '', next_start, after_start, "", '', imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")
-                yield Program(c, after_program, '', after_start, after_start + datetime.timedelta(hours=2), "", '', imageSmall="",
-                     season = "", episode = "", is_movie = "", language= "")
-            '''
+                    season = match.group(1)
+                    episode = match.group(2)
+                    total = match.group(3)
+                past = False
+                match = re.search('class="list-time inactive"',programme)
+                if match:
+                    past = True
+                if start is not None:
+                    year = now.year
+                    month = now.month
+                    day = now.day
+                    start = self.local_time(start,year,month,day)
+                    end = self.local_time(end,year,month,day)
+                    if start == end:
+                        continue
+                    while start < last_start:
+                        start = start + datetime.timedelta(days=1)
+                    while end < last_end:
+                        end = end + datetime.timedelta(days=1)
+                    last_start = start
+                    last_end = end
+                    program = Program(c, title, '', start, end, description, '', imageSmall="", season=season, episode=episode, is_movie = is_movie, language= "")
+                    yield program
+
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
         today = datetime.datetime.now()
