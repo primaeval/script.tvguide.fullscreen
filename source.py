@@ -2494,6 +2494,180 @@ class TVGUKNowSource(Source):
         return
 
 
+class TVGUKNow2Source(Source):
+    KEY = 'tvguide.co.uk.now.2'
+
+    def __init__(self, addon):
+        self.needReset = False
+        self.done = False
+
+    def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        if ADDON.getSetting('fixtures') == 'true':
+            fixtures = FixturesSource(ADDON)
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
+                yield v
+        else:
+            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback)):
+                    yield v
+
+    def getDataFromExternal2(self, date, ch_list, progress_callback=None):
+        """
+        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
+        The source may choose to ignore the date parameter and return all data available.
+
+        @param date: the date to retrieve the data for
+        @param progress_callback:
+        @return:
+        """
+        systemid = {
+            "Popular":"7",
+            "Sky":"5",
+            "Virgin M+":"2",
+            "Virgin XL":"25",
+            "BT":"22",
+            "Freeview":"3",
+            "Virgin M":"27",
+            "Virgin L":"24",
+            "Freesat":"19",
+        }
+        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
+        #r = requests.get('http://www.tvguide.co.uk/mobile/?systemid=%s' % id)
+        headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; rv:55.0) Gecko/20100101 Firefox/55.0'}
+        r = requests.get('http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=03:00&view=1&gw=1237' % id,headers=headers)
+
+        html = r.content
+        #log(html)
+        #return
+
+        channels = html.split('<div class="div-epg-channel-name">')
+
+        channel_numbers = {}
+        for channel in channels:
+            #log(channel)
+            name = ''
+            logo = ''
+            match = re.search('(.*?)<',channel)
+            if match:
+                name = match.group(1)
+                log(name)
+            match = re.search('(http://my.tvguide.co.uk/channel_logos/.*?\.png)',channel)
+            if match:
+                logo = match.group(1)
+                #log(logo)
+            if name:
+                c = Channel(name, name, '', logo, "", True)
+                yield c
+                
+            programmes = html.split('div-epg-programme')
+            for programme in programmes:
+                log(programme)
+            '''
+            img_url = ''
+            channel_name = ''
+            img_match = re.search(r'<img class="img-channel-logo" width="50" src="(.*?)"\s*?alt="(.*?) TV Listings" />', channel)
+            if img_match:
+                img_url = img_match.group(1)
+                orig_channel_name = img_match.group(2)
+                channel_name = orig_channel_name
+            while channel_name in channel_numbers:
+                channel_name = channel_name + " "
+
+            channel_number = '0'
+            match = re.search(r'href="http://www\.tvguide\.co\.uk/mobile/channellisting\.asp\?ch=(.*?)"', channel)
+            if match:
+                channel_number=match.group(1)
+            else:
+                continue
+            channel_numbers[channel_number] = channel_name
+            c = Channel(channel_number, channel_name, '', img_url, "", True)
+            yield c
+            start = ''
+            program = ''
+            next_start = ''
+            next_program = ''
+            after_start = ''
+            after_program = ''
+            match = re.search(r'<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>', channel,flags=(re.DOTALL | re.MULTILINE))
+            if match:
+                #TODO fix around midnight
+                now = datetime.datetime.now()
+                tomorrow = now + datetime.timedelta(days=1)
+                year = now.year
+                month = now.month
+                day = now.day
+                start = self.local_time(match.group(1),year,month,day)
+                program = match.group(2)
+                next_start = self.local_time(match.group(3),year,month,day)
+                if next_start < start:
+                    next_start = next_start + datetime.timedelta(days=1)
+
+                next_program = match.group(4)
+                after_start = self.local_time(match.group(5),year,month,day)
+                if after_start < start:
+                    after_start = after_start + datetime.timedelta(days=1)
+
+                after_program = match.group(6)
+                match = re.search('<img.*?>&nbsp;(.*)',program)
+                if match:
+                    program = match.group(1)
+                match = re.search('<img.*?>&nbsp;(.*)',next_program)
+                if match:
+                    next_program = match.group(1)
+                match = re.search('<img.*?>&nbsp;(.*)',after_program)
+                if match:
+                    after_program = match.group(1)
+                if after_start.replace(tzinfo=None) > tomorrow:
+                    start = start - datetime.timedelta(days=1)
+                    next_start = next_start - datetime.timedelta(days=1)
+                    after_start = after_start - datetime.timedelta(days=1)
+                yield Program(c, program, '', start, next_start, "", '', imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")
+                yield Program(c, next_program, '', next_start, after_start, "", '', imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")
+                yield Program(c, after_program, '', after_start, after_start + datetime.timedelta(hours=2), "", '', imageSmall="",
+                     season = "", episode = "", is_movie = "", language= "")
+            '''
+
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+        today = datetime.datetime.now()
+        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
+            return True
+
+        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
+            return True
+        return False
+
+    def local_time_offset(self,t=None):
+        """Return offset of local zone from GMT, either at present or at time t."""
+        # python2.3 localtime() can't take None
+        if t is None:
+            t = time.time()
+        if time.localtime(t).tm_isdst and time.daylight:
+            return -time.altzone
+        else:
+            return -time.timezone
+
+    def local_time(self,ttime,year,month,day):
+        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+            ampm = match.group(3)
+            if ampm == "pm":
+                if hour < 12:
+                    hour = hour + 12
+                    hour = hour % 24
+            else:
+                if hour == 12:
+                    hour = 0
+            london = timezone('Europe/London')
+            dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
+            utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
+            return utc_dt + datetime.timedelta(seconds=-time.timezone)
+        return
+
+
+
 class YoSource(Source):
     KEY = 'yo.tv'
 
@@ -3296,6 +3470,8 @@ def instantiateSource(force):
         return TVGUKSource(ADDON)
     elif source == "tvguide.co.uk now":
         return TVGUKNowSource(ADDON)
+    elif source == "tvguide.co.uk now 2":
+        return TVGUKNow2Source(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
     elif source == "yo.tv now":
