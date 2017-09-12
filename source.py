@@ -126,34 +126,33 @@ class Database(object):
         return path
 
     def loadOptional(self,force):
-        addon = ADDON
-        self.addonsType = int(addon.getSetting('addons.ini.type'))
-        self.categoriesType = int(addon.getSetting('categories.ini.type'))
-        self.mappingType = int(addon.getSetting('mapping.ini.type'))
-        self.m3uType = int(addon.getSetting('mapping.m3u.type'))
+        self.addonsType = int(ADDON.getSetting('addons.ini.type'))
+        self.categoriesType = int(ADDON.getSetting('categories.ini.type'))
+        self.mappingType = int(ADDON.getSetting('mapping.ini.type'))
+        self.m3uType = int(ADDON.getSetting('mapping.m3u.type'))
 
-        if addon.getSetting('categories.ini.enabled') == 'true':
+        if ADDON.getSetting('categories.ini.enabled') == 'true':
             if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
-                customFile = str(addon.getSetting('categories.ini.file'))
+                customFile = str(ADDON.getSetting('categories.ini.file'))
             else:
-                customFile = str(addon.getSetting('categories.ini.url'))
+                customFile = str(ADDON.getSetting('categories.ini.url'))
             if customFile:
-                self.updateLocalFile('categories.ini', customFile, addon, True, force=force)
+                self.updateLocalFile('categories.ini', customFile, ADDON, True, force=force)
 
-        if addon.getSetting('mapping.ini.enabled') == 'true':
+        if ADDON.getSetting('mapping.ini.enabled') == 'true':
             if self.mappingType == XMLTVSource.INI_TYPE_FILE:
-                customFile = str(addon.getSetting('mapping.ini.file'))
+                customFile = str(ADDON.getSetting('mapping.ini.file'))
             else:
-                customFile = str(addon.getSetting('mapping.ini.url'))
+                customFile = str(ADDON.getSetting('mapping.ini.url'))
             if customFile:
-                self.updateLocalFile('mapping.ini', customFile, addon, True, force=force)
-        if addon.getSetting('mapping.m3u.enabled') == 'true':
+                self.updateLocalFile('mapping.ini', customFile, ADDON, True, force=force)
+        if ADDON.getSetting('mapping.m3u.enabled') == 'true':
             if self.m3uType == XMLTVSource.INI_TYPE_FILE:
-                customFile = str(addon.getSetting('mapping.m3u.file'))
+                customFile = str(ADDON.getSetting('mapping.m3u.file'))
             else:
-                customFile = str(addon.getSetting('mapping.m3u.url'))
+                customFile = str(ADDON.getSetting('mapping.m3u.url'))
             if customFile:
-                self.updateLocalFile('mapping.m3u', customFile, addon, True, force=force)
+                self.updateLocalFile('mapping.m3u', customFile, ADDON, True, force=force)
 
         d = xbmcgui.Dialog()
         subscription_streams = {}
@@ -188,12 +187,12 @@ class Database(object):
 
         addons_ini = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
         addons_ini_local = addons_ini+".local"
-        if addon.getSetting('addons.ini.enabled') == 'true':
+        if ADDON.getSetting('addons.ini.enabled') == 'true':
             if self.addonsType == XMLTVSource.INI_TYPE_FILE:
-                customFile = str(addon.getSetting('addons.ini.file'))
+                customFile = str(ADDON.getSetting('addons.ini.file'))
                 data = xbmcvfs.File(customFile,'rb').read()
             else:
-                customFile = str(addon.getSetting('addons.ini.url'))
+                customFile = str(ADDON.getSetting('addons.ini.url'))
                 data = requests.get(customFile).content
             if data:
                 enckey = ADDON.getSetting('addons.ini.key')
@@ -237,6 +236,7 @@ class Database(object):
                 if not data:
                     continue
                 lines = data.splitlines()
+                addon = "script.tvguide.fullscreen"
                 for line in lines:
                     match = re.search('^\[(.*?)\]$',line)
                     if match:
