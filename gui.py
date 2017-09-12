@@ -478,7 +478,7 @@ class TVGuide(xbmcgui.WindowXML):
                 for (name,stream) in stream_urls:
                     write_str = "%s=%s\n" % (name,stream)
                     f.write(write_str.encode("utf8"))
-                f.close()
+            f.close()
 
             if self.database:
                 self.database.close(super(TVGuide, self).close)
@@ -4030,10 +4030,34 @@ class TVGuide(xbmcgui.WindowXML):
         if ADDON.getSetting('mapping.m3u.enabled') == 'true':
             if ADDON.getSetting('mapping.m3u.type') == '0':
                 customFile = ADDON.getSetting('mapping.m3u.file')
+                data = xbmcvfs.File(customFile,'rb').read()
             else:
                 customFile = ADDON.getSetting('mapping.m3u.url')
-            data = xbmcvfs.File(customFile,'rb').read()
+                data = requests.get(customFile).content
             if data:
+                enckey = ADDON.getSetting('mapping.m3u.key')
+                encode = ADDON.getSetting('mapping.m3u.encode') == "true"
+                if encode and enckey:
+                    import pyaes
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    encryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    ddata=encryptor.encrypt(data)
+                    ddata=base64.b64encode(ddata)
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/mapping.aes.m3u','wb')
+                    f.write(ddata)
+                    f.close()
+                    return
+                elif enckey:
+                    import pyaes
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    ddata=base64.b64decode(data)
+                    decryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    data=decryptor.decrypt(ddata).split('\0')[0]
+
                 matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
                 stream_urls = []
                 for attributes,name,url in matches:

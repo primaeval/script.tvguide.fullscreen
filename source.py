@@ -96,6 +96,7 @@ class Database(object):
         self.event = threading.Event()
         self.eventResults = dict()
 
+        self.loadOptional(force)
         self.source = instantiateSource(force)
 
         self.updateInProgress = False
@@ -111,6 +112,153 @@ class Database(object):
         self.databasePath = os.path.join(profilePath, Database.SOURCE_DB)
 
         threading.Thread(name='Database Event Loop', target=self.eventLoop).start()
+
+    def updateLocalFile(self, fileName, url, addon, isIni=False, force=False):
+        #url = url.split('?')[0]
+        #fileName = os.path.basename(url)
+        path = os.path.join(XMLTVSource.PLUGIN_DATA, fileName)
+        fetcher = FileFetcher(url, path, addon)
+        retVal = fetcher.fetchFile(force)
+        if retVal == fetcher.FETCH_OK and not isIni:
+            self.needReset = True
+        elif retVal == fetcher.FETCH_ERROR:
+            xbmcgui.Dialog().ok(strings(FETCH_ERROR_TITLE), strings(FETCH_ERROR_LINE1), strings(FETCH_ERROR_LINE2))
+        return path
+
+    def loadOptional(self,force):
+        self.addonsType = int(ADDON.getSetting('addons.ini.type'))
+        self.categoriesType = int(ADDON.getSetting('categories.ini.type'))
+        self.mappingType = int(ADDON.getSetting('mapping.ini.type'))
+
+        if ADDON.getSetting('categories.ini.enabled') == 'true':
+            if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
+                customFile = str(ADDON.getSetting('categories.ini.file'))
+            else:
+                customFile = str(ADDON.getSetting('categories.ini.url'))
+            if customFile:
+                self.updateLocalFile('categories.ini', customFile, ADDON, True, force=force)
+
+        if ADDON.getSetting('mapping.ini.enabled') == 'true':
+            if self.mappingType == XMLTVSource.INI_TYPE_FILE:
+                customFile = str(ADDON.getSetting('mapping.ini.file'))
+            else:
+                customFile = str(ADDON.getSetting('mapping.ini.url'))
+            if customFile:
+                self.updateLocalFile('mapping.ini', customFile, ADDON, True, force=force)
+
+        d = xbmcgui.Dialog()
+        subscription_streams = {}
+        if (ADDON.getSetting('addons.ini.subscriptions') == "true"):
+            file_name = 'special://profile/addon_data/script.tvguide.fullscreen/subscriptions.ini'
+            f = xbmcvfs.File(file_name,"rb")
+            data = f.read()
+            f.close()
+            name_sub = re.findall('(.*?)=(.*)',data)
+            for (name,sub) in name_sub:
+                f = xbmcvfs.File(sub,"rb")
+                if not f:
+                    continue
+                data = f.read()
+                f.close
+                if not data:
+                    d.notification("TV Guide Fullscreen","%s - %s" % (name,sub), xbmcgui.NOTIFICATION_ERROR)
+
+                matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
+                for attributes,name,url in matches:
+                    match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
+                    if match:
+                        name = match.group(1)
+                    if name and url:
+                        subscription_streams[name.strip()] = url.strip()
+
+
+        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+        if not xbmcvfs.exists(path):
+            f = xbmcvfs.File(path,"w")
+            f.close()
+
+        addons_ini = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
+        addons_ini_local = addons_ini+".local"
+        if ADDON.getSetting('addons.ini.enabled') == 'true':
+            if self.addonsType == XMLTVSource.INI_TYPE_FILE:
+                customFile = str(ADDON.getSetting('addons.ini.file'))
+                data = xbmcvfs.File(customFile,'rb').read()
+            else:
+                customFile = str(ADDON.getSetting('addons.ini.url'))
+                data = requests.get(customFile).content
+            if data:
+                enckey = ADDON.getSetting('addons.ini.key')
+                encode = ADDON.getSetting('addons.ini.encode') == "true"
+                if encode and enckey:
+                    import pyaes,base64
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    encryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    ddata=encryptor.encrypt(data)
+                    ddata=base64.b64encode(ddata)
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/addons.aes.ini','wb')
+                    f.write(ddata)
+                    f.close()
+                elif enckey:
+                    import pyaes,base64
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    ddata=base64.b64decode(data)
+                    decryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    data=decryptor.decrypt(ddata).split('\0')[0]
+                xbmcvfs.copy(addons_ini,addons_ini_local)
+                xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/addons.ini','wb').write(data)
+
+        if (ADDON.getSetting('addons.ini.subscriptions') == "true") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
+            streams = {}
+            streams["script.tvguide.fullscreen"] = {}
+            if (ADDON.getSetting('addons.ini.enabled') == "true") and (ADDON.getSetting('addons.ini.overwrite') == "1"):
+                filenames = [addons_ini_local,addons_ini]
+            else:
+                filenames = [addons_ini]
+            for filename in filenames:
+                f = xbmcvfs.File(filename,"rb")
+                if f:
+                    data = f.read()
+                    f.close()
+                else:
+                    continue
+                if not data:
+                    continue
+                lines = data.splitlines()
+                addon = "script.tvguide.fullscreen"
+                for line in lines:
+                    match = re.search('^\[(.*?)\]$',line)
+                    if match:
+                        addon = match.group(1)
+                        if addon not in streams:
+                            streams[addon] = {}
+                    elif line.startswith('#'):
+                        pass
+                    else:
+                        name_stream = line.split('=',1)
+                        if len(name_stream) == 2:
+                            (name,stream) = name_stream
+                            name = name.replace(':','')
+                            streams[addon][name] = stream
+
+            if (ADDON.getSetting('addons.ini.subscriptions') == "true"):
+                for name in subscription_streams:
+                    if name:
+                        streams["script.tvguide.fullscreen"][name] = subscription_streams[name]
+
+            f = xbmcvfs.File(addons_ini,"wb")
+            for addon in sorted(streams):
+                if streams[addon]:
+                    s = "[%s]\n" % addon
+                    f.write(s)
+                for name in sorted(streams[addon]):
+                    stream = streams[addon][name]
+                    s = "%s=%s\n" % (name,stream)
+                    f.write(s)
+            f.close()
 
 
     def eventLoop(self):
@@ -1644,10 +1792,7 @@ class XMLTVSource(Source):
         self.xmltv2Type = int(addon.getSetting('xmltv2.type'))
         self.xmltvInterval = int(addon.getSetting('xmltv.interval'))
         self.logoSource = int(addon.getSetting('logos.source'))
-        self.addonsType = int(addon.getSetting('addons.ini.type'))
-        self.categoriesType = int(addon.getSetting('categories.ini.type'))
-        self.mappingType = int(addon.getSetting('mapping.ini.type'))
-        self.m3uType = int(addon.getSetting('mapping.m3u.type'))
+
 
         # make sure the folder in the user's profile exists or create it!
         if not os.path.exists(XMLTVSource.PLUGIN_DATA):
@@ -1696,118 +1841,6 @@ class XMLTVSource(Source):
             else:
                 self.xmltv2File = self.updateLocalFile('xmltv2.xml', addon.getSetting('xmltv2.url'), addon, force=force)
 
-        if addon.getSetting('categories.ini.enabled') == 'true':
-            if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
-                customFile = str(addon.getSetting('categories.ini.file'))
-            else:
-                customFile = str(addon.getSetting('categories.ini.url'))
-            if customFile:
-                self.updateLocalFile('categories.ini', customFile, addon, True, force=force)
-
-        if addon.getSetting('mapping.ini.enabled') == 'true':
-            if self.mappingType == XMLTVSource.INI_TYPE_FILE:
-                customFile = str(addon.getSetting('mapping.ini.file'))
-            else:
-                customFile = str(addon.getSetting('mapping.ini.url'))
-            if customFile:
-                self.updateLocalFile('mapping.ini', customFile, addon, True, force=force)
-        if addon.getSetting('mapping.m3u.enabled') == 'true':
-            if self.m3uType == XMLTVSource.INI_TYPE_FILE:
-                customFile = str(addon.getSetting('mapping.m3u.file'))
-            else:
-                customFile = str(addon.getSetting('mapping.m3u.url'))
-            if customFile:
-                self.updateLocalFile('mapping.m3u', customFile, addon, True, force=force)
-
-        d = xbmcgui.Dialog()
-        subscription_streams = {}
-        if (ADDON.getSetting('addons.ini.subscriptions') == "true"):
-            file_name = 'special://profile/addon_data/script.tvguide.fullscreen/subscriptions.ini'
-            f = xbmcvfs.File(file_name,"rb")
-            data = f.read()
-            f.close()
-            name_sub = re.findall('(.*?)=(.*)',data)
-            for (name,sub) in name_sub:
-                f = xbmcvfs.File(sub,"rb")
-                if not f:
-                    continue
-                data = f.read()
-                f.close
-                if not data:
-                    d.notification("TV Guide Fullscreen","%s - %s" % (name,sub), xbmcgui.NOTIFICATION_ERROR)
-
-                matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
-                for attributes,name,url in matches:
-                    match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
-                    if match:
-                        name = match.group(1)
-                    if name and url:
-                        subscription_streams[name.strip()] = url.strip()
-
-
-        path = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
-        if not xbmcvfs.exists(path):
-            f = xbmcvfs.File(path,"w")
-            f.close()
-
-        addons_ini = "special://profile/addon_data/script.tvguide.fullscreen/addons.ini"
-        addons_ini_local = addons_ini+".local"
-        if addon.getSetting('addons.ini.enabled') == 'true':
-            if self.addonsType == XMLTVSource.INI_TYPE_FILE:
-                customFile = str(addon.getSetting('addons.ini.file'))
-            else:
-                customFile = str(addon.getSetting('addons.ini.url'))
-            if customFile:
-                success = xbmcvfs.copy(addons_ini,addons_ini_local)
-                success = xbmcvfs.copy(customFile,addons_ini)
-
-        if (ADDON.getSetting('addons.ini.subscriptions') == "true") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
-            streams = {}
-            streams["script.tvguide.fullscreen"] = {}
-            if (ADDON.getSetting('addons.ini.enabled') == "true") and (ADDON.getSetting('addons.ini.overwrite') == "1"):
-                filenames = [addons_ini_local,addons_ini]
-            else:
-                filenames = [addons_ini]
-            for filename in filenames:
-                f = xbmcvfs.File(filename,"rb")
-                if f:
-                    data = f.read()
-                    f.close()
-                else:
-                    continue
-                if not data:
-                    continue
-                lines = data.splitlines()
-                for line in lines:
-                    match = re.search('^\[(.*?)\]$',line)
-                    if match:
-                        addon = match.group(1)
-                        if addon not in streams:
-                            streams[addon] = {}
-                    elif line.startswith('#'):
-                        pass
-                    else:
-                        name_stream = line.split('=',1)
-                        if len(name_stream) == 2:
-                            (name,stream) = name_stream
-                            name = name.replace(':','')
-                            streams[addon][name] = stream
-
-            if (ADDON.getSetting('addons.ini.subscriptions') == "true"):
-                for name in subscription_streams:
-                    if name:
-                        streams["script.tvguide.fullscreen"][name] = subscription_streams[name]
-
-            f = xbmcvfs.File(addons_ini,"wb")
-            for addon in sorted(streams):
-                if streams[addon]:
-                    s = "[%s]\n" % addon
-                    f.write(s)
-                for name in sorted(streams[addon]):
-                    stream = streams[addon][name]
-                    s = "%s=%s\n" % (name,stream)
-                    f.write(s)
-            f.close()
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
@@ -1966,7 +1999,7 @@ class XMLTVSource(Source):
                         is_movie = "Movie"
                         title = "%s (%s)" % (title,date)
                     title_tag = elem.find("title")
-                    if title_tag:
+                    if title_tag is not None:
                         language = title_tag.get("lang")
                     else:
                         language = "en"
