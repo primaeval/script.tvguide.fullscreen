@@ -1781,8 +1781,8 @@ class XMLTVSource(Source):
                     ddata=base64.b64decode(data)
                     decryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
                     data=decryptor.decrypt(ddata).split('\0')[0]
-                    xbmcvfs.copy(addons_ini,addons_ini_local)
-                    xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/addons.ini','wb').write(data)
+                xbmcvfs.copy(addons_ini,addons_ini_local)
+                xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/addons.ini','wb').write(data)
 
         if (ADDON.getSetting('addons.ini.subscriptions') == "true") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
             streams = {}
@@ -1989,7 +1989,7 @@ class XMLTVSource(Source):
                         is_movie = "Movie"
                         title = "%s (%s)" % (title,date)
                     title_tag = elem.find("title")
-                    if title_tag:
+                    if title_tag is not None:
                         language = title_tag.get("lang")
                     else:
                         language = "en"
