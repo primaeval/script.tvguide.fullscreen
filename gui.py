@@ -4048,6 +4048,7 @@ class TVGuide(xbmcgui.WindowXML):
                     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/mapping.aes.m3u','wb')
                     f.write(ddata)
                     f.close()
+                    return
                 elif enckey:
                     import pyaes
                     enckey=enckey.encode("ascii")
