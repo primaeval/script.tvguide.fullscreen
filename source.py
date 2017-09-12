@@ -129,7 +129,6 @@ class Database(object):
         self.addonsType = int(ADDON.getSetting('addons.ini.type'))
         self.categoriesType = int(ADDON.getSetting('categories.ini.type'))
         self.mappingType = int(ADDON.getSetting('mapping.ini.type'))
-        self.m3uType = int(ADDON.getSetting('mapping.m3u.type'))
 
         if ADDON.getSetting('categories.ini.enabled') == 'true':
             if self.categoriesType == XMLTVSource.CATEGORIES_TYPE_FILE:
@@ -146,13 +145,6 @@ class Database(object):
                 customFile = str(ADDON.getSetting('mapping.ini.url'))
             if customFile:
                 self.updateLocalFile('mapping.ini', customFile, ADDON, True, force=force)
-        if ADDON.getSetting('mapping.m3u.enabled') == 'true':
-            if self.m3uType == XMLTVSource.INI_TYPE_FILE:
-                customFile = str(ADDON.getSetting('mapping.m3u.file'))
-            else:
-                customFile = str(ADDON.getSetting('mapping.m3u.url'))
-            if customFile:
-                self.updateLocalFile('mapping.m3u', customFile, ADDON, True, force=force)
 
         d = xbmcgui.Dialog()
         subscription_streams = {}
