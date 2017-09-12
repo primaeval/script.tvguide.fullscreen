@@ -478,7 +478,7 @@ class TVGuide(xbmcgui.WindowXML):
                 for (name,stream) in stream_urls:
                     write_str = "%s=%s\n" % (name,stream)
                     f.write(write_str.encode("utf8"))
-                f.close()
+            f.close()
 
             if self.database:
                 self.database.close(super(TVGuide, self).close)
