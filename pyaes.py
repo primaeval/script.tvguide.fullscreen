@@ -332,7 +332,7 @@ class ECBMode(object):
     def encrypt(self, data):
         """Encrypt data in ECB mode"""
         pad = self.block_size - (len(data) % self.block_size)
-        data = data + chr(pad) * pad
+        data = data + '\n' * pad
         return self.ecb(data, self.cipher.encrypt_block)
 
     def decrypt(self, data):
@@ -360,7 +360,7 @@ class CBCMode(object):
     def encrypt(self, data):
         """Encrypt data in CBC mode"""
         pad = self.block_size - (len(data) % self.block_size)
-        data = data + chr(pad) * pad
+        data = data + '\n' * pad
 
         block_size = self.block_size
         if len(data) % block_size != 0:
