@@ -47,6 +47,8 @@
         <setting id="mapping.m3u.type" label="m3u Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="mapping.m3u.file" label="m3u File" type="file" visible="eq(-2,true) + eq(-1,0)"  default=''/>
         <setting id="mapping.m3u.url" label="m3u Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
+        <setting id="mapping.ini.key" label="key" type="text" visible="eq(-4,true)" default=''/>
+        <setting id="mapping.ini.encode" label="Encode (mapping.aes.ini)" type="bool" visible="eq(-5,true)"  default="false" />
 
     </category>
 
