@@ -4035,8 +4035,8 @@ class TVGuide(xbmcgui.WindowXML):
                 customFile = ADDON.getSetting('mapping.m3u.url')
                 data = requests.get(customFile).content
             if data:
-                enckey = ADDON.getSetting('mapping.ini.key')
-                encode = ADDON.getSetting('mapping.ini.encode') == "true"
+                enckey = ADDON.getSetting('mapping.m3u.key')
+                encode = ADDON.getSetting('mapping.m3u.encode') == "true"
                 if encode and enckey:
                     import pyaes
                     enckey=enckey.encode("ascii")
@@ -4045,7 +4045,7 @@ class TVGuide(xbmcgui.WindowXML):
                     encryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
                     ddata=encryptor.encrypt(data)
                     ddata=base64.b64encode(ddata)
-                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/mapping.aes.ini','wb')
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/mapping.aes.m3u','wb')
                     f.write(ddata)
                     f.close()
                 elif enckey:

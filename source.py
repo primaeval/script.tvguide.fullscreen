@@ -1755,11 +1755,34 @@ class XMLTVSource(Source):
         if addon.getSetting('addons.ini.enabled') == 'true':
             if self.addonsType == XMLTVSource.INI_TYPE_FILE:
                 customFile = str(addon.getSetting('addons.ini.file'))
+                data = xbmcvfs.File(customFile,'rb').read()
             else:
                 customFile = str(addon.getSetting('addons.ini.url'))
-            if customFile:
-                success = xbmcvfs.copy(addons_ini,addons_ini_local)
-                success = xbmcvfs.copy(customFile,addons_ini)
+                data = requests.get(customFile).content
+            if data:
+                enckey = ADDON.getSetting('addons.ini.key')
+                encode = ADDON.getSetting('addons.ini.encode') == "true"
+                if encode and enckey:
+                    import pyaes,base64
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    encryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    ddata=encryptor.encrypt(data)
+                    ddata=base64.b64encode(ddata)
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/addons.aes.ini','wb')
+                    f.write(ddata)
+                    f.close()
+                elif enckey:
+                    import pyaes,base64
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    ddata=base64.b64decode(data)
+                    decryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    data=decryptor.decrypt(ddata).split('\0')[0]
+                    xbmcvfs.copy(addons_ini,addons_ini_local)
+                    xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/addons.ini','wb').write(data)
 
         if (ADDON.getSetting('addons.ini.subscriptions') == "true") or (ADDON.getSetting('addons.ini.overwrite') == "1"):
             streams = {}

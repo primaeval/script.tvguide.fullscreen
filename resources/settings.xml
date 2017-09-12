@@ -28,6 +28,8 @@
         <setting id="addons.ini.file" label="addons.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="addons.ini" default=''/>
         <setting id="addons.ini.url" label="addons.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
         <setting id="addons.ini.overwrite" label="Overwrite or Merge Local addons.ini" type="enum" visible="eq(-4,true)" default='1' values="Overwrite|Merge"/>
+        <setting id="addons.ini.key" label="addons.ini key" type="text" visible="eq(-5,true)" default=''/>
+        <setting id="addons.ini.encode" label="Encode (addons.aes.ini)" type="bool" visible="eq(-6,true)"  default="false" />
         <setting id="addons.ini.subscriptions" label="Enable addons.ini m3u Playlist Subscriptions" type="bool" default='false' />
         <setting label="Manage addons.ini m3u Playlist Subscriptions" type="action" enable="eq(-1,true)" action="RunScript($CWD/subscriptions.py)" />
         <setting type="lsep" label="Refresh may take some time!"/>
@@ -47,8 +49,8 @@
         <setting id="mapping.m3u.type" label="m3u Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
         <setting id="mapping.m3u.file" label="m3u File" type="file" visible="eq(-2,true) + eq(-1,0)"  default=''/>
         <setting id="mapping.m3u.url" label="m3u Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
-        <setting id="mapping.ini.key" label="key" type="text" visible="eq(-4,true)" default=''/>
-        <setting id="mapping.ini.encode" label="Encode (mapping.aes.ini)" type="bool" visible="eq(-5,true)"  default="false" />
+        <setting id="mapping.m3u.key" label="mapping.m3u key" type="text" visible="eq(-4,true)" default=''/>
+        <setting id="mapping.m3u.encode" label="Encode (mapping.aes.ini)" type="bool" visible="eq(-5,true)"  default="false" />
 
     </category>
 
