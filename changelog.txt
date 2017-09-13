@@ -1,3 +1,9 @@
+version 0.0.373
+- Settings\Optional\alt.mappings.tsv key / encode
+- export tsv file from Settings \ Backup
+- format is: channel id \t channel name \t url
+-  without the spaces
+
 version 0.0.372
 - Settings\Optional\addons.ini key
 - Settings\Optional\mappings.m3u key
