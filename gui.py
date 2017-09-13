@@ -4037,6 +4037,7 @@ class TVGuide(xbmcgui.WindowXML):
             if data:
                 enckey = ADDON.getSetting('mapping.m3u.key')
                 encode = ADDON.getSetting('mapping.m3u.encode') == "true"
+                import_m3u = True
                 if encode and enckey:
                     import pyaes
                     enckey=enckey.encode("ascii")
@@ -4048,7 +4049,7 @@ class TVGuide(xbmcgui.WindowXML):
                     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/mapping.aes.m3u','wb')
                     f.write(ddata)
                     f.close()
-                    return
+                    import_m3u = False
                 elif enckey:
                     import pyaes
                     enckey=enckey.encode("ascii")
@@ -4057,17 +4058,55 @@ class TVGuide(xbmcgui.WindowXML):
                     ddata=base64.b64decode(data)
                     decryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
                     data=decryptor.decrypt(ddata).split('\0')[0]
+                if import_m3u:
+                    matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
+                    stream_urls = []
+                    for attributes,name,url in matches:
+                        match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
+                        if match:
+                            name = match.group(1)
+                        if name and url:
+                            stream_urls.append((name.strip().decode("utf8"),url.strip()))
+                    if stream_urls:
+                        self.database.setCustomStreamUrls(stream_urls)
 
-                matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
-                stream_urls = []
-                for attributes,name,url in matches:
-                    match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
-                    if match:
-                        name = match.group(1)
-                    if name and url:
-                        stream_urls.append((name.strip().decode("utf8"),url.strip()))
-                if stream_urls:
-                    self.database.setCustomStreamUrls(stream_urls)
+        if ADDON.getSetting('alt.mapping.tsv.enabled') == 'true':
+            if ADDON.getSetting('alt.mapping.tsv.type') == '0':
+                customFile = ADDON.getSetting('alt.mapping.tsv.file')
+                data = xbmcvfs.File(customFile,'rb').read()
+            else:
+                customFile = ADDON.getSetting('alt.mapping.tsv.url')
+                data = requests.get(customFile).content
+            if data:
+                enckey = ADDON.getSetting('alt.mapping.tsv.key')
+                encode = ADDON.getSetting('alt.mapping.tsv.encode') == "true"
+                import_tsv = True
+                if encode and enckey:
+                    import pyaes
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    encryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    ddata=encryptor.encrypt(data)
+                    ddata=base64.b64encode(ddata)
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/alt.mapping.aes.tsv','wb')
+                    f.write(ddata)
+                    f.close()
+                    import_tsv = False
+                elif enckey:
+                    import pyaes
+                    enckey=enckey.encode("ascii")
+                    missingbytes=16-len(enckey)
+                    enckey=enckey+(chr(0)*(missingbytes))
+                    ddata=base64.b64decode(data)
+                    decryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
+                    data=decryptor.decrypt(ddata).split('\0')[0]
+                if import_tsv:
+                    lines = data.splitlines()
+                    stream_urls = [line.decode("utf8").split("\t",2) for line in lines if '\t' in line]
+                    self.database.setAltCustomStreamUrls(stream_urls)
+
+
 
     def onSourceProgressUpdate(self, percentageComplete):
         control = self.getControl(self.C_MAIN_LOADING_PROGRESS)

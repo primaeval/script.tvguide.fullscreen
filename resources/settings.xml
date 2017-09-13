@@ -51,7 +51,13 @@
         <setting id="mapping.m3u.url" label="m3u Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
         <setting id="mapping.m3u.key" label="mapping.m3u key" type="text" visible="eq(-4,true)" default=''/>
         <setting id="mapping.m3u.encode" label="Encode (mapping.aes.ini)" type="bool" visible="eq(-5,true)"  default="false" />
-
+        <setting type="lsep" label="Alternative Channel Mappings"/>
+        <setting id="alt.mapping.tsv.enabled" label="Import tsv" type="bool" default="false" />
+        <setting id="alt.mapping.tsv.type" label="tsv Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
+        <setting id="alt.mapping.tsv.file" label="tsv File" type="file" visible="eq(-2,true) + eq(-1,0)"  default=''/>
+        <setting id="alt.mapping.tsv.url" label="tsv Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
+        <setting id="alt.mapping.tsv.key" label="alt.mapping.tsv key" type="text" visible="eq(-4,true)" default=''/>
+        <setting id="alt.mapping.tsv.encode" label="Encode (alt.mapping.aes.tsv)" type="bool" visible="eq(-5,true)"  default="false" />
     </category>
 
     <category label="Logos">
