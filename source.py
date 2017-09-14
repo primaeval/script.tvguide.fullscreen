@@ -998,12 +998,18 @@ class Database(object):
         channels = self._getChannelList(True)
         channelIds = [cc.id for cc in channels]
         channelMap = dict()
+        ids = []
         for cc in channels:
             if cc.id:
                 channelMap[cc.id] = cc
-        search = "%%%s%%" % search
-        c.execute('SELECT * FROM programs WHERE channel LIKE ? AND source=? AND start_date<=? AND end_date>=? ',
-                  [search, self.source.KEY, now, now])
+                search = search.replace(' ','.*')
+                if re.search(search,cc.title,flags=re.I):
+                    ids.append(cc.id)
+        if not ids:
+            return
+        ids_string = '\',\''.join(ids)
+        c.execute('SELECT * FROM programs WHERE channel IN (\'' + ids_string + '\') AND source=? AND start_date<=? AND end_date>=? ',
+                  [self.source.KEY, now, now])
         for row in c:
             program = Program(channelMap[row['channel']], title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
                           description=row['description'], categories=row['categories'],
