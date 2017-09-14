@@ -1,3 +1,6 @@
+version 0.0.374
+- channel search fix
+
 version 0.0.373
 - Settings\Optional\alt.mappings.tsv key / encode
 - export tsv file from Settings \ Backup
