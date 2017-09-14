@@ -356,7 +356,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         self.mode = MODE_EPG
         self.channel_number_input = False
-        self.channel_number = ""
+        self.channel_number = ADDON.getSetting('channel.arg')
         self.currentChannel = None
         s = ADDON.getSetting('last.channel')
         if s:
@@ -538,6 +538,11 @@ class TVGuide(xbmcgui.WindowXML):
             self.quickEpgView.cellHeight = int(control.getHeight() / float(3))
 
         if self.database:
+            channelList = self.database.getChannelList(onlyVisible=True,all=False)
+            for i in range(len(channelList)):
+                if self.channel_number == channelList[i].id:
+                     self.channelIdx = i
+                     break
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
         else:
             try:
@@ -3987,7 +3992,6 @@ class TVGuide(xbmcgui.WindowXML):
             self.notification = Notification(self.database, ADDON.getAddonInfo('path'))
             self.autoplay = Autoplay(self.database, ADDON.getAddonInfo('path'))
             self.autoplaywith = Autoplaywith(self.database, ADDON.getAddonInfo('path'))
-            self.onRedrawEPG(0, self.viewStartDate)
             self.database.exportChannelList()
             self.database.exportChannelIdList()
             self.notification.scheduleNotifications()
@@ -3995,6 +3999,12 @@ class TVGuide(xbmcgui.WindowXML):
             self.autoplaywith.scheduleAutoplaywiths()
             self.loadChannelMappings()
             self.clear_catchup()
+            channelList = self.database.getChannelList(onlyVisible=True,all=False)
+            for i in range(len(channelList)):
+                if self.channel_number == channelList[i].id:
+                     self.channelIdx = i
+                     break
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def saveActions(self):
         file_name = 'special://profile/addon_data/script.tvguide.fullscreen/actions.json'

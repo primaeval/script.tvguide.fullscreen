@@ -53,6 +53,11 @@ if len(sys.argv) > 2:
     if new_source != source:
         ADDON.setSetting('source.source',new_source)
 
+channel = ""
+if len(sys.argv) > 3:
+    channel = sys.argv[3]
+ADDON.setSetting('channel.arg',channel)
+
 assets = [
 ('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/sunburst.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/sunburst.png'),
 ('special://profile/addon_data/script.tvguide.fullscreen/backgrounds/charcoal.png','https://raw.githubusercontent.com/primaeval/assets/master/backgrounds/charcoal.png'),
