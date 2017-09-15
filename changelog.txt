@@ -1,3 +1,8 @@
+version 0.0.375
+- channel id argumenent
+- (Channel Category, Data Source, Channel Id)
+- eg in Kodi favourites.xml: RunScript(script.tvguide.fullscreen,All Channels,xmltv,bbc_one_hd)
+
 version 0.0.374
 - channel search fix
 

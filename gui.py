@@ -538,11 +538,13 @@ class TVGuide(xbmcgui.WindowXML):
             self.quickEpgView.cellHeight = int(control.getHeight() / float(3))
 
         if self.database:
+            '''
             channelList = self.database.getChannelList(onlyVisible=True,all=False)
             for i in range(len(channelList)):
                 if self.channel_number == channelList[i].id:
                      self.channelIdx = i
                      break
+            '''
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
         else:
             try:
