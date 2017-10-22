@@ -4,17 +4,18 @@
 # Addon Provider: primaeval
 msgid ""
 msgstr ""
-"Project-Id-Version: XBMC Addons\n"
+"Project-Id-Version: script.tvguide.fullscreen\n"
 "Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: XBMC Translation Team\n"
-"Language-Team: Hebrew (http://www.transifex.com/projects/p/xbmc-addons/language/he/)\n"
+"PO-Revision-Date: 2017-10-18 10:31+0300\n"
+"Last-Translator: A. Dambledore\n"
+"Language-Team: Eng2Heb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: he\n"
+"Language: he_IL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.4\n"
 
 msgctxt "#30000"
 msgid "No description"
@@ -25,12 +26,12 @@ msgid "[B]Loading data from external source...[/B]"
 msgstr "[B]טוען מידע ממקור חיצוני...[/B]"
 
 msgctxt "#30002"
-msgid "Calculating remaning time..."
-msgstr "מחשב זמן שנותר..."
+msgid "Calculating remaining time..."
+msgstr "מחשב את הזמן הנותר..."
 
 msgctxt "#30003"
 msgid "Approximately %d seconds left..."
-msgstr "בערך %d שניות נותרו..."
+msgstr "נותרו בערך %d שניות ..."
 
 msgctxt "#30004"
 msgid "Loading of data already in progress..."
@@ -50,12 +51,13 @@ msgstr "[B]טיפ![/B] אתה יכול גם להשתמש בלחצן הגלילה
 
 msgctxt "#30008"
 msgid "Cancel"
-msgstr "בטל"
+msgstr "ביטול"
 
 msgctxt "#30009"
 msgid "No program available"
 msgstr "אין תכנית זמינה"
 
+# empty strings from id 30010 to 30099
 msgctxt "#30100"
 msgid "General"
 msgstr "כללי"
@@ -124,13 +126,17 @@ msgctxt "#30116"
 msgid "Search for channel logos in"
 msgstr "חפש אייקוני ערוצים ב-"
 
+msgctxt "#30117"
+msgid "Show Channel Logos"
+msgstr "הצג את הסמל של הערוץ"
+
 msgctxt "#30118"
 msgid "Enable OSD menu"
-msgstr "הפעל תפריט OSD"
+msgstr "הפעל את תפריט מסך התצוגה"
 
 msgctxt "#30119"
 msgid "Disabling the OSD menu may fix video stuttering."
-msgstr "השבתת תפריט OSD אולי תפתור בעיית גמגום וידאו."
+msgstr "השבתת תפריט מסך התצוגה אולי תפתור בעיית גמגום וידאו."
 
 msgctxt "#30120"
 msgid "Use alternate streaming method (required for some addons)"
@@ -138,7 +144,7 @@ msgstr "השתמש בשיטת הזרמה חלופית (נדרש עבור הרח�
 
 msgctxt "#30121"
 msgid "Alternative streaming is not compatible with OSD menu"
-msgstr "מצב הזרמה חלופי אינו תואם עם תפריט OSD"
+msgstr "מצב הזרמה חלופי אינו תואם עם תפריט מסך התצוגה"
 
 msgctxt "#30122"
 msgid "XMLTV URL"
@@ -154,7 +160,103 @@ msgstr "קובץ מקומי"
 
 msgctxt "#30125"
 msgid "URL"
-msgstr "כתובת"
+msgstr "כתובת אינטרנט"
+
+msgctxt "#30126"
+msgid "TV (All)"
+msgstr "טלוויזיה (כל)"
+
+msgctxt "#30127"
+msgid "TV (Basic)"
+msgstr "טלוויזיה (בסיסי)"
+
+msgctxt "#30128"
+msgid "File download interval"
+msgstr "מרווח זמן להורדת הקובץ"
+
+msgctxt "#30129"
+msgid "every start"
+msgstr "בכל התחלה"
+
+msgctxt "#30130"
+msgid "every 12 hrs"
+msgstr "כל 12 שעות"
+
+msgctxt "#30131"
+msgid "every 24 hrs"
+msgstr "כל 24 שעות"
+
+msgctxt "#30132"
+msgid "every 48 hrs"
+msgstr "כל 48 שעות"
+
+msgctxt "#30133"
+msgid "UK (Freeview)"
+msgstr "בריטניה (Freeview)"
+
+msgctxt "#30134"
+msgid "UK (Sky Go)"
+msgstr "בריטניה (סקיי Go)"
+
+msgctxt "#30135"
+msgid "USTVNow"
+msgstr "USTVNow"
+
+msgctxt "#30136"
+msgid "US/UK (Basic)"
+msgstr "ארצות הברית / בריטניה (בסיסי)"
+
+msgctxt "#30137"
+msgid "** WARNING! ** Resetting your database will cause you to lose all settings!"
+msgstr "** אזהרה! ** איפוס מסד הנתונים שלך יגרום לך לאבד את כל ההגדרות!"
+
+msgctxt "#30138"
+msgid "Only do so if your database has become corrupt!"
+msgstr "עשה זאת רק אם מסד הנתונים שלך נפגם!"
+
+msgctxt "#30139"
+msgid "Yes, Reset Database"
+msgstr "כן, אפס את מסד הנתונים"
+
+msgctxt "#30140"
+msgid "Reset Database"
+msgstr "אפס מסד נתונים"
+
+msgctxt "#30141"
+msgid "Guide Theme"
+msgstr "ערכת נושא למדריך"
+
+msgctxt "#30142"
+msgid "Custom File"
+msgstr "קובץ מותאם אישית"
+
+msgctxt "#30143"
+msgid "TV Guide Fullscreen"
+msgstr "מסך מלא מדריך טלוויזיה"
+
+msgctxt "#30144"
+msgid "addons.ini selection"
+msgstr "בחירת ini להרחבות"
+
+msgctxt "#30145"
+msgid "addons.ini file"
+msgstr "קובץ ini להרחבות"
+
+msgctxt "#30146"
+msgid "Logo source"
+msgstr "סמליל המקור"
+
+msgctxt "#30147"
+msgid "Custom Folder"
+msgstr "תיקייה מותאמת אישית"
+
+msgctxt "#30148"
+msgid "Appearance"
+msgstr "מראה"
+
+msgctxt "#30149"
+msgid "Refresh on start"
+msgstr "רענן באתחול"
 
 msgctxt "#30150"
 msgid "Oops, sorry about that!"
@@ -178,7 +280,7 @@ msgstr "נראה שיש למעטפת שלך"
 
 msgctxt "#30155"
 msgid "version of the TV Guide Fullscreen skin that is not up-to-date."
-msgstr "גרסה מיוחדת של מדריך התכניות שאינה מעודכנת."
+msgstr "גרסה מיוחדת של מעטפת מדריך התכניות שאינה מעודכנת."
 
 msgctxt "#30156"
 msgid "Please try with a different skin..."
@@ -196,6 +298,7 @@ msgctxt "#30159"
 msgid "Channel configuration, etc. is unfortunately lost."
 msgstr "למרבה הצער הגדרות ערוצים, וכו' אבדו."
 
+# empty strings from id 30160 to 30199
 msgctxt "#30200"
 msgid "on [B]%s[/B] in 5 minutes..."
 msgstr "ב-[B]%s[/B] בעוד 5 דקות..."
@@ -204,6 +307,7 @@ msgctxt "#30201"
 msgid "on [B]%s[/B] is starting now..."
 msgstr "ב-[B]%s[/B] מתחילה כעת..."
 
+# empty strings from id 30202 to 30299
 msgctxt "#30300"
 msgid "Watch %s"
 msgstr "צפה ב-%s"
@@ -218,7 +322,7 @@ msgstr "אל תזכיר"
 
 msgctxt "#30303"
 msgid "Cancel"
-msgstr "בטל"
+msgstr "ביטול"
 
 msgctxt "#30304"
 msgid "Choose stream"
@@ -229,8 +333,8 @@ msgid "You can choose your own .strm file to play, when you want to watch this c
 msgstr "אתה יכול לבחור לנגן קובץ strm. משלך, כאשר ברצונך לצפות בערוץ זה."
 
 msgctxt "#30306"
-msgid "Remove stream file"
-msgstr "הסר קובץ הזרמה"
+msgid "Remove Stream"
+msgstr "הסר הזרמה"
 
 msgctxt "#30307"
 msgid "Channels"
@@ -240,13 +344,39 @@ msgctxt "#30308"
 msgid "Quit"
 msgstr "צא"
 
+# empty strings from id 30309 to 30399
+msgctxt "#30400"
+msgid "Background Update Service"
+msgstr "שירות עדכונים ברקע"
+
+msgctxt "#30401"
+msgid "Service Interval"
+msgstr "מרווח השירות"
+
+msgctxt "#30402"
+msgid "2 hrs"
+msgstr "2 שעות"
+
+msgctxt "#30403"
+msgid "6 hrs"
+msgstr "6 שעות"
+
+msgctxt "#30404"
+msgid "12 hrs"
+msgstr "12 שעות"
+
+msgctxt "#30405"
+msgid "24 hrs"
+msgstr "24 שעות"
+
+# empty strings from id 30406 to 30499
 msgctxt "#30500"
 msgid "[B]Edit channel order and visibility[/B]"
-msgstr "[B]ערוך סדר ערוצים וחשיפה[/B]"
+msgstr "[B]ערוך סדר ערוצים ומראה[/B]"
 
 msgctxt "#30501"
-msgid "Move up and down to change the position of[CR]the channel. Select or navigate left to accept[CR]the position."
-msgstr "נווט למעלה או למטה לשינוי מיקום [CR]הערוץ. בחר או נווט שמאלה לאישור[CR]שינוי המיקום."
+msgid "Press left to pull a channel out, then move it up or down. When in place, press right again to set. Pressing on a channel in the list will enable or disable it.[CR]On touch devices long press on a channel to pull it out, move the list to the desired place and then long press on the pulled out channel to put it in its new place."
+msgstr "הקש שמאלה כדי להוציא ערוץ החוצה, ואז להזיזו למעלה או למטה. כאשר הערוץ במקום, לחץ שוב כדי לקבוע. לחיצה על ערוץ ברשימה להפעיל או לבטל אותו.[CR]בהתקני המגע, לחצו לחיצה ארוכה על הערוץ כדי לשלוף אותו, להעביר את הרשימה למקום הרצוי ולאחר מכן לחיצה ארוכה על הערוץ שהוצא החוצה ותשים אותו במקום החדש שלו."
 
 msgctxt "#30502"
 msgid "Save"
@@ -254,8 +384,9 @@ msgstr "שמור"
 
 msgctxt "#30503"
 msgid "Cancel"
-msgstr "בטל"
+msgstr "ביטול"
 
+# empty strings from id 30504 to 30599
 msgctxt "#30600"
 msgid "[B]Setup stream[/B]"
 msgstr "[B]הגדר הזרמה[/B]"
@@ -282,28 +413,33 @@ msgstr "שמור"
 
 msgctxt "#30606"
 msgid "Cancel"
-msgstr "בטל"
+msgstr "ביטול"
 
 msgctxt "#30607"
 msgid "Stop preview"
 msgstr "עצור תצוגה מקדימה"
 
+# empty strings from id 30608 to 30609
 msgctxt "#30610"
 msgid "Browse..."
 msgstr "עיון..."
 
 msgctxt "#30611"
 msgid "Click Browse... below and navigate to your stream file. When you have chosen your file you can preview the stream to test if it works in XBMC."
-msgstr "חלץ על עיון... שלמטה ונווט לקובץ ההזרמה שלך.לאחר שתבחר את הקובץ תוכל לצפות בהזרמה בתצוגה מקדימה לשם בחינה האם תקין ב-XBMC."
+msgstr "לחץ על עיון... שלמטה ונווט לקובץ ההזרמה שלך. לאחר שתבחר את הקובץ תוכל לצפות בהזרמה בתצוגה מקדימה, לשם בחינה האם השידור תקין בקודי."
 
+# empty strings from id 30612 to 30619
 msgctxt "#30620"
 msgid "Choose a favourite below. Only [I]PlayMedia[/I] favourites are supported."
 msgstr "בחר מועדף מלמטה. רק מועדפי [I]PlayMedia[/I] נתמכים."
 
+# empty strings from id 30621 to 30699
 msgctxt "#30700"
 msgid "Multiple addons provide this channels.[CR]Choose one to watch the stream."
 msgstr "ערוץ זה מוצע ע\"י מספר הרחבות.[CR]לצפייה בחר אחת מהן."
 
+# empty strings from id 30701 to 30799
+# weeb.tv mod
 msgctxt "#30800"
 msgid "JSON-EPG URL"
 msgstr "כתובת JSON-EPG"
@@ -318,8 +454,40 @@ msgstr "TV Guide Fullscreen מוגדר להזרים באמצעות ההרחבה 
 
 msgctxt "#30803"
 msgid "addon which is not installed."
-msgstr "שאינה מותקנת."
+msgstr "הרחבה שאינה מותקנת."
 
 msgctxt "#30804"
 msgid "Streaming using that addon is now disabled."
 msgstr "הזרמה בעזרת הרחבה זו כעת מנוטרלת."
+
+msgctxt "#30900"
+msgid "Autostart TV Guide Fullscreen when Kodi starts up"
+msgstr "התחל את מדריך הטלוויזיה במסך מלא כאשר קודי מתחיל"
+
+msgctxt "#31000"
+msgid "Connection problem"
+msgstr "בעיית חיבור"
+
+msgctxt "#31001"
+msgid "It was not possible to update from the server."
+msgstr "לא ניתן היה לעדכן מהשרת."
+
+msgctxt "#31002"
+msgid "Current local data will be kept for now..."
+msgstr "הנתונים המקומיים הנוכחיים יישמרו כרגע ..."
+
+msgctxt "#80000"
+msgid "My Movies"
+msgstr "הסרטים שלי"
+
+msgctxt "#80001"
+msgid "My TV Shows"
+msgstr "הסדרות שלי"
+
+msgctxt "#80002"
+msgid "Video Add-Ons"
+msgstr "הרחבות וידאו"
+
+msgctxt "#80003"
+msgid "On-Demand"
+msgstr "על פי דרישה"
