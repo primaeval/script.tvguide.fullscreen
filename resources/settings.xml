@@ -144,6 +144,9 @@
         <setting id="favourites" label="Favourite Favourites" type="select" default="Favourites" values="Favourites|Simple Favourites|Video Favourites|Super Favourites" />
         <setting type="sep"/>
         <setting id="date.long" label="Show Long Date in EPG" type="bool" default="true" />
+		<setting id="date.custom" label="Custom Date" type="bool" default="false" />
+		<setting id="date.custom.format" label="Custom Date Format (dt is datetime variable)" visible="eq(-1,true)" type="text" default="{dt:%a %b} {dt.day}" />
+		<setting type="sep"/>
         <setting id="mouse.controls" label="Show Touch Control Buttons" type="bool" default="true" />
         <setting id="channel.logo" label="Show Channel Logo in EPG above Program Image" type="bool" default="false" />
         <setting id="addon.logo" label="Show Addon Logo in EPG above Program Image" type="bool" default="false" />
