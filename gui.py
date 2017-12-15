@@ -3515,6 +3515,9 @@ class TVGuide(xbmcgui.WindowXML):
         else:
             self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, False))
         #self.setControlLabel(self.C_MAIN_DATE_LONG, '{dt:%A} {dt.day} {dt:%B}'.format(dt=self.viewStartDate))
+        if ADDON.getSetting('date.custom') == 'true':
+            date_format = ADDON.getSetting('date.custom.format')
+            self.setControlLabel(self.C_MAIN_DATE_LONG, date_format.format(dt=self.viewStartDate))
         for col in range(1, 5):
             self.setControlLabel(4000 + col, self.formatTime(startTime))
             startTime += HALF_HOUR
@@ -3567,7 +3570,7 @@ class TVGuide(xbmcgui.WindowXML):
             control = self.getControl(4010 + idx)
             if control:
                 control.setHeight(self.epgView.cellHeight-2)
-                control.setWidth(166)
+                control.setWidth(156)
                 control.setPosition(12,top)
             control = self.getControl(4110 + idx)
             if control:

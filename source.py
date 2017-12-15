@@ -2558,6 +2558,9 @@ class TVGUKNow2Source(Source):
         @param progress_callback:
         @return:
         """
+        if ADDON.getSetting('update.progress') == 'true':
+            d = xbmcgui.DialogProgressBG()
+            d.create('TV Guide Fullscreen', "grabbing tvguide.co.uk listings")
         systemid = {
             "Popular":"7",
             "Sky":"5",
@@ -2582,6 +2585,8 @@ class TVGUKNow2Source(Source):
         html = r.content
         channels = html.split('<div class="div-epg-channel-name">')
         channel_numbers = {}
+        count = 0
+        total = len(channels)
         for channel in channels:
             name = ''
             logo = ''
@@ -2647,6 +2652,13 @@ class TVGUKNow2Source(Source):
                     last_end = end
                     program = Program(c, title, '', start, end, description, '', imageSmall="", season=season, episode=episode, is_movie = is_movie, language= "")
                     yield program
+            count = count + 1
+            percent = 100.0 * float(total) / float(count)
+            if ADDON.getSetting('update.progress') == 'true':
+                d.update(int(percent), message=name)
+        if ADDON.getSetting('update.progress') == 'true':
+            d.update(100, message="Done")
+            d.close()
 
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated):
