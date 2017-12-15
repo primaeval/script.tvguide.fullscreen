@@ -1,4 +1,10 @@
-version 0.0.375
+version 0.0.377
+- extra 10 pixels right margin for Channel Name text in main epg
+- Settings\Appearance\Custom Date
+-   dt is current datetime
+-   use python datetime.format eg  {dt:%a %b} {dt.day}
+
+version 0.0.376
 - hebrew
 
 version 0.0.375
