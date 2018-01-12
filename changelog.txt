@@ -1,3 +1,7 @@
+version 0.0.378
+- Settings\Lab3\Tertiary xmltv source
+- normal yo.tv is broken
+
 version 0.0.377
 - extra 10 pixels right margin for Channel Name text in main epg
 - Settings\Appearance\Custom Date
