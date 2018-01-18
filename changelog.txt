@@ -1,4 +1,4 @@
-version 0.0.378
+version 0.0.378-379
 - Settings\Lab3\Tertiary xmltv source
 - normal yo.tv is broken
 

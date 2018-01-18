@@ -240,7 +240,7 @@ def getLogo(title,ask=False,force=True):
     xbmcvfs.mkdirs("special://profile/addon_data/script.tvguide.fullscreen/logos")
     db_url = "http://www.thelogodb.com/api/json/v1/4423/tvchannel.php?s=%s" % re.sub(' ','+',title)
     try: json = requests.get(db_url).json()
-    except: pass
+    except: return None
     if json and "channels" in json:
         channels = json["channels"]
         if channels:
