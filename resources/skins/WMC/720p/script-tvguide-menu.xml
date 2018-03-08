@@ -1,0 +1,1562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+    <allowoverlay>no</allowoverlay>
+    <defaultcontrol always="false">7106</defaultcontrol>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+	<onload>SetFocus(4000)</onload><!---->
+    <controls>
+
+        <control type="image">
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texture>tvguide-glasspane.png</texture>
+            <visible>true</visible>
+        </control>
+        <control type="image">
+            <posx>150</posx>
+            <posy>100</posy>
+            <width>1010</width>
+            <height>510</height>
+            <texture>menu.png</texture>
+            <visible>false</visible>
+        </control>
+		
+		<control type="group">
+			<description></description>
+			<posx>250</posx>
+			<posy>0</posy>
+			<!--
+			<control type="image">
+				<description>top background</description>
+				<width>780</width>
+				<height>200</height>
+				<texture>menuTop.jpg</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<top>200</top>
+				<description>middle background</description>
+				<width>780</width>
+				<height>440</height>
+				<texture>menuMiddle.jpg</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<top>640</top>
+				<description>bottom background</description>
+				<width>780</width>
+				<height>80</height>
+				<texture>menuBottom.jpg</texture>
+				<visible>true</visible>
+			</control>
+			
+			-->
+			<control type="image">
+				<description>middle background</description>
+				<width>780</width>
+				<height>7200</height>
+				<texture>menuBackground.jpg</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<description>top background</description>
+				<width>780</width>
+				<height>200</height>
+				<texture>menuTop.png</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<top>640</top>
+				<description>bottom background</description>
+				<width>780</width>
+				<height>80</height>
+				<texture>menuBottom.png</texture>
+				<visible>true</visible>
+			</control>
+			
+			<control type="group">
+				<description>Main Menu Buttons</description>
+				
+			</control>
+			
+			<control type="group">
+				<top>660</top>
+				<control type="button" id="4016">
+					<description>VOD</description>
+					<left>20</left>
+					<width>175</width>
+					<height>40</height>
+					<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+					<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onup condition="Control.isVisible(4800)">7004</onup>
+					<onup condition="Control.isVisible(4802)">4003</onup>
+					<onup>4002</onup>
+					<ondown></ondown>
+					<onleft>4004</onleft>
+					<onright>4011</onright>
+					<label>Video On Demand</label>
+				</control>
+				<control type="button" id="4011">
+					<description>Lists</description>
+					<left>210</left>
+					<width>175</width>
+					<height>40</height>
+					<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+					<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onup condition="Control.isVisible(4800)">7004</onup>
+					<onup condition="Control.isVisible(4802)">4003</onup>
+					<onup>4002</onup>
+					<ondown></ondown>
+					<onleft>4016</onleft>
+					<onright>4006</onright>
+					<label>Lists</label>
+				</control>
+				<control type="button" id="4006">
+					<description>iSearch</description>
+					<left>400</left>
+					<width>175</width>
+					<height>40</height>
+					<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+					<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onup condition="Control.isVisible(4800)">7004</onup>
+					<onup condition="Control.isVisible(4802)">4003</onup>
+					<onup>4002</onup>
+					<ondown></ondown>
+					<onleft>4011</onleft>
+					<onright>4004</onright>
+					<label>iSearch</label>
+				</control>
+				<control type="button" id="4004">
+					<description>Quit</description>
+					<left>590</left>
+					<width>175</width>
+					<height>40</height>
+					<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+					<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<onup condition="Control.isVisible(4800)">7004</onup>
+					<onup condition="Control.isVisible(4802)">4003</onup>
+					<onup>4002</onup>
+					<ondown></ondown>
+					<onleft>4006</onleft>
+					<onright>4016</onright>
+					<label>Quit</label>
+				</control>
+			</control>
+			
+			<!-- SYNOPSIS -->
+			<control type="group" id="4801">
+				<description>Synopsis Group</description>
+				<align>left</align>
+				<aligny>top</aligny>
+				<visible allowhiddenfocus="true">[Control.HasFocus(4000)|Control.isVisible(4801)]+!Control.HasFocus(80003)+!Control.HasFocus(4007)</visible>
+
+
+				<control type="group">
+					<description>Synopsis Buttons</description>
+					<left>60</left>
+					<top>220</top>
+					<control type="button" id="4008">
+						<description>autoplay</description>
+						<top>0</top>
+						<width>250</width>
+						<height>40</height>
+						<texturefocus>buttonAutoPlay-focus.png</texturefocus>
+						<texturenofocus>buttonAutoPlay-nofocus.png</texturenofocus>
+						<onup>4016</onup>
+						<ondown>4009</ondown>
+						<onleft>80003</onleft>
+						<onright>4007</onright>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<label>AutoPlay</label>
+					</control>
+
+					<control type="button" id="4009">
+						<description>autoplaywith</description>
+						<top>35</top>
+						<width>250</width>
+						<height>40</height>
+						<texturefocus>buttonAutoPlayWith-focus.png</texturefocus>
+						<texturenofocus>buttonAutoPlayWith-nofocus.png</texturenofocus>
+						<onup>4008</onup>
+						<ondown>4000</ondown>
+						<onleft>80003</onleft>
+						<onright>4007</onright>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<label>AutoPlayWith</label>
+					</control>
+					<control type="button" id="4000">
+						<!-- Watch Stream -->
+						<top>70</top>
+						<width>250</width>
+						<height>40</height>
+						<texturefocus>buttonWatch-focus.png</texturefocus>
+						<texturenofocus>buttonWatch-nofocus.png</texturenofocus>
+						<onup>4009</onup>
+						<ondown>4002</ondown>
+						<onleft>80003</onleft>
+						<onright>4007</onright>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<label>Watch</label>
+					</control>
+
+					<control type="button" id="4002">
+						<!-- REMINDER -->
+						<top>105</top>
+						<width>250</width>
+						<height>40</height>
+						<texturefocus>buttonRemind-focus.png</texturefocus>
+						<texturenofocus>buttonRemind-nofocus.png</texturenofocus>
+						<onup>4000</onup>
+						<ondown>4016</ondown>
+						<onleft>80003</onleft>
+						<onright>4007</onright>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<label>Remind</label>
+					</control>
+				</control>
+
+				<control type="image">
+					<width>780</width>
+					<height>85</height>
+					<texture>headerSynopsis-nofocus.png</texture>
+					<visible>true</visible>
+				</control>
+				
+				<control type="image" id="7002">
+					<description>program image</description>
+					<top>100</top>
+					<left>530r</left>
+					<width>260</width>
+					<height>260</height>
+					<aspectratio>keep</aspectratio>
+					<texture>-</texture>
+					<!--<visible>!Player.HasMedia</visible>-->
+				</control>
+			
+				<control type="image" id="4100">
+					<description>channel logo</description>
+					<top>90</top>
+					<left>5</left>
+					<width>75</width>
+					<height>50</height>
+					<align>right</align>
+					<aligny>bottom</aligny>
+					<aspectratio>keep</aspectratio>
+					<visible>true</visible>
+				</control>
+				
+				<control type="label" id="4102">
+					<description>Show Title</description>
+					<top>100</top>
+					<left>100</left>
+					<width>400</width>
+					<font>font14</font>
+					<textcolor>white</textcolor>
+					<visible>true</visible>
+					<aligny>top</aligny>
+					<label>-</label>
+				</control>
+				<control type="label" id="4108">
+					<description>Show Subtitle</description>
+					<top>130</top>
+					<left>100</left>
+					<width>400</width>
+					<aligny>top</aligny>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<visible>true</visible>
+					<label>-</label>
+				</control>
+				
+				<control type="label" id="7003">
+					<description>program date and time</description>
+					<top>160</top>
+					<left>100</left>
+					<textcolor>white</textcolor>
+					<font>font11</font>
+					<aligny>top</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="4103">
+					<description>Show Length</description>
+					<align>left</align>
+					<aligny>top</aligny>
+					<top>380</top>
+					<left>100</left>
+					<font>font11</font>
+					<textcolor>white</textcolor>
+					<visible>true</visible>
+					<label>-</label>
+				</control>
+				<control type="textbox" id="77000">
+					<description>Show Textbox</description>
+					<align>left</align>
+					<aligny>top</aligny>
+					<top>410</top>
+					<left>100</left>
+					<height>180</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<visible>true</visible>
+					<label>-</label>
+				</control>
+				<control type="group">
+					<top>580</top>
+					<align>left</align>
+					<aligny>top</aligny>
+					<textcolor>white</textcolor>
+					<visible>true</visible>
+					<control type="label">
+						<description>On Next</description>
+						<left>100</left>
+						<aligny>top</aligny>
+						<font>font11</font>
+						<label>Next: </label>
+					</control>	
+					<control type="label" id="4106">
+						<description>On Next</description>
+						<left>140</left>
+						<aligny>top</aligny>
+						<font>font11</font>
+						<label>-</label>
+					</control>			
+				</control>
+				
+				<!--<control type="group">
+					<top>660</top>
+					<control type="button" id="4016">
+						<description>VOD</description>
+						<left>20</left>
+						<width>175</width>
+						<height>40</height>
+						<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+						<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<onup>4002</onup>
+						<ondown></ondown>
+						<onleft>4004</onleft>
+						<onright>4011</onright>
+						<label>Video On Demand</label>
+					</control>
+					<control type="button" id="4011">
+						<description>Lists</description>
+						<left>210</left>
+						<width>175</width>
+						<height>40</height>
+						<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+						<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<onup>4002</onup>
+						<ondown></ondown>
+						<onleft>4016</onleft>
+						<onright>4006</onright>
+						<label>Lists</label>
+					</control>
+					<control type="button" id="4006">
+						<description>iSearch</description>
+						<left>400</left>
+						<width>175</width>
+						<height>40</height>
+						<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+						<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<onup>4002</onup>
+						<ondown></ondown>
+						<onleft>4011</onleft>
+						<onright>4004</onright>
+						<label>iSearch</label>
+					</control>
+					<control type="button" id="4004">
+						<description>Quit</description>
+						<left>590</left>
+						<width>175</width>
+						<height>40</height>
+						<texturefocus>tvg-button-bottom-focus.png</texturefocus>
+						<texturenofocus>tvg-button-bottom-nofocus.png</texturenofocus>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<onup>4002</onup>
+						<ondown></ondown>
+						<onleft>4006</onleft>
+						<onright>4016</onright>
+						<label>Quit</label>
+					</control>
+				</control>
+
+				
+				<control type="textbox" id="77003">
+					<description>channel title</description>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>orange</textcolor>
+					<visible>true</visible>
+					<label>-</label>
+				</control>-->
+				
+				
+				
+				
+			</control>
+			
+			<!--<control type="button" id="4950">
+				<left>100</left>
+				<top>210</top>
+				<width>250</width>
+				<height>40</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>blue</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<textoffsetx>40</textoffsetx>
+				<onfocus>SetFocus(40012)</onfocus>
+				<visible allowhiddenfocus="true">false</visible>
+			</control>
+			<control type="button" id="4951">
+				<left>100</left>
+				<top>210</top>
+				<width>250</width>
+				<height>40</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<onleft>SetFocus(4000)</onleft>
+				<textoffsetx>40</textoffsetx>
+				<onfocus>SetFocus(4000)</onfocus>
+				<visible allowhiddenfocus="true">false</visible>
+			</control>	-->
+
+
+			
+			<!-- CATEGORIES -->
+			<control type="group" id="4800">
+				<description>Categories Group</description>
+				<align>left</align>
+				<aligny>top</aligny>
+				<visible allowhiddenfocus="true">[Control.HasFocus(80003)|Control.isVisible(4800)]+!Control.HasFocus(4007)+!Control.HasFocus(4000)</visible>
+			
+				<control type="group">
+					<description>Category Buttons</description>
+					<left>60</left>
+					<top>220</top>
+
+					<control type="image">
+						<top>65</top>
+						<width>350</width>
+						<height>300</height>
+						<description>List Border</description>
+						<visible>true</visible>
+						<texture>listBorder400x360.png</texture>
+					</control>
+					
+					<control type="button" id="80003">
+						<description>add category</description>
+						<width>250</width>
+						<height>40</height>
+						<onup>-</onup>
+						<ondown>7004</ondown>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<onleft>4007</onleft>
+						<onright>4000</onright>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<texturefocus>buttonChooseStream-focus.png</texturefocus>
+						<texturenofocus>buttonChooseStream-nofocus.png</texturenofocus>
+						<label>Add Category</label>
+					</control>
+
+					<control type="list" id="7004">
+						<description>categories</description>
+						<top>65</top>
+						<width>1280</width>
+						<height>625</height>
+						<visible>true</visible>
+						<onup>80003</onup>
+						<ondown>4016</ondown>
+						<onleft>4007</onleft>
+						<onright>4000</onright>
+						<viewtype label="3D list">list</viewtype>
+						<orientation>vertical</orientation>
+
+						<itemlayout width="348" height="40">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>350</width>
+								<height>40</height>
+								<texture>invisible.png</texture>
+								<visible>true</visible>
+							</control>
+							<control type="label">
+								<left>0</left>
+								<top>0</top>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<align>left</align>
+								<aligny>center</aligny>
+								<textcolor>blue</textcolor>
+								<selectedcolor>red</selectedcolor>
+								<textoffsetx>10</textoffsetx>
+								<align>left</align>
+								<info>ListItem.Label</info>
+							</control>
+						</itemlayout>
+						<focusedlayout width="348" height="40">
+							<control type="image">
+								<posx>1</posx>
+								<posy>0</posy>
+								<width>348</width>
+								<height>40</height>
+								<texture>tvg-button-list-focus.png</texture>
+								<visible>true</visible>
+							</control>
+							<control type="label">
+								<left>0</left>
+								<top>0</top>
+								<width>348</width>
+								<height>40</height>
+								<font>font13</font>
+								<align>left</align>
+								<aligny>center</aligny>
+								<textcolor>blue</textcolor>
+								<selectedcolor>red</selectedcolor>
+								<textoffsetx>10</textoffsetx>
+								<align>left</align>
+								<info>ListItem.Label</info>
+							</control>
+							<control type="image">
+								<posx>1</posx>
+								<posy>0</posy>
+								<width>348</width>
+								<height>40</height>
+								<texture>tvg-button-list-focus.png</texture>
+								<visible>Control.HasFocus(7004)</visible>
+							</control>
+							<control type="label">
+								<left>0</left>
+								<top>0</top>
+								<width>348</width>
+								<height>40</height>
+								<font>font13</font>
+								<align>left</align>
+								<aligny>center</aligny>
+								<textcolor>white</textcolor>
+								<selectedcolor>red</selectedcolor>
+								<textoffsetx>10</textoffsetx>
+								<align>left</align>
+								<info>ListItem.Label</info>
+								<visible>Control.HasFocus(7004)</visible>
+							</control><!---->
+						</focusedlayout>
+					</control>
+				
+				</control>
+				
+				<control type="image">
+					<width>780</width>
+					<height>85</height>
+					<texture>headerCategories-nofocus.png</texture>
+					<visible>true</visible>
+				</control>
+				
+				<control type="image">
+					<width>173</width>
+					<height>168</height>
+					<top>90</top>
+					<left>600</left>
+					<texture>headerCategories-icon.png</texture>
+					<visible>true</visible>
+				</control>
+
+				<control type="label">
+					<top>100</top>
+					<left>60</left>
+					<font>font14</font>
+					<textcolor>white</textcolor>
+					<wrapmultiline>true</wrapmultiline>
+					<align>left</align>
+					<aligny>bottom</aligny>
+					<width>550</width>
+					<height>300</height>
+					<label>Categories are used at the top of the EPG in order to filter the channels that are displayed to your preference.</label>
+					
+				</control>
+				
+				<control type="label">
+					<top>280</top>
+					<left>420</left>
+					<font>font14</font>
+					<textcolor>white</textcolor>
+					<wrapmultiline>true</wrapmultiline>
+					<align>left</align>
+					<aligny>bottom</aligny>
+					<width>300</width>
+					<height>400</height>
+					<label>[B]Steps to add Categories[/B][CR]1. Click the Add Category button[CR]2. Enter the name of your Category[CR]3. With the Category you added selected, press the context menu[CR]4. Select the channels you want to add to the Category[CR]5. Click OK</label>
+					
+				</control>
+
+			</control>
+			
+			<!-- CONFIGURATION -->
+			<control type="group" id="4802">
+				<description>Categories Group</description>
+				<align>left</align>
+				<aligny>top</aligny>
+				<visible allowhiddenfocus="true">[Control.HasFocus(4007)|Control.isVisible(4802)]+!Control.HasFocus(80003)+!Control.HasFocus(4000)</visible>
+			
+				<control type="group">
+					<description>Channel Info</description>
+					<control type="image">
+						<description>Channel Logo</description>
+						<left>0</left>
+						<top>200</top>
+						<width>150</width>
+						<height>60</height>
+						<aspectratio>keep</aspectratio>
+						<texture>$INFO[Control.GetLabel(4100)]</texture>
+						<visible>true</visible>
+					</control>
+					<control type="label" id="4101">
+						<description>Channel Name</description>
+						<left>40</left>
+						<top>255</top>
+						<left>170</left>
+						<width>170</width>
+						<height>40</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font14</font>
+						<textcolor>FF002051</textcolor>
+						<label/>
+						<align>left</align>
+						<scroll>true</scroll>
+					</control>
+					
+				</control>
+				<control type="group">
+					<description>Config Buttons</description>
+					<left>60</left>
+					<top>290</top>
+					
+					<control type="button" id="4007">
+						<!-- Stream Setup -->
+						<top>0</top>
+						<width>250</width>
+						<height>40</height>
+						<texturefocus>buttonStreamSetup-focus.png</texturefocus>
+						<texturenofocus>buttonStreamSetup-nofocus.png</texturenofocus>
+						<onup>4003</onup>
+						<ondown>4014</ondown>
+						<onleft>4000</onleft>
+						<onright>80003</onright>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<label>Stream Setup</label>
+					</control>
+					
+					<control type="button" id="4014">
+						<description>Choose Alt Stream</description>
+						<top>35</top>
+						<width>250</width>
+						<height>40</height>
+						<texturefocus>buttonAltStream-focus.png</texturefocus>
+						<texturenofocus>buttonAltStream-nofocus.png</texturenofocus>
+						<onup>4007</onup>
+						<ondown>4003</ondown>
+						<onleft>4000</onleft>
+						<onright>80003</onright>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<label>Add Alt Stream</label>
+						<visible>true</visible>
+					</control>
+					<control type="button" id="4003">
+						<!-- CHANNELS -->
+						<top>70</top>
+						<width>250</width>
+						<height>40</height>
+						<texturefocus>buttonChannels-focus.png</texturefocus>
+						<texturenofocus>buttonChannels-nofocus.png</texturenofocus>
+						<onup>4014</onup>
+						<ondown>4016</ondown>
+						<onleft>4000</onleft>
+						<onright>80003</onright>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font13</font>
+						<textcolor>blue</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<textoffsetx>40</textoffsetx>
+						<label>$ADDON[script.tvguide.fullscreen 30307]</label>
+					</control>
+				</control>
+			
+				<control type="image">
+					<width>780</width>
+					<height>85</height>
+					<texture>headerConfiguration-nofocus.png</texture>
+					<visible>true</visible>
+				</control>
+				
+				<control type="image">
+					<width>188</width>
+					<height>162</height>
+					<top>90</top>
+					<left>600</left>
+					<texture>headerConfiguration-icon.png</texture>
+					<visible>true</visible>
+				</control>
+				
+				<control type="label">
+					<top>100</top>
+					<left>60</left>
+					<font>font14</font>
+					<textcolor>white</textcolor>
+					<wrapmultiline>true</wrapmultiline>
+					<align>left</align>
+					<aligny>bottom</aligny>
+					<width>530</width>
+					<height>300</height>
+					<label>Set up the stream for this channel, add an alternate stream. Use the Channel Setup to show/hide channels, reorder the channel line up, and add/edit logos to your channels.</label>
+					
+				</control>
+
+			</control>
+
+
+			<control type="group" id="4900">
+				<description>Config Buttons</description>
+				<left>320</left>
+				<top>200</top>
+                <visible>false</visible>
+
+				<control type="button" id="40010">
+					<!-- Choose Stream -->
+					<left>0</left>
+					<top>210</top>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus>buttonChooseStream-focus.png</texturefocus>
+					<texturenofocus>buttonChooseStream-nofocus.png</texturenofocus>
+					<onup>4009</onup>
+					<ondown>4007</ondown>
+					<onleft>4951</onleft>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>Choose Stream</label>
+				</control>
+
+				<control type="button" id="4007">
+					<!-- Stream Setup -->
+					<top>245</top>
+					<left>0</left>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus>buttonStreamSetup-focus.png</texturefocus>
+					<texturenofocus>buttonStreamSetup-nofocus.png</texturenofocus>
+					<onup>40012</onup>
+					<ondown>4014</ondown>
+					<onleft>4951</onleft>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>Stream Setup</label>
+				</control>
+            </control>
+
+			
+			<control type="group" id="4901">
+				<description>TV Action Buttons</description>
+				<left>20</left>
+				<top>200</top>
+				<visible>false</visible>
+
+				<control type="button" id="4008">
+					<description>autoplay</description>
+					<top>0</top>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus>buttonAutoPlay-focus.png</texturefocus>
+					<texturenofocus>buttonAutoPlay-nofocus.png</texturenofocus>
+					<onup>4002</onup>
+					<ondown>4009</ondown>
+					<onleft>40012</onleft>
+					<onright>4950</onright>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>AutoPlay</label>
+				</control>
+
+				<control type="button" id="4009">
+					<description>autoplaywith</description>
+					<top>35</top>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus>buttonAutoPlayWith-focus.png</texturefocus>
+					<texturenofocus>buttonAutoPlayWith-nofocus.png</texturenofocus>
+					<onup>4008</onup>
+					<ondown>4000</ondown>
+					<onleft>40012</onleft>
+					<onright>4950</onright>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>AutoPlayWith</label>
+				</control>
+				
+				<control type="button" id="4000">
+					<!-- Watch Stream -->
+					<top>70</top>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus>buttonWatch-focus.png</texturefocus>
+					<texturenofocus>buttonWatch-nofocus.png</texturenofocus>
+					<onup>4009</onup>
+					<ondown>4002</ondown>
+					<onleft>40012</onleft>
+					<onright>4950</onright>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>Watch</label>
+				</control>
+
+				<control type="button" id="4002">
+					<!-- REMINDER -->
+					<top>105</top>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus></texturefocus>
+					<texturenofocus></texturenofocus>
+					<onup>4000</onup>
+					<ondown>4008</ondown>
+					<onleft>7004</onleft>
+					<onright>4950</onright>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>Remind</label>
+				</control>
+				
+				
+				<control type="button" id="4005">
+					<!-- watch from beginning -->
+					<description>catchup addon</description>
+					<top>0</top>
+					<left>320</left>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus></texturefocus>
+					<texturenofocus></texturenofocus>
+					<onup>4006</onup>
+					<ondown>4013</ondown>
+					<onleft>7004</onleft>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>Catchup</label>
+				</control>
+
+				<control type="button" id="4013">
+					<description>Extended Info</description>
+					<top>35</top>
+					<left>320</left>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus></texturefocus>
+					<texturenofocus></texturenofocus>
+					<onup>4005</onup>
+					<ondown>4011</ondown>
+					<onleft>7004</onleft>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>Extended Info</label>
+					<visible>true</visible>
+				</control>
+
+				<control type="button" id="4011">
+					<description>Lists</description>
+					<top>70</top>
+					<left>320</left>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus></texturefocus>
+					<texturenofocus></texturenofocus>
+					<onup>4013</onup>
+					<ondown>4002</ondown>
+					<onleft>7004</onleft>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<visible>true</visible>
+					<label>Lists</label>
+				</control>
+
+
+
+				<control type="button" id="4014">
+					<description>Choose Alt Stream</description>
+					<top>280</top>
+					<left>320</left>
+					<width>250</width>
+					<height>40</height>
+					<texturefocus></texturefocus>
+					<texturenofocus></texturenofocus>
+					<onup>4007</onup>
+					<ondown>4003</ondown>
+					<onleft>7004</onleft>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>blue</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<textoffsetx>40</textoffsetx>
+					<label>Add Alt Stream</label>
+					<visible>true</visible>
+				</control>
+
+				<control type="label">
+					<!-- Choose Stream Text -->
+					<posx>20</posx>
+					<posy>425</posy>
+					<width>200</width>
+					<height>200</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<label>$ADDON[script.tvguide.fullscreen 30305]</label>
+					<wrapmultiline>true</wrapmultiline>
+					<visible>false</visible>
+				</control>
+
+				<control type="label" id="4102">
+					<!-- Show Title -->
+					<posx>20</posx>
+					<posy>470</posy>
+					<width>200</width>
+					<height>40</height>
+					<align>center</align>
+					<aligny>center</aligny>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<visible>false</visible>
+				</control>
+			</control>
+		</control>
+		
+		
+		
+
+        
+        <control type="group">
+			<description>THIS HAS THE CATEGORIES (FAR LEFT)</description>
+			<visible>false</visible>
+			
+			<control type="image">
+				<description>category background</description>
+				<posx>10</posx>
+				<posy>10</posy>
+				<width>220</width>
+				<height>700</height>
+				<texture>grey.png</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<description>category background</description>
+				<posx>12</posx>
+				<posy>12</posy>
+				<width>216</width>
+				<height>696</height>
+				<texture>black-back.png</texture>
+				<visible>true</visible>
+			</control>
+
+
+
+			<control type="button" id="80003">
+				<description>add category</description>
+				<posx>20</posx>
+				<posy>20</posy>
+				<width>200</width>
+				<height>40</height>
+				<texturefocus>tvg-button-focus.png</texturefocus>
+				<texturenofocus>tvg-button-nofocus.png</texturenofocus>
+				<onup>-</onup>
+				<ondown>7004</ondown>
+				<onright>4006</onright>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>black</focusedcolor>
+				<label>Add Category</label>
+				<visible>true</visible>
+			</control>
+
+			<control type="list" id="7004">
+				<description>categories</description>
+				<left>20</left>
+				<top>65</top>
+				<width>1280</width>
+				<height>625</height>
+				<visible>true</visible>
+				<onup>80003</onup>
+				<ondown>4006</ondown>
+				<onleft>1</onleft>
+				<onright>4006</onright>
+				<viewtype label="3D list">list</viewtype>
+				<orientation>vertical</orientation>
+
+				<itemlayout width="200" height="45">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>40</height>
+						<texture>tvg-button-nofocus.png</texture>
+						<visible>true</visible>
+					</control>
+					<control type="label">
+						<left>0</left>
+						<top>0</top>
+						<width>200</width>
+						<height>40</height>
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<selectedcolor>red</selectedcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout height="45" width="200">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>40</height>
+						<texture>tvg-button-focus.png</texture>
+						<visible>true</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>40</height>
+						<texture>tvg-button-focus.png</texture>
+						<visible>Control.HasFocus(7004)</visible>
+					</control>
+					<control type="label">
+						<left>0</left>
+						<top>0</top>
+						<width>200</width>
+						<height>40</height>
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<selectedcolor>red</selectedcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="label">
+						<left>0</left>
+						<top>0</top>
+						<width>200</width>
+						<height>40</height>
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>black</textcolor>
+						<selectedcolor>red</selectedcolor>
+						<align>left</align>
+						<info>ListItem.Label</info>
+						<visible>Control.HasFocus(7004)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+
+        </control>
+
+
+
+        <control type="group">
+			<description>THIS HAS ALL OF THE PROGRAM INFO (FAR RIGHT)</description>
+			<visible>false</visible>
+
+			<control type="image">
+				<description>program background</description>
+				<posx>540</posx>
+				<posy>10</posy>
+				<width>730</width>
+				<height>700</height>
+				<texture>grey.png</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<description>program background</description>
+				<posx>542</posx>
+				<posy>12</posy>
+				<width>726</width>
+				<height>696</height>
+				<texture>black-back.png</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image" id="7002">
+				<description>program image</description>
+				<posx>555</posx>
+				<posy>428</posy>
+				<width>700</width>
+				<height>260</height>
+				<align>left</align>
+				<aligny>top</aligny>
+				<aspectratio>keep</aspectratio>
+				<texture>-</texture>
+				<visible>!Player.HasMedia</visible>
+			</control>
+			<control type="videowindow">
+				<description>program image</description>
+				<posx>555</posx>
+				<posy>428</posy>
+				<width>700</width>
+				<height>260</height>
+				<align>left</align>
+				<aligny>top</aligny>
+				<aspectratio>keep</aspectratio>
+			</control>
+			<control type="label" id="7001">
+				<description>program title</description>
+				<posx>550</posx>
+				<posy>50</posy>
+				<width>710</width>
+				<height>50</height>
+				<textcolor>white</textcolor>
+				<font>font13_title</font>
+				<align>left</align>
+				<aligny>top</aligny>
+				<label/>
+			</control>
+			<control type="label" id="7003">
+				<description>program date and time</description>
+				<posx>1260</posx>
+				<posy>50</posy>
+				<width>710</width>
+				<height>50</height>
+				<textcolor>white</textcolor>
+				<font>font13_title</font>
+				<align>right</align>
+				<aligny>top</aligny>
+				<label></label>
+			</control>
+
+			<control type="label" id="7000">
+				<description>program description</description>
+				<posx>550</posx>
+				<posy>80</posy>
+				<width>710</width>
+				<height>300</height>
+				<textcolor>white</textcolor>
+				<font>font13</font>
+				<align>left</align>
+				<aligny>top</aligny>
+				<wrapmultiline>true</wrapmultiline>
+				<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+				<label/>
+			</control>
+
+			<control type="label" id="4101">
+				<description>channel title</description>
+				<posx>550</posx>
+				<posy>10</posy>
+				<width>240</width>
+				<height>50</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13_title</font>
+				<textcolor>white</textcolor>
+				<visible>true</visible>
+				<label>-</label>
+			</control>
+			<control type="image" id="4100">
+				<description>channel logo</description>
+				<posx>285</posx>
+				<posy>655</posy>
+				<width>200</width>
+				<height>45</height>
+				<!--<posx>188r</posx>
+				<posy>12</posy>
+				<width>176</width>
+				<height>40</height>-->
+				<align>center</align>
+				<aligny>bottom</aligny>
+				<aspectratio>keep</aspectratio>
+				<visible>true</visible>
+			</control>
+        </control>
+		
+		
+        <control type="group">
+			<description>THIS HAS ALL OF THE BUTTONS (MIDDLE)</description>
+			<visible>false</visible>
+
+			<control type="image">
+				<description>top buttons mount</description>
+				<posx>275</posx>
+				<posy>10</posy>
+				<width>220</width>
+				<height>700</height>
+				<texture>grey.png</texture>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<description>top button background</description>
+				<posx>277</posx>
+				<posy>12</posy>
+				<width>216</width>
+				<height>696</height>
+				<texture>black-back.png</texture>
+				<visible>true</visible>
+			</control>
+			
+			<control type="button" id="4006">
+				<!-- super favourites -->
+				<posx>285</posx>
+				<posy>20</posy>
+				<width>200</width>
+				<height>40</height>
+				<texturefocus>tvg-button-focus.png</texturefocus>
+				<texturenofocus>tvg-button-nofocus.png</texturenofocus>
+				<onup>7004</onup>
+				<ondown>4005</ondown>
+				<onleft>7004</onleft>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>black</focusedcolor>
+				<label>iSearch</label>
+			</control>
+
+
+
+			<control type="button" id="4003">
+				<!-- CHANNELS -->
+				<posx>285</posx>
+				<posy>470</posy>
+				<width>200</width>
+				<height>40</height>
+				<texturefocus>tvg-button-focus.png</texturefocus>
+				<texturenofocus>tvg-button-nofocus.png</texturenofocus>
+				<onup>4014</onup>
+				<ondown>4000</ondown>
+				<onleft>7004</onleft>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>black</focusedcolor>
+				<label>$ADDON[script.tvguide.fullscreen 30307]</label>
+			</control>
+			<control type="button" id="4000">
+				<!-- Watch Stream -->
+				<posx>285</posx>
+				<posy>515</posy>
+				<width>200</width>
+				<height>40</height>
+				<texturefocus>tvg-button-focus.png</texturefocus>
+				<texturenofocus>tvg-button-nofocus.png</texturenofocus>
+				<onup>4003</onup>
+				<ondown>4012</ondown>
+				<onleft>7004</onleft>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>black</focusedcolor>
+				<visible>true</visible>
+			</control>
+			<control type="button" id="4012">
+				<description>simple favourites</description>
+				<posx>285</posx>
+				<posy>560</posy>
+				<width>200</width>
+				<height>40</height>
+				<texturefocus>tvg-button-focus.png</texturefocus>
+				<texturenofocus>tvg-button-nofocus.png</texturenofocus>
+				<onup>4000</onup>
+				<ondown>4004</ondown>
+				<onleft>7004</onleft>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>black</focusedcolor>
+				<label>Favourites</label>
+				<visible>true</visible>
+			</control>
+
+			<control type="button" id="4004">
+				<!-- QUIT -->
+				<posx>285</posx>
+				<posy>605</posy>
+				<width>200</width>
+				<height>40</height>
+				<texturefocus>tvg-button-focus.png</texturefocus>
+				<texturenofocus>tvg-button-nofocus.png</texturenofocus>
+				<onup>4012</onup>
+				<ondown>4004</ondown>
+				<onleft>7004</onleft>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>black</focusedcolor>
+				<label>$ADDON[script.tvguide.fullscreen 30308]</label>
+				<visible>true</visible>
+			</control>
+        </control>
+
+
+
+
+
+        <control type="button" id="4015">
+            <description>touch close</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1280</width>
+            <height>720</height>
+            <texturefocus></texturefocus>
+            <texturenofocus></texturenofocus>
+            <onup></onup>
+            <ondown></ondown>
+            <onleft></onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label></label>
+            <visible>true</visible>
+        </control>
+
+
+
+
+        <control type="button" id="80000">
+            <!-- MY MOVIES -->
+            <posx>285</posx>
+            <posy>436</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4002</onup>
+            <ondown>80001</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <label>$ADDON[script.tvguide.fullscreen 80000]</label>
+            <visible>false</visible>
+        </control>
+
+        <control type="button" id="80001">
+            <!-- MY TV SHOWS -->
+            <posx>285</posx>
+            <posy>488</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>80000</onup>
+            <ondown>80002</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>$ADDON[script.tvguide.fullscreen 80001]</label>
+            <visible>false</visible>
+        </control>
+
+        <control type="button" id="80002">
+            <!-- VIDEO ADDONS -->
+            <posx>285</posx>
+            <posy>540</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>80001</onup>
+            <ondown>4006</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>$ADDON[script.tvguide.fullscreen 80002]</label>
+            <visible>false</visible>
+        </control>
+
+
+
+
+
+        <control type="button" id="80004">
+            <!-- QUIT -->
+            <posx>285</posx>
+            <posy>660</posy>
+            <width>200</width>
+            <height>40</height>
+            <texturefocus>tvg-button-focus.png</texturefocus>
+            <texturenofocus>tvg-button-nofocus.png</texturenofocus>
+            <onup>4003</onup>
+            <ondown>80000</ondown>
+            <onleft>7004</onleft>
+            <align>center</align>
+            <aligny>center</aligny>
+            <font>font13</font>
+            <textcolor>white</textcolor>
+            <focusedcolor>black</focusedcolor>
+            <label>Remove Category</label>
+            <visible>false</visible>
+        </control>
+
+        <control type="image" id="4025">
+            <description>Addon Logo</description>
+            <posx>1165</posx>
+            <posy>605</posy>
+            <width>100</width>
+            <height>100</height>
+            <aspectratio>keep</aspectratio>
+            <align>left</align>
+            <texture>-</texture>
+            <visible>true</visible>
+        </control>
+
+        <control type="label" id="4026">
+            <description>Addon Name</description>
+            <posx>550</posx>
+            <posy>680</posy>
+            <width>200</width>
+            <height>20</height>
+            <align>left</align>
+            <aligny>top</aligny>
+            <font>font13_title</font>
+            <textcolor>white</textcolor>
+            <shadowcolor>black</shadowcolor>
+            <label></label>
+            <align>left</align>
+            <scroll>true</scroll>
+        </control>
+
+    </controls>
+</window>
