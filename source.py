@@ -2088,12 +2088,13 @@ class XMLTVSource(Source):
                         if icon and ADDON.getSetting('xmltv.logos'):
                             logo = icon
                         if logoFolder:
-                            logoFile = os.path.join(logoFolder, title + '.png')
                             if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
-                                logo = logoFile.replace(' ', '%20')
+                                logoFile = '/'.join([logoFolder.rstrip('/'), title + '.png'])
+                                #logo = logoFile.replace(' ', '%20').lower()
                             #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
                             #    logo = logoFile
                             else:
+                                logoFile = os.path.join(logoFolder, title + '.png')
                                 #TODO use hash or db
                                 t = re.sub(r' ','',title.lower())
                                 t = re.escape(t)
