@@ -1,3 +1,7 @@
+version 0.0.380
+- WMC skin (thanks Doctor-Eggs) https://github.com/Doctor-Eggs/script.tvguide.fullscreen.skin.wmc/
+- Norwegian translations (thanks garvord)
+
 version 0.0.378-379
 - Settings\Lab3\Tertiary xmltv source
 - normal yo.tv is broken
