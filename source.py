@@ -1796,6 +1796,7 @@ class XMLTVSource(Source):
         self.fetchError = False
         self.xmltvType = int(addon.getSetting('xmltv.type'))
         self.xmltv2Type = int(addon.getSetting('xmltv2.type'))
+        self.xmltv3Type = int(addon.getSetting('xmltv3.type'))
         self.xmltvInterval = int(addon.getSetting('xmltv.interval'))
         self.logoSource = int(addon.getSetting('logos.source'))
 
@@ -1847,6 +1848,26 @@ class XMLTVSource(Source):
             else:
                 self.xmltv2File = self.updateLocalFile('xmltv2.xml', addon.getSetting('xmltv2.url'), addon, force=force)
 
+        self.xmltv3File = ''
+        if ADDON.getSetting('xmltv3.enabled') == 'true':
+            if self.xmltv3Type == XMLTVSource.XMLTV_SOURCE_FILE:
+                '''
+                customFile = str(addon.getSetting('xmltv3.file'))
+                if os.path.exists(customFile):
+                    # uses local file provided by user!
+                    xbmc.log('[script.tvguide.fullscreen] Use local file: %s' % customFile, xbmc.LOGDEBUG)
+                    self.xmltv3File = customFile
+                else:
+                    # Probably a remote file
+                    xbmc.log('[script.tvguide.fullscreen] Use remote file: %s' % customFile, xbmc.LOGDEBUG)
+                    self.updateLocalFile(customFile, addon, force=force)
+                    self.xmltv3File = customFile #os.path.join(XMLTVSource.PLUGIN_DATA, customFile.split('/')[-1])
+                '''
+                self.xmltv3File = self.updateLocalFile('xmltv3.xml', addon.getSetting('xmltv3.file'), addon, force=force)
+            else:
+                self.xmltv3File = self.updateLocalFile('xmltv3.xml', addon.getSetting('xmltv3.url'), addon, force=force)
+
+
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
@@ -1870,22 +1891,18 @@ class XMLTVSource(Source):
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
         if not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
-        if (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
-            if ADDON.getSetting('fixtures') == 'true':
-                fixtures = FixturesSource(ADDON)
-                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
-                    yield v
-            else:
-                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
-                    yield v
+        if (ADDON.getSetting('xmltv3.enabled') == 'true') and xbmcvfs.exists(self.xmltv3File) and (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv3File, date, ch_list, progress_callback)):
+                yield v
+        elif (ADDON.getSetting('xmltv3.enabled') == 'true') and xbmcvfs.exists(self.xmltv3File):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv3File, date, ch_list, progress_callback)):
+                yield v
+        elif (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
+                yield v
         else:
-            if ADDON.getSetting('fixtures') == 'true':
-                fixtures = FixturesSource(ADDON)
-                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
-                    yield v
-            else:
-                for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback)):
-                    yield v
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback)):
+                yield v
 
     def getDataFromExternal2(self, xmltvFile, date, ch_list, progress_callback=None):
         if xbmcvfs.exists(xmltvFile):
@@ -2071,12 +2088,13 @@ class XMLTVSource(Source):
                         if icon and ADDON.getSetting('xmltv.logos'):
                             logo = icon
                         if logoFolder:
-                            logoFile = os.path.join(logoFolder, title + '.png')
                             if self.logoSource == XMLTVSource.LOGO_SOURCE_URL:
-                                logo = logoFile.replace(' ', '%20')
+                                logoFile = '/'.join([logoFolder.rstrip('/'), title + '.png'])
+                                #logo = logoFile.replace(' ', '%20').lower()
                             #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
                             #    logo = logoFile
                             else:
+                                logoFile = os.path.join(logoFolder, title + '.png')
                                 #TODO use hash or db
                                 t = re.sub(r' ','',title.lower())
                                 t = re.escape(t)
