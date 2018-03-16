@@ -4583,7 +4583,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         channelLogoControl = self.getControl(self.C_POPUP_CHANNEL_LOGO)
         channelTitleControl = self.getControl(self.C_POPUP_CHANNEL_TITLE)
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
-        programSubTitleControl = self.getControl(self.C_POPUP_PROGRAM_SUBTITLE)
+        try:
+            programSubTitleControl = self.getControl(self.C_POPUP_PROGRAM_SUBTITLE)
+        except:
+            programSubTitleControl = None
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
         programSuperFavourites = self.getControl(self.C_POPUP_SEARCH)
         if xbmc.getCondVisibility('Control.IsVisible(4103)'):
@@ -4636,7 +4639,8 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             subtitle = '%s' % (self.program.title)
         if self.program.season and self.program.episode:
             subtitle += " - s%se%s" % (self.program.season, self.program.episode)
-        programSubTitleControl.setLabel(subtitle)
+        if programSubTitleControl:
+            programSubTitleControl.setLabel(subtitle)
         if self.program.description:
             labelControl.setLabel(self.program.description)
         if self.program.description and xbmc.getCondVisibility('Control.IsVisible(77000)'):
