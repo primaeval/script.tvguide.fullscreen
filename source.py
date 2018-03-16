@@ -2602,11 +2602,17 @@ class TVGUKNow2Source(Source):
             r = s.post('http://www.tvguide.co.uk/mychannels.asp',
             data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'},timeout=10)
             id = -1
-        url = 'http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=&view=1&gw=' % id
-        r = s.get(url,headers=headers)
-        html = r.content
-        if not  html:
-            return
+            url = 'http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=&view=1&gw=' % id
+            r = s.get(url,headers=headers)
+            html = r.content
+            if not  html:
+                return
+        else:
+            html_file = 'special://profile/addon_data/script.tvguide.fullscreen/tvguide.co.uk.html'
+            url = 'http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=&view=1&gw=' % id
+            xbmcvfs.copy(url,html_file)
+            f = xbmcvfs.File(html_file)
+            html = f.read()
         channels = html.split('<div class="div-epg-channel-name">')
         channel_numbers = {}
         count = 0
