@@ -1,4 +1,4 @@
-version 0.0.380-381
+version 0.0.380-382
 - WMC skin (thanks Doctor-Eggs) https://github.com/Doctor-Eggs/script.tvguide.fullscreen.skin.wmc/
 - Norwegian translations (thanks garvord)
 
