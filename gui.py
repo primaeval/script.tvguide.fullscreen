@@ -192,6 +192,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_CURRENT_CATEGORY = 7028
     C_MAIN_DURATION = 7029
     C_MAIN_PROGRESS_INFO = 7030
+    C_MAIN_SUBTITLE = 7031
     C_MAIN_TIMEBAR = 4100
     C_MAIN_LOADING = 4200
     C_MAIN_LOADING_PROGRESS = 4201
@@ -2278,6 +2279,20 @@ class TVGuide(xbmcgui.WindowXML):
             title = '[B]%s[/B]' % program.title
         if program.season and program.episode:
             title += " S%sE%s" % (program.season, program.episode)
+        subtitle = ''
+
+        if ADDON.getSetting('epg.subtitle') == 'true':
+            title = '[B]%s[/B]' % program.title
+            if program.sub_title:
+                subtitle = '%s' % (program.sub_title)
+            elif program.categories:
+                subtitle = '%s' % (program.categories)
+                subtitle = subtitle.replace(",",", ")
+            else:
+                subtitle = '%s' % (program.title)
+            if program.season and program.episode:
+                subtitle += " - s%se%s" % (program.season, program.episode)
+
         #if program.is_movie == "Movie":
         #    title += " [B](Movie)[/B]"
 
@@ -2301,6 +2316,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         else:
             self.setControlLabel(self.C_MAIN_TITLE, title)
+            self.setControlLabel(self.C_MAIN_SUBTITLE, subtitle)
             if program.startDate or program.endDate:
                 self.setControlLabel(self.C_MAIN_TIME,
                                      '[B]%s - %s[/B]' % (self.formatTime(program.startDate), self.formatTime(program.endDate)))
@@ -4501,6 +4517,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     C_POPUP_PROGRESS_BAR = 4105
     C_POPUP_NEXT_PROGRAM_TITLE = 4106
     C_POPUP_NEXT_PROGRAM_DATE = 4107
+    C_POPUP_PROGRAM_SUBTITLE = 4108
     C_POPUP_ADDON_LOGO = 4025
     C_POPUP_ADDON_LABEL = 4026
     C_POPUP_LIBMOV = 80000
@@ -4566,6 +4583,10 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         channelLogoControl = self.getControl(self.C_POPUP_CHANNEL_LOGO)
         channelTitleControl = self.getControl(self.C_POPUP_CHANNEL_TITLE)
         programTitleControl = self.getControl(self.C_POPUP_PROGRAM_TITLE)
+        try:
+            programSubTitleControl = self.getControl(self.C_POPUP_PROGRAM_SUBTITLE)
+        except:
+            programSubTitleControl = None
         programPlayBeginningControl = self.getControl(self.C_POPUP_PLAY_BEGINNING)
         programSuperFavourites = self.getControl(self.C_POPUP_SEARCH)
         if xbmc.getCondVisibility('Control.IsVisible(4103)'):
@@ -4608,6 +4629,18 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
                 programLabelControl.setLabel(label)
             except:
                 pass
+        subtitle = ""
+        if self.program.sub_title:
+            subtitle = '%s' % (self.program.sub_title)
+        elif self.program.categories:
+            subtitle = '%s' % (self.program.categories)
+            subtitle = subtitle.replace(",",", ")
+        else:
+            subtitle = '%s' % (self.program.title)
+        if self.program.season and self.program.episode:
+            subtitle += " - s%se%s" % (self.program.season, self.program.episode)
+        if programSubTitleControl:
+            programSubTitleControl.setLabel(subtitle)
         if self.program.description:
             labelControl.setLabel(self.program.description)
         if self.program.description and xbmc.getCondVisibility('Control.IsVisible(77000)'):

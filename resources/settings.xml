@@ -245,6 +245,8 @@
         <setting id="imdb.big" label="Use Better Resolution IMDb Image (takes longer)" type="bool" default="true" />
         <setting label="Clear OMDb/TVDb/IMDb Image Match Cache" type="action" action="RunScript($CWD/ResetDatabase.py, 3)" />
         <setting type="sep"/>
+        <setting id="epg.subtitle" label="Separate Title/Subtitle" type="bool" default="false" />
+        <setting type="sep"/>
         <setting id="program.image" label="Use Program Image from Source" type="bool" default="true" />
         <setting type="sep"/>
         <setting id="program.channel.logo" label="Fall back to Channel Logo for Program Image" type="bool" default="false" />

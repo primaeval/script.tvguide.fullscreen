@@ -2591,16 +2591,28 @@ class TVGUKNow2Source(Source):
             "Freesat":"19",
         }
         id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
-        headers = {'user-agent': 'Mozilla/5.0 (Windows NT 6.1; rv:55.0) Gecko/20100101 Firefox/55.0'}
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0',
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-GB,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate"}
 
         email = ADDON.getSetting('tvguide.co.uk.email')
         s = requests.Session()
         if email:
             r = s.post('http://www.tvguide.co.uk/mychannels.asp',
-            data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'})
+            data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'},timeout=10)
             id = -1
-        r = s.get('http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=03:00&view=1&gw=1237' % id,headers=headers)
-        html = r.content
+            url = 'http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=&view=1&gw=' % id
+            r = s.get(url,headers=headers)
+            html = r.content
+            if not  html:
+                return
+        else:
+            html_file = 'special://profile/addon_data/script.tvguide.fullscreen/tvguide.co.uk.html'
+            url = 'http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=&view=1&gw=' % id
+            xbmcvfs.copy(url,html_file)
+            f = xbmcvfs.File(html_file)
+            html = f.read()
         channels = html.split('<div class="div-epg-channel-name">')
         channel_numbers = {}
         count = 0

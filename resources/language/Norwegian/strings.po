@@ -16,13 +16,43 @@ msgstr ""
 "Language: no\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgctxt "#30000"
+msgid "No description"
+msgstr "Beskrivelse mangler"
+
+msgctxt "#30001"
+msgid "[B]Loading data from external source...[/B]"
+msgstr "[B]Laster ned data fra ekstern kilde...[/B]"
+
+msgctxt "#30002"
+msgid "Calculating remaining time..."
+msgstr "Beregner gjenstående tid..."
+
+msgctxt "#30003"
+msgid "Approximately %d seconds left..."
+msgstr "Omtrent %d sekunder igjen..."
+
+msgctxt "#30004"
+msgid "Loading of data already in progress..."
+msgstr "Lasting av data er allerede igang..."
+
+msgctxt "#30005"
+msgid "Mouse control"
+msgstr "Muskontroll"
+
 msgctxt "#30006"
 msgid "Now"
 msgstr "Nå"
+msgctxt "#30007"
+msgid "[B]Tip![/B] You can also use the scroll wheel"
+msgstr "[B]Tips![/B] Du kan også benytte rullehjulet"
 
 msgctxt "#30008"
 msgid "Cancel"
 msgstr "Avbryt"
+msgctxt "#30009"
+msgid "No program available"
+msgstr "Ingen TV-program er tilgjengelig"
 
 msgctxt "#30100"
 msgid "General"
@@ -32,13 +62,277 @@ msgctxt "#30101"
 msgid "Source"
 msgstr "Kilde"
 
+msgctxt "#30102"
+msgid "Show channels from category"
+msgstr "Vis kanaler fra kategori"
+
+msgctxt "#30103"
+msgid "XMLTV file"
+msgstr "XMLTV fil"
+
+msgctxt "#30104"
+msgid "Clear cache..."
+msgstr "Tøm hurtiglager..."
+
+msgctxt "#30105"
+msgid "Done!"
+msgstr "Ferdig!"
+
+msgctxt "#30106"
+msgid "Show notification before selected programs start"
+msgstr "Vis varsel før de valgte programmene starter"
+
+msgctxt "#30107"
+msgid "Use program image as background"
+msgstr "Benytt programbildet som bakgrunn"
+
+msgctxt "#30108"
+msgid "Clear all reminders..."
+msgstr "Slett alle påminnelser"
+
+msgctxt "#30109"
+msgid "Remember to clear the cache when you change source"
+msgstr "Husk at du må tømme hurtiglageret når du endrer kilde"
+
+msgctxt "#30110"
+msgid "Update program information on XBMC startup"
+msgstr "Oppdater programinformasjon ved oppstart av Kodi"
+
+msgctxt "#30111"
+msgid "Play channels using the YouSee web-tv addon"
+msgstr "Spill av kanaler med YouSee Web-TV utvidelsen"
+
 msgctxt "#30112"
 msgid "Notifications"
 msgstr "Varslinger"
 
+msgctxt "#30113"
+msgid "Play channels using the Danish Live TV addon"
+msgstr "Spill av kanaler med Danish Live TV utvidelsen"
+
+msgctxt "#30114"
+msgid "Startup"
+msgstr "Oppstart"
+
+msgctxt "#30115"
+msgid "- clear cache first"
+msgstr "- tøm hurtiglager først"
+
+msgctxt "#30116"
+msgid "Search for channel logos in"
+msgstr "Søk etter kanallogoer i"
+
+msgctxt "#30117"
+msgid "Show Channel Logos"
+msgstr "Vis kanallogoer"
+
+msgctxt "#30118"
+msgid "Enable OSD menu"
+msgstr "Aktivér OSD-meny"
+
+msgctxt "#30119"
+msgid "Disabling the OSD menu may fix video stuttering."
+msgstr "Deaktivering av OSD-menyen kan fikse videohakking."
+
+msgctxt "#30120"
+msgid "Use alternate streaming method (required for some addons)"
+msgstr "Bruk alternativ strømmingsmetode (nødvendig for noen utvidelser)"
+
+msgctxt "#30121"
+msgid "Alternative streaming is not compatible with OSD menu"
+msgstr "Alternativ strømming er ikke forenlig med OSD-menyen"
+
+msgctxt "#30122"
+msgid "XMLTV URL"
+msgstr "XMLTV URL"
+
+msgctxt "#30123"
+msgid "XMLTV type"
+msgstr "XMLTV type"
+
+msgctxt "#30124"
+msgid "Local file"
+msgstr "Lokalfil"
+
+msgctxt "#30125"
+msgid "URL"
+msgstr "URL"
+
+msgctxt "#30126"
+msgid "TV (All)"
+msgstr "TV (Alle)"
+
+msgctxt "#30127"
+msgid "TV (Basic)"
+msgstr "TV (Enkel)"
+
+msgctxt "#30128"
+msgid "File download interval"
+msgstr "Intervall for nedlasting av filer"
+
+msgctxt "#30129"
+msgid "every start"
+msgstr "hver start"
+
+msgctxt "#30130"
+msgid "every 12 hrs"
+msgstr "hver 12. time"
+
+msgctxt "#30131"
+msgid "every 24 hrs"
+msgstr "hver 24. time"
+
+msgctxt "#30132"
+msgid "every 48 hrs"
+msgstr "hver 48. time"
+
+msgctxt "#30133"
+msgid "UK (Freeview)"
+msgstr "UK (Freeview)"
+
+msgctxt "#30134"
+msgid "UK (Sky Go)"
+msgstr "UK (Sky Go)"
+
+msgctxt "#30135"
+msgid "USTVNow"
+msgstr "USTVNow"
+
+msgctxt "#30136"
+msgid "US/UK (Basic)"
+msgstr "US/UK (Enkel)"
+
+msgctxt "#30137"
+msgid "** WARNING! ** Resetting your database will cause you to lose all settings!"
+msgstr "** Advarsel! ** Tilbakestilling av databasen vil føre til at du mister alle innstillinger!"
+
+msgctxt "#30138"
+msgid "Only do so if your database has become corrupt!"
+msgstr "Gjør bare dette dersom databasen har blitt skadet!"
+
+msgctxt "#30139"
+msgid "Yes, Reset Database"
+msgstr "Ja, tilbakestill database"
+
+msgctxt "#30140"
+msgid "Reset Database"
+msgstr "Tilbakestill database"
+
+msgctxt "#30141"
+msgid "Guide Theme"
+msgstr "Programguide utførelse"
+
+msgctxt "#30142"
+msgid "Custom File"
+msgstr "Egendefinert fil"
+
+msgctxt "#30143"
+msgid "TV Guide Fullscreen"
+msgstr "Fullskjerm Programguide"
+
+msgctxt "#30144"
+msgid "addons.ini selection"
+msgstr "addons.ini utvalg"
+
+msgctxt "#30145"
+msgid "addons.ini file"
+msgstr "addons.ini fil"
+
+msgctxt "#30146"
+msgid "Logo source"
+msgstr "Kanallogo kilde"
+
+msgctxt "#30147"
+msgid "Custom Folder"
+msgstr "Egendefinert mappe"
+
+msgctxt "#30148"
+msgid "Appearance"
+msgstr "Utseende"
+
+msgctxt "#30149"
+msgid "Refresh on start"
+msgstr "Oppfrisk ved start"
+
+msgctxt "#30150"
+msgid "Oops, sorry about that!"
+msgstr "Oi, beklager dette!"
+
+msgctxt "#30151"
+msgid "It was not possible to load program data,"
+msgstr "Det var ikke mulig å laste inn programdata,"
+
+msgctxt "#30152"
+msgid "check settings or try again later..."
+msgstr "kontrollér innstillingene eller prøv på nytt senere..."
+
+msgctxt "#30153"
+msgid "because the settings are invalid!"
+msgstr "fordi innstillingene er ugyldige!"
+
+msgctxt "#30154"
+msgid "It looks like your current skin has a special"
+msgstr "Det ser ut som din nåværende drakt har en spesiell"
+
+msgctxt "#30155"
+msgid "version of the TV Guide Fullscreen skin that is not up-to-date."
+msgstr "versjon av programguidedrakten er foreldet."
+
+msgctxt "#30156"
+msgid "Please try with a different skin..."
+msgstr "Prøv med en annen drakt..."
+
+msgctxt "#30157"
+msgid "It looks like the TV Guide Fullscreen database is broken."
+msgstr "Det ser ut som Fullskjerm Programguide-databasen er skadet."
+
+msgctxt "#30158"
+msgid "The database will be deleted and recreated."
+msgstr "Databasen vil bli slettet og opprettet på ny."
+
+msgctxt "#30159"
+msgid "Channel configuration, etc. is unfortunately lost."
+msgstr "Kanalkonfigurasjon, med mer er dessverre tapt."
+
+#empty strings from id 30160 to 30199
+
+msgctxt "#30200"
+msgid "on [B]%s[/B] in 5 minutes..."
+msgstr "på [B]%s[/B] om 5 minutter..."
+
+msgctxt "#30201"
+msgid "on [B]%s[/B] is starting now..."
+msgstr "på [B]%s[/B] starter nå."
+
+#empty strings from id 30202 to 30299
+
+msgctxt "#30300"
+msgid "Watch %s"
+msgstr "Se %s"
+
+msgctxt "#30301"
+msgid "Remind"
+msgstr "Påminning"
+
+msgctxt "#30302"
+msgid "Don't remind"
+msgstr "Ingen påminnelse"
+
 msgctxt "#30303"
 msgid "Cancel"
 msgstr "Avbryt"
+
+msgctxt "#30304"
+msgid "Choose stream"
+msgstr "Velg strøm"
+
+msgctxt "#30305"
+msgid "You can choose your own .strm file to play, when you want to watch this channel."
+msgstr "Du kan velge din egen .strm fil - når du vil se på denne kanalen."
+
+msgctxt "#30306"
+msgid "Remove Stream"
+msgstr "Fjern strøm"
 
 msgctxt "#30307"
 msgid "Channels"
@@ -48,6 +342,42 @@ msgctxt "#30308"
 msgid "Quit"
 msgstr "Avslutt"
 
+#empty strings from id 30309 to 30399
+
+msgctxt "#30400"
+msgid "Background Update Service"
+msgstr "Bakgrunnstjeneste for oppdatering"
+
+msgctxt "#30401"
+msgid "Service Interval"
+msgstr "Oppdateringsintervall"
+
+msgctxt "#30402"
+msgid "2 hrs"
+msgstr "2 timer"
+
+msgctxt "#30403"
+msgid "6 hrs"
+msgstr "6 timer"
+
+msgctxt "#30404"
+msgid "12 hrs"
+msgstr "12 timer"
+
+msgctxt "#30405"
+msgid "24 hrs"
+msgstr "24 timer"
+
+#empty strings from id 30406 to 30499
+
+msgctxt "#30500"
+msgid "[B]Edit channel order and visibility[/B]"
+msgstr "[B]Rediger kanalrekkefølge og -synlighet[/B]"
+
+msgctxt "#30501"
+msgid "Press left to pull a channel out, then move it up or down. When in place, press right again to set. Pressing on a channel in the list will enable or disable it.[CR]On touch devices long press on a channel to pull it out, move the list to the desired place and then long press on the pulled out channel to put it in its new place."
+msgstr "Trykk venstre for å trekke ut en kanal, og flytt den opp eller ned. Når ny posisjon er funnet, trykker du høyre for å plassere kanalen i listen igjen. Hvis du trykker på en kanal i listen, aktiveres eller deaktiveres den. [CR]På trykkskjermer - benytt langt trykk på en kanal for å trekke den ut. Flytt listen til ønsket sted og deretter ett nytt langt trykk på den uttrekte kanalen for å plassere den."
+
 msgctxt "#30502"
 msgid "Save"
 msgstr "Lagre"
@@ -56,9 +386,27 @@ msgctxt "#30503"
 msgid "Cancel"
 msgstr "Avbryt"
 
+#empty strings from id 30504 to 30599
+
+msgctxt "#30600"
+msgid "[B]Setup stream[/B]"
+msgstr "[B]Konfigurér strøm[/B]"
+
+msgctxt "#30601"
+msgid ".strm file"
+msgstr ".strm fil"
+
 msgctxt "#30602"
 msgid "Favourites"
 msgstr "Favoritter"
+
+msgctxt "#30603"
+msgid "Addons"
+msgstr "Utvidelser"
+
+msgctxt "#30604"
+msgid "Preview stream"
+msgstr "Forhåndsvis strøm"
 
 msgctxt "#30605"
 msgid "Save"
@@ -68,6 +416,83 @@ msgctxt "#30606"
 msgid "Cancel"
 msgstr "Avbryt"
 
+msgctxt "#30607"
+msgid "Stop preview"
+msgstr "Stans forhåndsvisning"
+
+#empty strings from id 30608 to 30609
+
 msgctxt "#30610"
 msgid "Browse..."
 msgstr "Bla..."
+
+msgctxt "#30611"
+msgid "Click Browse... below and navigate to your stream file. When you have chosen your file you can preview the stream to test if it works in XBMC."
+msgstr "Klikk Bla... nedenfor, og navigér frem til strømmingsfilen din. Når filen er valgt, kan du forhåndsvise strømmen for å prøve ut om den fungerer i Kodi."
+
+#empty strings from id 30612 to 30619
+
+msgctxt "#30620"
+msgid "Choose a favourite below. Only [I]PlayMedia[/I] favourites are supported."
+msgstr "Velg en favoritt nedenfor. Bare [I]PlayMedia[/I] favoritter støttes."
+
+#empty strings from id 30621 to 30699
+
+msgctxt "#30700"
+msgid "Multiple addons provide this channels.[CR]Choose one to watch the stream."
+msgstr "Det er flere utvidelser som tilbyr denne kanalen. [CR]Velg én for å se på strømmen."
+
+#empty strings from id 30701 to 30799
+#weeb.tv mod
+
+msgctxt "#30800"
+msgid "JSON-EPG URL"
+msgstr "JSON-EPG URL"
+
+msgctxt "#30801"
+msgid "Play channels using the Weeb.Tv addon"
+msgstr "Benytt Weeb.Tv utvidelsen for å spille av kanaler"
+
+msgctxt "#30802"
+msgid "TV Guide Fullscreen is configured to stream using Weeb.Tv"
+msgstr "Fullskjerm Programguide er konfigurert for avspilling ved hjelp av Weeb.TV"
+
+msgctxt "#30803"
+msgid "addon which is not installed."
+msgstr "utvidelse som ikke er installert."
+
+msgctxt "#30804"
+msgid "Streaming using that addon is now disabled."
+msgstr "Strømming via denne utvidelsen er nå deaktivert."
+
+msgctxt "#30900"
+msgid "Autostart TV Guide Fullscreen when Kodi starts up"
+msgstr "Start Fullskjerm Programguide automatisk når Kodi startes opp"
+
+msgctxt "#31000"
+msgid "Connection problem"
+msgstr "Problem med tilkobling"
+
+msgctxt "#31001"
+msgid "It was not possible to update from the server."
+msgstr "Det var ikke mulig å oppdatere fra tjeneren."
+
+msgctxt "#31002"
+msgid "Current local data will be kept for now..."
+msgstr "De gjeldende data vil beholdes inntil videre..."
+
+msgctxt "#80000"
+msgid "My Movies"
+msgstr "Mine filmer"
+
+msgctxt "#80001"
+msgid "My TV Shows"
+msgstr "Mine TV-serier"
+
+msgctxt "#80002"
+msgid "Video Add-Ons"
+msgstr "Videoutvidelser"
+
+msgctxt "#80003"
+msgid "On-Demand"
+msgstr "Videotorg"
