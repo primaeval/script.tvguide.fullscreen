@@ -93,6 +93,7 @@
         <setting type="sep"/>
         <setting id="play.menu" label="Always Open Menu on Play (Good for Touch Devices)" type="bool" default="false" />
         <setting type="sep"/>
+        <setting id="play.always.choose" label="Always Choose Channel" type="bool" default="false" />
         <setting id="play.alt.choose" label="Always Choose Channel if Alternative Streams Exist" type="bool" default="false" />
         <setting id="play.alt.continue" label="Try Other Alternative Streams if Play Fails" type="bool" default="false" />
         <setting id="play.alt.fallback" label="Use Alternative Streams as a Fallback Only" type="bool" default="false" />

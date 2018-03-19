@@ -1574,12 +1574,12 @@ class TVGuide(xbmcgui.WindowXML):
     def playOrChoose(self,program):
         if not program.channel.id:
             return
-        if self.player.isPlaying() and self.currentChannel and (program.channel.id == self.currentChannel.id) and (ADDON.getSetting('play.alt.choose') == 'false'):
+        if self.player.isPlaying() and self.currentChannel and (program.channel.id == self.currentChannel.id) and ((ADDON.getSetting('play.always.choose') == "false") or (ADDON.getSetting('play.alt.choose') == 'false')):
                 self._hideEpg()
                 self._hideQuickEpg()
                 return
 
-        if not self.playChannel(program.channel, program):
+        if (ADDON.getSetting('play.always.choose') == "true") or not self.playChannel(program.channel, program):
             result = self.streamingService.detectStream(program.channel)
             if not result:
                 # could not detect stream, show stream setup
