@@ -85,7 +85,7 @@
         <setting id="catchup.channel" label="Show Catchup Channel" type="bool" default="false" />
 		<setting id="catchup.hours" label="Catchup Channel Hours" type="number" default="8" />
         <setting type="lsep" label="Channel Shortcuts (xmltv Ids must be Numeric)"/>
-        <setting id="channel.shortcut" label="Channel Shortcut Type" type="enum" default="None" values="None|Index|xmltv Id" />
+        <setting id="channel.shortcut" label="Channel Shortcut Type" type="enum" default="None" values="None|Index|xmltv Id|Sort Number" />
         <setting id="channel.shortcut.direct" label="Start When Any Number Key Pressed (or map Shift Key to start)" visible="!eq(-1,0)" type="bool" default="false" />
         <setting id="channel.shortcut.behaviour" label="Auto-Play Channel On Numeric Input" visible="!eq(-2,0)" type="enum" default="1" values="Always Scroll|Scroll in EPG, Play in TV Mode|Always Play" />
         <setting id="channel.index.digits" label="Channel Shortcut Digits" visible="!eq(-3,0)" default="3" type="number"/>

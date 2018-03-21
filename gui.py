@@ -634,6 +634,11 @@ class TVGuide(xbmcgui.WindowXML):
                 if self.channel_number == channelList[i].id:
                      self.channelIdx = i
                      break
+        elif ADDON.getSetting('channel.shortcut') == '3':
+             for i in range(len(channelList)):
+                if int(self.channel_number) == channelList[i].weight:
+                     self.channelIdx = i
+                     break
         else:
             self.channelIdx = int(self.channel_number) - 1
         self.channel_number = ""
@@ -3562,6 +3567,8 @@ class TVGuide(xbmcgui.WindowXML):
                     self.setControlLabel(4410 + idx, channel_index_format % (self.channelIdx + idx + 1))
                 elif ADDON.getSetting('channel.shortcut') == '2':
                     self.setControlLabel(4410 + idx, channel.id)
+                elif ADDON.getSetting('channel.shortcut') == '3':
+                    self.setControlLabel(4410 + idx, channel_index_format % channel.weight)
                 else:
                     self.setControlLabel(4410 + idx, ' ')
                 if (channel.logo is not None and showLogo == True):
@@ -3597,7 +3604,7 @@ class TVGuide(xbmcgui.WindowXML):
             if control:
                 control.setWidth(176)
                 control.setHeight(self.epgView.cellHeight-2)
-                control.setPosition(2,top)
+                control.setPosition(5,top)
 
         name = remove_formatting(ADDON.getSetting('epg.nofocus.color'))
         color = colors.color_name[name]
