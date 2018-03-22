@@ -1,4 +1,7 @@
-version 0.0.380-382
+version 0.0.384
+- Settings\Appearance\Channel Shortcut Type += Sort Number  (thanks Doctor-Eggs)
+
+version 0.0.380-383
 - WMC skin (thanks Doctor-Eggs) https://github.com/Doctor-Eggs/script.tvguide.fullscreen.skin.wmc/
 - Norwegian translations (thanks garvord)
 
