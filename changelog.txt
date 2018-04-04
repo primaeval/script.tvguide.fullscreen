@@ -1,4 +1,4 @@
-version 0.0.384
+version 0.0.384-385
 - Settings\Appearance\Channel Shortcut Type += Sort Number  (thanks Doctor-Eggs)
 
 version 0.0.380-383
