@@ -2094,7 +2094,7 @@ class XMLTVSource(Source):
                             #elif xbmcvfs.exists(logoFile): #BUG case insensitive match but won't load image
                             #    logo = logoFile
                             else:
-                                logoFile = os.path.join(logoFolder, title + '.png')
+                                logoFile = os.path.join(logoFolder, title.encode("utf8") + '.png')
                                 #TODO use hash or db
                                 t = re.sub(r' ','',title.lower())
                                 t = re.escape(t)
