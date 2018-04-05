@@ -1829,6 +1829,14 @@ class XMLTVSource(Source):
         else:
             self.xmltvFile = self.updateLocalFile('xmltv.xml', addon.getSetting('xmltv.url'), addon, force=force)
 
+        f = xbmcvfs.File(self.xmltvFile,'rb')
+        data = f.read()
+        f.close()
+        data = re.sub('&(?!amp;)','&amp;',data)
+        f = xbmcvfs.File(self.xmltvFile,'wb')
+        f.write(data)
+        f.close()
+
         self.xmltv2File = ''
         if ADDON.getSetting('xmltv2.enabled') == 'true':
             if self.xmltv2Type == XMLTVSource.XMLTV_SOURCE_FILE:
