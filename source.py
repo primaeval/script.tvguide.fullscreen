@@ -1829,13 +1829,14 @@ class XMLTVSource(Source):
         else:
             self.xmltvFile = self.updateLocalFile('xmltv.xml', addon.getSetting('xmltv.url'), addon, force=force)
 
-        f = xbmcvfs.File(self.xmltvFile,'rb')
-        data = f.read()
-        f.close()
-        data = re.sub('&(?!amp;)','&amp;',data)
-        f = xbmcvfs.File(self.xmltvFile,'wb')
-        f.write(data)
-        f.close()
+        if ADDON.getSetting('xmltv.and') == 'true':
+            f = xbmcvfs.File(self.xmltvFile,'rb')
+            data = f.read()
+            f.close()
+            data = re.sub('&(?!amp;)','&amp;',data)
+            f = xbmcvfs.File(self.xmltvFile,'wb')
+            f.write(data)
+            f.close()
 
         self.xmltv2File = ''
         if ADDON.getSetting('xmltv2.enabled') == 'true':
@@ -1856,6 +1857,15 @@ class XMLTVSource(Source):
             else:
                 self.xmltv2File = self.updateLocalFile('xmltv2.xml', addon.getSetting('xmltv2.url'), addon, force=force)
 
+            if ADDON.getSetting('xmltv.and') == 'true':
+                f = xbmcvfs.File(self.xmltv2File,'rb')
+                data = f.read()
+                f.close()
+                data = re.sub('&(?!amp;)','&amp;',data)
+                f = xbmcvfs.File(self.xmltv2File,'wb')
+                f.write(data)
+                f.close()
+
         self.xmltv3File = ''
         if ADDON.getSetting('xmltv3.enabled') == 'true':
             if self.xmltv3Type == XMLTVSource.XMLTV_SOURCE_FILE:
@@ -1875,6 +1885,14 @@ class XMLTVSource(Source):
             else:
                 self.xmltv3File = self.updateLocalFile('xmltv3.xml', addon.getSetting('xmltv3.url'), addon, force=force)
 
+            if ADDON.getSetting('xmltv.and') == 'true':
+                f = xbmcvfs.File(self.xmltv2File,'rb')
+                data = f.read()
+                f.close()
+                data = re.sub('&(?!amp;)','&amp;',data)
+                f = xbmcvfs.File(self.xmltv2File,'wb')
+                f.write(data)
+                f.close()
 
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
