@@ -54,6 +54,15 @@ if ffmpeg:
     c.execute('SELECT DISTINCT * FROM programs WHERE channel=? AND start_date = ?', [channel,startDate])
     for row in c:
         title = row["title"]
+        is_movie = row["is_movie"]
+        foldertitle = re.sub("\?",'',title)
+        foldertitle = re.sub(":|<>\/",'',foldertitle)
+        subfolder = "TVShows"
+        if is_movie == 'Movie':
+            subfolder = "Movies"
+        folder = "%s%s/%s/" % (folder, subfolder, foldertitle)
+        if not xbmcvfs.exists(folder):
+            xbmcvfs.mkdirs(folder)
         season = row["season"]
         episode = row["episode"]
         if season and episode:
