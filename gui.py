@@ -1063,7 +1063,7 @@ class TVGuide(xbmcgui.WindowXML):
                     if program.notificationScheduled:
                         self.notification.removeNotification(program)
                     else:
-                        times = ["once","always"]
+                        times = ["once","always","new"]
                         when = d.select("%s When" % schedulers[what], times)
                         if when > -1:
                             self.notification.addNotification(program, when)
@@ -1071,7 +1071,7 @@ class TVGuide(xbmcgui.WindowXML):
                     if program.autoplayScheduled:
                         self.autoplay.removeAutoplay(program)
                     else:
-                        times = ["once","always"]
+                        times = ["once","always","new"]
                         when = d.select("%s When" % schedulers[what], times)
                         if when > -1:
                             self.autoplay.addAutoplay(program, when)
@@ -1079,7 +1079,7 @@ class TVGuide(xbmcgui.WindowXML):
                     if program.autoplaywithScheduled:
                         self.autoplaywith.removeAutoplaywith(program)
                     else:
-                        times = ["once","always"]
+                        times = ["once","always","new"]
                         when = d.select("%s When" % schedulers[what], times)
                         if when > -1:
                             self.autoplaywith.addAutoplaywith(program, when)
@@ -1991,7 +1991,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.notification.removeNotification(program)
             else:
                 d = xbmcgui.Dialog()
-                play_type = d.select("Notification play_type", ["once","always"]) #TODO ,"same time","same day"
+                play_type = d.select("Notification play_type", ["once","always","new"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.notification.addNotification(program, play_type)
             if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
@@ -2002,7 +2002,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.autoplay.removeAutoplay(program)
             else:
                 d = xbmcgui.Dialog()
-                play_type = d.select("AutoPlay play_type", ["once","always"]) #TODO ,"same time","same day"
+                play_type = d.select("AutoPlay play_type", ["once","always","new"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.autoplay.addAutoplay(program, play_type)
             if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
@@ -2013,7 +2013,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.autoplaywith.removeAutoplaywith(program)
             else:
                 d = xbmcgui.Dialog()
-                play_type = d.select("AutoPlayWith play_type", ["once","always"]) #TODO ,"same time","same day"
+                play_type = d.select("AutoPlayWith play_type", ["once","always","new"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.autoplaywith.addAutoplaywith(program, play_type)
             if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
@@ -3550,6 +3550,11 @@ class TVGuide(xbmcgui.WindowXML):
         # set channel logo or text
         showLogo = ADDON.getSetting('logos.enabled') == 'true'
         channel_index_format = "%%0%sd" % ADDON.getSetting('channel.index.digits')
+        altChannelColumnBG = "tvg-alt-channel-column.png"
+        channelColumnBGCheck = "%sresources/skins/%s/media/%s" % (SKIN_PATH,SKIN,altChannelColumnBG)
+        channelColumnBG = "tvg-program-nofocus.png"
+        if xbmcvfs.exists( channelColumnBGCheck ):
+            channelColumnBG = altChannelColumnBG
         for idx in range(0, CHANNELS_PER_PAGE):
             if idx >= len(channels):
                 self.setControlImage(4110 + idx, ' ')
@@ -3587,7 +3592,7 @@ class TVGuide(xbmcgui.WindowXML):
                     if self.player.isPlaying() and (self.currentChannel == channels[idx]):
                         control.setImage("tvg-playing-nofocus.png")
                     else:
-                        control.setImage("tvg-program-nofocus.png")
+                        control.setImage(channelColumnBG)
                 except:
                     control.setImage("tvg-program-nofocus.png")
             control = self.getControl(4010 + idx)
