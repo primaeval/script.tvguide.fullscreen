@@ -77,17 +77,18 @@ if ffmpeg:
         if seconds > (3600*4):
             seconds = 3600*4
         break
-    player = xbmc.Player()
-    player.play(url)
-    count = 30
-    url = ""
-    while count:
-        count = count - 1
-        time.sleep(1)
-        if player.isPlaying():
-            url = player.getPlayingFile()
-            break
-    player.stop()
+    if not url.startswith('http'):
+        player = xbmc.Player()
+        player.play(url)
+        count = 30
+        url = ""
+        while count:
+            count = count - 1
+            time.sleep(1)
+            if player.isPlaying():
+                url = player.getPlayingFile()
+                break
+        player.stop()
 
     # Play with your own preferred player and paths
     if url:
