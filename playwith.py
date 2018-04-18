@@ -6,6 +6,7 @@ import time
 import subprocess
 from subprocess import Popen
 import re
+import os
 from vpnapi import VPNAPI
 
 
@@ -60,17 +61,13 @@ if ffmpeg:
         subfolder = "TVShows"
         if is_movie == 'Movie':
             subfolder = "Movies"
-        folder = "%s%s/%s/" % (folder, subfolder, foldertitle)
+        folder = os.path.join(xbmc.translatePath(folder), subfolder, foldertitle)
         if not xbmcvfs.exists(folder):
             xbmcvfs.mkdirs(folder)
         season = row["season"]
         episode = row["episode"]
         if season and episode:
             title += " S%sE%s" % (season, episode)
-        if is_movie:
-            date = row["date"]
-            if date and len(date) == 4:
-                title = "%s (%s)" % (title, date)
         endDate = row["end_date"]
         duration = endDate - startDate
         before = int(ADDON.getSetting('autoplaywiths.before'))
@@ -100,7 +97,7 @@ if ffmpeg:
         name = re.sub("\?",'',name)
         name = re.sub(":|<>\/",'',name)
         name = name.encode("cp1252")
-        filename = xbmc.translatePath("%s%s.ts" % (folder,name))
+        filename = os.path.join(folder,name+'.ts')
         #seconds = 30
         cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
         p = Popen(cmd,shell=True)
