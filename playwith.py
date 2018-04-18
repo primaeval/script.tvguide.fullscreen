@@ -11,7 +11,7 @@ from vpnapi import VPNAPI
 
 
 def log(what):
-    xbmc.log(repr(what))
+    xbmc.log(repr(what),xbmc.LOGERROR)
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
@@ -53,6 +53,7 @@ if ffmpeg:
         quit()
     startDate = datetime.datetime.fromtimestamp(float(start))
     c.execute('SELECT DISTINCT * FROM programs WHERE channel=? AND start_date = ?', [channel,startDate])
+    title = ""
     for row in c:
         title = row["title"]
         is_movie = row["is_movie"]
@@ -92,7 +93,7 @@ if ffmpeg:
         player.stop()
 
     # Play with your own preferred player and paths
-    if url:
+    if url and title:
         name = "%s - %s - %s" % (title,channel,time.strftime('%Y-%m-%d %H-%M'))
         name = re.sub("\?",'',name)
         name = re.sub(":|<>\/",'',name)
