@@ -67,6 +67,10 @@ if ffmpeg:
         episode = row["episode"]
         if season and episode:
             title += " S%sE%s" % (season, episode)
+        if is_movie:
+            date = row["date"]
+            if date and len(date) == 4:
+                title = "%s (%s)" % (title, date)
         endDate = row["end_date"]
         duration = endDate - startDate
         before = int(ADDON.getSetting('autoplaywiths.before'))
@@ -92,7 +96,7 @@ if ffmpeg:
 
     # Play with your own preferred player and paths
     if url:
-        name = "%s - %s - %s" % (channel,title,time.strftime('%Y-%m-%d %H-%M'))
+        name = "%s - %s - %s" % (title,channel,time.strftime('%Y-%m-%d %H-%M'))
         name = re.sub("\?",'',name)
         name = re.sub(":|<>\/",'',name)
         name = name.encode("cp1252")
