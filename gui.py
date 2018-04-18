@@ -4139,6 +4139,8 @@ class TVGuide(xbmcgui.WindowXML):
                         for channel in channels:
                             f.write("%s=%s\n" % (channel.encode("utf8"),cat.encode("utf8")))
                     f.close()
+                    categories = sorted(categories)
+                    self.categories = categories
 
                     if stream_urls:
                         self.database.setCustomStreamUrls(stream_urls)
