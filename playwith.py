@@ -6,11 +6,12 @@ import time
 import subprocess
 from subprocess import Popen
 import re
+import os
 from vpnapi import VPNAPI
 
 
 def log(what):
-    xbmc.log(repr(what))
+    xbmc.log(repr(what),xbmc.LOGERROR)
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
@@ -52,6 +53,7 @@ if ffmpeg:
         quit()
     startDate = datetime.datetime.fromtimestamp(float(start))
     c.execute('SELECT DISTINCT * FROM programs WHERE channel=? AND start_date = ?', [channel,startDate])
+    title = ""
     for row in c:
         title = row["title"]
         is_movie = row["is_movie"]
@@ -60,7 +62,7 @@ if ffmpeg:
         subfolder = "TVShows"
         if is_movie == 'Movie':
             subfolder = "Movies"
-        folder = "%s%s/%s/" % (folder, subfolder, foldertitle)
+        folder = os.path.join(xbmc.translatePath(folder), subfolder, foldertitle)
         if not xbmcvfs.exists(folder):
             xbmcvfs.mkdirs(folder)
         season = row["season"]
@@ -77,25 +79,26 @@ if ffmpeg:
         if seconds > (3600*4):
             seconds = 3600*4
         break
-    player = xbmc.Player()
-    player.play(url)
-    count = 30
-    url = ""
-    while count:
-        count = count - 1
-        time.sleep(1)
-        if player.isPlaying():
-            url = player.getPlayingFile()
-            break
-    player.stop()
+    if not url.startswith('http'):
+        player = xbmc.Player()
+        player.play(url)
+        count = 30
+        url = ""
+        while count:
+            count = count - 1
+            time.sleep(1)
+            if player.isPlaying():
+                url = player.getPlayingFile()
+                break
+        player.stop()
 
     # Play with your own preferred player and paths
-    if url:
-        name = "%s - %s - %s" % (channel,title,time.strftime('%Y-%m-%d %H-%M'))
+    if url and title:
+        name = "%s - %s - %s" % (title,channel,time.strftime('%Y-%m-%d %H-%M'))
         name = re.sub("\?",'',name)
         name = re.sub(":|<>\/",'',name)
         name = name.encode("cp1252")
-        filename = xbmc.translatePath("%s%s.ts" % (folder,name))
+        filename = os.path.join(folder,name+'.ts')
         #seconds = 30
         cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
         p = Popen(cmd,shell=True)

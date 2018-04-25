@@ -4104,14 +4104,47 @@ class TVGuide(xbmcgui.WindowXML):
                 if import_m3u:
                     matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
                     stream_urls = []
+                    stream_categories = {}
                     for attributes,name,url in matches:
                         match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
+                        id = name
                         if match:
-                            name = match.group(1)
-                        if name and url:
-                            stream_urls.append((name.strip().decode("utf8"),url.strip()))
+                            id = match.group(1)
+                        if id and url:
+                            stream_urls.append((id.strip().decode("utf8"),url.strip()))
+                        match = re.search('group-title="(.*?)"',attributes,flags=(re.I))
+                        if match:
+                            group = match.group(1)
+                            stream_categories[name] = group
+
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
+                    lines = f.read().splitlines()
+                    f.close()
+                    categories = {}
+                    #categories[self.category] = []
+                    for line in lines:
+                        name,cat = line.split('=')
+                        if cat not in categories:
+                            categories[cat] = []
+                        categories[cat].append(name)
+
+                    for name,cat in stream_categories.iteritems():
+                        if cat not in categories:
+                            categories[cat] = []
+                        categories[cat].append(name)
+
+                    f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
+                    for cat in categories:
+                        channels = categories[cat]
+                        for channel in channels:
+                            f.write("%s=%s\n" % (channel.encode("utf8"),cat.encode("utf8")))
+                    f.close()
+                    categories = sorted(categories)
+                    self.categories = categories
+
                     if stream_urls:
                         self.database.setCustomStreamUrls(stream_urls)
+
 
         if ADDON.getSetting('alt.mapping.tsv.enabled') == 'true':
             if ADDON.getSetting('alt.mapping.tsv.type') == '0':
