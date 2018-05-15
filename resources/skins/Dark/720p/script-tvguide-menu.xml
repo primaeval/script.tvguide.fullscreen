@@ -182,7 +182,7 @@
 			<visible>true</visible>
 			<scroll>true</scroll>
 			<aligny>center</aligny>
-			<label>-</label>
+			<label></label>
 		</control>
 		<control type="label" id="7001">
 			<description>Programme title</description>

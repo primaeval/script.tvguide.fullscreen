@@ -260,7 +260,7 @@
             <font>font13_title</font>
             <textcolor>white</textcolor>
             <visible>true</visible>
-            <label>-</label>
+            <label></label>
         </control>
         <control type="image" id="4100">
             <description>channel logo</description>

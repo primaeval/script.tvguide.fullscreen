@@ -1344,7 +1344,7 @@
                 <align>right</align>
                 <visible>false</visible>
                 <scroll>true</scroll>
-                <label>-</label>
+                <label></label>
             </control>
             <control type="label" id="7025">
                 <description>Channel name</description>
@@ -1357,7 +1357,7 @@
                 <align>left</align>
                 <visible>false</visible>
                 <scroll>true</scroll>
-                <label>-</label>
+                <label></label>
             </control>
             <control type="label" id="7020">
                 <description>Program title</description>
@@ -1371,7 +1371,7 @@
                 <align>left</align>
                 <visible>true</visible>
                 <scroll>true</scroll>
-                <label>-</label>
+                <label></label>
             </control>
 
             <control type="label" id="7021">
@@ -1448,7 +1448,7 @@
                 <font>font13</font>
                 <align>left</align>
                 <wrapmultiline>true</wrapmultiline>
-                <label>-</label>
+                <label></label>
                 <autoscroll delay="5000" time="1000" repeat="10000"></autoscroll>
             </control>
 

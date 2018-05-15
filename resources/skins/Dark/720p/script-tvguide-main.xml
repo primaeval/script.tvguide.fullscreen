@@ -954,7 +954,7 @@
                 <align>right</align>
                 <visible>false</visible>
                 <scroll>true</scroll>
-                <label>-</label>
+                <label></label>
             </control>
 			<control type="label" id="7025">
                 <description>Station name</description>
