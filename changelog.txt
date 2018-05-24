@@ -1,3 +1,8 @@
+version 0.0.391
+- separate time_offset for xmltv 2 and 3 sources
+
+...
+
 version 0.0.386
 - Settings\Source\Convert & to &amp;
 
