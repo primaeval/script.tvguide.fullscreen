@@ -1936,28 +1936,31 @@ class XMLTVSource(Source):
         return path
 
     def getDataFromExternal(self, date, ch_list, progress_callback=None):
+        time_offset = int(ADDON.getSetting('xmltv.offset'))
+        time_offset2 = int(ADDON.getSetting('xmltv2.offset'))
+        time_offset3 = int(ADDON.getSetting('xmltv3.offset'))
         if not xbmcvfs.exists(self.xmltvFile):
             raise SourceNotConfiguredException()
         if (ADDON.getSetting('xmltv3.enabled') == 'true') and xbmcvfs.exists(self.xmltv3File) and (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
-            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv3File, date, ch_list, progress_callback)):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback, time_offset), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback, time_offset2), self.getDataFromExternal2(self.xmltv3File, date, ch_list, progress_callback, time_offset3)):
                 yield v
         elif (ADDON.getSetting('xmltv3.enabled') == 'true') and xbmcvfs.exists(self.xmltv3File):
-            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv3File, date, ch_list, progress_callback)):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback, time_offset), self.getDataFromExternal2(self.xmltv3File, date, ch_list, progress_callback, time_offset2)):
                 yield v
         elif (ADDON.getSetting('xmltv2.enabled') == 'true') and xbmcvfs.exists(self.xmltv2File):
-            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback)):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback, time_offset), self.getDataFromExternal2(self.xmltv2File, date, ch_list, progress_callback, time_offset)):
                 yield v
         else:
-            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback)):
+            for v in chain(self.getDataFromExternal2(self.xmltvFile, date, ch_list, progress_callback, time_offset)):
                 yield v
 
-    def getDataFromExternal2(self, xmltvFile, date, ch_list, progress_callback=None):
+    def getDataFromExternal2(self, xmltvFile, date, ch_list, progress_callback=None, time_offset=None):
         if xbmcvfs.exists(xmltvFile):
             f = FileWrapper(xmltvFile)
             if f:
                 context = ElementTree.iterparse(f, events=("start", "end"))
                 size = f.size
-                return self.parseXMLTV(context, f, size, self.logoFolder, progress_callback)
+                return self.parseXMLTV(context, f, size, self.logoFolder, progress_callback, time_offset)
 
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if channelsLastUpdated is None or not xbmcvfs.exists(self.xmltvFile):
@@ -2010,7 +2013,7 @@ class XMLTVSource(Source):
         return t
 
 
-    def parseXMLTV(self, context, f, size, logoFolder, progress_callback):
+    def parseXMLTV(self, context, f, size, logoFolder, progress_callback, time_offset):
         import datetime
         try:
             throwaway = datetime.datetime.strptime('20110101','%Y%m%d') #BUG FIX http://stackoverflow.com/questions/16309650/python-importerror-for-strptime-in-spyder-for-windows-7
@@ -2034,7 +2037,7 @@ class XMLTVSource(Source):
             d = xbmcgui.DialogProgressBG()
             d.create('TV Guide Fullscreen', "parsing xmltv")
         category_count = {}
-        time_offset = int(ADDON.getSetting('xmltv.offset'))
+
         for event, elem in context:
             if event == "end":
                 result = None
