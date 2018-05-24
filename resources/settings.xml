@@ -297,7 +297,7 @@
         <setting id="xmltv3.type" label="XMLTV Tertiary Source Type" type="enum" enable="true" visible="eq(-1,true)" default="0" values="File|Url" />
         <setting id="xmltv3.file" label="XMLTV Tertiary File" type="file" visible="eq(-2,true) + eq(-1,0)" />
         <setting id="xmltv3.url" label="XMLTV Tertiary Url" type="text" visible="eq(-3,true) + eq(-2,1)"  />
-        <setting id="xmltv3.offset" label="XMLTV Secondary Timezone Offset (minutes)" type="text" visible="eq(-4,true)" default="0" />
+        <setting id="xmltv3.offset" label="XMLTV Tertiary Timezone Offset (minutes)" type="text" visible="eq(-4,true)" default="0" />
     </category>
     <category label="Backup">
         <setting label="Clear Channel Mappings" type="action" action="RunScript($CWD/backup.py,5)" />
