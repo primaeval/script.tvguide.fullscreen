@@ -66,8 +66,7 @@ class FileFetcher(object):
     def __init__(self, url, path, addon):
         self.addon = addon
 
-        if url.startswith("http://") or url.startswith("sftp://") or url.startswith("ftp://") or \
-                url.startswith("https://") or url.startswith("ftps://") :
+        if url.startswith("http://") or url.startswith("https://"):
             self.fileType = self.TYPE_REMOTE
             self.fileUrl = url
             self.fileName = path.split('/')[-1]
