@@ -1,3 +1,6 @@
+version 0.0.393
+- ftp fix
+
 version 0.0.391
 - separate time_offset for xmltv 2 and 3 sources
 
