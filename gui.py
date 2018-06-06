@@ -3199,7 +3199,7 @@ class TVGuide(xbmcgui.WindowXML):
             if self.tryingToPlay == False:
                 return
         dialog = xbmcgui.Dialog()
-        dialog.notification('Stream Failed', title, xbmcgui.NOTIFICATION_ERROR, 5000, sound=True)
+        dialog.notification('Stream Failed', title, xbmcgui.NOTIFICATION_ERROR, 5000, sound=False)
 
         finish = False
         if ADDON.getSetting('play.alt.continue') == 'true':
