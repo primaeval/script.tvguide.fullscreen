@@ -140,7 +140,7 @@ elif ADDON.getSetting('skin.source') == "2":
 
 
 def log(what):
-    xbmc.log(repr(what))
+    xbmc.log(repr(what),xbmc.LOGERROR)
 
 def timedelta_total_seconds(timedelta):
     return (
@@ -4069,7 +4069,6 @@ class TVGuide(xbmcgui.WindowXML):
                 stream_urls = [line.decode("utf8").split("=",1) for line in lines]
                 if stream_urls:
                     self.database.setCustomStreamUrls(stream_urls)
-
         if ADDON.getSetting('mapping.m3u.enabled') == 'true':
             if ADDON.getSetting('mapping.m3u.type') == '0':
                 customFile = ADDON.getSetting('mapping.m3u.file')
@@ -4102,10 +4101,12 @@ class TVGuide(xbmcgui.WindowXML):
                     decryptor = pyaes.new(enckey , pyaes.MODE_ECB, IV=None)
                     data=decryptor.decrypt(ddata).split('\0')[0]
                 if import_m3u:
-                    matches = re.findall(r'#EXTINF:(.*?),(.*?)\n([^#]*?)\n',data,flags=(re.MULTILINE))
+                    matches = re.findall(r'#EXTINF:(.*?),(.*?)[\r\n]+([^#]*?)$',data,flags=(re.MULTILINE))
                     stream_urls = []
                     stream_categories = {}
                     for attributes,name,url in matches:
+                        name = name.strip()
+                        url = url.strip()
                         match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
                         id = name
                         if match:
