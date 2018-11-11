@@ -146,9 +146,24 @@ if ffmpeg:
         name = name.encode("cp1252")
         filename = os.path.join(folder,name+'.ts')
         #seconds = 30
-        cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
-        log(cmd)
-        p = Popen(cmd,shell=windows())
+
+        cmd = [ffmpeg, "-y", "-i", url]
+        cmd = cmd + ["-reconnect", "1", "-reconnect_at_eof", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "300",  "-t", str(seconds), "-c", "copy"]
+        cmd = cmd + ['-f', 'mpegts','-']
+        log(("start",cmd))
+
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=windows())
+        video = xbmcvfs.File(filename,'wb')
+        while True:
+            data = p.stdout.read(1000000)
+            if not data:
+                break
+            video.write(data)
+        video.close()
+
+        p.wait()
+        log(("done",cmd))
+
     quit()
 
 script = "special://profile/addon_data/script.tvguide.fullscreen/playwith.py"
