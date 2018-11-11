@@ -221,6 +221,7 @@
         <setting label="Minutes before" type="enum" id="autoplaywiths.before" values="0|1|2|3|4|5|10" default="1" visible="eq(-5,true)"/>
         <setting label="Minutes after" type="enum" id="autoplaywiths.after" values="0|1|2|3|4|5|10" default="1" visible="eq(-6,true)"/>
         <setting label="Clear Autoplaywiths..." type="action" action="RunScript($CWD/autoplaywith.py)" />
+        <setting id="ffmpeg.last" label="ffmpeg exe" type="file" default="" visible="false"/>
     </category>
     <category label="30140">
         <setting type="lsep" label="30137"/>
