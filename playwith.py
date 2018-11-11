@@ -39,12 +39,6 @@ def android_get_current_appid():
         return fp.read().rstrip("\0")
 
 
-@plugin.route('/delete_ffmpeg')
-def delete_ffmpeg():
-    if xbmc.getCondVisibility('system.platform.android'):
-        ffmpeg_dst = '/data/data/%s/ffmpeg' % android_get_current_appid()
-        xbmcvfs.delete(ffmpeg_dst)
-
 
 def ffmpeg_location():
     ffmpeg_src = xbmc.translatePath(ADDON.getSetting('autoplaywiths.ffmpeg'))
@@ -90,6 +84,7 @@ except Exception as detail:
     xbmc.log("EXCEPTION: (script.tvguide.fullscreen)  %s" % detail, xbmc.LOGERROR)
 
 ffmpeg = ffmpeg_location()
+log(ffmpeg)
 if ffmpeg:
     folder = ADDON.getSetting('autoplaywiths.folder')
     c = conn.cursor()
@@ -139,7 +134,9 @@ if ffmpeg:
             if player.isPlaying():
                 url = player.getPlayingFile()
                 break
+        time.sleep(1)
         player.stop()
+        time.sleep(1)
 
     # Play with your own preferred player and paths
     if url and title:
@@ -150,6 +147,7 @@ if ffmpeg:
         filename = os.path.join(folder,name+'.ts')
         #seconds = 30
         cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
+        log(cmd)
         p = Popen(cmd,shell=windows())
     quit()
 

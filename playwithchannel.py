@@ -1,11 +1,12 @@
 import sys
-import xbmc,xbmcaddon,xbmcvfs
+import xbmc,xbmcaddon,xbmcvfs,xbmcgui
 import sqlite3
 import datetime
 import time
 import subprocess
 from subprocess import Popen
 import re
+import os
 
 def log(what):
     xbmc.log(repr(what))
@@ -24,6 +25,48 @@ def convert_datetime(ts):
     except ValueError:
         return None
 
+def windows():
+    if os.name == 'nt':
+        return True
+    else:
+        return False
+
+
+def android_get_current_appid():
+    with open("/proc/%d/cmdline" % os.getpid()) as fp:
+        return fp.read().rstrip("\0")
+
+
+
+def ffmpeg_location():
+    ffmpeg_src = xbmc.translatePath(ADDON.getSetting('autoplaywiths.ffmpeg'))
+
+    if xbmc.getCondVisibility('system.platform.android'):
+        ffmpeg_dst = '/data/data/%s/ffmpeg' % android_get_current_appid()
+
+        if (ADDON.getSetting('autoplaywiths.ffmpeg') != ADDON.getSetting('ffmpeg.last')) or (not xbmcvfs.exists(ffmpeg_dst) and ffmpeg_src != ffmpeg_dst):
+            xbmcvfs.copy(ffmpeg_src, ffmpeg_dst)
+            ADDON.setSetting('ffmpeg.last',ADDON.getSetting('autoplaywiths.ffmpeg'))
+
+        ffmpeg = ffmpeg_dst
+    else:
+        ffmpeg = ffmpeg_src
+
+    if ffmpeg:
+        try:
+            st = os.stat(ffmpeg)
+            if not (st.st_mode & stat.S_IXUSR):
+                try:
+                    os.chmod(ffmpeg, st.st_mode | stat.S_IXUSR)
+                except:
+                    pass
+        except:
+            pass
+    if xbmcvfs.exists(ffmpeg):
+        return ffmpeg
+    else:
+        xbmcgui.Dialog().notification("TVGF", "ffmpeg exe not found!")
+
 sqlite3.register_adapter(datetime.datetime, adapt_datetime)
 sqlite3.register_converter('timestamp', convert_datetime)
 
@@ -37,7 +80,7 @@ try:
 except Exception as detail:
     xbmc.log("EXCEPTION: (script.tvguide.fullscreen)  %s" % detail, xbmc.LOGERROR)
 
-ffmpeg = ADDON.getSetting('autoplaywiths.ffmpeg')
+ffmpeg = ffmpeg_location()
 if ffmpeg:
     folder = ADDON.getSetting('autoplaywiths.folder')
     c = conn.cursor()
@@ -85,7 +128,9 @@ if ffmpeg:
         if player.isPlaying():
             url = player.getPlayingFile()
             break
+    time.sleep(1)
     player.stop()
+    time.sleep(1)
 
     # Play with your own preferred player and paths
     if url:
@@ -96,5 +141,6 @@ if ffmpeg:
         filename = xbmc.translatePath("%s%s.ts" % (folder,name))
         seconds = 3600*4
         cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
-        p = Popen(cmd,shell=True)
+        log(cmd)
+        p = Popen(cmd,shell=windows())
     quit()
