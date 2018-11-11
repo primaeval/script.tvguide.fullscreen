@@ -1,5 +1,5 @@
 import sys
-import xbmc,xbmcaddon,xbmcvfs
+import xbmc,xbmcaddon,xbmcvfs,xbmcgui
 import sqlite3
 import datetime
 import time
@@ -27,6 +27,55 @@ def convert_datetime(ts):
     except ValueError:
         return None
 
+def windows():
+    if os.name == 'nt':
+        return True
+    else:
+        return False
+
+
+def android_get_current_appid():
+    with open("/proc/%d/cmdline" % os.getpid()) as fp:
+        return fp.read().rstrip("\0")
+
+
+@plugin.route('/delete_ffmpeg')
+def delete_ffmpeg():
+    if xbmc.getCondVisibility('system.platform.android'):
+        ffmpeg_dst = '/data/data/%s/ffmpeg' % android_get_current_appid()
+        xbmcvfs.delete(ffmpeg_dst)
+
+
+def ffmpeg_location():
+    ffmpeg_src = xbmc.translatePath(ADDON.getSetting('autoplaywiths.ffmpeg'))
+
+    if xbmc.getCondVisibility('system.platform.android'):
+        ffmpeg_dst = '/data/data/%s/ffmpeg' % android_get_current_appid()
+
+        if (ADDON.getSetting('autoplaywiths.ffmpeg') != ADDON.getSetting('ffmpeg.last')) or (not xbmcvfs.exists(ffmpeg_dst) and ffmpeg_src != ffmpeg_dst):
+            xbmcvfs.copy(ffmpeg_src, ffmpeg_dst)
+            ADDON.setSetting('ffmpeg.last',ADDON.getSetting('autoplaywiths.ffmpeg'))
+
+        ffmpeg = ffmpeg_dst
+    else:
+        ffmpeg = ffmpeg_src
+
+    if ffmpeg:
+        try:
+            st = os.stat(ffmpeg)
+            if not (st.st_mode & stat.S_IXUSR):
+                try:
+                    os.chmod(ffmpeg, st.st_mode | stat.S_IXUSR)
+                except:
+                    pass
+        except:
+            pass
+    if xbmcvfs.exists(ffmpeg):
+        return ffmpeg
+    else:
+        xbmcgui.Dialog().notification("TVGF", "ffmpeg exe not found!")
+
+
 sqlite3.register_adapter(datetime.datetime, adapt_datetime)
 sqlite3.register_converter('timestamp', convert_datetime)
 
@@ -40,7 +89,7 @@ try:
 except Exception as detail:
     xbmc.log("EXCEPTION: (script.tvguide.fullscreen)  %s" % detail, xbmc.LOGERROR)
 
-ffmpeg = ADDON.getSetting('autoplaywiths.ffmpeg')
+ffmpeg = ffmpeg_location()
 if ffmpeg:
     folder = ADDON.getSetting('autoplaywiths.folder')
     c = conn.cursor()
@@ -101,7 +150,7 @@ if ffmpeg:
         filename = os.path.join(folder,name+'.ts')
         #seconds = 30
         cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
-        p = Popen(cmd,shell=True)
+        p = Popen(cmd,shell=windows())
     quit()
 
 script = "special://profile/addon_data/script.tvguide.fullscreen/playwith.py"
