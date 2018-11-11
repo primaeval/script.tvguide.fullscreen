@@ -140,10 +140,10 @@ if ffmpeg:
 
     # Play with your own preferred player and paths
     if url and title:
-        name = "%s - %s - %s" % (title,channel,time.strftime('%Y-%m-%d %H-%M'))
-        name = re.sub("\?",'',name)
-        name = re.sub(":|<>\/",'',name)
-        name = name.encode("cp1252")
+        name = "%s - %s - %s" % (re.sub(r"[^\w' ]+", "", channel, flags=re.UNICODE),re.sub(r"[^\w' ]+", "", title, flags=re.UNICODE),time.strftime('%Y-%m-%d %H-%M'))
+        #name = re.sub("\?",'',name)
+        #name = re.sub(":|<>\/",'',name)
+        #name = name.encode("cp1252")
         filename = os.path.join(folder,name+'.ts')
         #seconds = 30
 

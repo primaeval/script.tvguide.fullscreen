@@ -134,10 +134,11 @@ if ffmpeg:
 
     # Play with your own preferred player and paths
     if url:
-        name = "%s - %s - %s" % (channel,title,time.strftime('%Y-%m-%d %H-%M'))
-        name = re.sub("\?",'',name)
-        name = re.sub(":|<>\/",'',name)
-        name = name.encode("cp1252")
+        name = "%s - %s - %s" % (re.sub(r"[^\w' ]+", "", channel, flags=re.UNICODE),re.sub(r"[^\w' ]+", "", title, flags=re.UNICODE),time.strftime('%Y-%m-%d %H-%M'))
+        #name = re.sub("\?",'',name)
+        #name = re.sub(":|<>\/",'',name)
+        #name = name.encode("cp1252")
+        #name = re.sub(r"[^\w' ]+", "", name, flags=re.UNICODE)
         filename = xbmc.translatePath("%s%s.ts" % (folder,name))
         seconds = 3600*4
         #cmd = [ffmpeg, "-y", "-i", url, "-c", "copy", "-t", str(seconds), filename]
