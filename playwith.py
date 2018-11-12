@@ -6,7 +6,7 @@ import time
 import subprocess
 from subprocess import Popen
 import re
-import os
+import os,stat
 from vpnapi import VPNAPI
 
 
