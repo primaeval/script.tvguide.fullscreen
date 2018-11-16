@@ -4138,7 +4138,7 @@ class TVGuide(xbmcgui.WindowXML):
                     for cat in categories:
                         channels = categories[cat]
                         for channel in channels:
-                            f.write("%s=%s\n" % (channel.encode("utf8"),cat.encode("utf8")))
+                            f.write("%s=%s\n" % (channel.decode("utf8").encode("utf8"),cat.decode("utf8").encode("utf8")))
                     f.close()
                     categories = sorted(categories)
                     self.categories = categories
