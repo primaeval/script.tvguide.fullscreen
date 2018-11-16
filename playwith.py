@@ -53,17 +53,18 @@ def ffmpeg_location():
         ffmpeg = ffmpeg_dst
     else:
         ffmpeg = ffmpeg_src
-
+    log(ffmpeg)
     if ffmpeg:
         try:
             st = os.stat(ffmpeg)
             if not (st.st_mode & stat.S_IXUSR):
+                log(st)
                 try:
                     os.chmod(ffmpeg, st.st_mode | stat.S_IXUSR)
-                except:
-                    pass
-        except:
-            pass
+                except Exception as e:
+                    log(e)
+        except Exception as e:
+            log(e)
     if xbmcvfs.exists(ffmpeg):
         return ffmpeg
     else:
