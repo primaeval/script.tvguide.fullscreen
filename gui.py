@@ -5638,8 +5638,10 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
             urls = []
             channels = {}
             for group in ["radio","tv"]:
-                urls = urls + xbmcvfs.listdir("pvr://channels/%s/All channels/" % group)[1]
+                all_channels = xbmcvfs.listdir("pvr://channels/%s/" % group)[0][0]
+                urls = urls + xbmcvfs.listdir("pvr://channels/%s/%s/" % (group,all_channels))[1]
             for group in ["radio","tv"]:
+                all_channels = xbmcvfs.listdir("pvr://channels/%s/" % group)[0][0]
                 groupid = "all%s" % group
                 json_query = RPC.PVR.get_channels(channelgroupid=groupid, properties=[ "thumbnail", "channeltype", "hidden", "locked", "channel", "lastplayed", "broadcastnow" ] )
                 if "channels" in json_query:
@@ -5647,7 +5649,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                         channelname = channel["label"]
                         streamUrl = urls[index]
                         index = index + 1
-                        url = "pvr://channels/%s/All channels/%s" % (group,streamUrl)
+                        url = "pvr://channels/%s/%s/%s" % (group,all_channels,streamUrl)
                         channels[url] = channelname
             #TODO make this a function
             file_name = 'special://profile/addon_data/script.tvguide.fullscreen/addons.ini'
@@ -5697,6 +5699,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
                     except:
                         f.write(write_str)
             f.close()
+            xbmcgui.Dialog().notification("TV Guide Fullscreen","Import PVR Finished",sound=False)
 
         elif controlId == self.C_STREAM_ADDONS_STREAMS:
             listControl = self.getControl(self.C_STREAM_ADDONS)
