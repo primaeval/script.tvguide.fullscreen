@@ -4111,6 +4111,9 @@ class TVGuide(xbmcgui.WindowXML):
                         id = name
                         if match:
                             id = match.group(1)
+                        match = re.search('tvg-name="(.*?)"',attributes,flags=(re.I))
+                        if match:
+                            name = match.group(1)
                         if id and url:
                             stream_urls.append((id.strip().decode("utf8"),url.strip()))
                         match = re.search('group-title="(.*?)"',attributes,flags=(re.I))
