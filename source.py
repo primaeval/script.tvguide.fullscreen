@@ -48,6 +48,7 @@ import requests
 from itertools import chain
 from bs4 import BeautifulSoup
 from urlparse import urlparse
+import htmlentitydefs
 
 import resources.lib.pytz as pytz
 from resources.lib.pytz import timezone
@@ -58,7 +59,7 @@ from utils import *
 SETTINGS_TO_CHECK = ['source', 'xmltv.type', 'xmltv.file', 'xmltv.url', 'xmltv.logo.folder', 'logos.source', 'logos.folder', 'logos.url', 'source.source', 'yo.countries' , 'tvguide.co.uk.systemid']
 
 def log(x):
-    xbmc.log(repr(x))
+    xbmc.log(repr(x),xbmc.LOGERROR)
 
 def unescape( str ):
     str = str.replace("&lt;","<")
@@ -1796,6 +1797,32 @@ class Source(object):
             return True
         return False
 
+def unescape2(text):
+    def fixup(m):
+        text = m.group(0)
+        if text[:2] == "&#":
+            # character reference
+            try:
+                if text[:3] == "&#x":
+                    return unichr(int(text[3:-1], 16))
+                else:
+                    return unichr(int(text[2:-1]))
+            except ValueError:
+                pass
+        else:
+            # named entity
+            try:
+                text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])
+                if text == "&":
+                    text = "&amp;"
+            except KeyError:
+                pass
+        return text # leave as is
+
+    text = re.sub("&#?\w+;", fixup, text)
+    text = re.sub("&([^;]*?<)",r"&amp;\1",text)
+
+    return text
 
 class XMLTVSource(Source):
     PLUGIN_DATA = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen'))
@@ -1854,10 +1881,12 @@ class XMLTVSource(Source):
             f = xbmcvfs.File(self.xmltvFile,'rb')
             data = f.read()
             f.close()
-            data = re.sub('&(?!amp;)','&amp;',data)
+            data = unescape2(data)
             f = xbmcvfs.File(self.xmltvFile,'wb')
-            f.write(data)
+            f.write(data.encode("utf8"))
             f.close()
+
+
 
         self.xmltv2File = ''
         if ADDON.getSetting('xmltv2.enabled') == 'true':

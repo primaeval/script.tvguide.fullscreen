@@ -15,7 +15,7 @@
         <setting id="xmltv.interval" label="30128" type="enum" default="2" values="every start|12 hours|24 hours|48 hours|7 days|14 days" />
         <setting id="xmltv.date" label="Treat 4 Digit Program Date as Movie" type="bool" default="true" />
         <setting id="xmltv.offset" label="XMLTV Timezone Offset (minutes)" type="text" default="0" />
-        <setting id="xmltv.and" label="Convert &amp; to &amp;amp;" type="bool" default="false" />
+        <setting id="xmltv.and" label="Fix xmltv html entity errors" type="bool" default="false" />
         <setting type="sep"/>
 
     </category>
