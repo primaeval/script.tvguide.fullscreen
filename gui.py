@@ -4075,7 +4075,12 @@ class TVGuide(xbmcgui.WindowXML):
                 data = xbmcvfs.File(customFile,'rb').read()
             else:
                 customFile = ADDON.getSetting('mapping.m3u.url')
-                data = requests.get(customFile).content
+                auth = None
+                if ADDON.getSetting('authentication') == 'true':
+                    user = ADDON.getSetting('user')
+                    password = ADDON.getSetting('password')
+                    auth = (user, password)
+                data = requests.get(customFile,auth=auth).content
             if data:
                 enckey = ADDON.getSetting('mapping.m3u.key')
                 encode = ADDON.getSetting('mapping.m3u.encode') == "true"
