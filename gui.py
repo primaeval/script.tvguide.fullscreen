@@ -4133,7 +4133,7 @@ class TVGuide(xbmcgui.WindowXML):
                     categories = {}
                     #categories[self.category] = []
                     for line in lines:
-                        name,cat = line.split('=')
+                        name,cat = line.rsplit('=',1)
                         if cat not in categories:
                             categories[cat] = []
                         categories[cat].append(name)
