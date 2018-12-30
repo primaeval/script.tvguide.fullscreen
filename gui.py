@@ -392,7 +392,7 @@ class TVGuide(xbmcgui.WindowXML):
         for line in lines:
             if "=" not in line:
                 continue
-            name,cat = line.split('=')
+            name,cat = line.rsplit('=',1)
             categories.add(cat)
         categories = sorted(categories)
         self.categories = categories
