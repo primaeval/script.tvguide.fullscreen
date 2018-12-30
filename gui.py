@@ -4125,7 +4125,7 @@ class TVGuide(xbmcgui.WindowXML):
                         match = re.search('group-title="(.*?)"',attributes,flags=(re.I))
                         if match:
                             group = match.group(1)
-                            stream_categories[name] = group
+                            stream_categories[name] = group.replace('=','-')
 
                     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
                     lines = f.read().splitlines()
