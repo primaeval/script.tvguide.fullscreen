@@ -2071,7 +2071,7 @@ class XMLTVSource(Source):
             if event == "end":
                 result = None
                 if elem.tag == "programme":
-                    channel = elem.get("channel").replace("'", "")  # Make ID safe to use as ' can cause crashes!
+                    channel = elem.get("channel").replace("'", "").replace("=","-")  # Make ID safe to use as ' can cause crashes!
                     description = elem.findtext("desc")
                     date = elem.findtext("date")
                     iconElement = elem.find("icon")
@@ -2157,8 +2157,8 @@ class XMLTVSource(Source):
 
                 elif elem.tag == "channel":
                     logo = ''
-                    cid = elem.get("id").replace("'", "")  # Make ID safe to use as ' can cause crashes!
-                    title = elem.findtext("display-name")
+                    cid = elem.get("id").replace("'", "").replace("=","-")  # Make ID safe to use as ' can cause crashes!
+                    title = elem.findtext("display-name").replace("=","-")
                     use_thelogodb = False
                     if ADDON.getSetting('thelogodb') == "2":
                         use_thelogodb = True
