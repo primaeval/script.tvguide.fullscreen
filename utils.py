@@ -65,8 +65,8 @@ class Channel(object):
         return self.id == other.id
 
     def __repr__(self):
-        return 'Channel(id=%s, title=%s, lineup=%s, logo=%s, streamUrl=%s)' \
-               % (self.id, self.title, self.lineup, self.logo, self.streamUrl)
+        return 'Channel(id=%s, title=%s, lineup=%s, logo=%s, streamUrl=%s, visible=%s, weight=%s)' \
+               % (self.id, self.title, self.lineup, self.logo, self.streamUrl, self.visible, self.weight)
 
 
 class Program(object):
@@ -111,7 +111,7 @@ class Program(object):
         return 'Program(channel=%s, title=%s, sub_title=%s, startDate=%s, endDate=%s, description=%s, categories=%s, imageLarge=%s, ' \
                'imageSmall=%s, episode=%s, season=%s, is_new=%s, is_movie=%s)' % (self.channel, self.title, self.sub_title, self.startDate,
                                                                        self.endDate, self.description, self.categories, self.imageLarge,
-                                                                       self.imageSmall, self.season, self.episode, self.is_new, 
+                                                                       self.imageSmall, self.season, self.episode, self.is_new,
                                                                        self.is_movie)
 
 

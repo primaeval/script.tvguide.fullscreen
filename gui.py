@@ -4157,6 +4157,21 @@ class TVGuide(xbmcgui.WindowXML):
                     if stream_urls:
                         self.database.setCustomStreamUrls(stream_urls)
 
+                        if ADDON.getSetting('mapping.m3u.order') == 'true':
+                            weight = {}
+                            for i,(id,url) in enumerate(stream_urls):
+                                weight[id] = i+1
+
+                            channelList = self.database.getChannelList(onlyVisible=False)
+
+                            for channel in channelList:
+                                new_weight = weight.get(channel.id)
+                                if new_weight:
+                                    channel.weight = new_weight
+
+                            channelList.sort(key=lambda k: k.weight)
+
+                            self.database.saveChannelListBlock(channelList)
 
         if ADDON.getSetting('alt.mapping.tsv.enabled') == 'true':
             if ADDON.getSetting('alt.mapping.tsv.type') == '0':

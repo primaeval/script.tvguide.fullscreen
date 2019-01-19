@@ -772,6 +772,10 @@ class Database(object):
         c.close()
         return channelList
 
+    def saveChannelListBlock(self, channelList):
+        result = self._invokeAndBlockForResult(self._saveChannelList, channelList)
+        return result
+
     def saveChannelList(self, callback, channelList):
         self.eventQueue.append([self._saveChannelList, callback, channelList])
         self.event.set()
@@ -788,7 +792,6 @@ class Database(object):
                     'UPDATE channels SET title=?, logo=?, stream_url=?, visible=?, weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
                     [channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight, channel.weight,
                      channel.id, self.source.KEY])
-
         c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
         self.channelList = None
         self.conn.commit()
