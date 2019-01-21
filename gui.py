@@ -142,6 +142,9 @@ elif ADDON.getSetting('skin.source') == "2":
 def log(what):
     xbmc.log(repr(what),xbmc.LOGERROR)
 
+def debug_log(what):
+    xbmc.log(repr(what),xbmc.LOGDEBUG)
+
 def timedelta_total_seconds(timedelta):
     return (
         timedelta.microseconds + 0.0 +
@@ -4161,17 +4164,19 @@ class TVGuide(xbmcgui.WindowXML):
                             weight = {}
                             for i,(id,url) in enumerate(stream_urls):
                                 weight[id] = i+1
+                            debug_log(weight)
 
                             channelList = self.database.getChannelList(onlyVisible=False)
-
+                            debug_log(channelList)
                             for channel in channelList:
                                 new_weight = weight.get(channel.id)
                                 if new_weight:
                                     channel.weight = new_weight
 
                             channelList.sort(key=lambda k: k.weight)
-
+                            debug_log(channelList)
                             self.database.saveChannelListBlock(channelList)
+                            debug_log("saveChannelListBlock")
 
         if ADDON.getSetting('alt.mapping.tsv.enabled') == 'true':
             if ADDON.getSetting('alt.mapping.tsv.type') == '0':
