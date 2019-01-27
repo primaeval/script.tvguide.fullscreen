@@ -1593,6 +1593,76 @@ class Database(object):
         c.close()
         return programList
 
+
+    def isNotificationRequiredForProgramStart(self, program):
+        return self._invokeAndBlockForResult(self._isNotificationRequiredForProgramStart, program)
+
+    def _isNotificationRequiredForProgramStart(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM notifications WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        try:
+            (channel,program_title,source,start_date,type) = c.fetchone()
+            c.close()
+
+            if type == "1":
+                return True
+
+            if start_date == program.startDate:
+                return True
+        except:
+            pass
+
+
+    def isAutoPlayRequiredForProgramStart(self, program):
+        return self._invokeAndBlockForResult(self._isAutoPlayRequiredForProgramStart, program)
+
+    def _isAutoPlayRequiredForProgramStart(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM autoplays WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        try:
+            (channel,program_title,source,start_date,type) = c.fetchone()
+            c.close()
+
+            if type == "1":
+                return True
+
+            if start_date == program.startDate:
+                return True
+        except:
+            pass
+
+
+    def isAutoPlaywithRequiredForProgramStart(self, program):
+        return self._invokeAndBlockForResult(self._isAutoPlaywithRequiredForProgramStart, program)
+
+    def _isAutoPlaywithRequiredForProgramStart(self, program):
+        """
+        @type program: source.program
+        """
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM autoplaywiths WHERE channel=? AND program_title=? AND source=?",
+                  [program.channel.id, program.title, self.source.KEY])
+        try:
+            (channel,program_title,source,start_date,type) = c.fetchone()
+            c.close()
+
+            if type == "1":
+                return True
+
+            if start_date == program.startDate:
+                return True
+        except:
+            pass
+
+
     def isNotificationRequiredForProgram(self, program):
         return self._invokeAndBlockForResult(self._isNotificationRequiredForProgram, program)
 

@@ -4635,9 +4635,9 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
         self.nextprogram = self.database.getNextProgram(program)
         self.previousprogram = self.database.getPreviousProgram(program)
         self.currentChannel = program.channel
-        self.showRemind = showRemind
-        self.showAutoplay = showAutoplay
-        self.showAutoplaywith = showAutoplaywith
+        self.showRemind = not self.database.isNotificationRequiredForProgramStart(program)
+        self.showAutoplay = not self.database.isAutoPlayRequiredForProgramStart(program)
+        self.showAutoplaywith = not self.database.isAutoPlaywithRequiredForProgramStart(program)
         self.buttonClicked = None
         self.category = category
         self.categories = categories
