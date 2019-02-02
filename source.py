@@ -569,6 +569,17 @@ class Database(object):
             if imported_programs == 0:
                 self.updateFailed = True
 
+            channels = c.execute('SELECT DISTINCT channel FROM programs').fetchall()
+            for channel in channels:
+                programs = c.execute('SELECT channel,start_date,end_date FROM programs WHERE channel=?',[channel[0]]).fetchall()
+                for i,program in enumerate(programs[:-1]):
+                    if program[2] > programs[i+1][1]:
+                        try:
+                            c.execute('UPDATE programs SET end_date=? WHERE channel=? AND start_date=? AND end_date=?',[programs[i+1][1],program[0],program[1],program[2]])
+                        except Exception as e:
+                            log(e)
+            self.conn.commit()
+
         except SourceUpdateCanceledException:
             # force source update on next load
             c.execute('UPDATE sources SET channels_updated=? WHERE id=?', [0, self.source.KEY])
