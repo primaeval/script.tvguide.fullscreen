@@ -490,7 +490,8 @@ class Database(object):
                 ch_list = self._getChannelList(onlyVisible=True)
 
             if self.settingsChanged:
-                c.execute('DELETE FROM channels WHERE source=?', [self.source.KEY])
+                if ADDON.getSetting('xmltv.keep.channels') == "false":
+                    c.execute('DELETE FROM channels WHERE source=?', [self.source.KEY])
                 c.execute('DELETE FROM programs WHERE source=?', [self.source.KEY])
                 c.execute("DELETE FROM updates WHERE source=?", [self.source.KEY])
             self.settingsChanged = False  # only want to update once due to changed settings
