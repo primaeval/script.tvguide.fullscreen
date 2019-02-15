@@ -2330,7 +2330,7 @@ class FileWrapper(object):
 
 
 class TVGUKSource(Source):
-    KEY = 'tvguide.co.uk.now.2'
+    KEY = 'tvguide.co.uk'
 
     def __init__(self, addon):
         self.needReset = False
@@ -2392,7 +2392,7 @@ class TVGUKSource(Source):
         else:
             html_file = 'special://profile/addon_data/script.tvguide.fullscreen/tvguide.co.uk.html'
             url = 'http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=&view=1&gw=' % id
-            log(url)
+            #log(url)
             xbmcvfs.copy(url,html_file)
             f = xbmcvfs.File(html_file)
             html = f.read()
@@ -2516,7 +2516,6 @@ class TVGUKSource(Source):
         return
 
 
-
 class YoSource(Source):
     KEY = 'yo.tv'
 
@@ -2539,7 +2538,6 @@ class YoSource(Source):
         """
         Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
         The source may choose to ignore the date parameter and return all data available.
-
         @param date: the date to retrieve the data for
         @param progress_callback:
         @return:
@@ -2551,8 +2549,19 @@ class YoSource(Source):
             visible_channels = []
         elements_parsed = 0
 
-        country_ids = ADDON.getSetting("yo.countries").split(',')
-        for country_id in country_ids:
+        filename = 'special://profile/addon_data/script.tvguide.fullscreen/yo.json'
+        providers = {}
+        try:
+            f = xbmcvfs.File(filename,'rb')
+            providers = json.load(f)
+            f.close()
+        except:
+            pass
+
+
+        for key in providers:
+            (name,provider,country_id,headend) = providers[key]
+
             s = requests.Session()
             headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
             headend = ADDON.getSetting("yo.%s.headend" % country_id)
@@ -2725,6 +2734,7 @@ class YoSource(Source):
         offset = datetime.datetime.fromtimestamp (epoch) - datetime.datetime.utcfromtimestamp (epoch)
         return utc + offset
 
+
 class YoNowSource(Source):
     KEY = 'yo.tv.now'
 
@@ -2761,17 +2771,27 @@ class YoNowSource(Source):
         @return:
         """
 
-        country_ids = ADDON.getSetting("yo.countries").split(',')
-        for country_id in country_ids:
+        filename = 'special://profile/addon_data/script.tvguide.fullscreen/yo.json'
+        providers = {}
+        try:
+            f = xbmcvfs.File(filename,'rb')
+            providers = json.load(f)
+            f.close()
+        except:
+            pass
+
+        #country_ids = ADDON.getSetting("yo.countries").split(',')
+        for key in providers:
+            (name,provider,country,headend) = providers[key]
             #html = self.get_url('http://%s.yo.tv/' % country_id)
             s = requests.Session()
             headers = {'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'}
-            headend = ADDON.getSetting("yo.%s.headend" % country_id)
+            #headend = ADDON.getSetting("yo.%s.headend" % country)
             if headend:
-                r = s.get('http://%s.yo.tv/settings/headend/%s' % (country_id,headend),verify=False,stream=True,headers=headers)
-            r = s.get('http://%s.yo.tv/' % country_id,verify=False,stream=True,headers=headers)
+                r = s.get('http://%s.yo.tv/settings/headend/%s' % (country,headend),verify=False,stream=True,headers=headers)
+            r = s.get('http://%s.yo.tv/' % country,verify=False,stream=True,headers=headers)
             html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
-            log(html)
+            #log(html)
             channels = html.split('<li><a data-ajax="false"')
             channel_numbers = {}
             for channel in channels:
@@ -3320,7 +3340,7 @@ def instantiateSource(force):
         return TVGUKSource(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
-    elif source == "yo.tv now":
+    elif source == "yo.tv Now":
         return YoNowSource(ADDON)
     elif source == "bbc":
         return BBCSource(ADDON)
