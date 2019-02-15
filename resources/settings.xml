@@ -268,7 +268,7 @@
     <category label="Lab2">
         <setting type="lsep" label="Experimental Alternative Data Sources"/>
         <setting type="lsep" label="(OK this dialog and return after changing source)"/>
-        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|tvguide.co.uk now|tvguide.co.uk now 2|yo.tv now" />
+        <setting id="source.source" label="Data Source" type="select" default="xmltv" values="xmltv|SchedulesDirect|tvguide.co.uk|yo.tv now" />
         <setting type="lsep" label="tvguide.co.uk"/>
         <setting id="tvguide.co.uk.days" label="tvguide.co.uk Days" default="2" type="number"  visible="true"/>
         <setting id="tvguide.co.uk.systemid" label="tvguide.co.uk Provider" default="Sky" type="select"  visible="true" values="BT|Freeview|Freesat|Popular|Sky|Virgin M|Virgin L|Virgin M+|Virgin XL" />
