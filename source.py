@@ -2328,398 +2328,8 @@ class FileWrapper(object):
     def tell(self):
         return self.bytesRead
 
+
 class TVGUKSource(Source):
-    KEY = 'tvguide.co.uk'
-
-    def __init__(self, addon):
-        self.needReset = False
-        self.done = False
-        self.start = True
-        self.channelsLastUpdated = None
-
-    def getDataFromExternal(self, date, ch_list, progress_callback=None):
-        """
-        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
-        The source may choose to ignore the date parameter and return all data available.
-
-        @param date: the date to retrieve the data for
-        @param progress_callback:
-        @return:
-        """
-        d = xbmcgui.DialogProgressBG()
-        d.create('TV Guide Fullscreen', "parsing xmltv")
-        email = ADDON.getSetting('tvguide.co.uk.email')
-        if not email:
-            systemid = {
-                "Popular":"7",
-                "Sky":"5",
-                "Virgin M+":"2",
-                "Virgin XL":"25",
-                "BT":"22",
-                "Freeview":"3",
-                "Virgin M":"27",
-                "Virgin L":"24",
-                "Freesat":"19",
-            }
-            id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
-            r = requests.get('http://www.tvguide.co.uk/?systemid=%s' % id)
-            html = r.text
-
-            match = re.search(r'<select name="channelid">(.*?)</select>',html,flags=(re.DOTALL | re.MULTILINE))
-            if not match:
-                return
-            channels = re.findall(r'<option value=(.*?)>(.*?)</option>',match.group(1),flags=(re.DOTALL | re.MULTILINE))
-        else:
-            s = requests.Session()
-            r = s.post('http://www.tvguide.co.uk/mychannels.asp',
-            data = {'thisDay':'','thisTime':'','gridSpan':'03:00','emailaddress':email,'xn':'Retrieve my profile','regionid':'-1','systemid':'-1'})
-            r = s.get('http://www.tvguide.co.uk/')
-            html = r.text
-
-            channels = re.findall(r'"div-epg-channel-name">(.*?)<.*?channellisting\.asp\?ch=(.*?)&',html,flags=(re.DOTALL | re.MULTILINE))
-
-        if ch_list:
-            visible_channels = [c.id for c in ch_list]
-        else:
-            visible_channels = ["86"]
-        if email:
-            visible_channels = []
-        channel_number = {}
-        for channel in channels:
-            if not email:
-                channel_name = channel[1]
-                number = channel[0]
-            else:
-                channel_name = channel[0]
-                number = channel[1]
-
-            thumb = "http://my.tvguide.co.uk/channel_logos/60x35/%s.png" % number
-            url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % number
-            visible = False
-            if number in visible_channels:
-                visible = True
-            if email:
-                visible = True
-                visible_channels.append(number)
-            if ADDON.getSetting("greedy") == 'true':
-                if not ('HD' in channel_name or '+1' in channel_name  or '+ 1' in channel_name or channel_name.startswith('ITV ')or channel_name.startswith('BBC1 ')or channel_name.startswith('BBC2 ')):
-                    visible = True
-            while channel_name in channel_number:
-                channel_name = channel_name + " "
-            channel_number[number] = channel_name
-            c = Channel(number, channel_name, '', thumb, "", visible)
-            yield c
-            program = channel_name
-            start = datetime.datetime.now()
-            end = start + datetime.timedelta(hours=1)
-            #if visible:
-            #    visible_channels.append(number)
-
-        elements_parsed = 0
-        for id in visible_channels:
-            listing_url = 'http://my.tvguide.co.uk/channellisting.asp?ch=%s' % id
-            programs = []
-            for day in range(int(ADDON.getSetting('tvguide.co.uk.days'))):
-                r = requests.get(listing_url)
-                html = r.text
-                match = re.search(r'<span class=programmeheading>(.*?), (.*?) (.*?), (.*?)</span>.*?<a href=\'(.*?)\'>previous</a>.*?<a href=\'(.*?)\'.*?>next</a>',html,flags=(re.DOTALL | re.MULTILINE))
-                day =''
-                month=''
-                year=''
-                if match:
-                    year = match.group(4)
-                    month = match.group(2)
-                    day = match.group(3)
-                    next = 'http://my.tvguide.co.uk%s' % match.group(6)
-                    previous = 'http://my.tvguide.co.uk%s' % match.group(5)
-                    next_day = ''
-                    match = re.search(r'cTime=(.*?) ',next)
-                    if match:
-                        next_day = match.group(1)
-                        listing_url = "%s&cTime=%s" % (listing_url,next_day)
-                    previous_day = ''
-                    match = re.search(r'cTime=(.*?) ',previous)
-                    if match:
-                        previous_day = match.group(1)
-
-                tables = html.split('<table')
-
-
-                for table in tables:
-                    thumb = ''
-                    match = re.search(r'background-image: url\((.*?)\)',table,flags=(re.DOTALL | re.MULTILINE))
-                    if match:
-                        thumb = match.group(1)
-                        if not thumb.endswith('.jpg'):
-                            thumb = ''
-                    match = re.search(r'<a href="(http://www.tvguide.co.uk/detail/.*?)"',table,flags=(re.DOTALL | re.MULTILINE))
-                    path = ''
-                    if match:
-                        detail = url=match.group(1).encode("utf8")
-
-                    season = ''
-                    episode = ''
-                    match = re.search(r'<b><span class="season">Season (.*?) </span> <span class="season">Episode (.*?) of (.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
-                    if match:
-                        season = match.group(1)
-                        episode = match.group(2)
-
-                    genre = ''
-                    match = re.search(r'<span class="tvchannel">Category </span><span class="programmetext">(.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
-                    if match:
-                        genre = match.group(1)
-
-                    ttime = ''
-                    title = ''
-                    plot = ''
-                    match = re.search(r'<span class="season">(.*?) </span>.*?<span class="programmeheading" >(.*?)</span>.*?<span class="programmetext">(.*?)</span>',table,flags=(re.DOTALL | re.MULTILINE))
-                    if match:
-                        ttime = match.group(1)
-                        title = match.group(2)
-                        plot = match.group(3)
-                        mon = {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
-                        start = self.local_time(ttime,year,mon[month],day)
-                        programs.append((title,start,plot,season,episode,thumb))
-
-            offset = None
-            if programs:
-                diff = programs[0][1].replace(tzinfo=None) - datetime.datetime.now()
-                if diff > datetime.timedelta(hours=0):
-                    offset =  datetime.timedelta(days=1)
-
-            last_start = datetime.datetime.now().replace(tzinfo=timezone('UTC')) - datetime.timedelta(days=7)
-            for index in range(len(programs)):
-                (title,start,plot,season,episode,thumb) = programs[index]
-                if start < last_start:
-                    start = start + datetime.timedelta(days=1)
-                last_start = start
-                if index < len(programs)-1:
-                    end = programs[index+1][1]
-                else:
-                    end = start + datetime.timedelta(hours=1,minutes=6)
-                if end < start:
-                    end = end  + datetime.timedelta(days=1)
-                if offset:
-                    start = start - offset
-                    end = end - offset
-                yield Program(id, title, '', start, end, plot, '', imageSmall=thumb, season = season, episode = episode, is_new="", is_movie = "", language= "en")
-
-            elements_parsed += 1
-            total = len(visible_channels)
-            if progress_callback:
-                percent = 100.0 * elements_parsed / len(visible_channels)
-                d.update(int(percent), message=id)
-                if not progress_callback(percent):
-                    raise SourceUpdateCanceledException()
-
-        self.channelsLastUpdated = datetime.datetime.now()
-        d.update(100, message="Done")
-        d.close()
-
-    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
-        if self.channelsLastUpdated == None:
-            self.channelsLastUpdated = channelsLastUpdated
-        elif channelsLastUpdated > self.channelsLastUpdated:
-            return True
-
-        if channelsLastUpdated is None or programsLastUpdated is None:
-            return True
-
-        update = False
-        interval = int(ADDON.getSetting('xmltv.interval'))
-        if interval == FileFetcher.INTERVAL_ALWAYS and self.start == True:
-            self.start = False
-            return True
-        modTime = programsLastUpdated
-        td = datetime.datetime.now() - modTime
-        # need to do it this way cause Android doesn't support .total_seconds() :(
-        diff = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / 10 ** 6
-        if ((interval == FileFetcher.INTERVAL_12 and diff >= 43200) or
-                (interval == FileFetcher.INTERVAL_24 and diff >= 86400) or
-                (interval == FileFetcher.INTERVAL_48 and diff >= 172800) or
-                (interval == FileFetcher.INTERVAL_7 and diff >= 604800) or
-                (interval == FileFetcher.INTERVAL_14 and diff >= 1209600)):
-            update = True
-        return update
-
-    def local_time_offset(self,t=None):
-        """Return offset of local zone from GMT, either at present or at time t."""
-        # python2.3 localtime() can't take None
-        if t is None:
-            t = time.time()
-        if time.localtime(t).tm_isdst and time.daylight:
-            return -time.altzone
-        else:
-            return -time.timezone
-
-    def local_time(self,ttime,year,month,day):
-        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
-        if match:
-            hour = int(match.group(1))
-            minute = int(match.group(2))
-            ampm = match.group(3)
-            if ampm == "pm":
-                if hour < 12:
-                    hour = hour + 12
-                    hour = hour % 24
-            else:
-                if hour == 12:
-                    hour = 0
-            london = timezone('Europe/London')
-            dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
-            utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
-            return utc_dt + datetime.timedelta(seconds=-time.timezone)
-        return
-
-class TVGUKNowSource(Source):
-    KEY = 'tvguide.co.uk.now'
-
-    def __init__(self, addon):
-        self.needReset = False
-        self.done = False
-
-    def getDataFromExternal(self, date, ch_list, progress_callback=None):
-        if ADDON.getSetting('fixtures') == 'true':
-            fixtures = FixturesSource(ADDON)
-            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback), fixtures.getDataFromExternal(date, ch_list, progress_callback)):
-                yield v
-        else:
-            for v in chain(self.getDataFromExternal2(date, ch_list, progress_callback)):
-                    yield v
-
-    def getDataFromExternal2(self, date, ch_list, progress_callback=None):
-        """
-        Retrieve data from external as a list or iterable. Data may contain both Channel and Program objects.
-        The source may choose to ignore the date parameter and return all data available.
-
-        @param date: the date to retrieve the data for
-        @param progress_callback:
-        @return:
-        """
-        systemid = {
-            "Popular":"7",
-            "Sky":"5",
-            "Virgin M+":"2",
-            "Virgin XL":"25",
-            "BT":"22",
-            "Freeview":"3",
-            "Virgin M":"27",
-            "Virgin L":"24",
-            "Freesat":"19",
-        }
-        id = systemid[ADDON.getSetting('tvguide.co.uk.systemid')]
-        r = requests.get('http://www.tvguide.co.uk/mobile/?systemid=%s' % id)
-        html = r.text
-
-        channels = html.split('<div class="div-channel-progs">')
-
-        channel_numbers = {}
-        for channel in channels:
-            img_url = ''
-            channel_name = ''
-            img_match = re.search(r'<img class="img-channel-logo" width="50" src="(.*?)"\s*?alt="(.*?) TV Listings" />', channel)
-            if img_match:
-                img_url = img_match.group(1)
-                orig_channel_name = img_match.group(2)
-                channel_name = orig_channel_name
-            while channel_name in channel_numbers:
-                channel_name = channel_name + " "
-
-            channel_number = '0'
-            match = re.search(r'href="http://www\.tvguide\.co\.uk/mobile/channellisting\.asp\?ch=(.*?)"', channel)
-            if match:
-                channel_number=match.group(1)
-            else:
-                continue
-            channel_numbers[channel_number] = channel_name
-            c = Channel(channel_number, channel_name, '', img_url, "", True)
-            yield c
-            start = ''
-            program = ''
-            next_start = ''
-            next_program = ''
-            after_start = ''
-            after_program = ''
-            match = re.search(r'<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>.*?<div class="div-time">(.*?)</div>.*?<div class="div-title".*?">(.*?)</div>', channel,flags=(re.DOTALL | re.MULTILINE))
-            if match:
-                #TODO fix around midnight
-                now = datetime.datetime.now()
-                tomorrow = now + datetime.timedelta(days=1)
-                year = now.year
-                month = now.month
-                day = now.day
-                start = self.local_time(match.group(1),year,month,day)
-                program = match.group(2)
-                next_start = self.local_time(match.group(3),year,month,day)
-                if next_start < start:
-                    next_start = next_start + datetime.timedelta(days=1)
-
-                next_program = match.group(4)
-                after_start = self.local_time(match.group(5),year,month,day)
-                if after_start < start:
-                    after_start = after_start + datetime.timedelta(days=1)
-
-                after_program = match.group(6)
-                match = re.search('<img.*?>&nbsp;(.*)',program)
-                if match:
-                    program = match.group(1)
-                match = re.search('<img.*?>&nbsp;(.*)',next_program)
-                if match:
-                    next_program = match.group(1)
-                match = re.search('<img.*?>&nbsp;(.*)',after_program)
-                if match:
-                    after_program = match.group(1)
-                if after_start.replace(tzinfo=None) > tomorrow:
-                    start = start - datetime.timedelta(days=1)
-                    next_start = next_start - datetime.timedelta(days=1)
-                    after_start = after_start - datetime.timedelta(days=1)
-                yield Program(c, program, '', start, next_start, "", '', imageSmall="",
-                     season = "", episode = "", is_new = "", is_movie = "", language= "")
-                yield Program(c, next_program, '', next_start, after_start, "", '', imageSmall="",
-                     season = "", episode = "", is_new = "", is_movie = "", language= "")
-                yield Program(c, after_program, '', after_start, after_start + datetime.timedelta(hours=2), "", '', imageSmall="",
-                     season = "", episode = "", is_new = "", is_movie = "", language= "")
-
-    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
-        today = datetime.datetime.now()
-        if channelsLastUpdated is None or channelsLastUpdated.hour != today.hour:
-            return True
-
-        if programsLastUpdated is None or programsLastUpdated.hour != today.hour:
-            return True
-        return False
-
-    def local_time_offset(self,t=None):
-        """Return offset of local zone from GMT, either at present or at time t."""
-        # python2.3 localtime() can't take None
-        if t is None:
-            t = time.time()
-        if time.localtime(t).tm_isdst and time.daylight:
-            return -time.altzone
-        else:
-            return -time.timezone
-
-    def local_time(self,ttime,year,month,day):
-        match = re.search(r'(.{1,2}):(.{2})(.{2})',ttime)
-        if match:
-            hour = int(match.group(1))
-            minute = int(match.group(2))
-            ampm = match.group(3)
-            if ampm == "pm":
-                if hour < 12:
-                    hour = hour + 12
-                    hour = hour % 24
-            else:
-                if hour == 12:
-                    hour = 0
-            london = timezone('Europe/London')
-            dt = datetime.datetime(int(year),int(month),int(day),hour,minute,0)
-            utc_dt = london.normalize(london.localize(dt)).astimezone(pytz.utc)
-            return utc_dt + datetime.timedelta(seconds=-time.timezone)
-        return
-
-
-class TVGUKNow2Source(Source):
     KEY = 'tvguide.co.uk.now.2'
 
     def __init__(self, addon):
@@ -2775,12 +2385,18 @@ class TVGUKNow2Source(Source):
             html = r.content
             if not  html:
                 return
+            html_file = 'special://profile/addon_data/script.tvguide.fullscreen/tvguide.co.uk.html'
+            f = xbmcvfs.File(html_file,'wb')
+            f.write(html)
+            f.close()
         else:
             html_file = 'special://profile/addon_data/script.tvguide.fullscreen/tvguide.co.uk.html'
             url = 'http://www.tvguide.co.uk/?catcolor=&systemid=%s&thistime=&thisday=&gridspan=&view=1&gw=' % id
+            log(url)
             xbmcvfs.copy(url,html_file)
             f = xbmcvfs.File(html_file)
             html = f.read()
+            #log(html)
         channels = html.split('<div class="div-epg-channel-name">')
         channel_numbers = {}
         count = 0
@@ -2791,7 +2407,7 @@ class TVGUKNow2Source(Source):
             match = re.search('(.*?)<',channel)
             if match:
                 name = match.group(1)
-            match = re.search('(http://my.tvguide.co.uk/channel_logos/.*?\.png)',channel)
+            match = re.search('"(https?://my.tvguide.co.uk/channel_logos/.*?\.png)"',channel)
             if match:
                 logo = match.group(1)
             if name:
@@ -2849,6 +2465,7 @@ class TVGUKNow2Source(Source):
                         end = end + datetime.timedelta(days=1)
                     last_start = start
                     last_end = end
+                    in_new = False
                     program = Program(c, title, '', start, end, description, '', imageSmall="", season=season, episode=episode, is_new = in_new, is_movie = is_movie, language= "")
                     yield program
             count = count + 1
@@ -3154,6 +2771,7 @@ class YoNowSource(Source):
                 r = s.get('http://%s.yo.tv/settings/headend/%s' % (country_id,headend),verify=False,stream=True,headers=headers)
             r = s.get('http://%s.yo.tv/' % country_id,verify=False,stream=True,headers=headers)
             html = HTMLParser.HTMLParser().unescape(r.content.decode('utf-8'))
+            log(html)
             channels = html.split('<li><a data-ajax="false"')
             channel_numbers = {}
             for channel in channels:
@@ -3700,10 +3318,6 @@ def instantiateSource(force):
         return XMLTVSource(ADDON,force)
     elif source == "tvguide.co.uk":
         return TVGUKSource(ADDON)
-    elif source == "tvguide.co.uk now":
-        return TVGUKNowSource(ADDON)
-    elif source == "tvguide.co.uk now 2":
-        return TVGUKNow2Source(ADDON)
     elif source == "yo.tv":
         return YoSource(ADDON)
     elif source == "yo.tv now":
