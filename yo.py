@@ -17,12 +17,15 @@
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 #
-import xbmc,xbmcgui,xbmcaddon,xbmcplugin
+import xbmc,xbmcgui,xbmcaddon,xbmcplugin,xbmcvfs
 import sys
 import re
 import requests
 import HTMLParser
 import json
+
+def log(x):
+    xbmc.log(repr(x),xbmc.LOGERROR)
 
 def get_url(url):
     #headers = {'user-agent': 'Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+'}
@@ -34,58 +37,80 @@ def get_url(url):
     except:
         return ''
 
-def select_countries():
-    html = get_url("http://www.yo.tv")
-
-    list_items = re.findall(r'<li><a href="http://(.*?)\.yo\.tv"  >(.*?)</a></li>',html,flags=(re.DOTALL | re.MULTILINE))
-
-    names = [i[1].encode("utf8") for i in list_items]
-
-    d = xbmcgui.Dialog()
-    result = d.multiselect("yo.tv Countries",names)
-    if result:
-        ids = [list_items[i][0] for i in result]
-        countries = ','.join(ids)
-        xbmcaddon.Addon(id = 'script.tvguide.fullscreen').setSetting('yo.countries',countries)
-
-
-def select_providers():
-    s = xbmcaddon.Addon(id = 'script.tvguide.fullscreen').getSetting('yo.countries')
-    if not s:
-        return
-    countries = s.split(',')
-    d = xbmcgui.Dialog()
-    result = d.select("yo.tv Country",countries)
-    if result == -1:
-        return
-    country = countries[result]
-
-    if country == "uk":
-        url = "http://uk.yo.tv/api/setting?id=1594745998&lookupid=3"
-    else:
-        result = d.input("%s: zip/post code" % country)
-        if not result:
-            return
-        url = "http://%s.yo.tv/api/setting?id=%s&lookupid=1" % (country,result)
-
-    j = get_url(url)
-    if not j:
-        return
-    data = json.loads(j)
-    providers = [x["Name"] for x in data]
-    index = d.select("%s provider:" % country,providers)
-    if index == -1:
-        return
-    headend = data[index]["Value"]
-    xbmcaddon.Addon(id = 'script.tvguide.fullscreen').setSetting('yo.%s.headend' % country, headend)
-
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        mode = int(sys.argv[1])
-        if mode == 1:
-            select_countries()
-        elif mode == 2:
-            select_providers()
+    d = xbmcgui.Dialog()
+    select = d.select('yo.tv',['Add Provider','Remove Provider'])
+    if select == 0:
+        html = get_url("http://www.yo.tv")
+        list_items = re.findall(r'<li><a href="http://(.*?)\.yo\.tv"  >(.*?)</a></li>',html,flags=(re.DOTALL | re.MULTILINE))
+        names = [i[1].encode("utf8") for i in list_items]
+        result = d.select("yo.tv Countries",names)
+        if result != -1:
+            #log(result)
+            country = list_items[result][0]
+            name = names[result]
+
+            if country == "uk":
+                url = "http://uk.yo.tv/api/setting?id=1594745998&lookupid=3"
+            else:
+                result = d.input("%s: zip/post code" % country)
+                if not result:
+                    pass
+                url = "http://%s.yo.tv/api/setting?id=%s" % (country,result)
+            #log(url)
+
+            j = get_url(url)
+            if not j:
+                quit()
+            #log(j)
+            data = json.loads(j)
+            headend = ""
+            provider = ""
+            if "Message" not in data:
+                providers = [x["Name"] for x in data]
+                index = d.select("%s provider:" % country,providers)
+                if index == -1:
+                    quit()
+                headend = data[index]["Value"]
+                provider = data[index]["Name"]
+            #log((name,provider,country,headend))
+
+            filename = 'special://profile/addon_data/script.tvguide.fullscreen/yo.json'
+            providers = {}
+            try:
+                f = xbmcvfs.File(filename,'rb')
+                providers = json.load(f)
+                f.close()
+            except:
+                pass
+
+            providers[str((name,provider,country,headend))] = (name,provider,country,headend)
+            f = xbmcvfs.File(filename,'wb')
+            json.dump(providers,f,indent=2)
+            f.close()
+
+    elif select == 1:
+        filename = 'special://profile/addon_data/script.tvguide.fullscreen/yo.json'
+        providers = {}
+        try:
+            f = xbmcvfs.File(filename,'rb')
+            providers = json.load(f)
+            f.close()
+        except:
+            pass
+
+        providers_list = [(x,providers[x]) for x in sorted(providers)]
+        labels = ["%s - %s" % (x[1][0],x[1][1]) for x in providers_list]
+
+        results = d.multiselect("yo.tv - Remove Provider",labels)
+        if results:
+            for result in results:
+                key = providers_list[result][0]
+                del providers[key]
+
+            f = xbmcvfs.File(filename,'wb')
+            json.dump(providers,f,indent=2)
+            f.close()
 
 
