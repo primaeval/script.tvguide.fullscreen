@@ -1217,7 +1217,7 @@ class Database(object):
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=2 and p.is_new = "New") AS autoplay_scheduled_new, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=0 AND w.start_date=p.start_date) AS autoplaywith_scheduled_once, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=1 ) AS autoplaywith_scheduled_always, '+
-            '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=3 ) AS autoplaywith_scheduled_daily, '+
+            '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=3 AND time(w.start_date,"unixepoch")=time(p.start_date,"unixepoch")) AS autoplaywith_scheduled_daily, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=2 AND p.is_new = "New") AS autoplaywith_scheduled_new '+
             'FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?',
             [self.source.KEY, startTime, endTime])
@@ -1231,7 +1231,7 @@ class Database(object):
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
                               is_new=row['is_new'], is_movie=row['is_movie'], language=row['language'],
                               notificationScheduled=notification_scheduled, autoplayScheduled=autoplay_scheduled, autoplaywithScheduled=autoplaywith_scheduled)
-            log(program)
+            #log(program)
             programList.append(program)
         return programList
 
@@ -1845,7 +1845,7 @@ class Database(object):
                             season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
             programList.append(program)
         #daily
-        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 3 AND p.title = a.program_title AND p.end_date >= ? AND p.end_date <= ?", [start,end])
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplaywiths a WHERE c.id = p.channel AND a.type = 3 AND p.title = a.program_title AND p.end_date >= ? AND p.end_date <= ? AND time(a.start_date,'unixepoch')=time(p.start_date,'unixepoch')", [start,end])
         for row in c:
             channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
             program = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],

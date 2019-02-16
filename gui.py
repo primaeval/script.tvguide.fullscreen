@@ -1965,7 +1965,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showFullAutoplaywiths(self):
         programList = self.database.getFullAutoplaywiths(int(ADDON.getSetting('listing.days')))
-        title = "AutoPlayWiths"
+        title = "Record" if (ADDON.getSetting('autoplaywiths.record') == 'true')  else "AutoPlayWiths"
         d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
