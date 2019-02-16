@@ -4112,6 +4112,7 @@ class TVGuide(xbmcgui.WindowXML):
                     matches = re.findall(r'#EXTINF:(.*?),(.*?)[\r\n]+([^#]*?)$',data,flags=(re.MULTILINE))
                     stream_urls = []
                     stream_categories = {}
+                    m3u_channels = []
                     for attributes,name,url in matches:
                         name = name.strip()
                         url = url.strip()
@@ -4119,6 +4120,10 @@ class TVGuide(xbmcgui.WindowXML):
                         id = name
                         if match:
                             id = match.group(1)
+                        match = re.search('tvg-logo="(.*?)"',attributes,flags=(re.I))
+                        logo = ''
+                        if match:
+                            logo = match.group(1)
                         match = re.search('tvg-name="(.*?)"',attributes,flags=(re.I))
                         if match:
                             if match.group(1):
@@ -4127,10 +4132,23 @@ class TVGuide(xbmcgui.WindowXML):
                         id = id.replace('=','-')
                         if id and url:
                             stream_urls.append((id.strip().decode("utf8"),url.strip()))
+                            m3u_channels.append((id.strip().decode("utf8"),url.strip(),name,logo))
                         match = re.search('group-title="(.*?)"',attributes,flags=(re.I))
                         if match:
                             group = match.group(1)
                             stream_categories[name] = group.replace('=','-')
+
+                    channelList = self.database.getChannelList(onlyVisible=False)
+                    ids = [x.id for x in channelList]
+                    #log(ids)
+                    lineup = None
+                    #log(m3u_channels)
+                    for id,url,title,logo in m3u_channels:
+                        if id not in ids:
+                            #log(id)
+                            channelList.append(utils.Channel(id, title, lineup, logo, url, visible=True, weight=-1))
+                    #log(channelList)
+                    self.database.saveChannelListBlock(channelList)
 
                     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','rb')
                     lines = f.read().splitlines()
