@@ -214,7 +214,8 @@
         <setting label="Minutes before" type="enum" id="autoplays.before" values="0|1|2|3|4|5|10" default="1" visible="eq(-2,true)"/>
         <setting label="Minutes after" type="enum" id="autoplays.after" values="0|1|2|3|4|5|10" default="1" visible="eq(-3,true)"/>
         <setting label="Clear Autoplays..." type="action" action="RunScript($CWD/autoplay.py)" />
-        <setting type="lsep" label="AutoPlayWith (External Player)"/>
+        <setting type="lsep" label="AutoPlayWith (External Player) / Record"/>
+        <setting id="autoplaywiths.record" label="Rename AutoPlayWiths to Record" type="bool" default="true" />
         <setting id="autoplaywiths.enabled" label="AutoPlayWiths" type="bool" default="true" />
         <setting id="autoplaywiths.player" label="PlayerCoreFactory.xml Player" type="text" default="" visible="eq(-1,true)"/>
         <setting id="autoplaywiths.stop" label="Stop After Play" type="bool" default="true" visible="eq(-2,true)"/>
