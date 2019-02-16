@@ -581,6 +581,26 @@ class Database(object):
                             log(e)
             self.conn.commit()
 
+            channels = c.execute('SELECT DISTINCT channel FROM programs').fetchall()
+            for channel in channels:
+                #log(channel[0])
+                programs = c.execute('SELECT channel,start_date,end_date FROM programs WHERE channel=?',[channel[0]]).fetchall()
+                for i,program in enumerate(programs[:-1]):
+                    channel_id = channel[0]
+                    this_start = program[1]
+                    this_end = program[2]
+                    next_start = programs[i+1][1]
+                    if this_end != next_start:
+                        #log((channel_id,this_start,this_end,next_start))
+                        try:
+                            #c.execute('INSERT INTO programs SET end_date=? WHERE channel=? AND start_date=? AND end_date=?',[programs[i+1][1],program[0],program[1],program[2]])
+                            c.execute(
+                            'INSERT INTO programs(channel, title, start_date, end_date, source, updates_id) VALUES(?, ?, ?, ?, ?, ?)',
+                            [channel_id, "?", this_end, next_start, self.source.KEY, updatesId])
+                        except Exception as e:
+                            log(e)
+            self.conn.commit()
+
         except SourceUpdateCanceledException:
             # force source update on next load
             c.execute('UPDATE sources SET channels_updated=? WHERE id=?', [0, self.source.KEY])
