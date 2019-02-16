@@ -3538,7 +3538,7 @@ class TVGuide(xbmcgui.WindowXML):
             self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, True))
         else:
             self.setControlLabel(self.C_MAIN_DATE_LONG, self.formatDate(self.viewStartDate, False))
-        #self.setControlLabel(self.C_MAIN_DATE_LONG, '{dt:%A} {dt.day} {dt:%B}'.format(dt=self.viewStartDate))
+        self.setControlLabel(self.C_MAIN_DATE_LONG, '{dt:%A} {dt.day} {dt:%B}'.format(dt=self.viewStartDate))
         if ADDON.getSetting('date.custom') == 'true':
             date_format = ADDON.getSetting('date.custom.format')
             self.setControlLabel(self.C_MAIN_DATE_LONG, date_format.format(dt=self.viewStartDate))
