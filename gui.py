@@ -1056,9 +1056,9 @@ class TVGuide(xbmcgui.WindowXML):
             else:
                 autoplay = "Don't AutoPlay"
             if not program.autoplaywithScheduled:
-                autoplaywith = "AutoPlayWith"
+                autoplaywith = "Record" if (ADDON.getSetting('autoplaywiths.record') == 'true') else "AutoPlayWith"
             else:
-                autoplaywith = "Don't AutoPlayWith"
+                autoplaywith = "Don't Record" if (ADDON.getSetting('autoplaywiths.record') == 'true')  else "Don't AutoPlayWith"
             schedulers = [remind,autoplay,autoplaywith]
             what = d.select("Schedule", schedulers)
             if what > -1:
@@ -1082,7 +1082,7 @@ class TVGuide(xbmcgui.WindowXML):
                     if program.autoplaywithScheduled:
                         self.autoplaywith.removeAutoplaywith(program)
                     else:
-                        times = ["once","always","new"]
+                        times = ["once","always","new","daily"]
                         when = d.select("%s When" % schedulers[what], times)
                         if when > -1:
                             self.autoplaywith.addAutoplaywith(program, when)
@@ -1965,7 +1965,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def showFullAutoplaywiths(self):
         programList = self.database.getFullAutoplaywiths(int(ADDON.getSetting('listing.days')))
-        title = "AutoPlayWiths"
+        title = "Record" if (ADDON.getSetting('autoplaywiths.record') == 'true')  else "AutoPlayWiths"
         d = ProgramListDialog(title, programList, ADDON.getSetting('listing.sort.time') == 'true')
         d.doModal()
         index = d.index
@@ -2016,7 +2016,7 @@ class TVGuide(xbmcgui.WindowXML):
                 self.autoplaywith.removeAutoplaywith(program)
             else:
                 d = xbmcgui.Dialog()
-                play_type = d.select("AutoPlayWith play_type", ["once","always","new"]) #TODO ,"same time","same day"
+                play_type = d.select("Record" if (ADDON.getSetting('autoplaywiths.record') == 'true') else "AutoPlayWiths", ["once","always","new","daily"]) #TODO ,"same time","same day"
                 if play_type > -1:
                     self.autoplaywith.addAutoplaywith(program, play_type)
             if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
@@ -2024,7 +2024,7 @@ class TVGuide(xbmcgui.WindowXML):
 
         elif buttonClicked == PopupMenu.C_POPUP_LISTS:
             d = xbmcgui.Dialog()
-            list = d.select("Lists", ["Channel Listing","On Now", "On Next", "Search", "Reminders", "AutoPlays", "AutoPlayWiths"])
+            list = d.select("Lists", ["Channel Listing","On Now", "On Next", "Search", "Reminders", "AutoPlays", "Record" if (ADDON.getSetting('autoplaywiths.record') == 'true') else "AutoPlayWiths" ])
             if list < 0:
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
             if list == 0:
@@ -4808,11 +4808,13 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if self.showAutoplay:
                 autoplayControl.setLabel("AutoPlay")
             else:
-                autoplayControl.setLabel("Don't AutoPlay")
+                autoplayControl.setLabel("Don't Record" if (ADDON.getSetting('autoplaywiths.record') == 'true')  else "Don't AutoPlayWith")
             if self.showAutoplaywith:
-                autoplaywithControl.setLabel("AutoPlayWith")
+                autoplaywithControl.setLabel("Record" if (ADDON.getSetting('autoplaywiths.record') == 'true') else "AutoPlayWith" )
             else:
-                autoplaywithControl.setLabel("Don't AutoPlayWith")
+                autoplaywithControl.setLabel("Don't Record" if (ADDON.getSetting('autoplaywiths.record') == 'true')  else "Don't AutoPlayWith")
+
+
 
         items = list()
         order = ADDON.getSetting("cat.order").split('|')

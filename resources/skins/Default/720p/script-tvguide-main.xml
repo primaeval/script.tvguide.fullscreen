@@ -252,7 +252,7 @@
                 <width>1280</width>
                 <height>28</height>
                 <texture>tvg-program-nofocus.png</texture>
-                <aspectratio>-</aspectratio>
+                <aspectratio></aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
                 <visible>false</visible>
@@ -266,7 +266,7 @@
                 <width>1280</width>
                 <height>220</height>
                 <texture>tvg-program-nofocus.png</texture>
-                <aspectratio>-</aspectratio>
+                <aspectratio></aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
                 <visible>false</visible>
@@ -740,7 +740,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -753,7 +753,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -766,7 +766,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -779,7 +779,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -792,7 +792,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -805,7 +805,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -818,7 +818,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -831,7 +831,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -844,7 +844,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -857,7 +857,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -871,7 +871,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -885,7 +885,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -898,7 +898,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -911,7 +911,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -924,7 +924,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -937,7 +937,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -1461,7 +1461,7 @@
                 <aligny>top</aligny>
                 <aspectratio>keep</aspectratio>
                 <fadetime>0</fadetime>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>true</visible>
             </control>
             <control type="image" id="7027">
@@ -1473,7 +1473,7 @@
                 <aligny>top</aligny>
                 <aspectratio>scale</aspectratio>
                 <fadetime>0</fadetime>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>true</visible>
             </control>
             <control type="image" id="7024">
@@ -1588,7 +1588,7 @@
                 <height>50</height>
                 <aspectratio>keep</aspectratio>
                 <align>right</align>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>true</visible>
             </control>
 
@@ -2241,8 +2241,8 @@
                     <textcolor>grey</textcolor>
                     <font>font10</font>
                     <label>NOW</label>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
                     <onclick>info</onclick>
                     <onclick>up</onclick>
                 </control>
@@ -2255,8 +2255,8 @@
                     <textcolor>grey</textcolor>
                     <font>font10</font>
                     <label>LAST</label>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
                     <onclick>info</onclick>
                     <onclick>left</onclick>
                 </control>
@@ -2340,7 +2340,7 @@
                 <width>296</width>
                 <height>177</height>
                 <aspectratio>keep</aspectratio>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>false</visible>
             </control>
 
@@ -2392,7 +2392,7 @@
                 <width>220</width>
                 <height>124</height>
                 <aspectratio>keep</aspectratio>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>false</visible>
             </control>
 
@@ -2515,8 +2515,8 @@
                     <textcolor>grey</textcolor>
                     <font>font10</font>
                     <label>NOW</label>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
                     <onclick>info</onclick>
                     <onclick>up</onclick>
                 </control>
@@ -2529,8 +2529,8 @@
                     <textcolor>grey</textcolor>
                     <font>font10</font>
                     <label>LAST</label>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
                     <onclick>info</onclick>
                     <onclick>left</onclick>
                 </control>
@@ -2629,7 +2629,7 @@
                 <width>296</width>
                 <height>177</height>
                 <aspectratio>keep</aspectratio>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>false</visible>
             </control>
 
@@ -2681,7 +2681,7 @@
                 <width>220</width>
                 <height>124</height>
                 <aspectratio>keep</aspectratio>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>false</visible>
             </control>
 
@@ -2851,7 +2851,7 @@
                 <width>296</width>
                 <height>177</height>
                 <aspectratio>keep</aspectratio>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>false</visible>
             </control>
 
@@ -2903,7 +2903,7 @@
                 <width>220</width>
                 <height>124</height>
                 <aspectratio>keep</aspectratio>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>false</visible>
             </control>
 
@@ -2975,7 +2975,7 @@
                 <width>1280</width>
                 <height>58</height>
                 <texture>black-back.png</texture>
-                <aspectratio>-</aspectratio>
+                <aspectratio></aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
@@ -2997,7 +2997,7 @@
                 <width>1280</width>
                 <height>220</height>
                 <texture>black-back.png</texture>
-                <aspectratio>-</aspectratio>
+                <aspectratio></aspectratio>
                 <align>center</align>
                 <aligny>center</aligny>
                 <fadetime>200</fadetime>
@@ -3118,8 +3118,8 @@
                     <textcolor>grey</textcolor>
                     <font>font10</font>
                     <label>NOW</label>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
                     <onclick>info</onclick>
                     <onclick>up</onclick>
                     <visible>false</visible>
@@ -3133,8 +3133,8 @@
                     <textcolor>grey</textcolor>
                     <font>font10</font>
                     <label>LAST</label>
-                    <texturefocus>-</texturefocus>
-                    <texturenofocus>-</texturenofocus>
+                    <texturefocus></texturefocus>
+                    <texturenofocus></texturenofocus>
                     <onclick>info</onclick>
                     <onclick>left</onclick>
                     <visible>false</visible>
@@ -3367,7 +3367,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ddffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -3380,7 +3380,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ddffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -3393,7 +3393,7 @@
                     <width>176</width>
                     <height>40</height>
                     <textcolor>ddffffff</textcolor>
-                    <shadowcolor>-</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13_title</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -3510,7 +3510,7 @@
                 <aligny>top</aligny>
                 <aspectratio>keep</aspectratio>
                 <fadetime>500</fadetime>
-                <texture>-</texture>
+                <texture></texture>
                 <visible>false</visible>
             </control>
 
