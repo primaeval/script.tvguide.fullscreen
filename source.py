@@ -32,7 +32,7 @@ from dateutil import tz
 import time
 from xml.etree import ElementTree
 import re
-
+import json
 from strings import *
 #from guideTypes import *
 from fileFetcher import *
@@ -1211,10 +1211,12 @@ class Database(object):
             'SELECT p.*, ' +
             '(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND n.type=0 AND n.start_date=p.start_date) AS notification_scheduled_once, '+
             '(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND n.type=1 ) AS notification_scheduled_always, '+
+            '(SELECT 1 FROM notifications w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=3 AND time(w.start_date,"unixepoch")=time(p.start_date,"unixepoch")) AS notification_scheduled_daily, '+
             '(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND n.type=2 AND p.is_new = "New") AS notification_scheduled_new, '+
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=0 AND a.start_date=p.start_date) AS autoplay_scheduled_once, '+
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=1 ) AS autoplay_scheduled_always, '+
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=2 and p.is_new = "New") AS autoplay_scheduled_new, '+
+            '(SELECT 1 FROM autoplays w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=3 AND time(w.start_date,"unixepoch")=time(p.start_date,"unixepoch")) AS autoplay_scheduled_daily, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=0 AND w.start_date=p.start_date) AS autoplaywith_scheduled_once, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=1 ) AS autoplaywith_scheduled_always, '+
             '(SELECT 1 FROM autoplaywiths w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=3 AND time(w.start_date,"unixepoch")=time(p.start_date,"unixepoch")) AS autoplaywith_scheduled_daily, '+
@@ -1223,9 +1225,9 @@ class Database(object):
             [self.source.KEY, startTime, endTime])
 
         for row in c:
-            notification_scheduled = row['notification_scheduled_once'] or row['notification_scheduled_always'] or row['notification_scheduled_new']
-            autoplay_scheduled = row['autoplay_scheduled_once'] or row['autoplay_scheduled_always'] or row['autoplay_scheduled_new']
-            autoplaywith_scheduled = row['autoplaywith_scheduled_once'] or row['autoplaywith_scheduled_always'] or row['autoplaywith_scheduled_new'] or row['autoplaywith_scheduled_daily'] 
+            notification_scheduled = row['notification_scheduled_once'] or row['notification_scheduled_always'] or row['notification_scheduled_new'] or row['notification_scheduled_daily']
+            autoplay_scheduled = row['autoplay_scheduled_once'] or row['autoplay_scheduled_always'] or row['autoplay_scheduled_new'] or row['autoplay_scheduled_daily']
+            autoplaywith_scheduled = row['autoplaywith_scheduled_once'] or row['autoplaywith_scheduled_always'] or row['autoplaywith_scheduled_new'] or row['autoplaywith_scheduled_daily']
             program = Program(channelMap[row['channel']], title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
                               description=row['description'], categories=row['categories'],
                               imageLarge=row['image_large'], imageSmall=row['image_small'], season=row['season'], episode=row['episode'],
@@ -1597,7 +1599,7 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    def getFullNotifications(self, daysLimit=2):
+    def getFullNotifications(self, daysLimit=5):
         return self._invokeAndBlockForResult(self._getFullNotifications, daysLimit)
 
     def _getFullNotifications(self, daysLimit):
@@ -1623,6 +1625,16 @@ class Database(object):
                             description=row['description'], categories=row['categories'],
                             imageLarge=row["image_large"],imageSmall=row["image_small"],
                             season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
+            programList.append(program)
+        #daily
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 3 AND p.title = a.program_title AND p.end_date >= ? AND p.end_date <= ? AND time(a.start_date,'unixepoch')=time(p.start_date,'unixepoch')", [start,end])
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
+                            description=row['description'], categories=row['categories'],
+                            imageLarge=row["image_large"],imageSmall=row["image_small"],
+                            season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
+            #log(row['title'])
             programList.append(program)
         c.close()
         return programList
@@ -1750,7 +1762,7 @@ class Database(object):
         self.conn.commit()
         c.close()
 
-    def getFullAutoplays(self, daysLimit=2):
+    def getFullAutoplays(self, daysLimit=5):
         return self._invokeAndBlockForResult(self._getFullAutoplays, daysLimit)
 
     def _getFullAutoplays(self, daysLimit):
@@ -1777,6 +1789,16 @@ class Database(object):
                             description=row['description'], categories=row['categories'],
                             imageLarge=row["image_large"],imageSmall=row["image_small"],
                             season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
+            programList.append(program)
+        #daily
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, autoplays a WHERE c.id = p.channel AND a.type = 3 AND p.title = a.program_title AND p.end_date >= ? AND p.end_date <= ? AND time(a.start_date,'unixepoch')=time(p.start_date,'unixepoch')", [start,end])
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
+                            description=row['description'], categories=row['categories'],
+                            imageLarge=row["image_large"],imageSmall=row["image_small"],
+                            season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],autoplayScheduled=True)
+            #log(row['title'])
             programList.append(program)
         c.close()
         return programList
@@ -1852,8 +1874,8 @@ class Database(object):
                             description=row['description'], categories=row['categories'],
                             imageLarge=row["image_large"],imageSmall=row["image_small"],
                             season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],autoplaywithScheduled=True)
-            
-            programList.append(program)            
+
+            programList.append(program)
         c.close()
         return programList
 
