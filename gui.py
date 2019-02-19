@@ -245,6 +245,7 @@ class TVGuide(xbmcgui.WindowXML):
     C_MAIN_MENUBAR = 5200
     C_MAIN_BUTTON_SHOW_MENUBAR = 5201
     C_MAIN_BUTTON_CLOSE_MENUBAR = 5202
+    C_MAIN_EPG_WINDOW_MARKER = 5555
     C_MAIN_BUTTON_CLOSE_MENUBAR_BIG = 55202
     C_QUICK_EPG = 10000
     C_QUICK_EPG_VIEW_MARKER = 10001
@@ -528,6 +529,15 @@ class TVGuide(xbmcgui.WindowXML):
             self.epgView.bottom = top + control.getHeight()
             self.epgView.width = control.getWidth()
             self.epgView.cellHeight = int(control.getHeight() / float(CHANNELS_PER_PAGE))
+
+        control = self.getControl(self.C_MAIN_EPG_WINDOW_MARKER)
+        if control:
+            self.epgView.windowWidth = control.getWidth()
+            self.epgView.windowHeight = control.getHeight()
+        else:
+            self.epgView.windowWidth = 1280
+            self.epgView.windowHeight = 720
+
 
         control = self.getControl(self.C_QUICK_EPG_VIEW_MARKER)
         if control:
@@ -3589,7 +3599,7 @@ class TVGuide(xbmcgui.WindowXML):
             control = self.getControl(4210 + idx)
             if control:
                 control.setHeight(self.epgView.cellHeight-2)
-                control.setWidth(176)
+                control.setWidth(self.epgView.left-4)
                 control.setPosition(2,top)
                 try:
                     if self.player.isPlaying() and (self.currentChannel == channels[idx]):
@@ -3601,16 +3611,16 @@ class TVGuide(xbmcgui.WindowXML):
             control = self.getControl(4010 + idx)
             if control:
                 control.setHeight(self.epgView.cellHeight-2)
-                control.setWidth(156)
+                control.setWidth(self.epgView.left-4-20)
                 control.setPosition(12,top)
             control = self.getControl(4110 + idx)
             if control:
-                control.setWidth(176)
+                control.setWidth(self.epgView.left-4)
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setPosition(2,top)
             control = self.getControl(4410 + idx)
             if control:
-                control.setWidth(176)
+                control.setWidth(self.epgView.left-4)
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setPosition(5,top)
 
@@ -3723,7 +3733,7 @@ class TVGuide(xbmcgui.WindowXML):
                 controlAndProgramList.append(ControlAndProgram(control, program))
 
         top = self.epgView.top + self.epgView.cellHeight * len(channels)
-        height = 720 - top
+        height = self.epgView.windowHeight - top
         control = self.getControl(self.C_MAIN_FOOTER)
         if control:
             control.setPosition(0,top)

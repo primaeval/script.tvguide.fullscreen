@@ -211,7 +211,7 @@
         <control type="label" id="5000">
             <description>visibility marker for TV Guide group</description>
         </control>
-        <control type="group">
+        <control type="group" id="5555">
             <description>TV Guide group</description>
             <posx>0</posx>
             <posy>0</posy>
