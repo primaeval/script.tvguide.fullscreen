@@ -894,6 +894,8 @@ class Database(object):
                         channelList = sorted(new_channels, key=lambda channel: channel.title.lower())
                     else:
                         channelList = new_channels
+        elif ADDON.getSetting('channel.filter.sort.all') == 'true':
+            channelList = sorted(channelList, key=lambda channel: channel.title.lower())
         c.close()
         return channelList
 
