@@ -223,7 +223,7 @@
                 <description>marker for EPG data view - should be hidden!</description>
                 <posx>280</posx>
                 <posy>30</posy>
-                <width>1002</width>
+                <width>1001</width>
                 <height>450</height>
                 <visible>false</visible>
                 <texture>background-cover2.png</texture>
@@ -362,7 +362,7 @@
                     <width>280</width>
                     <height>100</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -505,7 +505,7 @@
                     <width>280</width>
                     <height>20</height>
                     <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font10</font>
                     <align>right</align>
                     <aligny>center</aligny>
@@ -739,9 +739,9 @@
                     <posy>0</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4110),)</visible>
@@ -752,9 +752,9 @@
                     <posy>40</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4111),)</visible>
@@ -765,9 +765,9 @@
                     <posy>80</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4112),)</visible>
@@ -778,9 +778,9 @@
                     <posy>120</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4113),)</visible>
@@ -791,9 +791,9 @@
                     <posy>160</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4114),)</visible>
@@ -804,9 +804,9 @@
                     <posy>200</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4115),)</visible>
@@ -817,9 +817,9 @@
                     <posy>240</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4116),)</visible>
@@ -830,9 +830,9 @@
                     <posy>280</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4117),)</visible>
@@ -843,9 +843,9 @@
                     <posy>320</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4118),)</visible>
@@ -856,9 +856,9 @@
                     <posy>360</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4119),)</visible>
@@ -870,9 +870,9 @@
                     <posy>400</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4120),)</visible>
@@ -884,9 +884,9 @@
                     <posy>440</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4121),)</visible>
@@ -897,9 +897,9 @@
                     <posy>480</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4122),)</visible>
@@ -910,9 +910,9 @@
                     <posy>520</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4123),)</visible>
@@ -923,9 +923,9 @@
                     <posy>560</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4124),)</visible>
@@ -936,9 +936,9 @@
                     <posy>600</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>ffffffff</textcolor>
+                    <textcolor>blue</textcolor>
                     <shadowcolor></shadowcolor>
-                    <font>font13_title</font>
+                    <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEqual(Control.GetLabel(4125), )</visible>
@@ -1127,11 +1127,11 @@
                     <posy>0</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4411">
@@ -1140,11 +1140,11 @@
                     <posy>40</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4412">
@@ -1153,11 +1153,11 @@
                     <posy>80</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4413">
@@ -1166,11 +1166,11 @@
                     <posy>120</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4414">
@@ -1179,11 +1179,11 @@
                     <posy>160</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4415">
@@ -1192,11 +1192,11 @@
                     <posy>200</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4416">
@@ -1205,11 +1205,11 @@
                     <posy>240</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4417">
@@ -1218,11 +1218,11 @@
                     <posy>280</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4418">
@@ -1231,11 +1231,11 @@
                     <posy>320</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4419">
@@ -1244,11 +1244,11 @@
                     <posy>360</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                     <texturenofocus>tvguide-program-grey.png</texturenofocus>
                 </control>
@@ -1258,11 +1258,11 @@
                     <posy>400</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                     <texturenofocus>tvguide-program-grey.png</texturenofocus>
                 </control>
@@ -1272,11 +1272,11 @@
                     <posy>440</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4422">
@@ -1285,11 +1285,11 @@
                     <posy>480</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4423">
@@ -1298,11 +1298,11 @@
                     <posy>520</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4424">
@@ -1311,11 +1311,11 @@
                     <posy>560</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
                 <control type="label" id="4425">
@@ -1324,11 +1324,11 @@
                     <posy>600</posy>
                     <width>176</width>
                     <height>40</height>
-                    <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
-                    <font>font10_title</font>
+                    <textcolor>orange</textcolor>
+                    <shadowcolor></shadowcolor>
+                    <font>font10</font>
                     <align>left</align>
-                    <aligny>top</aligny>
+                    <aligny>center</aligny>
                     <visible>true</visible>
                 </control>
             </control>
@@ -1602,7 +1602,7 @@
                 <aligny>top</aligny>
                 <font>font13_title</font>
                 <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
+                <shadowcolor></shadowcolor>
                 <label></label>
                 <align>left</align>
                 <scroll>true</scroll>
@@ -2408,7 +2408,7 @@
                     <aligny>center</aligny>
                     <font>font28_title</font>
                     <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <label>$INFO[System.Time]</label>
                     <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
                 </control>
@@ -2695,7 +2695,7 @@
                     <aligny>center</aligny>
                     <font>font28_title</font>
                     <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <label>$INFO[System.Time]</label>
                     <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
                 </control>
@@ -2917,7 +2917,7 @@
                     <aligny>center</aligny>
                     <font>font28_title</font>
                     <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <label>$INFO[System.Time]</label>
                     <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">conditional</animation>
                 </control>
@@ -3217,7 +3217,7 @@
                     <width>180</width>
                     <height>50</height>
                     <textcolor>ffffffff</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13</font>
                     <align>center</align>
                     <aligny>center</aligny>
@@ -3232,7 +3232,7 @@
                     <width>280</width>
                     <height>20</height>
                     <textcolor>bbffffff</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <font>font13</font>
                     <align>right</align>
                     <aligny>center</aligny>
@@ -3250,7 +3250,7 @@
                     <aligny>center</aligny>
                     <font>font28_title</font>
                     <textcolor>white</textcolor>
-                    <shadowcolor>black</shadowcolor>
+                    <shadowcolor></shadowcolor>
                     <label>$INFO[System.Time(hh:mm)]</label>
                     <animation effect="slide" start="0,0" end="-40,0" time="75" condition="Window.IsVisible(Mutebug)">
                         conditional
