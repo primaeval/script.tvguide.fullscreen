@@ -221,9 +221,9 @@
 
             <control type="button" id="5001">
                 <description>marker for EPG data view - should be hidden!</description>
-                <posx>180</posx>
+                <posx>280</posx>
                 <posy>30</posy>
-                <width>1100</width>
+                <width>1002</width>
                 <height>450</height>
                 <visible>false</visible>
                 <texture>background-cover2.png</texture>
@@ -359,7 +359,7 @@
                     <description>Displays todays date</description>
                     <posx>0</posx>
                     <posy>35</posy>
-                    <width>180</width>
+                    <width>280</width>
                     <height>100</height>
                     <textcolor>ffffffff</textcolor>
                     <shadowcolor>black</shadowcolor>
@@ -372,9 +372,9 @@
 
                 <control type="image">
                     <description>1st half hour background</description>
-                    <posx>180</posx>
+                    <posx>280</posx>
                     <posy>0</posy>
-                    <width>272</width>
+                    <width>248</width>
                     <height>28</height>
                     <texture>tvg-program-nofocus.png</texture>
                     <aspectratio>stretch</aspectratio>
@@ -384,9 +384,9 @@
                 </control>
                 <control type="label" id="4001">
                     <description>1st half hour column</description>
-                    <posx>190</posx>
+                    <posx>280</posx>
                     <posy>0</posy>
-                    <width>270</width>
+                    <width>248</width>
                     <height>30</height>
                     <textcolor>white</textcolor>
                     <font>font12</font>
@@ -394,9 +394,9 @@
                 </control>
                 <control type="image">
                     <description>2st half hour background</description>
-                    <posx>454</posx>
+                    <posx>530</posx>
                     <posy>0</posy>
-                    <width>273</width>
+                    <width>248</width>
                     <height>28</height>
                     <texture>tvg-program-nofocus.png</texture>
                     <aspectratio>stretch</aspectratio>
@@ -406,9 +406,9 @@
                 </control>
                 <control type="label" id="4002">
                     <description>2nd half hour column</description>
-                    <posx>465</posx>
+                    <posx>530</posx>
                     <posy>0</posy>
-                    <width>272</width>
+                    <width>248</width>
                     <height>30</height>
                     <textcolor>white</textcolor>
                     <font>font12</font>
@@ -416,9 +416,9 @@
                 </control>
                 <control type="image">
                     <description>3st half hour background</description>
-                    <posx>729</posx>
+                    <posx>780</posx>
                     <posy>0</posy>
-                    <width>273</width>
+                    <width>248</width>
                     <height>28</height>
                     <texture>tvg-program-nofocus.png</texture>
                     <aspectratio>stretch</aspectratio>
@@ -428,7 +428,7 @@
                 </control>
                 <control type="label" id="4003">
                     <description>3rd half hour column</description>
-                    <posx>740</posx>
+                    <posx>780</posx>
                     <posy>0</posy>
                     <width>272</width>
                     <height>30</height>
@@ -438,9 +438,9 @@
                 </control>
                 <control type="image">
                     <description>4st half hour background</description>
-                    <posx>1004</posx>
+                    <posx>1030</posx>
                     <posy>0</posy>
-                    <width>273</width>
+                    <width>248</width>
                     <height>28</height>
                     <texture>tvg-program-nofocus.png</texture>
                     <aspectratio>stretch</aspectratio>
@@ -450,9 +450,9 @@
                 </control>
                 <control type="label" id="4004">
                     <description>4th half hour column</description>
-                    <posx>1015</posx>
+                    <posx>1030</posx>
                     <posy>0</posy>
-                    <width>270</width>
+                    <width>248</width>
                     <height>30</height>
                     <textcolor>white</textcolor>
                     <font>font12</font>
@@ -463,7 +463,7 @@
                     <description>clock background</description>
                     <posx>2</posx>
                     <posy>0</posy>
-                    <width>176</width>
+                    <width>276</width>
                     <height>28</height>
                     <texture>tvg-program-nofocus.png</texture>
                     <aspectratio>stretch</aspectratio>
@@ -475,7 +475,7 @@
                     <description>Displays todays date</description>
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>180</width>
+                    <width>280</width>
                     <height>50</height>
                     <textcolor>white</textcolor>
                     <shadowcolor></shadowcolor>
@@ -517,7 +517,7 @@
                     <description>time label</description>
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>180</width>
+                    <width>280</width>
                     <height>30</height>
                     <font>font13_title</font>
                     <align>center</align>
