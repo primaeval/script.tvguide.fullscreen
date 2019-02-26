@@ -3620,7 +3620,7 @@ class TVGuide(xbmcgui.WindowXML):
                 control.setPosition(2,top)
             control = self.getControl(4410 + idx)
             if control:
-                control.setWidth(self.epgView.left-4)
+                control.setWidth(self.epgView.left-8)
                 control.setHeight(self.epgView.cellHeight-2)
                 control.setPosition(5,top)
 
