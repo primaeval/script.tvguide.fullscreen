@@ -591,12 +591,27 @@ class Database(object):
                     this_end = program[2]
                     next_start = programs[i+1][1]
                     if this_end != next_start:
-                        #log((channel_id,this_start,this_end,next_start))
                         try:
-                            #c.execute('INSERT INTO programs SET end_date=? WHERE channel=? AND start_date=? AND end_date=?',[programs[i+1][1],program[0],program[1],program[2]])
                             c.execute(
                             'INSERT INTO programs(channel, title, start_date, end_date, source, updates_id) VALUES(?, ?, ?, ?, ?, ?)',
                             [channel_id, "?", this_end, next_start, self.source.KEY, updatesId])
+                        except Exception as e:
+                            log(e)
+            self.conn.commit()
+
+            start = datetime.datetime.now().replace(minute=0,second=0,microsecond=0) - datetime.timedelta(hours=2)
+            channels = c.execute('SELECT DISTINCT channel FROM programs').fetchall()
+            for channel in channels:
+                #log(channel[0])
+                first_program = c.execute('SELECT channel,start_date FROM programs WHERE channel=? ORDER BY start_date',[channel[0]]).fetchone()
+                if first_program:
+                    channel_id = channel[0]
+                    this_start = first_program[1]
+                    if this_start > start:
+                        try:
+                            c.execute(
+                            'INSERT INTO programs(channel, title, start_date, end_date, source, updates_id) VALUES(?, ?, ?, ?, ?, ?)',
+                            [channel_id, "-", start, this_start, self.source.KEY, updatesId])
                         except Exception as e:
                             log(e)
             self.conn.commit()
