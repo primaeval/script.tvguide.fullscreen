@@ -849,7 +849,7 @@ class Database(object):
         channels = [channel.title for channel in channelsList]
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channels.ini','wb')
         for channel in sorted(channels):
-            f.write("%s=nothing\n" % channel.encode("utf8"))
+            f.write("%s=nothing\n" % channel.decode("utf8").encode("utf8"))
         f.close()
 
     def exportChannelIdList(self):
@@ -857,7 +857,7 @@ class Database(object):
         channels = [(channel.id,channel.title) for channel in channelsList]
         f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/channel_id_title.ini','wb')
         for channel in sorted(channels,key=lambda x: x[1].lower()):
-            f.write("%s=%s\n" % (channel[0].encode("utf8"),channel[1].encode("utf8")))
+            f.write("%s=%s\n" % (channel[0].decode("utf8").encode("utf8"),channel[1].decode("utf8").encode("utf8")))
         f.close()
 
     def getChannelList(self, onlyVisible=True, all=False):
