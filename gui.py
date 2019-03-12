@@ -362,6 +362,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.mode = MODE_EPG
         self.channel_number_input = False
         self.channel_number = ADDON.getSetting('channel.arg')
+        #log(("self.channel_number",self.channel_number))
         self.currentChannel = None
         s = ADDON.getSetting('last.channel')
         if s:
@@ -482,7 +483,7 @@ class TVGuide(xbmcgui.WindowXML):
                 stream_urls = self.database.getCustomStreamUrls()
                 for (name,stream) in stream_urls:
                     write_str = "%s=%s\n" % (name,stream)
-                    f.write(write_str.encode("utf8"))
+                    f.write(write_str.decode("utf8").encode("utf8"))
             f.close()
 
             if self.database:

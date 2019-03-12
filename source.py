@@ -323,7 +323,8 @@ class Database(object):
 
             try:
                 self.conn = sqlite3.connect(self.databasePath, detect_types=sqlite3.PARSE_DECLTYPES)
-                self.conn.execute('PRAGMA foreign_keys = ON')
+                self.conn.text_factory = str
+                self.conn.execute('PRAGMA foreign_keys = OFF')
                 self.conn.row_factory = sqlite3.Row
 
                 # create and drop dummy table to check if database is locked
@@ -1977,8 +1978,10 @@ def unescape2(text):
 
     text = re.sub("&#?\w+;", fixup, text)
     text = re.sub("&([^;]*?<)",r"&amp;\1",text)
+    text = re.sub("<3","HEART",text)
 
     return text
+
 
 class XMLTVSource(Source):
     PLUGIN_DATA = xbmc.translatePath(os.path.join('special://profile', 'addon_data', 'script.tvguide.fullscreen'))
@@ -1992,6 +1995,21 @@ class XMLTVSource(Source):
     XMLTV_SOURCE_URL = 1
     CATEGORIES_TYPE_FILE = 0
     CATEGORIES_TYPE_URL = 1
+
+    def fix_xml(self, xmltvFile):
+        f = xbmcvfs.File(xmltvFile,'r')
+        data = f.read()
+        encoding = re.search('encoding="(.*?)"',data)
+        if encoding:
+            encoding = encoding.group(1)
+            data = data.decode(encoding)
+        f.close()
+        data = unescape2(data)
+        if encoding:
+            data = data.encode(encoding)
+        f = xbmcvfs.File(xmltvFile,'w')
+        f.write(data)
+        f.close()
 
     def __init__(self, addon, force):
         #gType = GuideTypes()
@@ -2034,15 +2052,7 @@ class XMLTVSource(Source):
             self.xmltvFile = self.updateLocalFile('xmltv.xml', addon.getSetting('xmltv.url'), addon, force=force)
 
         if ADDON.getSetting('xmltv.and') == 'true':
-            f = xbmcvfs.File(self.xmltvFile,'rb')
-            data = f.read()
-            f.close()
-            data = unescape2(data)
-            f = xbmcvfs.File(self.xmltvFile,'wb')
-            f.write(data.encode("utf8"))
-            f.close()
-
-
+            self.fix_xml(self.xmltvFile)
 
         self.xmltv2File = ''
         if ADDON.getSetting('xmltv2.enabled') == 'true':
@@ -2064,13 +2074,7 @@ class XMLTVSource(Source):
                 self.xmltv2File = self.updateLocalFile('xmltv2.xml', addon.getSetting('xmltv2.url'), addon, force=force)
 
             if ADDON.getSetting('xmltv.and') == 'true':
-                f = xbmcvfs.File(self.xmltv2File,'rb')
-                data = f.read()
-                f.close()
-                data = re.sub('&(?!amp;)','&amp;',data)
-                f = xbmcvfs.File(self.xmltv2File,'wb')
-                f.write(data)
-                f.close()
+                self.fix_xml(self.xmltv2File)
 
         self.xmltv3File = ''
         if ADDON.getSetting('xmltv3.enabled') == 'true':
@@ -2092,13 +2096,7 @@ class XMLTVSource(Source):
                 self.xmltv3File = self.updateLocalFile('xmltv3.xml', addon.getSetting('xmltv3.url'), addon, force=force)
 
             if ADDON.getSetting('xmltv.and') == 'true':
-                f = xbmcvfs.File(self.xmltv2File,'rb')
-                data = f.read()
-                f.close()
-                data = re.sub('&(?!amp;)','&amp;',data)
-                f = xbmcvfs.File(self.xmltv2File,'wb')
-                f.write(data)
-                f.close()
+                self.fix_xml(self.xmltv3File)
 
 
         if not self.xmltvFile or not xbmcvfs.exists(self.xmltvFile):
