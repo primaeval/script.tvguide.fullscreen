@@ -51,16 +51,15 @@ class Service(object):
             self.database.close()
 
     def onCachesUpdated(self):
-        #BUG doesn't work on login (maybe always?)
         if ADDON.getSetting('notifications.enabled') == 'true':
             n = notification.Notification(self.database, ADDON.getAddonInfo('path'))
-            #n.scheduleNotifications()
+            n.scheduleNotifications()
         if ADDON.getSetting('autoplays.enabled') == 'true':
             n = autoplay.Autoplay(self.database, ADDON.getAddonInfo('path'))
-            #n.scheduleAutoplays()
+            n.scheduleAutoplays()
         if ADDON.getSetting('autoplaywiths.enabled') == 'true':
             n = autoplaywith.Autoplaywith(self.database, ADDON.getAddonInfo('path'))
-            #n.scheduleAutoplaywiths()
+            n.scheduleAutoplaywiths()
         self.database.close(None)
         xbmc.log("[script.tvguide.fullscreen] Background Update Finished", xbmc.LOGNOTICE)
         if ADDON.getSetting('background.notify') == 'true':
