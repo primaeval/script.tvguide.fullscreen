@@ -4837,7 +4837,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             if self.showAutoplay:
                 autoplayControl.setLabel("AutoPlay")
             else:
-                remindControl.setLabel("Don't AutoPlay")
+                autoplayControl.setLabel("Don't AutoPlay")
             if self.showAutoplaywith:
                 autoplaywithControl.setLabel("Record" if (ADDON.getSetting('autoplaywiths.record') == 'true') else "AutoPlayWith" )
             else:
