@@ -4128,9 +4128,10 @@ class TVGuide(xbmcgui.WindowXML):
                         name = name.strip()
                         url = url.strip()
                         match = re.search('tvg-id="(.*?)"',attributes,flags=(re.I))
-                        id = name
+                        id = name.replace("'","")
                         if match:
-                            id = match.group(1)
+                            if match.group(1):
+                                id = match.group(1).replace("'","")
                         match = re.search('tvg-logo="(.*?)"',attributes,flags=(re.I))
                         logo = ''
                         if match:
