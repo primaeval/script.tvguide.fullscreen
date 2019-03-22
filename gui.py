@@ -1077,9 +1077,13 @@ class TVGuide(xbmcgui.WindowXML):
                     if program.notificationScheduled:
                         self.notification.removeNotification(program)
                     else:
-                        times = ["once","always","new","daily"]
+                        times = ["once","always","new","daily","regex"]
                         when = d.select("%s When" % schedulers[what], times)
                         if when > -1:
+                            if when == 4:
+                                title = xbmcgui.Dialog().input("%s (%% is wildcard)" % program.title ,program.title)
+                                if title:
+                                    program.title = title
                             self.notification.addNotification(program, when)
                 elif what == 1:
                     if program.autoplayScheduled:
@@ -2005,8 +2009,12 @@ class TVGuide(xbmcgui.WindowXML):
                 self.notification.removeNotification(program)
             else:
                 d = xbmcgui.Dialog()
-                play_type = d.select("Notification play_type", ["once","always","new","daily"]) #TODO ,"same time","same day"
+                play_type = d.select("Notification play_type", ["once","always","new","daily","regex"]) #TODO ,"same time","same day"
                 if play_type > -1:
+                    if play_type == 4:
+                        title = xbmcgui.Dialog().input("%s (%% is wildcard)" % program.title,program.title)
+                        if title:
+                            program.title = title
                     self.notification.addNotification(program, play_type)
             if self.mode == MODE_EPG or ADDON.getSetting('redraw.epg') == 'true':
                 self.onRedrawEPG(self.channelIdx, self.viewStartDate)
