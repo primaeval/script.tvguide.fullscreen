@@ -1231,6 +1231,7 @@ class Database(object):
             '(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND n.type=1 ) AS notification_scheduled_always, '+
             '(SELECT 1 FROM notifications w WHERE w.channel=p.channel AND w.program_title=p.title AND w.source=p.source AND w.type=3 AND time(w.start_date,"unixepoch")=time(p.start_date,"unixepoch")) AS notification_scheduled_daily, '+
             '(SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND n.type=2 AND p.is_new = "New") AS notification_scheduled_new, '+
+            '(SELECT 1 FROM notifications n WHERE p.title LIKE n.program_title AND n.source=p.source AND n.type=4) AS notification_scheduled_regex, '+
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=0 AND a.start_date=p.start_date) AS autoplay_scheduled_once, '+
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=1 ) AS autoplay_scheduled_always, '+
             '(SELECT 1 FROM autoplays a WHERE a.channel=p.channel AND a.program_title=p.title AND a.source=p.source AND a.type=2 and p.is_new = "New") AS autoplay_scheduled_new, '+
@@ -1243,7 +1244,7 @@ class Database(object):
             [self.source.KEY, startTime, endTime])
 
         for row in c:
-            notification_scheduled = row['notification_scheduled_once'] or row['notification_scheduled_always'] or row['notification_scheduled_new'] or row['notification_scheduled_daily']
+            notification_scheduled = row['notification_scheduled_once'] or row['notification_scheduled_always'] or row['notification_scheduled_new'] or row['notification_scheduled_daily'] or row['notification_scheduled_regex']
             autoplay_scheduled = row['autoplay_scheduled_once'] or row['autoplay_scheduled_always'] or row['autoplay_scheduled_new'] or row['autoplay_scheduled_daily']
             autoplaywith_scheduled = row['autoplaywith_scheduled_once'] or row['autoplaywith_scheduled_always'] or row['autoplaywith_scheduled_new'] or row['autoplaywith_scheduled_daily']
             program = Program(channelMap[row['channel']], title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
@@ -1614,6 +1615,8 @@ class Database(object):
         c = self.conn.cursor()
         c.execute("DELETE FROM notifications WHERE channel=? AND program_title=? AND source=?",
                   [program.channel.id, program.title, self.source.KEY])
+        c.execute("DELETE FROM notifications WHERE ? LIKE program_title AND source=? AND type=4",
+                  [program.title, self.source.KEY])
         self.conn.commit()
         c.close()
 
@@ -1670,7 +1673,6 @@ class Database(object):
                   [program.channel.id, program.title, self.source.KEY])
         try:
             (channel,program_title,source,start_date,type) = c.fetchone()
-            c.close()
 
             if type == "1":
                 return True
@@ -1679,7 +1681,17 @@ class Database(object):
                 return True
         except:
             pass
+        c.execute("SELECT * FROM notifications WHERE ? LIKE program_title AND source=?",
+                  [program.title, self.source.KEY])
+        try:
+            (channel,program_title,source,start_date,type) = c.fetchone()
+            c.close()
 
+            if type == "4":
+                return True
+
+        except:
+            pass
 
     def isAutoPlayRequiredForProgramStart(self, program):
         return self._invokeAndBlockForResult(self._isAutoPlayRequiredForProgramStart, program)
@@ -1738,9 +1750,12 @@ class Database(object):
         c.execute("SELECT 1 FROM notifications WHERE channel=? AND program_title=? AND source=?",
                   [program.channel.id, program.title, self.source.KEY])
         result = c.fetchone()
+        if result:
+            return result
+        c.execute("SELECT 1 FROM notifications WHERE ? LIKE program_title AND source=?",
+                  [program.title, self.source.KEY])
         c.close()
 
-        return result
 
     def clearAllNotifications(self):
         self._invokeAndBlockForResult(self._clearAllNotifications)
