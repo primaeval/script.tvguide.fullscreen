@@ -26,9 +26,11 @@
 #
 
 import sys
-import xbmc,xbmcaddon,xbmcvfs
+import xbmc,xbmcaddon,xbmcvfs,xbmcgui
 import os
 import stat
+
+xbmcgui.Dialog().notification("TV Guide Fullscreen","loading...",sound=False)
 
 ADDON = xbmcaddon.Addon(id='script.tvguide.fullscreen')
 
