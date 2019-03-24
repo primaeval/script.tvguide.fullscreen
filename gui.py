@@ -991,7 +991,8 @@ class TVGuide(xbmcgui.WindowXML):
                 else:
                     self._hideEpg()
             else:
-                self.close()
+                if (ADDON.getSetting("ignore.back") == "false"):
+                    self.close()
                 return
 
         elif action.getId() in COMMAND_ACTIONS["CATEGORIES_BAR"] and self.getControl(self.C_MAIN_CATEGORY):
