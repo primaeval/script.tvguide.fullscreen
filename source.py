@@ -560,8 +560,8 @@ class Database(object):
                             [channel, program.title, program.sub_title, program.startDate, program.endDate, program.description, program.categories,
                              program.imageLarge, program.imageSmall, program.season, program.episode, program.is_new, program.is_movie,
                              program.language, self.source.KEY, updatesId])
-                        except:
-                            pass
+                        except Exception as e:
+                            log(e)
 
                 # channels updated
                 c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
@@ -2320,9 +2320,12 @@ class XMLTVSource(Source):
                         cid = id_shortcuts[channel]
                     else:
                         cid = channel
-                    result = Program(cid, title, sub_title, self.parseXMLTVDate(elem.get('start')) + datetime.timedelta(minutes=time_offset),
-                                     self.parseXMLTVDate(elem.get('stop'))+ datetime.timedelta(minutes=time_offset), description, categories, imageSmall=icon,
+                    start = self.parseXMLTVDate(elem.get('start')) + datetime.timedelta(minutes=time_offset)
+                    stop = self.parseXMLTVDate(elem.get('stop'))+ datetime.timedelta(minutes=time_offset)
+                    result = Program(cid, title, sub_title, start,
+                                     stop, description, categories, imageSmall=icon,
                                      season = season, episode = episode, is_new = is_new, is_movie = is_movie, language= language)
+                    #log((result.channel,result.title,result.sub_title,result.description,result.categories,start,stop))
 
                 elif elem.tag == "channel":
                     logo = ''
