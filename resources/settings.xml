@@ -42,6 +42,7 @@
         <setting id="categories.ini.file" label="categories.ini File" type="file" visible="eq(-2,true) + eq(-1,0)" mask="categories.ini" default=''/>
         <setting id="categories.ini.url" label="categories.ini Url" type="text" visible="eq(-3,true) + eq(-2,1)" default=''/>
         <setting id="categories.remember" label="Remember Last Category" type="bool" visible="true" default="true" />
+        <setting id="channel.remember" label="Remember Last EPG Position" type="bool" visible="true" default="true" />
         <setting type="lsep" label="Channel Mappings"/>
         <setting id="mapping.ini.enabled" label="Import mapping.ini" type="bool" default="false" />
         <setting id="mapping.ini.type" label="mapping.ini Source" type="enum" visible="eq(-1,true)" default="0" values="File|Url"/>
