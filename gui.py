@@ -343,7 +343,10 @@ class TVGuide(xbmcgui.WindowXML):
         self.controlAndProgramList = list()
         self.quickControlAndProgramList = list()
         self.ignoreMissingControlIds = list()
-        self.channelIdx = 0
+        if ADDON.getSetting('channel.remember') == 'true':
+            self.channelIdx = int(ADDON.getSetting('channelIdx') or 0)
+        else:
+            self.channelIdx = 0
         self.focusPoint = Point()
         self.focusPoint.x = 0
         self.focusPoint.y = 0
@@ -463,6 +466,7 @@ class TVGuide(xbmcgui.WindowXML):
 
     def close(self):
         if not self.isClosing:
+            ADDON.setSetting('channelIdx',str(self.channelIdx))
             self.isClosing = True
             if self.player.isPlaying():
                 if ADDON.getSetting('stop.on.exit') == "true":
