@@ -143,7 +143,7 @@ def log(what):
     xbmc.log(repr(what),xbmc.LOGERROR)
 
 def debug_log(what):
-    xbmc.log(repr(what),xbmc.LOGDEBUG)
+    xbmc.log(repr(what),xbmc.LOGERROR)
 
 def timedelta_total_seconds(timedelta):
     return (
@@ -4200,6 +4200,7 @@ class TVGuide(xbmcgui.WindowXML):
                     categories = sorted(categories)
                     self.categories = categories
 
+                    #debug_log(stream_urls)
                     if stream_urls:
                         self.database.setCustomStreamUrls(stream_urls)
 
@@ -4208,18 +4209,22 @@ class TVGuide(xbmcgui.WindowXML):
                             for i,(id,url) in enumerate(stream_urls):
                                 weight[id] = i+1
                             debug_log(weight)
+                            #for k,v in sorted(weight.items(),key=lambda x:x[1]):
+                                #log((v,k))
 
                             channelList = self.database.getChannelList(onlyVisible=False)
-                            debug_log(channelList)
+                            #debug_log(channelList)
                             for channel in channelList:
                                 new_weight = weight.get(channel.id)
                                 if new_weight:
                                     channel.weight = new_weight
+                                else:
+                                    channel.weight = 100000
 
                             channelList.sort(key=lambda k: k.weight)
-                            debug_log(channelList)
+                            #debug_log(channelList)
                             self.database.saveChannelListBlock(channelList)
-                            debug_log("saveChannelListBlock")
+                            #debug_log("saveChannelListBlock")
 
         if ADDON.getSetting('alt.mapping.tsv.enabled') == 'true':
             if ADDON.getSetting('alt.mapping.tsv.type') == '0':
