@@ -4136,6 +4136,7 @@ class TVGuide(xbmcgui.WindowXML):
                     matches = re.findall(r'#EXTINF:(.*?),(.*?)[\r\n]+([^#]*?)$',data,flags=(re.MULTILINE))
                     stream_urls = []
                     stream_categories = {}
+                    stream_id_categories = {}
                     m3u_channels = []
                     for attributes,name,url in matches:
                         name = name.strip()
@@ -4164,9 +4165,11 @@ class TVGuide(xbmcgui.WindowXML):
                         if match:
                             group = match.group(1)
                             stream_categories[name] = group.replace('=','-')
+                            stream_id_categories[id] = group.replace('=','-')
 
                     channelList = self.database.getChannelList(onlyVisible=False)
                     ids = [x.id for x in channelList]
+                    channelNames = {x.id:x.title for x in channelList}
                     #log(ids)
                     lineup = None
                     #log(m3u_channels)
@@ -4192,6 +4195,12 @@ class TVGuide(xbmcgui.WindowXML):
                         if cat not in categories:
                             categories[cat] = []
                         categories[cat].append(name)
+
+                    for id,cat in stream_id_categories.iteritems():
+                        if cat not in categories:
+                            categories[cat] = []
+                        if id in channelNames:
+                            categories[cat].append(channelNames[id])
 
                     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
                     for cat in categories:
