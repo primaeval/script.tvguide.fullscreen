@@ -4149,10 +4149,12 @@ class TVGuide(xbmcgui.WindowXML):
                         logo = ''
                         if match:
                             logo = match.group(1)
+                        '''
                         match = re.search('tvg-name="(.*?)"',attributes,flags=(re.I))
                         if match:
                             if match.group(1):
                                 name = match.group(1)
+                        '''
                         name = name.replace('=','-')
                         id = id.replace('=','-')
                         if id and url:
@@ -4194,7 +4196,7 @@ class TVGuide(xbmcgui.WindowXML):
                     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
                     for cat in categories:
                         channels = categories[cat]
-                        for channel in channels:
+                        for channel in list(set(channels)):
                             f.write("%s=%s\n" % (channel.decode("utf8").encode("utf8"),cat.decode("utf8").encode("utf8")))
                     f.close()
                     categories = sorted(categories)
