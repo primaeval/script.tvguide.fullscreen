@@ -143,7 +143,7 @@ def log(what):
     xbmc.log(repr(what),xbmc.LOGERROR)
 
 def debug_log(what):
-    xbmc.log(repr(what),xbmc.LOGDEBUG)
+    xbmc.log(repr(what),xbmc.LOGERROR)
 
 def timedelta_total_seconds(timedelta):
     return (
@@ -4136,6 +4136,7 @@ class TVGuide(xbmcgui.WindowXML):
                     matches = re.findall(r'#EXTINF:(.*?),(.*?)[\r\n]+([^#]*?)$',data,flags=(re.MULTILINE))
                     stream_urls = []
                     stream_categories = {}
+                    stream_id_categories = {}
                     m3u_channels = []
                     for attributes,name,url in matches:
                         name = name.strip()
@@ -4149,10 +4150,12 @@ class TVGuide(xbmcgui.WindowXML):
                         logo = ''
                         if match:
                             logo = match.group(1)
+                        '''
                         match = re.search('tvg-name="(.*?)"',attributes,flags=(re.I))
                         if match:
                             if match.group(1):
                                 name = match.group(1)
+                        '''
                         name = name.replace('=','-')
                         id = id.replace('=','-')
                         if id and url:
@@ -4162,9 +4165,11 @@ class TVGuide(xbmcgui.WindowXML):
                         if match:
                             group = match.group(1)
                             stream_categories[name] = group.replace('=','-')
+                            stream_id_categories[id] = group.replace('=','-')
 
                     channelList = self.database.getChannelList(onlyVisible=False)
                     ids = [x.id for x in channelList]
+                    channelNames = {x.id:x.title for x in channelList}
                     #log(ids)
                     lineup = None
                     #log(m3u_channels)
@@ -4191,15 +4196,22 @@ class TVGuide(xbmcgui.WindowXML):
                             categories[cat] = []
                         categories[cat].append(name)
 
+                    for id,cat in stream_id_categories.iteritems():
+                        if cat not in categories:
+                            categories[cat] = []
+                        if id in channelNames:
+                            categories[cat].append(channelNames[id])
+
                     f = xbmcvfs.File('special://profile/addon_data/script.tvguide.fullscreen/categories.ini','wb')
                     for cat in categories:
                         channels = categories[cat]
-                        for channel in channels:
+                        for channel in list(set(channels)):
                             f.write("%s=%s\n" % (channel.decode("utf8").encode("utf8"),cat.decode("utf8").encode("utf8")))
                     f.close()
                     categories = sorted(categories)
                     self.categories = categories
 
+                    #debug_log(stream_urls)
                     if stream_urls:
                         self.database.setCustomStreamUrls(stream_urls)
 
@@ -4208,18 +4220,22 @@ class TVGuide(xbmcgui.WindowXML):
                             for i,(id,url) in enumerate(stream_urls):
                                 weight[id] = i+1
                             debug_log(weight)
+                            #for k,v in sorted(weight.items(),key=lambda x:x[1]):
+                                #log((v,k))
 
                             channelList = self.database.getChannelList(onlyVisible=False)
-                            debug_log(channelList)
+                            #debug_log(channelList)
                             for channel in channelList:
                                 new_weight = weight.get(channel.id)
                                 if new_weight:
                                     channel.weight = new_weight
+                                else:
+                                    channel.weight = 100000
 
                             channelList.sort(key=lambda k: k.weight)
-                            debug_log(channelList)
+                            #debug_log(channelList)
                             self.database.saveChannelListBlock(channelList)
-                            debug_log("saveChannelListBlock")
+                            #debug_log("saveChannelListBlock")
 
         if ADDON.getSetting('alt.mapping.tsv.enabled') == 'true':
             if ADDON.getSetting('alt.mapping.tsv.type') == '0':
