@@ -700,7 +700,6 @@ class Database(object):
         self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
 
         channels = self._getChannelList(onlyVisible=True)
-
         if channelStart < 0:
             channelStart = len(channels) - 1
         elif channelStart > len(channels) - 1:
@@ -821,8 +820,25 @@ class Database(object):
         return channelList
 
     def saveChannelListBlock(self, channelList):
-        result = self._invokeAndBlockForResult(self._saveChannelList, channelList)
+        result = self._invokeAndBlockForResult(self._saveChannelListBlock, channelList)
         return result
+
+    def _saveChannelListBlock(self, channelList):
+        c = self.conn.cursor()
+        c.execute('DELETE FROM channels')
+        for idx, channel in enumerate(channelList):
+            c.execute(
+                'INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)',
+                [channel.id, channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight,
+                 self.source.KEY, channel.weight, self.source.KEY])
+            if not c.rowcount:
+                c.execute(
+                    'UPDATE channels SET title=?, logo=?, stream_url=?, visible=?, weight=(CASE ? WHEN -1 THEN weight ELSE ? END) WHERE id=? AND source=?',
+                    [channel.title, channel.logo, channel.streamUrl, channel.visible, channel.weight, channel.weight,
+                     channel.id, self.source.KEY])
+        c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [datetime.datetime.now(), self.source.KEY])
+        self.channelList = None
+        self.conn.commit()
 
     def saveChannelList(self, callback, channelList):
         self.eventQueue.append([self._saveChannelList, callback, channelList])
