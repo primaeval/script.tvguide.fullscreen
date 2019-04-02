@@ -665,7 +665,7 @@ class TVGuide(xbmcgui.WindowXML):
         behaviour = int(ADDON.getSetting('channel.shortcut.behaviour'))
         if (self.mode != MODE_EPG) and (behaviour > 0):
             program = utils.Program(channel=channelList[self.channelIdx], title='', sub_title='', startDate=None, endDate=None, description='', categories='')
-            self.playOrChoose(program)
+            self.playOrChoose(program,True)
         elif (behaviour == 2) or (behaviour == 1 and self.mode != MODE_EPG):
             self._hideOsdOnly()
             self._hideQuickEpg()
@@ -1600,13 +1600,22 @@ class TVGuide(xbmcgui.WindowXML):
                 self.playOrChoose(program)
 
 
-    def playOrChoose(self,program):
+    def playOrChoose(self,program,scroll=False):
         if not program.channel.id:
             return
         if self.player.isPlaying() and self.currentChannel and (program.channel.id == self.currentChannel.id) and ((ADDON.getSetting('play.always.choose') == "false") or (ADDON.getSetting('play.alt.choose') == 'false')):
                 self._hideEpg()
                 self._hideQuickEpg()
                 return
+
+        if scroll:
+            channelList = self.database.getChannelList(onlyVisible=True,all=False)
+            for i in range(len(channelList)):
+                if program.channel.id == channelList[i].id:
+                     self.channelIdx = i
+                     break
+            self.focusPoint.y = 0
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
         if (ADDON.getSetting('play.always.choose') == "true") or not self.playChannel(program.channel, program):
             result = self.streamingService.detectStream(program.channel)
@@ -1659,7 +1668,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
                     self.play_catchup(program)
                 else:
-                    self.playOrChoose(program)
+                    self.playOrChoose(program,True)
 
     def showNow(self):
         programList = self.database.getNowList()
@@ -1685,7 +1694,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
                     self.play_catchup(program)
                 else:
-                    self.playOrChoose(program)
+                    self.playOrChoose(program,True)
 
     def showNext(self):
         programList = self.database.getNextList()
@@ -1711,7 +1720,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
                     self.play_catchup(program)
                 else:
-                    self.playOrChoose(program)
+                    self.playOrChoose(program,True)
 
 
     def programSearchSelect(self):
@@ -1793,7 +1802,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
                     self.play_catchup(program)
                 else:
-                    self.playOrChoose(program)
+                    self.playOrChoose(program,True)
 
 
     def descriptionSearch(self):
@@ -1851,7 +1860,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
                     self.play_catchup(program)
                 else:
-                    self.playOrChoose(program)
+                    self.playOrChoose(program,True)
 
     def categorySearch(self):
         d = xbmcgui.Dialog()
@@ -1892,7 +1901,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
                     self.play_catchup(program)
                 else:
-                    self.playOrChoose(program)
+                    self.playOrChoose(program,True)
 
     def channelSearch(self):
         d = xbmcgui.Dialog()
@@ -1922,7 +1931,7 @@ class TVGuide(xbmcgui.WindowXML):
                 if (ask == "3") or (ask=="2" and end < now) or (ask=="1" and start < now):
                     self.play_catchup(program)
                 else:
-                    self.playOrChoose(program)
+                    self.playOrChoose(program,True)
 
     def showReminders(self):
         programList = self.database.getNotifications()
