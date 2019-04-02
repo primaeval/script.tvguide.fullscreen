@@ -4239,7 +4239,13 @@ class TVGuide(xbmcgui.WindowXML):
                                 if new_weight:
                                     channel.weight = new_weight
                                 else:
-                                    channel.weight = 100000
+                                    channel.weight = 0
+
+                            new_weight = max([x.weight for x in channelList]) + 1
+                            for channel in channelList:
+                                if channel.weight == 0:
+                                    channel.weight = new_weight
+                                    new_weight += 1
 
                             channelList.sort(key=lambda k: k.weight)
                             #debug_log(channelList)
