@@ -344,7 +344,7 @@ class TVGuide(xbmcgui.WindowXML):
         self.quickControlAndProgramList = list()
         self.ignoreMissingControlIds = list()
         if ADDON.getSetting('channel.remember') == 'true':
-            self.channelIdx = int(ADDON.getSetting('channelIdx') or 0)
+            self.channelIdx = int(ADDON.getSetting('channelIdx') or '0')
         else:
             self.channelIdx = 0
         self.focusPoint = Point()
@@ -4069,10 +4069,12 @@ class TVGuide(xbmcgui.WindowXML):
             self.loadChannelMappings()
             self.clear_catchup()
             channelList = self.database.getChannelList(onlyVisible=True,all=False)
+            '''
             for i in range(len(channelList)):
                 if self.channel_number == channelList[i].id:
                      self.channelIdx = i
                      break
+            '''
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def saveActions(self):
@@ -4247,8 +4249,9 @@ class TVGuide(xbmcgui.WindowXML):
                                     channel.weight = new_weight
                                     new_weight += 1
 
-                            channelList.sort(key=lambda k: k.weight)
-                            #debug_log(channelList)
+                            #log(channelList)
+                            channelList = sorted(channelList, key=lambda k: k.weight)
+                            #log(channelList)
                             self.database.saveChannelListBlock(channelList)
                             #debug_log("saveChannelListBlock")
 
