@@ -1673,6 +1673,16 @@ class Database(object):
                             season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
             #log(row['title'])
             programList.append(program)
+        #regex
+        c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.lineup,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 4 AND p.title LIKE a.program_title AND p.end_date >= ? AND p.end_date <= ?", [start,end])
+        #c.execute("SELECT DISTINCT c.id, c.title as channel_title,c.logo,c.stream_url,c.visible,c.weight, p.* FROM programs p, channels c, notifications a WHERE c.id = p.channel AND a.type = 1 AND p.title = a.program_title")
+        for row in c:
+            channel = Channel(row["id"], row["channel_title"], row['lineup'], row["logo"], row["stream_url"], row["visible"], row["weight"])
+            program = Program(channel, title=row['title'], sub_title=row['sub_title'], startDate=row['start_date'], endDate=row['end_date'],
+                            description=row['description'], categories=row['categories'],
+                            imageLarge=row["image_large"],imageSmall=row["image_small"],
+                            season=row["season"],episode=row["episode"],is_new=row["is_new"],is_movie=row["is_movie"],language=row["language"],notificationScheduled=True)
+            programList.append(program)
         c.close()
         return programList
 

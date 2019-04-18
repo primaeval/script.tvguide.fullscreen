@@ -3350,7 +3350,15 @@ class TVGuide(xbmcgui.WindowXML):
         if not self.osdChannel:
             return #TODO this should not happen
         if self.osdProgram is not None:
-            self.setControlLabel(self.C_MAIN_OSD_TITLE, '[B]%s[/B]' % self.osdProgram.title)
+            title = self.osdProgram.title
+            if self.osdProgram.sub_title:
+                title = '[B]%s - %s[/B]' % (self.osdProgram.title, self.osdProgram.sub_title)
+            else:
+                title = '[B]%s[/B]' % self.osdProgram.title
+            if self.osdProgram.season and self.osdProgram.episode:
+                title += " S%sE%s" % (self.osdProgram.season, self.osdProgram.episode)
+
+            self.setControlLabel(self.C_MAIN_OSD_TITLE, '%s' % title)
             if self.osdProgram.startDate or self.osdProgram.endDate:
                 self.setControlLabel(self.C_MAIN_OSD_TIME, '[B]%s - %s[/B]' % (
                     self.formatTime(self.osdProgram.startDate), self.formatTime(self.osdProgram.endDate)))
