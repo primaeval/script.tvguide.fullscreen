@@ -129,6 +129,8 @@ class StreamsService(object):
                     titleRe = r".*%s.*" % re.escape(title)
                     if re.match(titleRe,labelx):
                         sub_matches.append((id, label, stream))
+                    elif labelx in title:
+                        sub_matches.append((id, label, stream))
                 if int(self.addon.getSetting('addon.match')) > 1:
                     title = re.sub(r' ','',channel.title.lower())
                     title = re.sub(re.compile(r'hd$',flags=re.I),'',title)
