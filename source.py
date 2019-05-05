@@ -324,7 +324,7 @@ class Database(object):
             try:
                 self.conn = sqlite3.connect(self.databasePath, detect_types=sqlite3.PARSE_DECLTYPES)
                 self.conn.text_factory = str
-                self.conn.execute('PRAGMA foreign_keys = OFF')
+                self.conn.execute('PRAGMA foreign_keys = ON')
                 self.conn.row_factory = sqlite3.Row
 
                 # create and drop dummy table to check if database is locked
@@ -573,6 +573,8 @@ class Database(object):
 
             channels = c.execute('SELECT DISTINCT channel FROM programs').fetchall()
             for channel in channels:
+                if not channel[0]:
+                    continue
                 programs = c.execute('SELECT channel,start_date,end_date FROM programs WHERE channel=?',[channel[0]]).fetchall()
                 for i,program in enumerate(programs[:-1]):
                     if program[2] > programs[i+1][1]:
